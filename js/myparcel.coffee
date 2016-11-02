@@ -126,7 +126,7 @@ PICKUP_TIMES =
         dropoff_days: settings.dropoff_days if settings.dropoff_days?
         dropoff_delay: settings.dropoff_delay if settings.dropoff_delay?
         deliverydays_window: settings.deliverydays_window if settings.deliverydays_window?
-        exlude_delivery_type: settings.exclude_delivery_type if settings.exclude_delivery_type?
+        exclude_delivery_type: settings.exclude_delivery_type if settings.exclude_delivery_type?
       success: renderPage
 
     jquery.ajax(options)
