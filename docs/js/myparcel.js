@@ -5,7 +5,7 @@
  */
 
 (function() {
-  var $, AO_DEFAULT_TEXT, Application, CARRIER, DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_TRANSLATED, DEFAULT_DELIVERY, DISABLED, EVENING_DELIVERY, HVO_DEFAULT_TEXT, MORNING_DELIVERY, MORNING_PICKUP, NATIONAL, NORMAL_PICKUP, PICKUP, PICKUP_EXPRESS, PICKUP_TIMES, POST_NL_TRANSLATION, Slider, checkCombination, displayOtherTab, jquery, obj1, orderOpeningHours, preparePickup, renderDeliveryOptions, renderExpressPickup, renderPage, renderPickup, renderPickupLocation, showDefaultPickupLocation, sortLocationsOnDistance, updateDelivery, updateInputField,
+  var $, AO_DEFAULT_TEXT, Application, CARRIER, DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_TRANSLATED, DEFAULT_DELIVERY, DISABLED, EVENING_DELIVERY, HVO_DEFAULT_TEXT, MORNING_DELIVERY, MORNING_PICKUP, NATIONAL, NORMAL_PICKUP, PICKUP, PICKUP_EXPRESS, PICKUP_TIMES, POST_NL_TRANSLATION, Slider, checkCombination, displayOtherTab, externalJQuery, obj1, orderOpeningHours, preparePickup, renderDeliveryOptions, renderExpressPickup, renderPage, renderPickup, renderPickupLocation, showDefaultPickupLocation, sortLocationsOnDistance, updateDelivery, updateInputField,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   DISABLED = 'disabled';
@@ -66,7 +66,7 @@
         base.base_url = "//localhost:8080/api/delivery_options";
       }
       this.el = document.getElementById('myparcel');
-      this.$el = jquery('myparcel');
+      this.$el = externalJQuery('myparcel');
       if (this.shadow == null) {
         this.shadow = this.el.createShadowRoot();
       }
@@ -112,20 +112,20 @@
      */
 
     Application.prototype.bindInputListeners = function() {
-      jquery('#mypa-signed').on('change', (function(_this) {
+      externalJQuery('#mypa-signed').on('change', (function(_this) {
         return function(e) {
-          return $('#mypa-signed').prop('checked', jquery('#mypa-signed').prop('checked'));
+          return $('#mypa-signed').prop('checked', externalJQuery('#mypa-signed').prop('checked'));
         };
       })(this));
-      jquery('#mypa-recipient-only').on('change', (function(_this) {
+      externalJQuery('#mypa-recipient-only').on('change', (function(_this) {
         return function(e) {
-          return $('#mypa-only-recipient').prop('checked', jquery('#mypa-recipient-only').prop('checked'));
+          return $('#mypa-only-recipient').prop('checked', externalJQuery('#mypa-recipient-only').prop('checked'));
         };
       })(this));
-      return jquery('#mypa-input').on('change', (function(_this) {
+      return externalJQuery('#mypa-input').on('change', (function(_this) {
         return function(e) {
           var el, i, json, len, ref;
-          json = jquery('#mypa-input').val();
+          json = externalJQuery('#mypa-input').val();
           if (json === '') {
             $('input[name=mypa-delivery-time]:checked').prop('checked', false);
             $('input[name=mypa-delivery-type]:checked').prop('checked', false);
@@ -189,11 +189,11 @@
           dropoff_days: settings.dropoff_days != null ? settings.dropoff_days : void 0,
           dropoff_delay: settings.dropoff_delay != null ? settings.dropoff_delay : void 0,
           deliverydays_window: settings.deliverydays_window != null ? settings.deliverydays_window : void 0,
-          exlude_delivery_type: settings.exclude_delivery_type != null ? settings.exclude_delivery_type : void 0
+          exclude_delivery_type: settings.exclude_delivery_type != null ? settings.exclude_delivery_type : void 0
         },
         success: renderPage
       };
-      return jquery.ajax(options);
+      return externalJQuery.ajax(options);
     };
 
     return Application;
@@ -246,7 +246,9 @@
     Slider.prototype.makeSlider = function() {
       this.slider = {};
       this.slider.currentBar = 0;
-      this.slider.bars = window.mypa.deliveryDays * 105 / $('#mypa-tabs-container')[0].offsetWidth;
+      this.slider.tabWidth = $('.mypa-tab')[0].offsetWidth + 5;
+      this.slider.tabsPerBar = Math.floor($('#mypa-tabs-container')[0].offsetWidth / this.slider.tabWidth);
+      this.slider.bars = window.mypa.deliveryDays / this.slider.tabsPerBar;
       $('mypa-tabs').attr('style', "width:" + (window.mypa.deliveryDays * 105) + "px;");
       $('#mypa-date-slider-right').removeClass('mypa-slider-disabled');
       $('#mypa-date-slider-left').unbind().bind('click', this.slideLeft);
@@ -271,8 +273,8 @@
       $('#mypa-date-slider-right').removeClass('mypa-slider-disabled');
       slider.currentBar--;
       $el = $('#mypa-tabs');
-      left = slider.currentBar * 100 * -1;
-      return $el.attr('style', "left:" + left + "%; width:" + (window.mypa.deliveryDays * 105) + "px");
+      left = this.slider.currentBar * this.slider.tabsPerBar * this.slider.tabWidth * -1 + 5 * this.slider.currentBar;
+      return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
     };
 
 
@@ -293,8 +295,8 @@
       $('#mypa-date-slider-left').removeClass('mypa-slider-disabled');
       slider.currentBar++;
       $el = $('#mypa-tabs');
-      left = slider.currentBar * 100 * -1;
-      return $el.attr('style', "left:" + left + "%; width:" + (window.mypa.deliveryDays * 105) + "px");
+      left = this.slider.currentBar * this.slider.tabsPerBar * this.slider.tabWidth * -1 + 5 * this.slider.currentBar;
+      return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
     };
 
 
@@ -318,19 +320,19 @@
   })();
 
   if (typeof mypajQuery !== "undefined" && mypajQuery !== null) {
-    jquery = mypajQuery;
+    externalJQuery = mypajQuery;
   }
 
-  if (jquery == null) {
-    jquery = $;
+  if (externalJQuery == null) {
+    externalJQuery = $;
   }
 
-  if (jquery == null) {
-    jquery = jQuery;
+  if (externalJQuery == null) {
+    externalJQuery = jQuery;
   }
 
   $ = function(selector) {
-    return jquery(document.getElementById('myparcel').shadowRoot).find(selector);
+    return externalJQuery(document.getElementById('myparcel').shadowRoot).find(selector);
   };
 
   displayOtherTab = function() {
@@ -619,20 +621,18 @@
   updateInputField = function() {
     var json;
     json = $('input[name=mypa-delivery-time]:checked').val();
-    if (jquery('#mypa-input').val() !== json) {
-      jquery('#mypa-input').val(json);
-      jquery('#mypa-input').trigger('change');
+    if (externalJQuery('#mypa-input').val() !== json) {
+      externalJQuery('#mypa-input').val(json);
+      document.getElementById('mypa-input').dispatchEvent(new Event('change'));
     }
-    if (jquery('#mypa-signed').val() !== $('#mypa-signed').prop('checked')) {
-      jquery('#mypa-signed').prop('checked', $('#mypa-signed').prop('checked'));
-      jquery('#mypa-signed').trigger('change');
+    if (externalJQuery('#mypa-signed').prop('checked') !== $('#mypa-signed').prop('checked')) {
+      externalJQuery('#mypa-signed').prop('checked', $('#mypa-signed').prop('checked'));
+      document.getElementById('mypa-signed').dispatchEvent(new Event('change'));
     }
-    if (jquery('#mypa-recipient-only').val() !== $('#mypa-recipient-only').prop('checked')) {
-      jquery('#mypa-recipient-only').prop('checked', $('#mypa-only-recipient').prop('checked'));
-      return jquery('#mypa-recipient-only').trigger('change');
+    if (externalJQuery('#mypa-recipient-only').prop('checked') !== $('#mypa-only-recipient').prop('checked')) {
+      externalJQuery('#mypa-recipient-only').prop('checked', $('#mypa-only-recipient').prop('checked'));
+      return document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'));
     }
   };
 
 }).call(this);
-
-//# sourceMappingURL=myparcel.js.map

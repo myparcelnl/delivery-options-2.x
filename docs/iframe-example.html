@@ -1,6 +1,55 @@
 <html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        el = document.getElementById('frame')
+        iframeWindow = el.contentWindow
+        
+        el.addEventListener('load',(function(){
+          iframeWindow = this.contentWindow
+          iframeWindow.mypa = {}
+          iframeWindow.mypa.settings = {
+            number: '679', // String - Required
+            street: 'Hoofdweg', // String - Required
+            postal_code: '2131BC', // String - Required
+            price: {
+              morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
+              default: '&#8364; 6,00', // String
+              pickup: '&#8364; 9,00', // String
+              pickup_express: '&#8364; 12,00', // String
+              signed: '&#8364; 0,50', // String
+              only_recipient: '&#8364; 0,20', // String
+              combi_options: '&#8364; 0,60', // String
+            }, 
+            base_url: 'https://api.myparcel.nl/delivery_options', // Required
+          }
+
+          postJson = function(event){
+            el = document.getElementById('event-log')
+            el.innerHTML = el.innerHTML + $(event.currentTarget).val() + "<br>"
+          }
+          postCheck = function(event){
+            el = document.getElementById('event-log')
+            el.innerHTML = el.innerHTML + $(event.currentTarget).prop('checked') + "<br>"
+          }
+          $(this.contentDocument.getElementById('mypa-input')).on('change', postJson)
+          $(this.contentDocument.getElementById('mypa-signed')).on('change', postCheck)
+          $(this.contentDocument.getElementById('mypa-recipient-only')).on('change', postCheck)
+        }))
+
+        el.setAttribute('src', "/checkout/iframebase.html")
+      })
+    </script>
+  </head>
   <body>
-    <iframe src="https://myparcelnl.github.io/checkout/iframebase.html">
+    <iframe id='frame' width='500' height='400'>
     </iframe>
+    <input style="display:none" name='mypa-post-nl-data' id="mypa-input">
+    <input type="checkbox" name='mypa-signed' style="display:none" id="mypa-signed">
+    <input type="checkbox" name='mypa-recipient-only' style="display:none" id="mypa-recipient-only">
+    <div id='event-log' style='overflow:scroll;height:500px'>
+
+    </div>
   </body>
 </html>

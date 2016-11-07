@@ -1,7 +1,7 @@
 <html>
   <head>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:700,400|Exo:700,500" rel="stylesheet" type="text/css">
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/webcomponents.min.js"></script>
     <script src="js/myparcel.js"></script>
@@ -643,25 +643,9 @@
     </div>
     </template>
     <script>
-      $(document).ready(function(){
-        window.mypa = {}
-        window.mypa.settings = {
-          number: '679', // String - Required
-          street: 'Hoofdweg', // String - Required
-          postal_code: '2131BC', // String - Required
-          price: {
-            morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
-            default: '&#8364; 6,00', // String
-            pickup: '&#8364; 9,00', // String
-            pickup_express: '&#8364; 12,00', // String
-            signed: '&#8364; 0,50', // String
-            only_recipient: '&#8364; 0,20', // String
-            combi_options: '&#8364; 0,60', // String
-          }, 
-          base_url: 'https://api.myparcel.nl/delivery_options', // Required
-        }
-        var myparcel = new MyParcel()
-        myparcel.updatePage() 
+      $(document).ready( function(){
+        myparcel = new MyParcel() 
+        myparcel.updatePage()
       })
     </script>
   </head>
