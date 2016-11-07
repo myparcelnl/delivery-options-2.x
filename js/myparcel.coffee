@@ -45,7 +45,7 @@ PICKUP_TIMES =
     window.mypa.settings.base_url ?= "//localhost:8080/api/delivery_options"
 
     @el = document.getElementById('myparcel')
-    @$el = jquery('myparcel')
+    @$el = externalJQuery('myparcel')
     @shadow = @el.createShadowRoot() unless @shadow?
 
     @render()
@@ -76,14 +76,14 @@ PICKUP_TIMES =
   # Adds the listeners for the inputfields.
   ###
   bindInputListeners: ->
-    jquery('#mypa-signed').on 'change', (e)=>
-      $('#mypa-signed').prop 'checked', jquery('#mypa-signed').prop 'checked'
+    externalJQuery('#mypa-signed').on 'change', (e)=>
+      $('#mypa-signed').prop 'checked', externalJQuery('#mypa-signed').prop 'checked'
 
-    jquery('#mypa-recipient-only').on 'change', (e)=>
-      $('#mypa-only-recipient').prop 'checked', jquery('#mypa-recipient-only').prop 'checked'
+    externalJQuery('#mypa-recipient-only').on 'change', (e)=>
+      $('#mypa-only-recipient').prop 'checked', externalJQuery('#mypa-recipient-only').prop 'checked'
 
-    jquery('#mypa-input').on 'change', (e)=>
-      json = jquery('#mypa-input').val()
+    externalJQuery('#mypa-input').on 'change', (e)=>
+      json = externalJQuery('#mypa-input').val()
       if json is ''
         $('input[name=mypa-delivery-time]:checked').prop 'checked', false
         $('input[name=mypa-delivery-type]:checked').prop 'checked', false
@@ -129,7 +129,7 @@ PICKUP_TIMES =
         exclude_delivery_type: settings.exclude_delivery_type if settings.exclude_delivery_type?
       success: renderPage
 
-    jquery.ajax(options)
+    externalJQuery.ajax(options)
 
 class Slider
 
@@ -181,7 +181,10 @@ class Slider
   makeSlider: ->
     @slider = {}
     @slider.currentBar = 0
-    @slider.bars = window.mypa.deliveryDays * 105 / $('#mypa-tabs-container')[0].offsetWidth
+
+    @slider.tabWidth = $('.mypa-tab')[0].offsetWidth + 5
+    @slider.tabsPerBar = Math.floor($('#mypa-tabs-container')[0].offsetWidth / @slider.tabWidth)
+    @slider.bars = window.mypa.deliveryDays / @slider.tabsPerBar
 
     $('mypa-tabs').attr 'style', "width:#{window.mypa.deliveryDays * 105}px;"
 
@@ -204,8 +207,8 @@ class Slider
     $('#mypa-date-slider-right').removeClass 'mypa-slider-disabled'
     slider.currentBar--
     $el = $ '#mypa-tabs'
-    left = slider.currentBar * 100 * -1
-    $el.attr 'style', "left:#{left}%; width:#{window.mypa.deliveryDays * 105}px"
+    left = @slider.currentBar * @slider.tabsPerBar * @slider.tabWidth * -1 + 5 * @slider.currentBar
+    $el.attr 'style', "left:#{left}px; width:#{window.mypa.deliveryDays * @slider.tabWidth}px"
 
   ###
   # Event handler for sliding the date slider to the right
@@ -222,8 +225,8 @@ class Slider
     $('#mypa-date-slider-left').removeClass 'mypa-slider-disabled'
     slider.currentBar++
     $el = $ '#mypa-tabs'
-    left = slider.currentBar * 100 * -1
-    $el.attr 'style', "left:#{left}%; width:#{window.mypa.deliveryDays * 105}px"
+    left = @slider.currentBar * @slider.tabsPerBar * @slider.tabWidth * -1 + 5 * @slider.currentBar
+    $el.attr 'style', "left:#{left}px; width:#{window.mypa.deliveryDays * @slider.tabWidth}px"
 
   ###
   # Order function for the delivery array
@@ -239,11 +242,11 @@ class Slider
     return -1
 
 
-jquery = mypajQuery if mypajQuery?
-jquery ?= $
-jquery ?= jQuery
+externalJQuery = mypajQuery if mypajQuery?
+externalJQuery ?= $
+externalJQuery ?= jQuery
 $ = (selector) ->
-  return jquery(document.getElementById('myparcel').shadowRoot).find selector
+  return externalJQuery(document.getElementById('myparcel').shadowRoot).find selector
 
 displayOtherTab = ->
   $ '.mypa-tab-container'
@@ -539,15 +542,15 @@ checkCombination = ->
 ###
 updateInputField = ->
   json = $('input[name=mypa-delivery-time]:checked').val()
+  
+  unless externalJQuery('#mypa-input').val() is json
+    externalJQuery('#mypa-input').val json
+    document.getElementById('mypa-input').dispatchEvent(new Event('change'))
 
-  if jquery('#mypa-input').val() isnt json
-    jquery('#mypa-input').val json
-    jquery('#mypa-input').trigger 'change'
+  unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
+    externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
+    document.getElementById('mypa-signed').dispatchEvent(new Event('change'))
 
-  if jquery('#mypa-signed').val() isnt $('#mypa-signed').prop 'checked'
-    jquery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
-    jquery('#mypa-signed').trigger 'change'
-
-  if jquery('#mypa-recipient-only').val() isnt $('#mypa-recipient-only').prop 'checked'
-    jquery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
-    jquery('#mypa-recipient-only').trigger 'change'
+  unless externalJQuery('#mypa-recipient-only').prop('checked') is $('#mypa-only-recipient').prop 'checked'
+    externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
+    document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))

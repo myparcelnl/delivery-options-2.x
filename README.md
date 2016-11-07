@@ -4,6 +4,13 @@ This software serves as an example to the uses of the MyParcel delivery end-poin
 
 The added coffeescript need to be compiled to javasrcipt in order to run the checkout.
 
+### Examples
+
+There are 2 example avaliable.
+
+[Normal version](https://myparcelnl.github.io/checkout/)
+[iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
+
 ### Requirements
 
 - [Nodejs](https://nodejs.org/en/)
