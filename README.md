@@ -8,7 +8,7 @@ The added coffeescript need to be compiled to javasrcipt in order to run the che
 
 There are 2 example avaliable.
 
-[Normal version](https://myparcelnl.github.io/checkout/)
+[Normal version](https://myparcelnl.github.io/checkout/) | 
 [iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
 
 ### Requirements
