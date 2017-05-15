@@ -53,7 +53,7 @@ window.mypa.settings = {
 		only_recipient: '&#8364; 12,00', // String
 		combi_options: '&#8364; 12,00', // String
 	}, 
-	base_url: 'http://api.myparcel.nl/delivery_options', // Required
+	base_url: 'https://api.myparcel.nl/delivery_options', // Required
 	text:
 	{
 		signed: 'Text show instead of default text', 
