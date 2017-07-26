@@ -9,6 +9,11 @@ AO_DEFAULT_TEXT = 'Alleen geadresseerde'
 NATIONAL = 'NL'
 CARRIER = 1
 
+TOP_LEVEL_CHECKBOXES = {
+  delivery: '#mypa-delivery-option-check',
+  pickup: '#mypa-pickup'
+}
+
 MORNING_DELIVERY = 'morning'
 DEFAULT_DELIVERY = 'default'
 EVENING_DELIVERY = 'night'
@@ -43,6 +48,7 @@ PICKUP_TIMES =
     # Construct window.mypa if not already set
     window.mypa ?= settings:{}
     window.mypa.settings.base_url ?= "//localhost:8080/api/delivery_options"
+    window.mypa.isNational = window.mypa.settings.cc is NATIONAL
 
     @el = document.getElementById('myparcel')
     @$el = externalJQuery('myparcel')
@@ -104,6 +110,8 @@ PICKUP_TIMES =
     number ?= settings.number
     postal_code ?= settings.postal_code
     street ?= settings.street
+    cc = settings.cc
+    cc ?= NATIONAL
 
     unless street? or postal_code? or number?
       $('#mypa-no-options').html 'Geen adres opgegeven'
@@ -116,7 +124,7 @@ PICKUP_TIMES =
     options =
       url: urlBase
       data:
-        cc: NATIONAL
+        cc: cc
         carrier: CARRIER
         number: number
         postal_code: postal_code
@@ -262,19 +270,35 @@ renderPage = (response)->
     $('.mypa-overlay').removeClass 'mypa-hidden'
     return
   $('.mypa-overlay').addClass 'mypa-hidden'
-  $('#mypa-delivery-option-check').bind 'click', -> renderDeliveryOptions $('input[name=date]:checked').val()
-  new Slider response.data.delivery
+
+  if window.mypa.isNational
+    $('#mypa-delivery-option-check').bind 'click', -> renderDeliveryOptions $('input[name=date]:checked').val()
+    new Slider response.data.delivery
+  else
+    $('#mypa-slider-holder').addClass 'mypa-hidden'
+
   preparePickup response.data.pickup
 
   $('#mypa-delivery-options-title').on 'click', ->
-    date = $('input[name=date]:checked').val()
-    renderDeliveryOptions date
+    if window.mypa.isNational
+      date = $('input[name=date]:checked').val()
+      renderDeliveryOptions date
+    setCheckboxActive('delivery')
     updateInputField()
 
   $('#mypa-pickup-options-title').on 'click', ->
-    $('#mypa-pickup').prop 'checked', true
+    setCheckboxActive('pickup')
     updateInputField()
   updateInputField()
+
+###
+# Switches between the top level checkboxes of the delivery types
+###
+setCheckboxActive = (type) ->
+  for el in $('input[name=mypa-delivery-type]')
+    $(el).prop 'checked', false
+
+  $(TOP_LEVEL_CHECKBOXES[type]).prop 'checked', true
 
 preparePickup = (pickupOptions) ->
 
@@ -543,16 +567,23 @@ checkCombination = ->
 # Sets the json to the selected input field to be with the form
 ###
 updateInputField = ->
-  json = $('input[name=mypa-delivery-time]:checked').val()
-  
-  unless externalJQuery('#mypa-input').val() is json
-    externalJQuery('#mypa-input').val json
-    document.getElementById('mypa-input').dispatchEvent(new Event('change'))
+  el = $('input[name=mypa-delivery-time]:checked')
+  json = el.val()
 
-  unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
-    externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
-    document.getElementById('mypa-signed').dispatchEvent(new Event('change'))
+  if window.mypa.isNational
+    # Check our delivery options if NATIONAL
+    unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
+      externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
+      document.getElementById('mypa-signed').dispatchEvent(new Event('change'))
 
-  unless externalJQuery('#mypa-recipient-only').prop('checked') is $('#mypa-only-recipient').prop 'checked'
-    externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
-    document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))
+    unless externalJQuery('#mypa-recipient-only').prop('checked') is $('#mypa-only-recipient').prop 'checked'
+      externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
+      document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))
+  else
+    # If not NATIONAL then overwrite our JSON
+    if $('#mypa-delivery-option-check').prop('checked')
+      json = '{"type": "delivery"}'
+
+    unless externalJQuery('#mypa-input').val() is json
+      externalJQuery('#mypa-input').val json
+      document.getElementById('mypa-input').dispatchEvent(new Event('change'))
