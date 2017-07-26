@@ -158,10 +158,10 @@ class Slider
       date = moment(delivery.date)
       html = """
         <input type="radio" id="mypa-date-#{index}" class="mypa-date" name="date" checked value="#{delivery.date}">
-        <label for='mypa-date-#{index}' class='mypa-tab active'>
-          <span class='day-of-the-week'>#{date.format 'dddd'}</span>
+        <label for="mypa-date-#{index}" class="mypa-tab active">
+          <span class="day-of-the-week">#{date.format 'dddd'}</span>
           <br>
-          <span class='date'>#{date.format 'DD MMMM'}</span>
+          <span class="date">#{date.format 'DD MMMM'}</span>
         </label>
       """
       $el.append html
@@ -373,19 +373,21 @@ renderPickupLocation = (data)->
 
       openingHoursHtml += '</div></div>'
 
+    locationDistance = String(Math.round(location.distance/100)/10).replace '.', ','
+
     html = """
-      <div for='mypa-pickup-location-#{index}' class="mypa-row-lg afhalen-row">
+      <div for="mypa-pickup-location-#{index}" class="mypa-row-lg afhalen-row">
         <div class="afhalen-right">
-          <i class='mypa-info'>
+          <i class="mypa-info">
           </i>
         </div>
-        <div class='mypa-opening-hours'>
+        <div class="mypa-opening-hours">
           #{openingHoursHtml}
         </div>
-        <label for='mypa-pickup-location-#{index}' class="afhalen-left">
+        <label for="mypa-pickup-location-#{index}" class="afhalen-left">
           <div class="afhalen-check">
-            <input id="mypa-pickup-location-#{index}" type="radio" name="mypa-pickup-option" value='#{JSON.stringify location}'>
-            <label for='mypa-pickup-location-#{index}' class='mypa-row-title'>
+            <input id="mypa-pickup-location-#{index}" type="radio" name="mypa-pickup-option" value="#{JSON.stringify location}">
+            <label for="mypa-pickup-location-#{index}" class="mypa-row-title">
               <div class="mypa-checkmark mypa-main">
                 <div class="mypa-circle"></div>
                 <div class="mypa-checkmark-stem"></div>
@@ -393,9 +395,9 @@ renderPickupLocation = (data)->
               </div>
             </label>
           </div>
-          <div class='afhalen-tekst'>
-            <span class="mypa-highlight mypa-inline-block">#{location.location}, <b class='mypa-inline-block'>#{location.street} #{location.number}</b>,
-            <i class='mypa-inline-block'>#{String(Math.round(location.distance/100)/10).replace '.', ','} Km</i></span>
+          <div class="afhalen-tekst">
+            <span class="mypa-highlight mypa-inline-block">#{location.location}, <b class="mypa-inline-block">#{location.street} #{location.number}</b>,
+            <i class="mypa-inline-block">#{locationDistance} Km</i></span>
           </div>
         </label>
       </div>
@@ -439,8 +441,8 @@ renderDeliveryOptions  = (date)->
     checked = ''
     checked = "checked" if time.price_comment is 'standard'
     html += """
-      <label for="mypa-time-#{index}" class='mypa-row-subitem'>
-        <input id='mypa-time-#{index}' type="radio" name="mypa-delivery-time" value='#{JSON.stringify json}' #{checked}>
+      <label for="mypa-time-#{index}" class="mypa-row-subitem">
+        <input id="mypa-time-#{index}" type="radio" name="mypa-delivery-time" value="#{JSON.stringify json}" #{checked}>
         <label for="mypa-time-#{index}" class="mypa-checkmark">
           <div class="mypa-circle mypa-circle-checked"></div>
           <div class="mypa-checkmark-stem"></div>
@@ -468,7 +470,7 @@ renderDeliveryOptions  = (date)->
 
   if onlyRecipientPrice isnt DISABLED
     html += """
-      <label for="mypa-only-recipient" class='mypa-row-subitem'>
+      <label for="mypa-only-recipient" class="mypa-row-subitem">
         <input type="checkbox" name="mypa-only-recipient" class="mypa-onoffswitch-checkbox" id="mypa-only-recipient">
         <div class="mypa-switch-container">
           <div class="mypa-onoffswitch">
@@ -485,7 +487,7 @@ renderDeliveryOptions  = (date)->
 
   if hvoPrice isnt DISABLED
     html += """
-      <label for="mypa-signed" class='mypa-row-subitem'>
+      <label for="mypa-signed" class="mypa-row-subitem">
         <input type="checkbox" name="mypa-signed" class="mypa-onoffswitch-checkbox" id="mypa-signed">
         <div class="mypa-switch-container">
           <div class="mypa-onoffswitch">
