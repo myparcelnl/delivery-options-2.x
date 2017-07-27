@@ -276,6 +276,7 @@ renderPage = (response)->
     new Slider response.data.delivery
   else
     $('#mypa-slider-holder').addClass 'mypa-hidden'
+    setDefaultDelivery(response.data.delivery[0])
 
   preparePickup response.data.pickup
 
@@ -299,6 +300,13 @@ setCheckboxActive = (type) ->
     $(el).prop 'checked', false
 
   $(TOP_LEVEL_CHECKBOXES[type]).prop 'checked', true
+
+###
+# Sets the toplevel checkbox value if not NATIONAL
+###
+setDefaultDelivery = (deliveryObj) ->
+  json = JSON.stringify deliveryObj.time[0]
+  $('#mypa-delivery-option-check').val(json)
 
 preparePickup = (pickupOptions) ->
 
@@ -327,7 +335,8 @@ preparePickup = (pickupOptions) ->
     $('#mypa-pickup-express').parent().css display: 'none'
 
   showDefaultPickupLocation '#mypa-pickup-address', filter[PICKUP_TIMES[NORMAL_PICKUP]][0]
-  showDefaultPickupLocation '#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]
+  if window.mypa.isNational
+    showDefaultPickupLocation '#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]
 
   $('#mypa-pickup-address').off().bind 'click', renderPickup
   $('#mypa-pickup-express-address').off().bind 'click', renderExpressPickup
@@ -410,7 +419,7 @@ renderPickupLocation = (data)->
         </div>
         <label for="mypa-pickup-location-#{index}" class="afhalen-left">
           <div class="afhalen-check">
-            <input id="mypa-pickup-location-#{index}" type="radio" name="mypa-pickup-option" value="#{JSON.stringify location}">
+            <input id="mypa-pickup-location-#{index}" type="radio" name="mypa-pickup-option" value='#{JSON.stringify location}'>
             <label for="mypa-pickup-location-#{index}" class="mypa-row-title">
               <div class="mypa-checkmark mypa-main">
                 <div class="mypa-circle"></div>
@@ -466,7 +475,7 @@ renderDeliveryOptions  = (date)->
     checked = "checked" if time.price_comment is 'standard'
     html += """
       <label for="mypa-time-#{index}" class="mypa-row-subitem">
-        <input id="mypa-time-#{index}" type="radio" name="mypa-delivery-time" value="#{JSON.stringify json}" #{checked}>
+        <input id="mypa-time-#{index}" type="radio" name="mypa-delivery-time" value='#{JSON.stringify json}' #{checked}>
         <label for="mypa-time-#{index}" class="mypa-checkmark">
           <div class="mypa-circle mypa-circle-checked"></div>
           <div class="mypa-checkmark-stem"></div>
@@ -580,10 +589,10 @@ updateInputField = ->
       externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
       document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))
   else
-    # If not NATIONAL then overwrite our JSON
-    if $('#mypa-delivery-option-check').prop('checked')
-      json = '{"type": "delivery"}'
+    # If Delivery selected. Then get the top level value if not NATIONAL
+    deliveryEl = $('#mypa-delivery-option-check')
+    json = deliveryEl.val() if deliveryEl.prop('checked')
 
-    unless externalJQuery('#mypa-input').val() is json
-      externalJQuery('#mypa-input').val json
-      document.getElementById('mypa-input').dispatchEvent(new Event('change'))
+  unless externalJQuery('#mypa-input').val() is json
+    externalJQuery('#mypa-input').val json
+    document.getElementById('mypa-input').dispatchEvent(new Event('change'))
