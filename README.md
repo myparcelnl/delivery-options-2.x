@@ -24,7 +24,7 @@ Make sure that nodejs and the coffeesrcipt compiler are installed. To compile th
 coffee -c myparcel.coffee
 ```
 
-OR with a map for debugging
+OR with a source map for debugging
 
 ```bash
 coffee -cm myparcel.coffee
@@ -71,10 +71,11 @@ myparcel = new MyParcel();
 To get the object with the selected option of the user do the following
 
 ```js
-output = JSON.parse($('#mypa-input').val())
+json = $('#mypa-input').val();
+obj = JSON.parse(json);
 ```
 
-This configuration can be chagned after the checkout has loaded. The config need to be reloaded after is has changed. This can be done using the `updatePage` function.
+This configuration can be changed after the checkout has loaded. The config need to be reloaded after is has changed. This can be done using the `updatePage` function.
 
 Not all fields are required for the checkout to function.
 
