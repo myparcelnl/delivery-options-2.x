@@ -8,7 +8,7 @@ The added coffeescript need to be compiled to javasrcipt in order to run the che
 
 There are 2 example avaliable.
 
-[Normal version](https://myparcelnl.github.io/checkout/) | 
+[Normal version](https://myparcelnl.github.io/checkout/) |
 [iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
 
 ### Requirements
@@ -21,13 +21,13 @@ There are 2 example avaliable.
 Make sure that nodejs and the coffeesrcipt compiler are installed. To compile the coffeescript to javascript run the following command
 
 ```bash
-coffee -c myparcel.coffee
+coffee -c js/myparcel.coffee
 ```
 
 OR with a source map for debugging
 
 ```bash
-coffee -cm myparcel.coffee
+coffee -cm js/myparcel.coffee
 ```
 
 For more information visit the [coffeescript page](http://coffeescript.org/)
