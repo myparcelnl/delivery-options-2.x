@@ -1,153 +1,153 @@
 <html>
   <head>
     <link href="css/myparcel.css" rel="stylesheet" type="text/css">
+    <style>
+      .mypa-tab, .mypa-date:checked + label, .mypa-tab:hover, .mypa-delivery-header, .mypa-delivery-header, .mypa-date:checked+label, .mypa-tab:hover, #mypa-no-options {
+        background-color: #75D3D8; /* Edit #75D3D8 to your base color (color 1) */
+      }
+      .mypa-address {
+        color: #75D3D8; /* Edit #75D3D8 to your base color (color 1) */
+      }
+      .mypa-circle:hover, label.mypa-row-subitem:hover .mypa-circle, input:checked + label.mypa-checkmark div.mypa-circle, input[name=mypa-delivery-type]:checked + label div.mypa-main div.mypa-circle, input[name=mypa-pickup-option]:checked + label div.mypa-main div.mypa-circle, input:checked ~ .mypa-price, input:checked ~ label span.mypa-price, input:checked ~ span span.mypa-price, .mypa-price-active {
+        background-color: #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
+      }
+      input:checked ~ .mypa-highlight, input:checked ~ label.mypa-row-title span.mypa-highlight, .mypa-arrow-clickable:hover, .mypa-pickup-selector input:checked ~ .mypa-highlight, .mypa-edit-location {
+        color: #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
+      }
+      .mypa-arrow-clickable:hover::before {
+        border-left: 0.2em solid #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
+        border-bottom: 0.2em solid #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mypa-delivery-options-container">
+      <div class="mypa-overlay">
+        <span id="mypa-no-options">Adres ophalen...</span>
+      </div>
+      <div id="mypa-slider">
+        <!-- First frame -->
+        <div id="mypa-delivery-type-selection" class="mypa-tab-container mypa-slider-pos-0">
+          <div id="mypa-slider-holder">
+            <div id="mypa-date-slider-left"
+                 class="mypa-arrow-left mypa-back-arrow mypa-date-slider-button mypa-slider-disabled"></div>
+            <div id="mypa-date-slider-right"
+                 class="mypa-arrow-right myapa-next-arrow mypa-date-slider-button mypa-slider-disabled"></div>
+            <div id="mypa-tabs-container">
+              <div id="mypa-tabs">
+              </div>
+            </div>
+          </div>
+          <div class="mypa-delivery-content mypa-container-lg">
+            <div class="mypa-header-lg mypa-delivery-header">
+              <span class="mypa-header-title"><b>BEZORGOPTIES:</b></span> <span class="mypa-location"></span>
+            </div>
+            <div id="mypa-delivery-body">
+              <div id="mypa-delivery-row" class="mypa-row-lg">
+                <input id="mypa-delivery-option-check" type="radio" name="mypa-delivery-type"
+                       checked>
+                <label id="mypa-delivery-options-title" class="mypa-row-title"
+                       for="mypa-delivery-option-check">
+                  <div class="mypa-checkmark mypa-main">
+                    <div class="mypa-circle mypa-circle-checked"></div>
+                    <div class="mypa-checkmark-stem"></div>
+                    <div class="mypa-checkmark-kick"></div>
+                  </div>
+                  <span class="mypa-highlight">Thuis of op het werk bezorgd</span>
+                </label>
+                <div id="mypa-delivery-options" class="mypa-content-lg">
+                </div>
+              </div>
+              <div id="mypa-mailbox-row"></div>
+              <div id="mypa-pickup-row" class="mypa-row-lg">
+                <input type="radio" name="mypa-delivery-type" id="mypa-pickup-location">
+                <label id="mypa-pickup-options-title" class="mypa-row-title"
+                       for="mypa-pickup-location">
+                  <div class="mypa-checkmark mypa-main">
+                    <div class="mypa-circle"></div>
+                    <div class="mypa-checkmark-stem"></div>
+                    <div class="mypa-checkmark-kick"></div>
+                  </div>
+                  <span class="mypa-highlight">Ophalen op een PostNL locatie</span>
+                </label>
+                <div id="mypa-pickup-options-content" class="mypa-content-lg">
+                  <div>
+                    <label for="mypa-pickup" class="mypa-row-subitem mypa-pickup-selector">
+                      <input id="mypa-pickup" type="radio" name="mypa-delivery-time">
+                      <label for="mypa-pickup" class="mypa-checkmark">
+                        <div class="mypa-circle"></div>
+                        <div class="mypa-checkmark-stem"></div>
+                        <div class="mypa-checkmark-kick"></div>
+                      </label>
+                      <span class="mypa-price mypa-pickup-price"></span>
+                      <span class="mypa-highlight">Vanaf 16.00 uur</span><span
+                            class="mypa-address" id="mypa-pickup-address"></span>
+                    </label>
+                    <label for="mypa-pickup-express" class="mypa-row-subitem mypa-pickup-selector">
+                      <input id="mypa-pickup-express" type="radio" name="mypa-delivery-time">
+                      <label for="mypa-pickup-express" class="mypa-checkmark">
+                        <div class="mypa-circle mypa-circle-checked"></div>
+                        <div class="mypa-checkmark-stem"></div>
+                        <div class="mypa-checkmark-kick"></div>
+                      </label>
+                      <span class="mypa-price mypa-pickup-express-price"></span>
+                      <span class="mypa-highlight">Vanaf 8.30 uur</span><span class="mypa-address" id="mypa-pickup-express-address"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="mypa-location-selector" class="mypa-tab-container mypa-slider-pos-0">
+          <!-- Second frame -->
+          <div id="mypa-tabs-2">
+          </div>
+          <div class="mypa-container-lg mypa-delivery-content">
+            <div class="mypa-header-lg mypa-delivery-header">
+              <span id="mypa-back-arrow"><b>AFHALEN </b><span class="mypa-location-time"></span></span>
+            </div>
+            <div id="mypa-location-container">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:500;height:400">
+      <myparcel id="myparcel"></myparcel>
+      <input name="delivery_options" id="mypa-input" style="position: absolute; width:100%;">
+    </div>
+
+
     <script src="js/jquery.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/myparcel.js"></script>
     <script>
-      $(document).ready(function(){
-        window.mypa = {};
-        window.mypa.settings = {
-          cc: 'NL',
-//          number: '49', // String - Required
-//          street: 'Hoofdweg', // String - Required
-//          postal_code: '1000', // String - Required
-           number: '679', // String - Required
-           street: 'Hoofdweg', // String - Required
-           postal_code: '2131BC', // String - Required
-          price: {
-            morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
-            default: '&#8364; 6,00', // String
-            pickup: '&#8364; 9,00', // String
-            pickup_express: '&#8364; 12,00', // String
-            signed: '&#8364; 0,50', // String
-            only_recipient: '&#8364; 0,20', // String
-            combi_options: '&#8364; 0,60', // String
-          },
-          base_url: 'https://api.myparcel.nl/delivery_options', // Required
-        };
-        var myparcel = new MyParcel();
-        myparcel.updatePage();
-      })
+        $(document).ready(function(){
+            window.mypa = {};
+            window.mypa.settings = {
+                cc: "NL",
+  //          number: '49', // String - Required
+  //          street: 'Hoofdweg', // String - Required
+  //          postal_code: '1000', // String - Required
+                number: '679', // String - Required
+                street: 'Hoofdweg', // String - Required
+                postal_code: '2131BC', // String - Required
+                price: {
+                    morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
+                    default: '&#8364; 6,00', // String
+                    pickup: '&#8364; 9,00', // String
+                    pickup_express: '&#8364; 12,00', // String
+                    signed: '&#8364; 0,50', // String
+                    only_recipient: '&#8364; 0,20', // String
+                    combi_options: '&#8364; 0,60', // String
+                },
+                base_url: 'https://api.myparcel.nl/delivery_options', // Required
+            };
+            var myparcel = new MyParcel();
+            myparcel.updatePage();
+        })
     </script>
-  </head>
-  <body>
-  <style>
-    .mypa-tab, .mypa-date:checked + label, .mypa-tab:hover, .mypa-delivery-header, .mypa-delivery-header, .mypa-date:checked+label, .mypa-tab:hover, #mypa-no-options {
-      background-color: #75D3D8; /* Edit #75D3D8 to your base color (color 1) */
-    }
-    .mypa-address {
-      color: #75D3D8; /* Edit #75D3D8 to your base color (color 1) */
-    }
-    .mypa-circle:hover, label.mypa-row-subitem:hover .mypa-circle, input:checked + label.mypa-checkmark div.mypa-circle, input[name=mypa-delivery-type]:checked + label div.mypa-main div.mypa-circle, input[name=mypa-pickup-option]:checked + label div.mypa-main div.mypa-circle, input:checked ~ .mypa-price, input:checked ~ label span.mypa-price, input:checked ~ span span.mypa-price, .mypa-price-active {
-      background-color: #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
-    }
-    input:checked ~ .mypa-highlight, input:checked ~ label.mypa-row-title span.mypa-highlight, .mypa-arrow-clickable:hover, .mypa-pickup-selector input:checked ~ .mypa-highlight, .mypa-edit-location {
-      color: #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
-    }
-    .mypa-arrow-clickable:hover::before {
-      border-left: 0.2em solid #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
-      border-bottom: 0.2em solid #C7C7C7; /* Edit #C7C7C7 to your select color (color 2) */
-    }
-  </style>
-  <div id='mypa-delivery-options-container'>
-    <div class="mypa-overlay">
-      <span id="mypa-no-options">Adres ophalen...</span>
-    </div>
-    <div id="mypa-slider">
-      <!-- First frame -->
-      <div id="mypa-delivery-type-selection" class="mypa-tab-container mypa-slider-pos-0">
-        <div id="mypa-slider-holder">
-          <div id="mypa-date-slider-left"
-               class="mypa-arrow-left mypa-back-arrow mypa-date-slider-button mypa-slider-disabled"></div>
-          <div id="mypa-date-slider-right"
-               class="mypa-arrow-right myapa-next-arrow mypa-date-slider-button mypa-slider-disabled"></div>
-          <div id="mypa-tabs-container">
-            <div id='mypa-tabs'>
-            </div>
-          </div>
-        </div>
-        <div class='mypa-delivery-content mypa-container-lg'>
-          <div class='mypa-header-lg mypa-delivery-header'>
-            <span class="mypa-header-title"><b>BEZORGOPTIES:</b></span> <span class="mypa-location"></span>
-          </div>
-          <div id='mypa-delivery-body'>
-            <div id='mypa-delivery-row' class='mypa-row-lg'>
-              <input id='mypa-delivery-option-check' type="radio" name="mypa-delivery-type"
-                     checked>
-              <label id='mypa-delivery-options-title' class='mypa-row-title'
-                     for="mypa-delivery-option-check">
-                <div class="mypa-checkmark mypa-main">
-                  <div class="mypa-circle mypa-circle-checked"></div>
-                  <div class="mypa-checkmark-stem"></div>
-                  <div class="mypa-checkmark-kick"></div>
-                </div>
-                <span class="mypa-highlight">Thuis of op het werk bezorgd</span>
-              </label>
-              <div id='mypa-delivery-options' class='mypa-content-lg'>
-              </div>
-            </div>
-            <div id='mypa-mailbox-row'></div>
-            <div id='mypa-pickup-row' class='mypa-row-lg'>
-              <input type="radio" name="mypa-delivery-type" id="mypa-pickup-location">
-              <label id='mypa-pickup-options-title' class='mypa-row-title'
-                     for="mypa-pickup-location">
-                <div class="mypa-checkmark mypa-main">
-                  <div class="mypa-circle"></div>
-                  <div class="mypa-checkmark-stem"></div>
-                  <div class="mypa-checkmark-kick"></div>
-                </div>
-                <span class="mypa-highlight">Ophalen op een PostNL locatie</span>
-              </label>
-              <div id='mypa-pickup-options-content' class='mypa-content-lg'>
-                <div>
-                  <label for='mypa-pickup' class='mypa-row-subitem mypa-pickup-selector'>
-                    <input id='mypa-pickup' type="radio" name="mypa-delivery-time">
-                    <label for="mypa-pickup" class="mypa-checkmark">
-                      <div class="mypa-circle"></div>
-                      <div class="mypa-checkmark-stem"></div>
-                      <div class="mypa-checkmark-kick"></div>
-                    </label>
-                    <span class='mypa-price mypa-pickup-price'></span>
-                    <span class="mypa-highlight">Vanaf 16.00 uur</span><span
-                          class='mypa-address' id="mypa-pickup-address"></span>
-                  </label>
-                  <label for='mypa-pickup-express'
-                         class='mypa-row-subitem mypa-pickup-selector'>
-                    <input id='mypa-pickup-express' type="radio" name="mypa-delivery-time">
-                    <label for='mypa-pickup-express' class="mypa-checkmark">
-                      <div class="mypa-circle mypa-circle-checked"></div>
-                      <div class="mypa-checkmark-stem"></div>
-                      <div class="mypa-checkmark-kick"></div>
-                    </label>
-                    <span class='mypa-price mypa-pickup-express-price'></span>
-                    <span class="mypa-highlight">Vanaf 8.30 uur</span><span
-                          class='mypa-address' id="mypa-pickup-express-address"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="mypa-location-selector" class="mypa-tab-container mypa-slider-pos-0">
-        <!-- Second frame -->
-        <div id='mypa-tabs-2'>
-        </div>
-        <div class='mypa-container-lg mypa-delivery-content'>
-          <div class='mypa-header-lg mypa-delivery-header'>
-            <span id='mypa-back-arrow'><b>AFHALEN </b><span class="mypa-location-time"></span></span>
-          </div>
-          <div id="mypa-location-container">
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div style='width:500;height:400'>
-      <myparcel id="myparcel"></myparcel>
-      <input name='delivery_options' id="mypa-input" style="position: absolute; width:100%;">
-    </div>
   </body>
 </html>
