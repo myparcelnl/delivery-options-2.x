@@ -1,40 +1,12 @@
 This software serves as an example to the uses of the MyParcel delivery end-points. This is a example checkout for webshops.
 
-## Installation notes
-
-The added coffeescript need to be compiled to javasrcipt in order to run the checkout.
-
 ### Examples
 
-There are 2 example avaliable.
-
-[Normal version](https://myparcelnl.github.io/checkout/) |
-[iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
-
-### Requirements
-
-- [Nodejs](https://nodejs.org/en/)
-- [Coffeescript compiler](https://www.npmjs.com/package/coffee-script)
-
-### Compilation
-
-Make sure that nodejs and the coffeesrcipt compiler are installed. To compile the coffeescript to javascript run the following command
-
-```bash
-coffee -c js/myparcel.coffee
-```
-
-OR with a source map for debugging
-
-```bash
-coffee -cm js/myparcel.coffee
-```
-
-For more information visit the [coffeescript page](http://coffeescript.org/)
+[Normal version](https://myparcelnl.github.io/checkout/)
 
 ## Usage
 
-Make sure all included javascript libaries are loaded before the `myparcel.js` is loaded. Make sure the `webcomponents.min.js` is loaded before all else.
+Make sure all included javascript libaries are loaded before the `myparcel.js` is loaded.
 
 To configure the checkout the following object need to be set:
 
@@ -54,7 +26,6 @@ window.mypa.settings = {
 		only_recipient: '&#8364; 12,00', // String
 		combi_options: '&#8364; 12,00', // String
 	},
-	base_url: 'https://api.myparcel.nl/delivery_options', // Required
 	text: {
 		signed: 'Text to show instead of default text',
 		only_recipient: 'Text to show instead of default text'

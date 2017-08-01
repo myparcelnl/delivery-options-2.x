@@ -68,7 +68,7 @@
                 };
             }
             if ((base = window.mypa.settings).base_url == null) {
-                base.base_url = "//localhost:8080/api/delivery_options";
+                base.base_url = "https://api.myparcel.nl/delivery_options";
             }
 
             /** fix ipad */
