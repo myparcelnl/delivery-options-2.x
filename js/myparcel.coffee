@@ -48,7 +48,7 @@ PICKUP_TIMES =
     # Construct window.mypa if not already set
     window.mypa ?= settings:{}
     window.mypa.settings.base_url ?= "//localhost:8080/api/delivery_options"
-    window.mypa.isNational = window.mypa.settings.cc is NATIONAL
+    window.mypa.isNational = window.mypa.settings.cc is NATIONAL or not window.mypa.settings.cc?
 
     @el = document.getElementById('myparcel')
     @$el = externalJQuery('myparcel')
