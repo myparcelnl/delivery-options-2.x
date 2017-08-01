@@ -51,7 +51,3 @@ This configuration can be changed after the checkout has loaded. The config need
 Not all fields are required for the checkout to function.
 
 For the `signed` and `only_recipient` option if disabled is given as string the option wont shown.
-
-### Troubleshooting
-
-Webcomponents might not be compatible with all other libraries (I.E some versions of prototype.js). A simple way around this issue is to run the checkout on a seperate page and load the html on a iframe. This creates the same effect as the shadow DOM does.
