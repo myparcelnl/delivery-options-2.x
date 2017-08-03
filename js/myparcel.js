@@ -97,14 +97,12 @@
             this.expose(this, 'activeInstance');
         }
 
-
         /*
          * Reloads the HTML form the template.
          */
         Application.prototype.render = function() {
             return this.bindInputListeners();
         };
-
 
         /*
          * Puts function in window.mypa effectively exposing the function.
@@ -116,7 +114,6 @@
             }
             return window.mypa.fn[name] = fn;
         };
-
 
         /*
          * Adds the listeners for the inputfields.
@@ -152,7 +149,6 @@
                 };
             })(this));
         };
-
 
         /*
          * Fetches devliery options and an overall page update.
@@ -296,7 +292,6 @@
             }
         }
 
-
         /*
          * Initializes the slider
          */
@@ -310,7 +305,6 @@
             $('#mypa-date-slider-left').unbind().bind('click', this.slideLeft);
             return $('#mypa-date-slider-right').unbind().bind('click', this.slideRight);
         };
-
 
         /*
          * Event handler for sliding the date slider to the left
@@ -333,7 +327,6 @@
             return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
         };
 
-
         /*
          * Event handler for sliding the date slider to the right
          */
@@ -354,7 +347,6 @@
             left = this.slider.currentBar * this.slider.tabsPerBar * this.slider.tabWidth * -1 + 5 * this.slider.currentBar;
             return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
         };
-
 
         /*
          * Order function for the delivery array
@@ -449,7 +441,6 @@
         return updateInputField();
     };
 
-
     /*
      * Switches between the top level checkboxes of the delivery types
      */
@@ -462,7 +453,6 @@
         }
         return $(TOP_LEVEL_CHECKBOXES[type]).prop('checked', true);
     };
-
 
     /*
      * Sets the toplevel checkbox value if not NATIONAL
@@ -513,7 +503,6 @@
         return $('.mypa-pickup-selector').on('click', updateInputField);
     };
 
-
     /*
      * Sorts the pickup options on nearest location
      */
@@ -522,7 +511,6 @@
             return parseInt(a.distance) - parseInt(b.distance);
         });
     };
-
 
     /*
      * Displays the default location behind the pickup location
@@ -535,7 +523,6 @@
         return updateInputField();
     };
 
-
     /*
      * Set the pickup time HTML and start rendering the locations page
      */
@@ -546,7 +533,6 @@
         return false;
     };
 
-
     /*
      * Set the pickup time HTML and start rendering the locations page
      */
@@ -556,7 +542,6 @@
         $('#mypa-pickup-express').prop('checked', true);
         return false;
     };
-
 
     /*
      * Renders the locations in the array order given in data
@@ -708,7 +693,6 @@
         return $('div#mypa-delivery-row label').bind('click', updateInputField);
     };
 
-
     /*
      * Checks if the combination of options applies and displays this if needed.
      */
@@ -725,7 +709,6 @@
         $('.mypa-combination-price > .mypa-price').toggleClass('mypa-hidden', !combination);
         return $('.mypa-combination-price label .mypa-price').toggleClass('mypa-hidden', combination);
     };
-
 
     /*
      * Sets the json to the selected input field to be with the form
