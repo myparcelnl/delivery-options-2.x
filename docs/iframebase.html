@@ -1,7 +1,7 @@
 <html>
   <head>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:700,400|Exo:700,500" rel="stylesheet" type="text/css">
-    <script src="js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/webcomponents.min.js"></script>
     <script src="js/myparcel.js"></script>
@@ -642,11 +642,17 @@
       </div>
     </div>
     </template>
+    <script>
+      $(document).ready( function(){
+        myparcel = new MyParcel() 
+        myparcel.updatePage()
+      })
+    </script>
   </head>
   <body>
-  <myparcel id="myparcel"></myparcel>
-  <input style="display:none" name='mypa-post-nl-data' id="mypa-input">
-  <input type="checkbox" name='mypa-signed' style="display:none" id="mypa-signed">
-  <input type="checkbox" name='mypa-recipient-only' style="display:none" id="mypa-recipient-only">
+    <myparcel id="myparcel"></myparcel>
+    <input style="display:none" name='mypa-post-nl-data' id="mypa-input">
+    <input type="checkbox" name='mypa-signed' style="display:none" id="mypa-signed">
+    <input type="checkbox" name='mypa-recipient-only' style="display:none" id="mypa-recipient-only">
   </body>
 </html>
