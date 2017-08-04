@@ -50,4 +50,4 @@ This configuration can be changed after the checkout has loaded. The config need
 
 Not all fields are required for the checkout to function.
 
-For the `signed` and `only_recipient` option if disabled is given as string the option wont shown.
+For the `signed` and `only_recipient` option if `disabled` is given as string the option wont shown.
