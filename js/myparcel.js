@@ -18,10 +18,10 @@
 
     CARRIER = 1;
 
-  TOP_LEVEL_CHECKBOXES = {
-    delivery: '#mypa-delivery-option-check',
-    pickup: '#mypa-pickup'
-  };
+    TOP_LEVEL_CHECKBOXES = {
+        delivery: '#mypa-delivery-option-check',
+        pickup: '#mypa-pickup'
+    };
 
     MORNING_DELIVERY = 'morning';
 
@@ -56,9 +56,9 @@
 
     this.MyParcel = Application = (function() {
 
-      /*
-       * Setup initial variables
-       */
+        /*
+         * Setup initial variables
+         */
         function Application(options) {
             var base;
             moment.locale(NATIONAL);
@@ -97,21 +97,16 @@
             this.expose(this, 'activeInstance');
         }
 
-
-      /*
-       * Reloads the HTML form the template.
-       */
-
+        /*
+         * Reloads the HTML form the template.
+         */
         Application.prototype.render = function() {
-
             return this.bindInputListeners();
         };
 
-
-      /*
-       * Puts function in window.mypa effectively exposing the function.
-       */
-
+        /*
+         * Puts function in window.mypa effectively exposing the function.
+         */
         Application.prototype.expose = function(fn, name) {
             var base;
             if ((base = window.mypa).fn == null) {
@@ -120,11 +115,9 @@
             return window.mypa.fn[name] = fn;
         };
 
-
-      /*
-       * Adds the listeners for the inputfields.
-       */
-
+        /*
+         * Adds the listeners for the inputfields.
+         */
         Application.prototype.bindInputListeners = function() {
             externalJQuery('#mypa-signed').on('change', (function(_this) {
                 return function(e) {
@@ -157,10 +150,9 @@
             })(this));
         };
 
-
-      /*
-       * Fetches devliery options and an overall page update.
-       */
+        /*
+         * Fetches devliery options and an overall page update.
+         */
         Application.prototype.updatePage = function(postal_code, number, street) {
             var cc, item, key, options, ref, settings, urlBase, current_date, monday_delivery, cutoff_time;
             ref = window.mypa.settings.price;
@@ -192,13 +184,13 @@
                 $('.mypa-overlay').removeClass('mypa-hidden');
                 return;
             }
-          /* Check if Monday delivery is active */
+            /* Check if Monday delivery is active */
             if (settings.monday_delivery == true) {
                 monday_delivery = 1;
             } else {
                 monday_delivery = void 0;
             }
-          /* Use saturday_cutoff_time for cutoff_time if Monday delivery is active and current day is Saturday */
+            /* Use saturday_cutoff_time for cutoff_time if Monday delivery is active and current day is Saturday */
             if (settings.monday_delivery == true && current_date.getDay() == 6) {
                 cutoff_time = settings.saturday_cutoff_time;
             } else {
@@ -230,9 +222,9 @@
             return externalJQuery.ajax(options);
         };
 
-      /*
-       * optionsHaveBeenModified
-       */
+        /*
+         * optionsHaveBeenModified
+         */
         Application.prototype.optionsHaveBeenModified = function() {
             externalJQuery("input[name='delivery_options']").change();
 
@@ -257,9 +249,9 @@
 
     Slider = (function() {
 
-      /*
-       * Renders the available days for delivery
-       */
+        /*
+         * Renders the available days for delivery
+         */
         function Slider(deliveryDays) {
             moment.locale(NATIONAL);
             this.slideRight = bind(this.slideRight, this);
@@ -300,11 +292,9 @@
             }
         }
 
-
-      /*
-       * Initializes the slider
-       */
-
+        /*
+         * Initializes the slider
+         */
         Slider.prototype.makeSlider = function() {
             this.slider = {};
             this.slider.currentBar = 0;
@@ -316,11 +306,9 @@
             return $('#mypa-date-slider-right').unbind().bind('click', this.slideRight);
         };
 
-
-      /*
-       * Event handler for sliding the date slider to the left
-       */
-
+        /*
+         * Event handler for sliding the date slider to the left
+         */
         Slider.prototype.slideLeft = function(e) {
             var $el, left, slider;
             slider = this.slider;
@@ -339,11 +327,9 @@
             return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
         };
 
-
-      /*
-       * Event handler for sliding the date slider to the right
-       */
-
+        /*
+         * Event handler for sliding the date slider to the right
+         */
         Slider.prototype.slideRight = function(e) {
             var $el, left, slider;
             slider = this.slider;
@@ -362,11 +348,9 @@
             return $el.attr('style', "left:" + left + "px; width:" + (window.mypa.deliveryDays * this.slider.tabWidth) + "px");
         };
 
-
-      /*
-       * Order function for the delivery array
-       */
-
+        /*
+         * Order function for the delivery array
+         */
         Slider.prototype.orderDays = function(dayA, dayB) {
             var dateA, dateB, max;
             dateA = moment(dayA.date);
@@ -382,8 +366,8 @@
 
     })();
 
-    if (typeof mypajQuery !== "undefined" && mypajQuery !== null) {
-        externalJQuery = mypajQuery;
+    if (typeof parent.mypajQuery !== "undefined" && parent.mypajQuery !== null) {
+        externalJQuery = parent.mypajQuery;
     }
 
     if (externalJQuery == null) {
@@ -394,20 +378,24 @@
         externalJQuery = jQuery;
     }
 
-    $ = externalJQuery;
-
     displayOtherTab = function() {
         return $('.mypa-tab-container').toggleClass('mypa-slider-pos-1').toggleClass('mypa-slider-pos-0');
     };
 
+    if ($ == null) {
+        $ = jQuery;
+    }
 
-  /*
-   * Starts the render of the delivery options with the preset config
-   */
+    if ($ == null) {
+        $ = mypajQuery;
+    }
 
+    /*
+     * Starts the render of the delivery options with the preset config
+     */
     renderPage = function(response) {
         if (response.data.message === 'No results') {
-          /* Show input field for housenumber */
+            /* Show input field for housenumber */
             $('#mypa-no-options').html('Het opgegeven huisnummer in combinatie met postcode ' + window.mypa.settings.postal_code + ' wordt niet herkend. Vul hier opnieuw uw huisnummer zonder toevoeging in.<br><br><input id="mypa-new-number" type="number" /><submit id="mypa-new-number-submit">Verstuur</submit>');
             $('.mypa-overlay').removeClass('mypa-hidden');
             externalJQuery('.myparcel_base_method').prop("checked", false).prop('disabled', true);
@@ -426,15 +414,15 @@
             });
             new Slider(response.data.delivery);
         } else {
-          $('#mypa-slider-holder').addClass('mypa-hidden');
-          setDefaultDelivery(response.data.delivery[0]);
+            $('#mypa-slider-holder').addClass('mypa-hidden');
+            setDefaultDelivery(response.data.delivery[0]);
         }
         preparePickup(response.data.pickup);
         $('#mypa-delivery-options-title').on('click', function() {
             var date;
             if (window.mypa.isNational) {
-                    date = $('input[name=date]:checked').val();
-                    renderDeliveryOptions(date);
+                date = $('input[name=date]:checked').val();
+                renderDeliveryOptions(date);
             }
             setCheckboxActive('delivery');
 
@@ -453,31 +441,27 @@
         return updateInputField();
     };
 
+    /*
+     * Switches between the top level checkboxes of the delivery types
+     */
+    setCheckboxActive = function(type) {
+        var el, i, len, ref;
+        ref = $('input[name=mypa-delivery-type]');
+        for (i = 0, len = ref.length; i < len; i++) {
+            el = ref[i];
+            $(el).prop('checked', false);
+        }
+        return $(TOP_LEVEL_CHECKBOXES[type]).prop('checked', true);
+    };
 
-  /*
-   * Switches between the top level checkboxes of the delivery types
-   */
-
-  setCheckboxActive = function(type) {
-    var el, i, len, ref;
-    ref = $('input[name=mypa-delivery-type]');
-    for (i = 0, len = ref.length; i < len; i++) {
-      el = ref[i];
-      $(el).prop('checked', false);
-    }
-    return $(TOP_LEVEL_CHECKBOXES[type]).prop('checked', true);
-  };
-
-
-  /*
-   * Sets the toplevel checkbox value if not NATIONAL
-   */
-
-  setDefaultDelivery = function(deliveryObj) {
-    var json;
-    json = JSON.stringify(deliveryObj.time[0]);
-    return $('#mypa-delivery-option-check').val(json);
-  };
+    /*
+     * Sets the toplevel checkbox value if not NATIONAL
+     */
+    setDefaultDelivery = function(deliveryObj) {
+        var json;
+        json = JSON.stringify(deliveryObj.time[0]);
+        return $('#mypa-delivery-option-check').val(json);
+    };
 
     preparePickup = function(pickupOptions) {
         var filter, i, j, len, len1, name1, pickupExpressPrice, pickupLocation, pickupPrice, ref, time;
@@ -519,22 +503,18 @@
         return $('.mypa-pickup-selector').on('click', updateInputField);
     };
 
-
-  /*
-   * Sorts the pickup options on nearest location
-   */
-
+    /*
+     * Sorts the pickup options on nearest location
+     */
     sortLocationsOnDistance = function(pickupOptions) {
         return pickupOptions.sort(function(a, b) {
             return parseInt(a.distance) - parseInt(b.distance);
         });
     };
 
-
-  /*
-   * Displays the default location behind the pickup location
-   */
-
+    /*
+     * Displays the default location behind the pickup location
+     */
     showDefaultPickupLocation = function(selector, item) {
         var html;
         html = " - <span class='mypa-edit-location'>Aanpassen</span><span class='mypa-text-location'>" + item.location + ", " + item.street + " " + item.number + ", " + item.city + "</span>";
@@ -543,11 +523,9 @@
         return updateInputField();
     };
 
-
-  /*
-   * Set the pickup time HTML and start rendering the locations page
-   */
-
+    /*
+     * Set the pickup time HTML and start rendering the locations page
+     */
     renderPickup = function() {
         renderPickupLocation(window.mypa.pickupFiltered[PICKUP_TIMES[NORMAL_PICKUP]]);
         $('.mypa-location-time').html('- Vanaf 16.00 uur');
@@ -555,11 +533,9 @@
         return false;
     };
 
-
-  /*
-   * Set the pickup time HTML and start rendering the locations page
-   */
-
+    /*
+     * Set the pickup time HTML and start rendering the locations page
+     */
     renderExpressPickup = function() {
         renderPickupLocation(window.mypa.pickupFiltered[PICKUP_TIMES[MORNING_PICKUP]]);
         $('.mypa-location-time').html('- Vanaf 08.30 uur');
@@ -567,11 +543,9 @@
         return false;
     };
 
-
-  /*
-   * Renders the locations in the array order given in data
-   */
-
+    /*
+     * Renders the locations in the array order given in data
+     */
     renderPickupLocation = function(data) {
         var day_index, html, i, index, j, k, len, location, locationDistance, openingHoursHtml, orderedHours, ref, ref1, time;
         displayOtherTab();
@@ -719,11 +693,9 @@
         return $('div#mypa-delivery-row label').bind('click', updateInputField);
     };
 
-
-  /*
-   * Checks if the combination of options applies and displays this if needed.
-   */
-
+    /*
+     * Checks if the combination of options applies and displays this if needed.
+     */
     checkCombination = function() {
         var combination, deliveryType, inclusiveOption, json;
         json = $('#mypa-delivery-options .mypa-row-subitem input[name=mypa-delivery-time]:checked').val();
@@ -738,14 +710,14 @@
         return $('.mypa-combination-price label .mypa-price').toggleClass('mypa-hidden', combination);
     };
 
-
-  /*
-   * Sets the json to the selected input field to be with the form
-   */
+    /*
+     * Sets the json to the selected input field to be with the form
+     */
     updateInputField = function() {
         var stringData, json;
 
         stringData = $('input[name=mypa-delivery-time]:checked').val();
+
         if (typeof stringData !== 'undefined') {
 
             json = JSON.parse(stringData);
@@ -755,16 +727,33 @@
 
             stringData = JSON.stringify(json);
 
-            if (externalJQuery('input[name=delivery_options]').val() !== stringData) {
-                externalJQuery('input[name=delivery_options]').val(stringData);
-                document.getElementsByName('delivery_options')[0].dispatchEvent(new Event('change'));
+            if (externalJQuery('#mypa-input', externalJQuery.document).val() !== stringData) {
+                externalJQuery('#mypa-input', externalJQuery.document).val(stringData);
+                externalJQuery('#mypa-input').trigger('change');
             }
+            if (externalJQuery('#mypa-signed', externalJQuery.document).prop('checked') !== $('#mypa-signed').prop('checked')) {
+                externalJQuery('#mypa-signed', externalJQuery.document).prop('checked', $('#mypa-signed').prop('checked'));
+                externalJQuery('#mypa-signed').trigger('change');
+            }
+            if (externalJQuery('#mypa-recipient-only', externalJQuery.document).prop('checked') !== $('#mypa-only-recipient').prop('checked')) {
+                externalJQuery('#mypa-recipient-only', externalJQuery.document).prop('checked', $('#mypa-only-recipient').prop('checked'));
+                externalJQuery('#mypa-recipient-only').trigger('change');
+            }
+
+            if (typeof document.getElementById('mypa-input') !== 'undefined') {
+                /* did not use iframe */
+                document.getElementById('mypa-input').dispatchEvent(new Event('change'));
+            } else {
+                /* use iframe in checkout */
+                parent.document.getElementById('mypa-input').dispatchEvent(new Event('change'));
+            }
+
         }
     };
 
-  /*
-   * Hide MyParcel options
-   */
+    /*
+     * Hide MyParcel options
+     */
     hideMyParcelOptions = function() {
         if (typeof window.mypa.fn.hideOptions !== 'undefined') {
             window.mypa.fn.hideOptions();
