@@ -9,6 +9,11 @@ AO_DEFAULT_TEXT = 'Alleen geadresseerde'
 NATIONAL = 'NL'
 CARRIER = 1
 
+TOP_LEVEL_CHECKBOXES = {
+  delivery: '#mypa-delivery-option-check',
+  pickup: '#mypa-pickup'
+}
+
 MORNING_DELIVERY = 'morning'
 DEFAULT_DELIVERY = 'default'
 EVENING_DELIVERY = 'night'
@@ -43,6 +48,7 @@ PICKUP_TIMES =
     # Construct window.mypa if not already set
     window.mypa ?= settings:{}
     window.mypa.settings.base_url ?= "//localhost:8080/api/delivery_options"
+    window.mypa.isNational = window.mypa.settings.cc is NATIONAL
 
     @el = document.getElementById('myparcel')
     @$el = externalJQuery('myparcel')
@@ -104,6 +110,8 @@ PICKUP_TIMES =
     number ?= settings.number
     postal_code ?= settings.postal_code
     street ?= settings.street
+    cc = settings.cc
+    cc ?= NATIONAL
 
     unless street? or postal_code? or number?
       $('#mypa-no-options').html 'Geen adres opgegeven'
@@ -116,7 +124,7 @@ PICKUP_TIMES =
     options =
       url: urlBase
       data:
-        cc: NATIONAL
+        cc: cc
         carrier: CARRIER
         number: number
         postal_code: postal_code
@@ -158,10 +166,10 @@ class Slider
       date = moment(delivery.date)
       html = """
         <input type="radio" id="mypa-date-#{index}" class="mypa-date" name="date" checked value="#{delivery.date}">
-        <label for='mypa-date-#{index}' class='mypa-tab active'>
-          <span class='day-of-the-week'>#{date.format 'dddd'}</span>
+        <label for="mypa-date-#{index}" class="mypa-tab active">
+          <span class="day-of-the-week">#{date.format 'dddd'}</span>
           <br>
-          <span class='date'>#{date.format 'DD MMMM'}</span>
+          <span class="date">#{date.format 'DD MMMM'}</span>
         </label>
       """
       $el.append html
@@ -262,19 +270,43 @@ renderPage = (response)->
     $('.mypa-overlay').removeClass 'mypa-hidden'
     return
   $('.mypa-overlay').addClass 'mypa-hidden'
-  $('#mypa-delivery-option-check').bind 'click', -> renderDeliveryOptions $('input[name=date]:checked').val()
-  new Slider response.data.delivery
+
+  if window.mypa.isNational
+    $('#mypa-delivery-option-check').bind 'click', -> renderDeliveryOptions $('input[name=date]:checked').val()
+    new Slider response.data.delivery
+  else
+    $('#mypa-slider-holder').addClass 'mypa-hidden'
+    setDefaultDelivery(response.data.delivery[0])
+
   preparePickup response.data.pickup
 
   $('#mypa-delivery-options-title').on 'click', ->
-    date = $('input[name=date]:checked').val()
-    renderDeliveryOptions date
+    if window.mypa.isNational
+      date = $('input[name=date]:checked').val()
+      renderDeliveryOptions date
+    setCheckboxActive('delivery')
     updateInputField()
 
   $('#mypa-pickup-options-title').on 'click', ->
-    $('#mypa-pickup').prop 'checked', true
+    setCheckboxActive('pickup')
     updateInputField()
   updateInputField()
+
+###
+# Switches between the top level checkboxes of the delivery types
+###
+setCheckboxActive = (type) ->
+  for el in $('input[name=mypa-delivery-type]')
+    $(el).prop 'checked', false
+
+  $(TOP_LEVEL_CHECKBOXES[type]).prop 'checked', true
+
+###
+# Sets the toplevel checkbox value if not NATIONAL
+###
+setDefaultDelivery = (deliveryObj) ->
+  json = JSON.stringify deliveryObj.time[0]
+  $('#mypa-delivery-option-check').val(json)
 
 preparePickup = (pickupOptions) ->
 
@@ -303,7 +335,8 @@ preparePickup = (pickupOptions) ->
     $('#mypa-pickup-express').parent().css display: 'none'
 
   showDefaultPickupLocation '#mypa-pickup-address', filter[PICKUP_TIMES[NORMAL_PICKUP]][0]
-  showDefaultPickupLocation '#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]
+  if window.mypa.isNational
+    showDefaultPickupLocation '#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]
 
   $('#mypa-pickup-address').off().bind 'click', renderPickup
   $('#mypa-pickup-express-address').off().bind 'click', renderExpressPickup
@@ -373,19 +406,21 @@ renderPickupLocation = (data)->
 
       openingHoursHtml += '</div></div>'
 
+    locationDistance = String(Math.round(location.distance/100)/10).replace '.', ','
+
     html = """
-      <div for='mypa-pickup-location-#{index}' class="mypa-row-lg afhalen-row">
+      <div for="mypa-pickup-location-#{index}" class="mypa-row-lg afhalen-row">
         <div class="afhalen-right">
-          <i class='mypa-info'>
+          <i class="mypa-info">
           </i>
         </div>
-        <div class='mypa-opening-hours'>
+        <div class="mypa-opening-hours">
           #{openingHoursHtml}
         </div>
-        <label for='mypa-pickup-location-#{index}' class="afhalen-left">
+        <label for="mypa-pickup-location-#{index}" class="afhalen-left">
           <div class="afhalen-check">
             <input id="mypa-pickup-location-#{index}" type="radio" name="mypa-pickup-option" value='#{JSON.stringify location}'>
-            <label for='mypa-pickup-location-#{index}' class='mypa-row-title'>
+            <label for="mypa-pickup-location-#{index}" class="mypa-row-title">
               <div class="mypa-checkmark mypa-main">
                 <div class="mypa-circle"></div>
                 <div class="mypa-checkmark-stem"></div>
@@ -393,9 +428,9 @@ renderPickupLocation = (data)->
               </div>
             </label>
           </div>
-          <div class='afhalen-tekst'>
-            <span class="mypa-highlight mypa-inline-block">#{location.location}, <b class='mypa-inline-block'>#{location.street} #{location.number}</b>,
-            <i class='mypa-inline-block'>#{String(Math.round(location.distance/100)/10).replace '.', ','} Km</i></span>
+          <div class="afhalen-tekst">
+            <span class="mypa-highlight mypa-inline-block">#{location.location}, <b class="mypa-inline-block">#{location.street} #{location.number}</b>,
+            <i class="mypa-inline-block">#{locationDistance} Km</i></span>
           </div>
         </label>
       </div>
@@ -439,8 +474,8 @@ renderDeliveryOptions  = (date)->
     checked = ''
     checked = "checked" if time.price_comment is 'standard'
     html += """
-      <label for="mypa-time-#{index}" class='mypa-row-subitem'>
-        <input id='mypa-time-#{index}' type="radio" name="mypa-delivery-time" value='#{JSON.stringify json}' #{checked}>
+      <label for="mypa-time-#{index}" class="mypa-row-subitem">
+        <input id="mypa-time-#{index}" type="radio" name="mypa-delivery-time" value='#{JSON.stringify json}' #{checked}>
         <label for="mypa-time-#{index}" class="mypa-checkmark">
           <div class="mypa-circle mypa-circle-checked"></div>
           <div class="mypa-checkmark-stem"></div>
@@ -468,7 +503,7 @@ renderDeliveryOptions  = (date)->
 
   if onlyRecipientPrice isnt DISABLED
     html += """
-      <label for="mypa-only-recipient" class='mypa-row-subitem'>
+      <label for="mypa-only-recipient" class="mypa-row-subitem">
         <input type="checkbox" name="mypa-only-recipient" class="mypa-onoffswitch-checkbox" id="mypa-only-recipient">
         <div class="mypa-switch-container">
           <div class="mypa-onoffswitch">
@@ -485,7 +520,7 @@ renderDeliveryOptions  = (date)->
 
   if hvoPrice isnt DISABLED
     html += """
-      <label for="mypa-signed" class='mypa-row-subitem'>
+      <label for="mypa-signed" class="mypa-row-subitem">
         <input type="checkbox" name="mypa-signed" class="mypa-onoffswitch-checkbox" id="mypa-signed">
         <div class="mypa-switch-container">
           <div class="mypa-onoffswitch">
@@ -541,16 +576,23 @@ checkCombination = ->
 # Sets the json to the selected input field to be with the form
 ###
 updateInputField = ->
-  json = $('input[name=mypa-delivery-time]:checked').val()
-  
+  el = $('input[name=mypa-delivery-time]:checked')
+  json = el.val()
+
+  if window.mypa.isNational
+    # Check our delivery options if NATIONAL
+    unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
+      externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
+      document.getElementById('mypa-signed').dispatchEvent(new Event('change'))
+
+    unless externalJQuery('#mypa-recipient-only').prop('checked') is $('#mypa-only-recipient').prop 'checked'
+      externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
+      document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))
+  else
+    # If Delivery selected. Then get the top level value if not NATIONAL
+    deliveryEl = $('#mypa-delivery-option-check')
+    json = deliveryEl.val() if deliveryEl.prop('checked')
+
   unless externalJQuery('#mypa-input').val() is json
     externalJQuery('#mypa-input').val json
     document.getElementById('mypa-input').dispatchEvent(new Event('change'))
-
-  unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
-    externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
-    document.getElementById('mypa-signed').dispatchEvent(new Event('change'))
-
-  unless externalJQuery('#mypa-recipient-only').prop('checked') is $('#mypa-only-recipient').prop 'checked'
-    externalJQuery('#mypa-recipient-only').prop 'checked', $('#mypa-only-recipient').prop 'checked'
-    document.getElementById('mypa-recipient-only').dispatchEvent(new Event('change'))
