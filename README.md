@@ -12,6 +12,7 @@ There are 2 examples available for Dutch addresses:
 [iFrame NL version](https://myparcelnl.github.io/checkout/iframe-example.html)
 
 There is 1 sample available for Belgian addresses:
+
 [Normal BE version](https://myparcelnl.github.io/checkout/example-be.html)
 
 ### Requirements
