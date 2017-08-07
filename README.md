@@ -6,10 +6,13 @@ The added coffeescript need to be compiled to javasrcipt in order to run the che
 
 ### Examples
 
-There are 2 example avaliable.
+There are 2 examples available for Dutch addresses:
 
-[Normal version](https://myparcelnl.github.io/checkout/) | 
-[iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
+[Normal NL version](https://myparcelnl.github.io/checkout/) | 
+[iFrame NL version](https://myparcelnl.github.io/checkout/iframe-example.html)
+
+There is one model available for Belgian addresses:
+[Normal BE version](https://myparcelnl.github.io/checkout/)
 
 ### Requirements
 

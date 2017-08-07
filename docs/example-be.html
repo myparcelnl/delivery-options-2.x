@@ -655,10 +655,10 @@
     $(document).ready(function(){
         window.mypa = {};
         window.mypa.settings = {
-            cc: 'NL', // String - Values: "NL"(Default) or "BE"
-            number: '55', // String - Required
-            street: 'Street name', // String - Required
-            postal_code: '2231je', // String - Required
+              cc: 'BE', // String - Values: "NL"(Default) or "BE"
+              number: '49', // String - Required
+              street: 'Street name', // String - Required
+              postal_code: '1000', // String - Required
             price: {
                 NL: {
                     morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
@@ -670,6 +670,10 @@
                     only_recipient: '&#8364; 12,00', // String
                     combi_options: '&#8364; 12,00', // String
                 },
+               BE: {
+               default: '&#8364; 19,00', // String
+               pickup: '&#8364; 19,00', // String
+               }
             },
             base_url: 'https://api.staging.myparcel.nl/delivery_options', // Required
             text: {
