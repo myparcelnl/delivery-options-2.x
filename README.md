@@ -45,14 +45,20 @@ window.mypa.settings = {
 	street: 'Street name', // String - Required
 	postal_code: '1111AA', // String - Required
 	price: {
-		morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
-		default: '&#8364; 12,00', // String
-		night: '&#8364; 12,00', // String
-		pickup: '&#8364; 12,00', // String
-		pickup_express: '&#8364; 12,00', // String
-		signed: '&#8364; 12,00', // String
-		only_recipient: '&#8364; 12,00', // String
-		combi_options: '&#8364; 12,00', // String
+		NL: {
+			morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
+			default: '&#8364; 12,00', // String
+			night: '&#8364; 12,00', // String
+			pickup: '&#8364; 12,00', // String
+			pickup_express: '&#8364; 12,00', // String
+			signed: '&#8364; 12,00', // String
+			only_recipient: '&#8364; 12,00', // String
+			combi_options: '&#8364; 12,00', // String
+		},
+		BE: {
+			default: '&#8364; 12,00', // String
+			pickup: '&#8364; 12,00', // String
+		}
 	},
 	base_url: 'https://api.myparcel.nl/delivery_options', // Required
 	text: {

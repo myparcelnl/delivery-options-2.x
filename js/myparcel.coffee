@@ -48,13 +48,14 @@ PICKUP_TIMES =
     # Construct window.mypa if not already set
     window.mypa ?= settings:{}
     window.mypa.settings.base_url ?= "//localhost:8080/api/delivery_options"
-    window.mypa.isNational = window.mypa.settings.cc is NATIONAL
 
+    @cc = window.mypa.settings.cc
     @el = document.getElementById('myparcel')
     @$el = externalJQuery('myparcel')
     @shadow = @el.createShadowRoot() unless @shadow?
 
     @render()
+    @showBePrice() if window.mypa.settings.cc isnt NATIONAL
     @expose(@updatePage, 'updatePage')
     @expose(this, 'activeInstance')
 
@@ -70,6 +71,13 @@ PICKUP_TIMES =
 
     #Bind on rendering inputfield
     @bindInputListeners()
+
+  ###
+  # Shows the delivery price for belgium
+  ###
+  showBePrice: ->
+    html = """<span class='mypa-price mypa-price-active'>#{window.mypa.settings.price[@cc][DEFAULT_DELIVERY]}</span>"""
+    $('#mypa-delivery-options-title').append(html)
 
   ###
   # Puts function in window.mypa effectively exposing the function.
@@ -90,6 +98,9 @@ PICKUP_TIMES =
 
     externalJQuery('#mypa-input').on 'change', (e)=>
       json = externalJQuery('#mypa-input').val()
+      deliveryActive = $('#mypa-delivery-option-check').prop('checked')
+      $('#mypa-delivery-options-title .mypa-price').toggleClass('mypa-price-active', deliveryActive)
+
       if json is ''
         $('input[name=mypa-delivery-time]:checked').prop 'checked', false
         $('input[name=mypa-delivery-type]:checked').prop 'checked', false
@@ -103,7 +114,7 @@ PICKUP_TIMES =
   # Fetches devliery options and an overall page update.
   ###
   updatePage: (postal_code, number, street)->
-    for key, item of window.mypa.settings.price
+    for key, item of window.mypa.settings.price[@cc]
       throw new Error 'Price needs to be of type string' unless typeof(item) is 'string' or typeof(item) is 'function'
     settings = window.mypa.settings
     urlBase = settings.base_url
@@ -271,7 +282,7 @@ renderPage = (response)->
     return
   $('.mypa-overlay').addClass 'mypa-hidden'
 
-  if window.mypa.isNational
+  if window.mypa.settings.cc is NATIONAL
     $('#mypa-delivery-option-check').bind 'click', -> renderDeliveryOptions $('input[name=date]:checked').val()
     new Slider response.data.delivery
   else
@@ -281,7 +292,7 @@ renderPage = (response)->
   preparePickup response.data.pickup
 
   $('#mypa-delivery-options-title').on 'click', ->
-    if window.mypa.isNational
+    if window.mypa.settings.cc is NATIONAL
       date = $('input[name=date]:checked').val()
       renderDeliveryOptions date
     setCheckboxActive('delivery')
@@ -314,8 +325,8 @@ preparePickup = (pickupOptions) ->
     $('#mypa-pickup-row').addClass('mypa-hidden')
     return
   $('#mypa-pickup-row').removeClass('mypa-hidden')
-  pickupPrice = window.mypa.settings.price[PICKUP]
-  pickupExpressPrice = window.mypa.settings.price[PICKUP_EXPRESS]
+  pickupPrice = window.mypa.settings.price[window.mypa.settings.cc][PICKUP]
+  pickupExpressPrice = window.mypa.settings.price[window.mypa.settings.cc][PICKUP_EXPRESS]
 
   $('.mypa-pickup-price').html pickupPrice
   $('.mypa-pickup-price').toggleClass 'mypa-hidden', (not pickupPrice?)
@@ -335,7 +346,7 @@ preparePickup = (pickupOptions) ->
     $('#mypa-pickup-express').parent().css display: 'none'
 
   showDefaultPickupLocation '#mypa-pickup-address', filter[PICKUP_TIMES[NORMAL_PICKUP]][0]
-  if window.mypa.isNational
+  if window.mypa.settings.cc is NATIONAL
     showDefaultPickupLocation '#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]
 
   $('#mypa-pickup-address').off().bind 'click', renderPickup
@@ -465,7 +476,7 @@ renderDeliveryOptions  = (date)->
 
 
     time.price_comment = EVENING_DELIVERY if time.price_comment is 'avond'
-    price = window.mypa.settings.price[POST_NL_TRANSLATION[time.price_comment]]
+    price = window.mypa.settings.price[window.mypa.settings.cc][POST_NL_TRANSLATION[time.price_comment]]
     json =
       date: date
       time: [time]
@@ -488,13 +499,13 @@ renderDeliveryOptions  = (date)->
 
     index++
 
-  hvoPrice = window.mypa.settings.price.signed
+  hvoPrice = window.mypa.settings.price[window.mypa.settings.cc].signed
   hvoText = window.mypa.settings.text?.signed
   hvoText ?= HVO_DEFAULT_TEXT
-  onlyRecipientPrice = window.mypa.settings.price.only_recipient
+  onlyRecipientPrice = window.mypa.settings.price[window.mypa.settings.cc].only_recipient
   onlyRecipientText = window.mypa.settings.text?.only_recipient
   onlyRecipientText ?= AO_DEFAULT_TEXT
-  combinatedPrice = window.mypa.settings.price.combi_options
+  combinatedPrice = window.mypa.settings.price[window.mypa.settings.cc].combi_options
 
   combine = onlyRecipientPrice isnt 'disabled' and hvoPrice isnt 'disabled' and combinatedPrice?
 
@@ -548,7 +559,7 @@ renderDeliveryOptions  = (date)->
         .prop 'disabled', true
       $('label[for=mypa-only-recipient] span.mypa-price').html 'incl.'
     else
-      onlyRecipientPrice = window.mypa.settings.price.only_recipient
+      onlyRecipientPrice = window.mypa.settings.price[@cc].only_recipient
       $('input#mypa-only-recipient').prop 'disabled', false
       $('label[for=mypa-only-recipient] span.mypa-price').html onlyRecipientPrice
     checkCombination()
@@ -579,7 +590,7 @@ updateInputField = ->
   el = $('input[name=mypa-delivery-time]:checked')
   json = el.val()
 
-  if window.mypa.isNational
+  if window.mypa.settings.cc is NATIONAL
     # Check our delivery options if NATIONAL
     unless externalJQuery('#mypa-signed').prop('checked') is $('#mypa-signed').prop 'checked'
       externalJQuery('#mypa-signed').prop 'checked', $('#mypa-signed').prop 'checked'
