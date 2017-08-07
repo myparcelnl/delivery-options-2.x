@@ -70,13 +70,16 @@
       if ((base = window.mypa.settings).base_url == null) {
         base.base_url = "//localhost:8080/api/delivery_options";
       }
-      window.mypa.isNational = window.mypa.settings.cc === NATIONAL || (window.mypa.settings.cc == null);
+      this.cc = window.mypa.settings.cc;
       this.el = document.getElementById('myparcel');
       this.$el = externalJQuery('myparcel');
       if (this.shadow == null) {
         this.shadow = this.el.createShadowRoot();
       }
       this.render();
+      if (window.mypa.settings.cc !== NATIONAL) {
+        this.showBePrice();
+      }
       this.expose(this.updatePage, 'updatePage');
       this.expose(this, 'activeInstance');
     }
@@ -97,6 +100,17 @@
         console.log('Cannot shim CSS');
       }
       return this.bindInputListeners();
+    };
+
+
+    /*
+     * Shows the delivery price for belgium
+     */
+
+    Application.prototype.showBePrice = function() {
+      var html;
+      html = "<span class='mypa-price mypa-price-active'>" + window.mypa.settings.price[this.cc][DEFAULT_DELIVERY] + "</span>";
+      return $('#mypa-delivery-options-title').append(html);
     };
 
 
@@ -130,8 +144,10 @@
       })(this));
       return externalJQuery('#mypa-input').on('change', (function(_this) {
         return function(e) {
-          var el, i, json, len, ref;
+          var deliveryActive, el, i, json, len, ref;
           json = externalJQuery('#mypa-input').val();
+          deliveryActive = $('#mypa-delivery-option-check').prop('checked');
+          $('#mypa-delivery-options-title .mypa-price').toggleClass('mypa-price-active', deliveryActive);
           if (json === '') {
             $('input[name=mypa-delivery-time]:checked').prop('checked', false);
             $('input[name=mypa-delivery-type]:checked').prop('checked', false);
@@ -156,7 +172,7 @@
 
     Application.prototype.updatePage = function(postal_code, number, street) {
       var cc, item, key, options, ref, settings, urlBase;
-      ref = window.mypa.settings.price;
+      ref = window.mypa.settings.price[this.cc];
       for (key in ref) {
         item = ref[key];
         if (!(typeof item === 'string' || typeof item === 'function')) {
@@ -361,7 +377,7 @@
       return;
     }
     $('.mypa-overlay').addClass('mypa-hidden');
-    if (window.mypa.isNational) {
+    if (window.mypa.settings.cc === NATIONAL) {
       $('#mypa-delivery-option-check').bind('click', function() {
         return renderDeliveryOptions($('input[name=date]:checked').val());
       });
@@ -373,7 +389,7 @@
     preparePickup(response.data.pickup);
     $('#mypa-delivery-options-title').on('click', function() {
       var date;
-      if (window.mypa.isNational) {
+      if (window.mypa.settings.cc === NATIONAL) {
         date = $('input[name=date]:checked').val();
         renderDeliveryOptions(date);
       }
@@ -420,8 +436,8 @@
       return;
     }
     $('#mypa-pickup-row').removeClass('mypa-hidden');
-    pickupPrice = window.mypa.settings.price[PICKUP];
-    pickupExpressPrice = window.mypa.settings.price[PICKUP_EXPRESS];
+    pickupPrice = window.mypa.settings.price[window.mypa.settings.cc][PICKUP];
+    pickupExpressPrice = window.mypa.settings.price[window.mypa.settings.cc][PICKUP_EXPRESS];
     $('.mypa-pickup-price').html(pickupPrice);
     $('.mypa-pickup-price').toggleClass('mypa-hidden', pickupPrice == null);
     $('.mypa-pickup-express-price').html(pickupExpressPrice);
@@ -445,7 +461,7 @@
       });
     }
     showDefaultPickupLocation('#mypa-pickup-address', filter[PICKUP_TIMES[NORMAL_PICKUP]][0]);
-    if (window.mypa.isNational) {
+    if (window.mypa.settings.cc === NATIONAL) {
       showDefaultPickupLocation('#mypa-pickup-express-address', filter[PICKUP_TIMES[MORNING_PICKUP]][0]);
     }
     $('#mypa-pickup-address').off().bind('click', renderPickup);
@@ -572,7 +588,7 @@
       if (time.price_comment === 'avond') {
         time.price_comment = EVENING_DELIVERY;
       }
-      price = window.mypa.settings.price[POST_NL_TRANSLATION[time.price_comment]];
+      price = window.mypa.settings.price[window.mypa.settings.cc][POST_NL_TRANSLATION[time.price_comment]];
       json = {
         date: date,
         time: [time]
@@ -588,17 +604,17 @@
       html += "</label>";
       index++;
     }
-    hvoPrice = window.mypa.settings.price.signed;
+    hvoPrice = window.mypa.settings.price[window.mypa.settings.cc].signed;
     hvoText = (ref = window.mypa.settings.text) != null ? ref.signed : void 0;
     if (hvoText == null) {
       hvoText = HVO_DEFAULT_TEXT;
     }
-    onlyRecipientPrice = window.mypa.settings.price.only_recipient;
+    onlyRecipientPrice = window.mypa.settings.price[window.mypa.settings.cc].only_recipient;
     onlyRecipientText = (ref1 = window.mypa.settings.text) != null ? ref1.only_recipient : void 0;
     if (onlyRecipientText == null) {
       onlyRecipientText = AO_DEFAULT_TEXT;
     }
-    combinatedPrice = window.mypa.settings.price.combi_options;
+    combinatedPrice = window.mypa.settings.price[window.mypa.settings.cc].combi_options;
     combine = onlyRecipientPrice !== 'disabled' && hvoPrice !== 'disabled' && (combinatedPrice != null);
     if (combine) {
       html += "<div class='mypa-combination-price'><span class='mypa-price mypa-hidden'>" + combinatedPrice + "</span>";
@@ -629,7 +645,7 @@
         $('input#mypa-only-recipient').prop('checked', true).prop('disabled', true);
         $('label[for=mypa-only-recipient] span.mypa-price').html('incl.');
       } else {
-        onlyRecipientPrice = window.mypa.settings.price.only_recipient;
+        onlyRecipientPrice = window.mypa.settings.price[this.cc].only_recipient;
         $('input#mypa-only-recipient').prop('disabled', false);
         $('label[for=mypa-only-recipient] span.mypa-price').html(onlyRecipientPrice);
       }
@@ -669,7 +685,7 @@
     var deliveryEl, el, json;
     el = $('input[name=mypa-delivery-time]:checked');
     json = el.val();
-    if (window.mypa.isNational) {
+    if (window.mypa.settings.cc === NATIONAL) {
       if (externalJQuery('#mypa-signed').prop('checked') !== $('#mypa-signed').prop('checked')) {
         externalJQuery('#mypa-signed').prop('checked', $('#mypa-signed').prop('checked'));
         document.getElementById('mypa-signed').dispatchEvent(new Event('change'));
@@ -691,5 +707,3 @@
   };
 
 }).call(this);
-
-//# sourceMappingURL=myparcel.js.map
