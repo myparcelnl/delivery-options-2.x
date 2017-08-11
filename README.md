@@ -8,12 +8,12 @@ The added coffeescript need to be compiled to javasrcipt in order to run the che
 
 There are 2 examples available for Dutch addresses:
 
-[Normal NL version](https://myparcelnl.github.io/checkout/) | 
-[iFrame NL version](https://myparcelnl.github.io/checkout/iframe-example.html)
+[Normal NL version](https://myparcelnl.github.io/checkout/docs/) | 
+[iFrame NL version](https://myparcelnl.github.io/checkout/docs/iframe-example.html)
 
 There is 1 sample available for Belgian addresses:
 
-[Normal BE version](https://myparcelnl.github.io/checkout/example-be.html)
+[Normal BE version](https://myparcelnl.github.io/checkout/docs/example-be.html)
 
 ### Requirements
 
