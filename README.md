@@ -6,10 +6,14 @@ The added coffeescript need to be compiled to javasrcipt in order to run the che
 
 ### Examples
 
-There are 2 example avaliable.
+There are 2 examples available for Dutch addresses:
 
-[Normal version](https://myparcelnl.github.io/checkout/) | 
-[iFrame version](https://myparcelnl.github.io/checkout/iframe-example.html)
+[Normal NL version](https://myparcelnl.github.io/checkout/docs/) | 
+[iFrame NL version](https://myparcelnl.github.io/checkout/docs/iframe-example.html)
+
+There is 1 sample available for Belgian addresses:
+
+[Normal BE version](https://myparcelnl.github.io/checkout/docs/example-be.html)
 
 ### Requirements
 
@@ -21,13 +25,13 @@ There are 2 example avaliable.
 Make sure that nodejs and the coffeesrcipt compiler are installed. To compile the coffeescript to javascript run the following command
 
 ```bash
-coffee myparcel.coffee
+coffee -c myparcel.coffee
 ```
 
-OR with a map for debugging
+OR with a source map for debugging
 
 ```bash
-coffee -m myaprcel.coffee
+coffee -cm myparcel.coffee
 ```
 
 For more information visit the [coffeescript page](http://coffeescript.org/)
@@ -40,35 +44,48 @@ To configure the checkout the following object need to be set:
 
 ```javascript
 window.mypa.settings = {
+	cc: 'NL', // String - Values: "NL"(Default) or "BE"
 	number: '100', // String - Required
 	street: 'Street name', // String - Required
 	postal_code: '1111AA', // String - Required
 	price: {
-		morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
-		default: '&#8364; 12,00', // String
-		night: '&#8364; 12,00', // String
-		pickup: '&#8364; 12,00', // String
-		pickup_express: '&#8364; 12,00', // String
-		signed: '&#8364; 12,00', // String
-		only_recipient: '&#8364; 12,00', // String
-		combi_options: '&#8364; 12,00', // String
-	}, 
+		NL: {
+			morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
+			default: '&#8364; 12,00', // String
+			night: '&#8364; 12,00', // String
+			pickup: '&#8364; 12,00', // String
+			pickup_express: '&#8364; 12,00', // String
+			signed: '&#8364; 12,00', // String
+			only_recipient: '&#8364; 12,00', // String
+			combi_options: '&#8364; 12,00', // String
+		},
+		BE: {
+			default: '&#8364; 12,00', // String
+			pickup: '&#8364; 12,00', // String
+		}
+	},
 	base_url: 'https://api.myparcel.nl/delivery_options', // Required
-	text:
-	{
-		signed: 'Text show instead of default text', 
-		only_recipient: 'Text show instead of default text'
+	text: {
+		signed: 'Text to show instead of default text',
+		only_recipient: 'Text to show instead of default text'
 	}
-}
+};
 ```
 
 To initialize the checkout the myparcel object should be constructed
 
 ```js
-myparcel = new Myparcel()
+myparcel = new MyParcel();
 ```
 
-This configuration can be chagned after the checkout has loaded. The config need to be reloaded after is has changed. This can be done using the `updatePage` function.
+To get the object with the selected option of the user do the following
+
+```js
+json = $('#mypa-input').val();
+obj = JSON.parse(json);
+```
+
+This configuration can be changed after the checkout has loaded. The config need to be reloaded after is has changed. This can be done using the `updatePage` function.
 
 Not all fields are required for the checkout to function.
 
