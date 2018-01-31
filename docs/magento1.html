@@ -1,0 +1,62 @@
+<html>
+<head>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/magento1.js"></script>
+</head>
+<body>
+<form action="">
+    <div>
+        <dl>
+            <dt>Verzending via PostNL (MyParcel)</dt>
+            <dd>
+                <ul>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_pickup" id="s_method_myparcel_pickup">
+                        <label for="s_method_myparcel_pickup">Ophalen bij een PostNL locatie </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_flatrate" id="s_method_myparcel_flatrate">
+                        <label for="s_method_myparcel_flatrate">Thuislevering </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_delivery_only_recipient" id="s_method_myparcel_delivery_only_recipient">
+                        <label for="s_method_myparcel_delivery_only_recipient">Thuis of op het werk bezorgd (niet bij de buren bezorgen) </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_delivery_signature" id="s_method_myparcel_delivery_signature">
+                        <label for="s_method_myparcel_delivery_signature">Thuis of op het werk bezorgd (handtekening voor ontvangst) </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_delivery_signature_and_only_recipient_fee" id="s_method_myparcel_delivery_signature_and_only_recipient_fee">
+                        <label for="s_method_myparcel_delivery_signature_and_only_recipient_fee">Thuis of op het werk bezorgd (niet bij de buren bezorgen + handtekening voor ontvangst) </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_evening_signature" id="s_method_myparcel_evening_signature">
+                        <label for="s_method_myparcel_evening_signature">Avondlevering (handtekening voor ontvangst) </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_evening" id="s_method_myparcel_evening">
+                        <label for="s_method_myparcel_evening">Avondlevering </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_pickup_express" id="s_method_myparcel_pickup_express">
+                        <label for="s_method_myparcel_pickup_express">Ophalen bij een PostNL locatie (extra vroeg ophalen) </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_morning" id="s_method_myparcel_morning">
+                        <label for="s_method_myparcel_morning">Ochtendlevering </label>
+                    </li>
+                    <li>
+                        <input name="shipping_method" type="radio" value="myparcel_morning_signature" id="s_method_myparcel_morning_signature">
+                        <label for="s_method_myparcel_morning_signature">Ochtendlevering (handtekening voor ontvangst) </label>
+                    </li>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <button>Continue</button>
+    </div>
+</form>
+</body>
+</html>
