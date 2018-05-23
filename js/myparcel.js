@@ -1,38 +1,41 @@
-MyParcel = { 
-
+MyParcel = {
 	/*
 	 * Init
 	 *
 	 * Initialize the MyParcel checkout.
 	 *
 	 */
+    data: {},
 
-	init: function()
+	init: function(externalData)
 	{
+        this.data = externalData;
+
 		isMobile     = true;
 		if($( window ).width() > 980 ) {
 			isMobile = false;
 		}
 
 		/* Prices */
-		$('#mypa-price-bpost-signature').html(' €' + myParcelConfig.priceBpostAutograph);
-		$('#mypa-delivery-bpost-saturday-price').html(' €' + myParcelConfig.priceBpostSaturdayDelivery);
-		if(parseFloat(myParcelConfig.pricePickup) > 0){
-			$('#mypa-price-pickup').html(' €' + myParcelConfig.pricePickup);
+		$('#mypa-price-bpost-signature').html(' &euro; ' + this.data.config.priceBpostAutograph);
+		$('#mypa-delivery-monday-price').html(' &euro; ' + this.data.config.priceMondayDelivery);
+		if(parseFloat(this.data.config.pricePickup) > 0){
+			$('#mypa-price-pickup').html(' &euro; ' + this.data.config.pricePickup);
 		}
 		/* Call delivery options */
 		MyParcel.callDeliveryOptions();	
 
 		/* Engage defaults */
-		MyParcel.hideBpostSaturday();
+		MyParcel.hideMonday();
 		MyParcel.hideDelivery();
 		$('#method-myparcel-flatrate').click();
 
 		MyParcel.hideBpostSignature();
-		if(myParcelConfig.allowBpostAutograph){
+		if(this.data.config.allowBpostAutograph){
 			MyParcel.showBpostSignature();
 		}
-		
+
+        MyParcel.bind();
 	},
 
 	/*
@@ -64,7 +67,7 @@ MyParcel = {
 			MyParcel.showDelivery();
 		});
 		
-		$('#mypa-deliver-pickup-deliver-bpost-saturday').on('click', function(){
+		$('#mypa-deliver-pickup-deliver-monday').on('click', function(){
 			MyParcel.showDelivery();
 		});
 
@@ -78,28 +81,12 @@ MyParcel = {
 			$('#mypa-show-location-details').on('click', function(){
 				MyParcel.showLocationDetails();
 			});
-
-			$('.mypa-help').on('click', function(e)
-			{
-				e.preventDefault();
-				MyParcel.showHelp(e);
-			});
 		}
 		
 		/* Desktop specific triggers */
 		else {
 			$('#mypa-show-location-details').on('mouseenter', function(){
 				MyParcel.showLocationDetails();
-			});
-
-			$('.mypa-help').on('click', function(e)
-			{
-				e.preventDefault();
-			});
-
-			$('.mypa-help').on('mouseenter', function(e)
-			{
-				MyParcel.showHelp(e);
 			});
 		}
 
@@ -109,19 +96,6 @@ MyParcel = {
 
 		$('#mypa-pickup-location').on('change', function(){
 			$('#mypa-deliver-pickup-pickup').click();
-		});
-
-		/* External webshop triggers */
-		$(triggerPostalCode).on('change', function(){
-			MyParcel.callDeliveryOptions();	
-		});
-		
-		$(triggerHouseNumber).on('change', function(){
-			MyParcel.callDeliveryOptions();	
-		});
-
-		$(triggerStreetName).on('change', function(){
-			MyParcel.callDeliveryOptions();	
 		});
 	},
 
@@ -137,7 +111,7 @@ MyParcel = {
 		var recipientOnly     = $('#mypa-recipient-only-selector').is(':checked');
 		var signatureRequired = $('#mypa-signature-selector').is(':checked');
 
-		hideAllDeliveryOptions();
+		this.hideAllDeliveryOptions();
 		if(recipientOnly && signatureRequired){
 			$('.method-myparcel-delivery-signature-and-only-recipient-fee-div').show();
 			$('#method-myparcel-delivery-signature-and-only-recipient-fee').click();
@@ -242,11 +216,11 @@ MyParcel = {
 
 	showDelivery: function()
 	{
-		$('#mypa-pre-selectors-' +      myParcelConfig.countryCode.toLowerCase()).show();
-		$('#mypa-delivery-selectors-' + myParcelConfig.countryCode.toLowerCase()).show();
+		$('#mypa-pre-selectors-' +      this.data.address.cc.toLowerCase()).show();
+		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
 
 		MyParcel.hideBpostSignature();
-		if(myParcelConfig.allowBpostAutograph){
+		if(this.data.config.allowBpostAutograph){
 			MyParcel.showBpostSignature();
 		}
 	},
@@ -362,33 +336,33 @@ MyParcel = {
     },
       
 	/*
-	 * showBpostSaturday
+	 * showMonday
 	 *
-	 * Show Bpost saturday delivery for extra fee. 
+	 * Show Monday delivery for extra fee.
 	 *
 	 */
 
-	showBpostSaturday: function(date)
+	showMonday: function(date)
 	{
-		if(myParcelConfig.allowBpostSaturdayDelivery) {
-			$('#mypa-delivery-date-bpost-saturday').val(date);
-			$('#mypa-delivery-bpost-saturday-price').html(myParcelConfig.priceBpostSaturdayDelivery);
-			$('#mypa-bpost-saturday-delivery').show();
+		if(this.data.config.allowMondayDelivery) {
+			$('#mypa-delivery-date-monday').val(date);
+			$('#mypa-delivery-monday-price').html(this.data.config.priceMondayDelivery);
+			$('#mypa-bpost-monday-delivery').show();
 		}
 	},
 
 	/*
-	 * hideBpostSaturday
+	 * hideMonday
 	 *
-	 * Hide Bpost saturday delivery. 
+	 * Hide Monday delivery.
 	 *
 	 */
 
-	hideBpostSaturday: function()
+	hideMonday: function()
 	{
-		$('#mypa-bpost-saturday-delivery').hide();
-		$('#mypa-delivery-date-bpost-saturday').val(' ');
-		$('#mypa-delivery-bpost-saturday-price').html(myParcelConfig.priceBpostSaturdayDelivery);
+		$('#mypa-monday-delivery').hide();
+		$('#mypa-delivery-date-monday').val(' ');
+		$('#mypa-delivery-monday-price').html(this.data.config.priceMondayDelivery);
 	},
 
 	/*
@@ -419,7 +393,7 @@ MyParcel = {
 		var dateObj      = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
 		var month        = dateObj.getMonth();
 		month++;
-		return txtWeekDays[dateObj.getDay()] + " " + dateObj.getDate() + "-" + month + "-" + dateObj.getFullYear(); 
+		return this.data.txtWeekDays[dateObj.getDay()] + " " + dateObj.getDate() + "-" + month + "-" + dateObj.getFullYear();
 	},
 
 	/*
@@ -434,12 +408,12 @@ MyParcel = {
 		var dateString   = MyParcel.dateToString(deliveryOptions.data.delivery[0].date);
 		var dateObj      = MyParcel.dateToObject(deliveryOptions.data.delivery[0].date);
 
-		/* If there is a costly bPost saturday delivery also present the next option
+		/* If there is a costly monday delivery also present the next option
 		   that has the standard fee */
-		if(dateObj.getDay() == 5 && myParcelConfig.carrierCode == 2){
-			MyParcel.showBpostSaturday(dateString);
+		if(dateObj.getDay() == 5 && this.data.config.carrierCode == 1){
+			MyParcel.showMonday(dateString);
 			if(typeof deliveryOptions.data.delivery[1] !== 'undefined'){
-				dateString = dateToString(deliveryOptions.data.delivery[1].date);
+				dateString = MyParcel.dateToString(deliveryOptions.data.delivery[1].date);
 			}
 		}
 
@@ -522,7 +496,7 @@ MyParcel = {
 			startTime = startTime.slice(0,-3);
 		}
 
-
+        html += '<svg  class="svg-inline--fa fa-times fa-w-12" aria-hidden="true" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z"></path></svg>'
 		html += '<span class="mypa-pickup-location-details-location"><h3>' + currentLocation.location  + '</h3></span>'
 		html += '<span class="mypa-pickup-location-details-street">' + currentLocation.street + '&nbsp;' + currentLocation.number + '</span>';
 		html += '<span class="mypa-pickup-location-details-city">' + currentLocation.postal_code + '&nbsp;' + currentLocation.city + '</span>';
@@ -533,7 +507,7 @@ MyParcel = {
 		html += '<h3>Openingstijden</h3>';
 		$.each(
 			currentLocation.opening_hours, function(weekday, value){
-			html += '<span class="mypa-pickup-location-details-day">' + translateENtoNL[weekday] + "</span> "; 
+			html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.translateENtoNL[weekday] + "</span> ";
 			$.each(value, function(key2, times){
 				html +=  '<span class="mypa-time">' + times + "</span>";
 			});
@@ -619,33 +593,36 @@ MyParcel = {
 		MyParcel.showSpinner();
 		MyParcel.clearPickUpLocations();
 
-		var postalCode       = $(triggerPostalCode).val();
-		var houseNumber      = $(triggerHouseNumber).val();
-		var houseNumberExtra = $(triggerHouseNumberExtra).val();
-		var streetName       = $(triggerStreetName).val();
+        var cc 				= this.data.address.cc;
+        var postalCode 		= this.data.address.postalCode;
+        var number 			= this.data.address.number;
+        if (cc === "BE") {
+            var numberExtra 	= this.data.address.numberExtra;
+            var street 			= this.data.address.street;
+		}
 
-		if(houseNumberExtra){
-			houseNumber = houseNumber + houseNumberExtra;
+		if(numberExtra){
+			number = number + numberExtra;
 		}
 
 		/* Don't call API unless both PC and House Number are set */
-		if(!houseNumber || !postalCode) {
+		if(!number || !postalCode) {
 			MyParcel.hideSpinner();
 			MyParcel.showFallBackDelivery();
 			return;
 		}
 
 		var data;
-		/* add streetName for Belgium */
-		$.get(myParcelConfig.apiBaseUrl + "delivery_options", 
-			{ 
-			/* deliverydays_window:    myParcelConfig.deliverydaysWindow, */
-				dropoff_days: 		myParcelConfig.dropoffDays,
-				cutofff_time: 		myParcelConfig.cutoffTime,
-				street:       		streetName, 
-				carrier:      		myParcelConfig.carrierCode, 
-				cc:           		myParcelConfig.countryCode, 
-				number:       		houseNumber, 
+		/* add street for Belgium */
+		$.get(this.data.config.apiBaseUrl + "delivery_options",
+			{
+			/* deliverydays_window:    this.data.config.deliverydaysWindow, */
+				dropoff_days: 		this.data.config.dropoffDays,
+				cutoff_time: 		this.data.config.cutoffTime,
+				street:       		street,
+				carrier:      		this.data.config.carrierCode,
+				cc:           		this.data.address.cc,
+				number:       		number, 
 				postal_code:  		postalCode 
 			})
 			.done(function(data){
