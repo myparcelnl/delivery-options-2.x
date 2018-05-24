@@ -102,13 +102,11 @@ MyParcel = {
 
 	toggleDeliveryOptions: function()
 	{
-		var recipientOnly     = $('#mypa-recipient-only-selector').is(':checked');
-		var signatureRequired = $('#mypa-signature-selector').is(':checked');
+		var pickupExpress	= $('#mypa-recipient-only-selector').is(':checked')
 
-		this.hideAllDeliveryOptions();
 		if(recipientOnly && signatureRequired){
-			$('.method-myparcel-delivery-signature-and-only-recipient-fee-div').show();
-			$('#method-myparcel-delivery-signature-and-only-recipient-fee').click();
+			$('#mypa-pickup_express').show();
+
 		}
 		
 		else if (recipientOnly && !signatureRequired){
