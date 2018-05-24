@@ -200,6 +200,9 @@
 	border-bottom: 1px solid black;
 	margin: 0px 0px 20px 0px;
 }
+#mypa-delivery-extra-options{
+	margin-top: 12px;
+}
 .fa-clock {
 	width: 16px;
 	margin-bottom: -3px;

@@ -17,10 +17,14 @@ MyParcel = {
 		}
 
 		/* Prices */
-		$('#mypa-price-bpost-signature').html(' &euro; ' + this.data.config.priceBpostAutograph);
-		$('#mypa-delivery-monday-price').html(' &euro; ' + this.data.config.priceMondayDelivery);
+		$('#mypa-signature-price').html(' (&euro; ' + this.data.config.priceSignature +')');
+        $('#mypa-recipient-only').html(' (&euro; ' + this.data.config.priceRecipientOnly +')');
+		$('#mypa-delivery-monday-price').html(' (&euro; ' + this.data.config.priceMondayDelivery +')');
+        $('#mypa-morning-delivery').html(' (&euro; ' + this.data.config.priceMorningDelivery +')');
+        $('#mypa-evening-delivery').html(' (&euro; ' + this.data.config.priceEveningDelivery +')');
+
 		if(parseFloat(this.data.config.pricePickup) > 0){
-			$('#mypa-price-pickup').html(' &euro; ' + this.data.config.pricePickup);
+			$('#mypa-price-pickup').html('(&euro; ' + this.data.config.pricePickup +')');
 		}
 		/* Call delivery options */
 		MyParcel.callDeliveryOptions();	
@@ -31,7 +35,7 @@ MyParcel = {
 		$('#method-myparcel-flatrate').click();
 
 		MyParcel.hideBpostSignature();
-		if(this.data.config.allowBpostAutograph){
+		if(this.data.config.allowSignature){
 			MyParcel.showBpostSignature();
 		}
 
@@ -51,16 +55,6 @@ MyParcel = {
 		{
 			e.preventDefault();
 			MyParcel.exportDeliveryOptionToWebshop();
-		});
-
-		$('#mypa-signature-selector').on('change', function(e)
-		{
-			MyParcel.toggleDeliveryOptions();
-		});
-
-		$('#mypa-recipient-only-selector').on('change', function()
-		{
-			MyParcel.toggleDeliveryOptions();
 		});
 
 		$('#mypa-deliver-pickup-deliver').on('click', function(){
@@ -115,7 +109,7 @@ MyParcel = {
 		if(recipientOnly && signatureRequired){
 			$('.method-myparcel-delivery-signature-and-only-recipient-fee-div').show();
 			$('#method-myparcel-delivery-signature-and-only-recipient-fee').click();
-		} 
+		}
 		
 		else if (recipientOnly && !signatureRequired){
 			$('.method-myparcel-delivery-only-recipient-div').show();
@@ -220,7 +214,7 @@ MyParcel = {
 		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
 
 		MyParcel.hideBpostSignature();
-		if(this.data.config.allowBpostAutograph){
+		if(this.data.config.allowSignature){
 			MyParcel.showBpostSignature();
 		}
 	},
