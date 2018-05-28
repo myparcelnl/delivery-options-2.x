@@ -52,13 +52,6 @@
 	margin: 0;
 }
 
-#mypa-delivery-option-form label,
-#mypa-delivery-option-form div,
-#mypa-delivery-option-form select {
-	display: inline-block;
-	vertical-align: top;
-}
-
 #mypa-delivery-option-form label {
 	width: 66%;
 }
@@ -76,7 +69,7 @@
 }
 
 
-#mypa-price-bpost-autograph, #mypa-method-signature-selector-be {
+#mypa-price-Signature, #mypa-method-signature-selector-be {
 	font-size: 12px !important;
 }
 
@@ -187,21 +180,22 @@
 	animation: spin 0.3s linear infinite;
 }
 
-#mypa-delivery-date,
-#mypa-delivery-date-bpost-saturday {
+#mypa-delivery-date {
 	display: inline-block;
 	width: 66%;
+	margin: 10px 0px 0px 30px;
 }
-
-#mypa-bottom-spacer {
-	display: block;
-	clear: both;
-	height: 40px;
-	border-bottom: 1px solid black;
-	margin: 0px 0px 20px 0px;
+#mypa-delivery-selectors-nl{
+	margin-left: 30px;
 }
-#mypa-delivery-extra-options{
-	margin-top: 12px;
+#mypa-pickup_express{
+	margin: 0px 0px 0px 30px;
+}
+.mypa-delivery-extra-options{
+	margin: 12px 0px 0px 0px;
+}
+#mypa_pickup_options, #mypa-pickup_express{
+	margin: 12px 0px 0px 30px;
 }
 .fa-clock {
 	width: 16px;
