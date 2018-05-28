@@ -182,12 +182,15 @@
 #mypa-delivery-selectors-nl{
 	margin-left: 30px;
 }
+
+#mypa-extra-delivery-options{
+	margin: 12px 0px 0px 30px;
+}
+
 #mypa-pickup_express{
 	margin: 0px 0px 0px 30px;
 }
-.mypa-delivery-extra-options{
-	margin: 12px 0px 0px 0px;
-}
+
 #mypa_pickup_options, #mypa-pickup_express{
 	margin: 12px 0px 0px 30px;
 }

@@ -40,6 +40,11 @@ MyParcel = {
 			MyParcel.showSignature();
 		}
 
+        MyParcel.hideOnlyRecipient();
+        if(this.data.config.allowOnlyRecipient){
+            MyParcel.showOnlyRecipient();
+        }
+
         MyParcel.bind();
 	},
 
@@ -245,6 +250,10 @@ MyParcel = {
 		if(this.data.config.allowSignature){
 			MyParcel.showSignature();
 		}
+        MyParcel.hideOnlyRecipient();
+        if(this.data.config.allowOnlyRecipient){
+            MyParcel.showOnlyRecipient();
+        }
 	},
 
 	/*
@@ -297,49 +306,9 @@ MyParcel = {
         $('#mypa-spinner').hide();
     },
 
-    showPostNlSignatureAndRecipientOnly: function()
-    {
-        $('#mypa-postnl-signature-recipient-only').show();
-    },
-
-    hidePostNlSignatureAndRecipientOnly: function()
-    {
-        $('#mypa-postnl-signature-recipient-only').hide();
-    },
-
-    showPostNlRecipientOnly: function()
-    {
-        $('#mypa-postnl-recipient-only').show();
-    },
-
-    hidePostNlRecipientOnly: function()
-    {
-        $('#mypa-postnl-recipient-only').hide();
-    },
-
-    showPostNlSignature: function()
-    {
-        $('#mypa-postnl-signature').show();
-    },
-
     hidePostNlSignature: function()
     {
         $('#mypa-postnl-signature').hide();
-    },
-
-    showPostNlRecpientOnly: function()
-    {
-        $('#mypa-postnl-recipient-only').show();
-    },
-
-    hidePostNlRecpientOnly: function()
-    {
-        $('#mypa-postnl-recipient-only').hide();
-    },
-
-    showPostNlSignature: function()
-    {
-        $('#mypa-postnl-signature').show();
     },
 
     hidePostNlSignature: function()
@@ -349,13 +318,24 @@ MyParcel = {
 
     showSignature: function()
     {
-        $('#mypa-delivery-selectors-be').show();
+        $('#mypa-postnl-signature').show();
     },
 
     hideSignature: function()
     {
-        $('#mypa-delivery-selectors-be').hide();
+        $('#mypa-postnl-signature').hide();
     },
+
+    showOnlyRecipient: function()
+    {
+        $('#mypa-postnl-recipient-only').show();
+    },
+
+    hideOnlyRecipient: function()
+    {
+        $('#mypa-postnl-recipient-only').hide();
+    },
+
       
 	/*
 	 * showMonday

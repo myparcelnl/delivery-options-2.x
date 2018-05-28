@@ -35,7 +35,6 @@
 				<input name="shipping-method" id="method-myparcel-delivery-morning" type="radio" value="myparcel-morning">
 				<label for="method-myparcel-delivery-morning">Ochtendlevering <span id="mypa-morning-delivery"></span></label>
 			</li>
-
 			<li id="mypa-postnl-delivery" class="mypa-delivery-option method-myparcel-flatrate-div">
 				<input name="shipping-method" id="method-myparcel-flatrate" type="radio" value="myparcel-flatrate">
 				<label for="method-myparcel-flatrate">Thuislevering</label>
@@ -45,8 +44,9 @@
 				<input name="shipping-method" id="method-myparcel-delivery-evening" type="radio" value="myparcel-delivery-evening" >
 				<label for="method-myparcel-delivery-evening">Avondlevering <span id="mypa-evening-delivery"></span></label>
 			</li>
-
-			<li id="mypa-postnl-signature" class= "mypa-delivery-extra-options">
+		</ul>
+		<ul id="mypa-extra-delivery-options">
+			<li id="mypa-postnl-signature">
 				<input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signature-selector" >
 				<label for="mypa-signature-selector">Handtekening<span id="mypa-signature-price"></span></label>
 			</li>
@@ -102,21 +102,22 @@
             'sunday': 'zondag'
         },
         config: {
-            "apiBaseUrl": "https://api.myparcel.nl/",
-            "countryCode": "NL",
-            "carrierCode": "1",
-            "priceMondayDelivery": "2,55",
-            "priceMorningDelivery": "10,00",
-            "priceEveningDelivery": "2,55",
-            "priceSignature": "2,22",
-            "pricePickup": "3,33",
+			"apiBaseUrl": "https://api.myparcel.nl/",
+			"countryCode": "NL",
+			"carrierCode": "1",
+			"priceMondayDelivery": "2,55",
+			"priceMorningDelivery": "10,00",
+			"priceEveningDelivery": "2,55",
+			"priceSignature": "2,22",
+			"pricePickup": "3,33",
 			"priceRecipientOnly":"2,00",
-            "allowMondayDelivery": true,
-            "allowSignature": true,
-            "dropOffDays": "1;2;3;4;5",
-            "saturdayCutoffTime": "16:00",
-            "cutoffTime": "20:00",
-            "deliverydaysWindow": "0"
+			"allowMondayDelivery": true,
+			"allowSignature": true,
+			"allowOnlyRecipient": true,
+			"dropOffDays": "1;2;3;4;5",
+			"saturdayCutoffTime": "16:00",
+			"cutoffTime": "20:00",
+			"deliverydaysWindow": "5"
         }
     };
 </script>
