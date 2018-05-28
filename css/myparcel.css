@@ -74,14 +74,15 @@
 }
 
 #mypa-pickup-location-selector li,
-#mypa-delivery-option-form li,
-#mypa-delivery-selectors-be li {
+#mypa-delivery-option-form li {
 	list-style-type: none;
 	padding: 2px 0px 0px 0px;
 }
-#mypa-pickup-location-selector{
-	margin-top: 30px;
+#mypa-pickup-location-selector ul:last-child,
+#mypa-delivery-option-form ul:last-child {
+	margin-top: 10px;
 }
+
 
 #mypa-delivery-option-form label,
 #mypa-delivery-selectors-be label {
@@ -98,9 +99,8 @@
 }
 
 #mypa-pickup-selector li{
-	margin: 25px 0 0;
+	margin: 15px 0 0;
 	display: inline-block;
-	height: 60px;
 	width: 100%;
 	padding: 5px 0px 2px 0px;
 }
@@ -126,6 +126,9 @@
 	width: 100%;
 	margin-bottom: 1px;
 	padding-bottom: 2px;
+}
+#mypa-pickup-location-selector li:nth-last-of-type(-n+2) {
+	margin-left: 30px;
 }
 
 #mypa-location-details {
@@ -176,11 +179,6 @@
 	animation: spin 0.3s linear infinite;
 }
 
-#mypa-delivery-date {
-	display: inline-block;
-	width: 66%;
-	margin: 10px 0px 0px 30px;
-}
 #mypa-delivery-selectors-nl{
 	margin-left: 30px;
 }

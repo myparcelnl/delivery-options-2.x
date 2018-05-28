@@ -73,13 +73,14 @@ MyParcel = {
 			MyParcel.hideDelivery();
             MyParcel.showPickUpLocations();
 		});
-
-
-        $('#method-myparcel-delivery-evening' && '#method-myparcel-morning').on('click', function(){
-            $('#mypa-recipient-only-selector').prop('checked', true);
-            $('#mypa-recipient-only-selector').prop({disabled: true});
+		// Todo: look if it posible to combine the morning en evening
+        $('#method-myparcel-delivery-morning').on('click', function(){
+            MyParcel.defaultCheckCheckbox('mypa-recipient-only');
         });
+        $('#method-myparcel-delivery-evening').on('click', function(){
+            MyParcel.defaultCheckCheckbox('mypa-recipient-only');
 
+        });
 
 		/* Mobile specific triggers */
 		if(isMobile){
@@ -104,14 +105,34 @@ MyParcel = {
 		$('#mypa-pickup-location').on('change', function(){
 			$('#mypa-deliver-pickup-pickup').click();
 		});
+        $('#method-myparcel-flatrate').on('click', function(){
+            MyParcel.defaultCheckCheckbox('method-myparcel-flatrate');
+
+        });
 
         $('#mypa-pickup_express').hide(); // todo: move
 
 
         $('#mypa-deliver-pickup-pickup, #mypa-pickup-location').on('change', function(e){
-            MyParcel.setCurrentLocation();
-            MyParcel.toggleDeliveryOptions();
+           MyParcel.setCurrentLocation();
+           MyParcel.toggleDeliveryOptions();
         });
+	},
+
+    /*
+     * defaultCheckCheckbox
+     *
+     * Check the additional options that are required for certain delivery options
+     *
+     */
+    defaultCheckCheckbox: function(selectedOption){
+		if(selectedOption == 'mypa-recipient-only'){
+            $('#mypa-recipient-only-selector').prop('checked', true);
+            $('#mypa-recipient-only-selector').prop({disabled: true});
+		} else {
+            $('#mypa-recipient-only-selector').prop('checked', false);
+            $('#mypa-recipient-only-selector').removeAttr("disabled");
+        }
 	},
 
 	/*
@@ -218,7 +239,6 @@ MyParcel = {
 	{
 		$('#mypa-pre-selectors-' +      this.data.address.cc.toLowerCase()).show();
 		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
-
 		$('#mypa-delivery-date').show();
 
 		MyParcel.hideSignature();
@@ -415,6 +435,11 @@ MyParcel = {
         $('#mypa-select-date').html(html);
 	},
 
+    hideDeliveryDates: function()
+    {
+        $('#mypa-delivery-date').parent().hide();
+    },
+
 	/*
 	 * clearPickupLocations
 	 *
@@ -438,7 +463,7 @@ MyParcel = {
 
 	hidePickUpLocations: function()
 	{
-		$('#mypa_pickup_options').hide();
+		$('#mypa-pickup-options').hide();
 	},
 
 
@@ -452,12 +477,11 @@ MyParcel = {
 	showPickUpLocations: function()
 	{
 		var html = "";
-
 		$.each(MyParcel.data.deliveryOptions.data.pickup, function(key, value){
 			html += '<option value="' + key + '">' + value.location + ', ' + value.street + ' ' + value.number + ", " + value.city + " (" + value.distance  + " M) </option>\n";
 		});
 		$('#mypa-pickup-location').html(html);
-        $('#mypa_pickup_options').show();
+        $('#mypa-pickup-options').show();
 	},
 
 	/*
@@ -637,7 +661,12 @@ MyParcel = {
 				/* No errors */
 				else {
 					MyParcel.showPickUpLocations();
-					MyParcel.showDeliveryDates();
+                    MyParcel.showDeliveryDates();
+
+					if(MyParcel.data.deliveryOptions.data.delivery.length <= 0 ){
+                        MyParcel.hideDeliveryDates();
+					}
+
 					MyParcel.storeDeliveryOptions = response;
 					$('#mypa-deliver-pickup-deliver').click();
 				}
