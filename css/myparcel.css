@@ -187,11 +187,7 @@
 	margin: 12px 0px 0px 30px;
 }
 
-#mypa-pickup_express{
-	margin: 0px 0px 0px 30px;
-}
-
-#mypa_pickup_options, #mypa-pickup_express{
+#mypa_pickup_options, #mypa-pickup-express{
 	margin: 12px 0px 0px 30px;
 }
 .fa-clock {
