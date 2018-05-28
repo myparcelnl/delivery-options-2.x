@@ -44,8 +44,7 @@ MyParcel = {
         if(this.data.config.allowEveningDelivery){
             MyParcel.showEveningDelivery();
         }
-
-
+		
         MyParcel.hideSignature();
 		if(this.data.config.allowSignature){
 			MyParcel.showSignature();
@@ -105,7 +104,7 @@ MyParcel = {
 				MyParcel.showLocationDetails();
 			});
 		}
-		
+
 		/* Desktop specific triggers */
 		else {
 			$('#mypa-show-location-details').on('mouseenter', function(){
@@ -192,23 +191,12 @@ MyParcel = {
 	    /* XXX Send to appropriate webshop field */
 	},
 
-	/*
-	 * showHelp
-	 *
-	 * Shows all help for MyParcel option.
-	 *
-	 */
-
-	showHelp: function(e)
-	{
-		alert('haelp!');
-	},
 
 	/*
 	 * hideMessage
 	 *
 	 * Hides pop-up message.
-	 * 
+	 *
 	 */
 
 	hideMessage: function()
@@ -221,7 +209,7 @@ MyParcel = {
 	 * hideMessage
 	 *
 	 * Hides pop-up essage.
-	 * 
+	 *
 	 */
 
 	showMessage: function(message)
@@ -234,7 +222,7 @@ MyParcel = {
 	 * hideDelivery
 	 *
 	 * Hides interface part for delivery.
-	 * 
+	 *
 	 */
 
 	hideDelivery: function()
@@ -242,13 +230,15 @@ MyParcel = {
 		$('#mypa-delivery-date').hide();
 		$('#mypa-pre-selectors-nl').hide();
 		$('#mypa-delivery-selectors-nl').hide();
-	},
+        MyParcel.hideSignature();
+        MyParcel.hideOnlyRecipient();
+    },
 
 	/*
 	 * showDelivery
 	 *
 	 * Shows interface part for delivery.
-	 * 
+	 *
 	 */
 
 	showDelivery: function()
@@ -366,7 +356,6 @@ MyParcel = {
     {
         $('#mypa-postnl-only-recipient').hide();
     },
-
       
 	/*
 	 * showMonday
