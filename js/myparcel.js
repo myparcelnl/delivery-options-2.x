@@ -514,14 +514,21 @@ MyParcel = {
 		}
 		html += '<span class="mypa-pickup-location-details-time">Ophalen vanaf:&nbsp;' + startTime + '</span>'
 		html += '<h3>Openingstijden</h3>';
+
 		$.each(
-			this.currentLocation.opening_hours, function(weekday, value){
+            this.currentLocation.opening_hours, function(weekday, value){
 			html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.translateENtoNL[weekday] + "</span> ";
+
+			if(value[0] === undefined ){
+				html +=  '<span class="mypa-time">Gesloten</span>';
+			}
+
 			$.each(value, function(key2, times){
 				html +=  '<span class="mypa-time">' + times + "</span>";
 			});
 			html += "<br>";
 		});
+
 		$('#mypa-location-details').html(html);
 		$('#mypa-location-details').show();
 	},
