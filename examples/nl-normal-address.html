@@ -70,7 +70,7 @@
 			</li>
 			<li id="mypa-pickup-express" style="display: none">
 				<input name="method-myparcel-recipient-only-selector" id="mypa-pickup-express-selector" type="checkbox" value="myparcel-recipient-only-selector" >
-				<label for="mypa-recipient-only-selector">Extra vroeg (1 euro extra)<span id="mypa-pickup-express-price"></span></label>
+				<label for="mypa-pickup-express-selector">Extra vroeg (1 euro extra)<span id="mypa-pickup-express-price"></span></label>
 			</li>
 		</ul>
 	</div>
@@ -80,8 +80,8 @@
 	var data = {
 	    address: {
 	        cc: 'NL',
-            postalCode: '2231je',
-            number: '55'
+            postalCode: '2131 BC',
+            number: '679'
 		},
         txtWeekDays: [
             'Zondag',
@@ -105,21 +105,21 @@
 			"apiBaseUrl": "https://api.myparcel.nl/",
 			"countryCode": "NL",
 			"carrierCode": "1",
-			"priceMondayDelivery": "2,55",
+			"priceMondayDelivepostnlry": "2,55",
 			"priceMorningDelivery": "10,00",
 			"priceEveningDelivery": "2,55",
 			"priceSignature": "2,22",
 			"pricePickup": "3,33",
 			"priceOnlyRecipient":"2,00",
-			"allowMondayDelivery": true,
+			"allowMondayDelivery": "1",
             "allowMorningDelivery": true,
             "allowEveningDelivery": true,
 			"allowSignature": true,
 			"allowOnlyRecipient": true,
-			"dropOffDays": "1;2;3;4;5",
+			"dropOffDays": "1;2;3;4;5;6",
 			"saturdayCutoffTime": "16:00",
 			"cutoffTime": "20:00",
-			"deliverydaysWindow": "5"
+			"deliverydaysWindow": "7"
         }
     };
 </script>
