@@ -93,6 +93,9 @@
 #mypa-pickup-location-selector li:nth-last-of-type(-n+2) {
 	margin-left: 30px;
 }
+#mypa-pickup-location{
+	width: 80%;
+}
 
 #mypa-location-details {
 	z-index: 999;
