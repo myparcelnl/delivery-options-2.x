@@ -53,7 +53,7 @@ MyParcel = {
             	MyParcel.showMorningDelivery();
 			}
             if(value['price_comment'] == 'standard'){
-                var standardTitel = MyParcel.data.config.deliveryMorningTitel;
+                var standardTitel = MyParcel.data.config.deliveryStandardTitel;
                 MyParcel.getDeliveryTime(standardTitel,'standard', MyParcel.data.config.deliveryStandardTitel, value['start'], value['end']);
 
             }
