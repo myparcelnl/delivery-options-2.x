@@ -1,32 +1,4 @@
 /*
- * Styling input files on front page
- */
-.woocommerce form .form-row-quart,
-.woocommerce-page form .form-row-quart,
-.woocommerce form .form-row-quart-first,
-.woocommerce-page form .form-row-quart-first {
-	float: left;
-	width: 22%;
-	overflow: visible;
-}
-
-.woocommerce-page form .form-row-quart-first,
-.woocommerce form .form-row-quart-first {
-	/*margin-right: 4% !important;*/
-}
-
-#billing_house_number::-webkit-outer-spin-button,
-#billing_house_number::-webkit-inner-spin-button,
-#shipping_house_number::-webkit-outer-spin-button,
-#shipping_house_number::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-#billing_house_number, #shipping_house_number {
-	-moz-appearance: textfield;
-}
-
-/*
  * Styling delivery options
  */
 
@@ -64,15 +36,6 @@
 	width: 50%;
 }
 
-#mypa-method-signature-selector-be {
-	display: inline-block;
-}
-
-
-#mypa-price-Signature, #mypa-method-signature-selector-be {
-	font-size: 12px !important;
-}
-
 #mypa-pickup-location-selector li,
 #mypa-delivery-option-form li {
 	list-style-type: none;
@@ -98,7 +61,7 @@
 	margin-top: 20px;
 }
 
-#mypa-pickup-selector li{
+#mypa-delivery-selector li{
 	margin: 15px 0 0;
 	display: inline-block;
 	width: 100%;
@@ -183,7 +146,7 @@
 	margin-left: 30px;
 }
 
-#mypa-extra-delivery-options{
+#mypa-extra-delivery-options , #mypa-pickup-options{
 	margin: 12px 0px 0px 30px;
 }
 
