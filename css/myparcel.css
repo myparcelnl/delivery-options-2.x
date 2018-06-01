@@ -47,8 +47,7 @@
 }
 
 
-#mypa-delivery-option-form label,
-#mypa-delivery-selectors-be label {
+#mypa-delivery-option-form label{
 	display: inline-block;
 	width: 80%;
 }
@@ -145,12 +144,8 @@
 	animation: spin 0.3s linear infinite;
 }
 
-#mypa-delivery-selectors-nl{
-	margin-left: 30px;
-}
-
-#mypa-extra-delivery-options , #mypa-pickup-options{
-	margin: 5px 0px 0px 30px;
+.mypa-extra-delivery-options-padding-top {
+	padding-top: 10px;
 }
 
 .fa-clock {
@@ -161,6 +156,11 @@
 .fa-times{
 	width: 16px;
 	float: right;
+}
+
+.delivery-option-table {
+	width: 100%;
+
 }
 
 @keyframes spin {

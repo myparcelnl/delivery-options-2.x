@@ -21,7 +21,7 @@ MyParcel = {
         $('#mypa-morning-delivery').html(' ( + &euro;' + this.data.config.priceMorningDelivery +')');
         $('#mypa-evening-delivery').html(' ( + &euro;' + this.data.config.priceEveningDelivery +')');
 		$('#mypa-signature-price').html(' ( + &euro;' + this.data.config.priceSignature +')');
-        $('#mypa-only-recipient').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
+        $('#mypa-only-recipient-price').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
 		$('#mypa-delivery-monday-price').html(' ( + &euro;' + this.data.config.priceMondayDelivery +')');
 
 
@@ -247,7 +247,7 @@ MyParcel = {
 	{
 		$('#mypa-delivery-date').hide();
 		$('#mypa-pre-selectors-nl').hide();
-		$('#mypa-delivery-selectors-nl').hide();
+		$('#mypa-postnl-delivery').hide();
         MyParcel.hideSignature();
         MyParcel.hideOnlyRecipient();
         MyParcel.hideMorningDelivery();
@@ -266,6 +266,7 @@ MyParcel = {
 	{
 		$('#mypa-pre-selectors-' +      this.data.address.cc.toLowerCase()).show();
 		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
+        $('#mypa-postnl-delivery').show();
 		$('#mypa-delivery-date').show();
 
 		MyParcel.hideSignature();
@@ -331,42 +332,46 @@ MyParcel = {
 
     showMorningDelivery: function()
     {
-        $('.method-myparcel-delivery-morning-div').show();
+        $('#method-myparcel-delivery-morning-div').show();
     },
 
     hideMorningDelivery: function()
     {
-        $('.method-myparcel-delivery-morning-div').hide();
+        $('#method-myparcel-delivery-morning-div').hide();
     },
 
     showEveningDelivery: function()
     {
-        $('.method-myparcel-delivery-evening-div').show();
+        $('#method-myparcel-delivery-evening-div').show();
     },
 
     hideEveningDelivery: function()
     {
-        $('.method-myparcel-delivery-evening-div').hide();
+        $('#method-myparcel-delivery-evening-div').hide();
     },
 
     showSignature: function()
     {
-        $('#mypa-postnl-signature').show();
+        $('.mypa-extra-delivery-option-signature').show();
+        $('#mypa-signature-price').show();
     },
 
 	hideSignature: function()
     {
-        $('#mypa-postnl-signature').hide();
+        $('.mypa-extra-delivery-option-signature').hide();
+        $('#mypa-signature-price').hide();
     },
 
     showOnlyRecipient: function()
     {
         $('#mypa-postnl-only-recipient').show();
+        $('#mypa-only-recipient-price').show();
     },
 
     hideOnlyRecipient: function()
     {
         $('#mypa-postnl-only-recipient').hide();
+        $('#mypa-only-recipient-price').hide();
     },
 
 	/*
