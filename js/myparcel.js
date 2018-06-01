@@ -21,7 +21,7 @@ MyParcel = {
         $('#mypa-morning-delivery').html(' ( + &euro;' + this.data.config.priceMorningDelivery +')');
         $('#mypa-evening-delivery').html(' ( + &euro;' + this.data.config.priceEveningDelivery +')');
 		$('#mypa-signature-price').html(' ( + &euro;' + this.data.config.priceSignature +')');
-        $('#mypa-recipient-only').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
+        $('#mypa-only-recipient').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
 		$('#mypa-delivery-monday-price').html(' ( + &euro;' + this.data.config.priceMondayDelivery +')');
 
 
@@ -161,10 +161,10 @@ MyParcel = {
     defaultCheckCheckbox: function(selectedOption){
 		if(selectedOption == 'mypa-only-recipient'){
             $('#mypa-only-recipient-selector').prop('checked', true).prop({disabled: true});
-            $('#mypa-recipient-only').html(' (Inclusief)');
+            $('#mypa-only-recipient').html(' (Inclusief)');
 		} else {
             $('#mypa-only-recipient-selector').prop('checked', false).removeAttr("disabled");
-            $('#mypa-recipient-only').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
+            $('#mypa-only-recipient').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
         }
 	},
 
