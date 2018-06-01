@@ -1,0 +1,140 @@
+<?php 
+/*  
+ *  Template for the MyParcel checkout.
+ *
+ */
+?>
+
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<link rel="stylesheet" href="../css/myparcel.css">
+
+<div id="mypa-spinner"></div>
+<div id="mypa-message"></div>
+<div id="mypa-location-details"></div>
+
+<form id="mypa-delivery-option-form" class="" action="../" enctype="multipart/form-data" method="post" target="_self">
+	<div class="mypa-fieldset">
+		<div id="mypa-send-per-carrier">
+			<div id="mypa-txt-send-per-carrier">Bezorgopties</div>
+		</div>
+		<ul id="mypa-delivery-selector">
+			<li>
+				<input name="mypa-deliver-or-pickup" id="mypa-deliver-pickup-deliver" value="mypa-deliver" type="radio">
+				<label for="mypa-delivery-date">Bezorgen op</label>
+			</li>
+		</ul>
+		<ul id="mypa-delivery-selectors-nl">
+			<li>
+				<div class="full-width" id="mypa-delivery-date">
+					<select name="mypa-delivery-date" id="mypa-select-date">
+						<option value="">Geen datum</option>
+					</select>
+				</div>
+			</li>
+			<li class="mypa-delivery-option method-myparcel-delivery-morning-div">
+				<input name="shipping-method" id="method-myparcel-delivery-morning" type="radio" value="myparcel-morning">
+				<label for="method-myparcel-delivery-morning"><span id="mypa-morning-titel"></span><span id="mypa-morning-delivery"></span></label>
+			</li>
+			<li id="mypa-postnl-delivery" class="mypa-delivery-option method-myparcel-normal-div">
+				<input name="shipping-method" id="method-myparcel-normal" type="radio" value="myparcel-normal">
+				<label for="method-myparcel-normal"><span id="mypa-standard-titel"></span></label>
+			</li>
+
+			<li class="mypa-delivery-option method-myparcel-delivery-evening-div">
+				<input name="shipping-method" id="method-myparcel-delivery-evening" type="radio" value="myparcel-delivery-evening" >
+				<label for="method-myparcel-delivery-evening"><span id="mypa-evening-titel"></span><span id="mypa-evening-delivery"></span></label>
+			</li>
+		</ul>
+		<ul id="mypa-extra-delivery-options">
+			<li id="mypa-postnl-signature">
+				<input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signature-selector" >
+				<label for="mypa-signature-selector">Handtekening<span id="mypa-signature-price"></span></label>
+			</li>
+			<li id="mypa-postnl-only-recipient">
+				<input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only-recipient-selector" >
+				<label for="mypa-only-recipient-selector">Alleen geadresseerde<span id="mypa-only-recipient"></span></label>
+			</li>
+		</ul>
+		<ul id="mypa-pickup-location-selector">
+			<li>
+				<input name="mypa-deliver-or-pickup" id="mypa-deliver-pickup-pickup" value="mypa-pickup" type="radio">
+				<label for="mypa-pickup-location">Afhalen op locatie</label>
+			</li>
+			<li>
+				<div class="full-width" id="mypa-pickup-options">
+					<select name="mypa-delivery-date" id="mypa-pickup-location">
+						<option value="">Geen Locatie</option>
+					</select>
+					<span id="mypa-show-location-details"><svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></svg></span>
+				</div>
+			</li>
+			<li id="mypa-pickup">
+				<input name="method-myparcel-only-recipient-selector" id="mypa-pickup-selector" type="radio" value="myparcel-only-recipient-selector" >
+				<label for="mypa-pickup-express-selector">Ophalen vanaf 15:00<span id="mypa-price-pickup"></span></label>
+			</li>
+			<li id="mypa-pickup-express" style="display: none">
+				<input name="method-myparcel-only-recipient-selector" id="mypa-pickup-express-selector" type="radio" value="myparcel-only-recipient-selector" >
+				<label for="mypa-pickup-express-selector">Ophalen vanaf 09:00<span id="mypa-pickup-express-price"></span></label>
+			</li>
+		</ul>
+	</div>
+</form>
+
+<script>
+	var data = {
+	    address: {
+	        cc: 'NL',
+            postalCode: '2131 BC',
+            number: '679'
+		},
+        txtWeekDays: [
+            'Zondag',
+            'Maandag',
+            'Dinsdag',
+            'Woensdag',
+            'Donderdag',
+            'Vrijdag',
+            'Zaterdag'
+        ],
+        translateENtoNL: {
+            'monday': 'maandag',
+            'tuesday': 'dindsag',
+            'wednesday': 'woensdag',
+            'thursday': 'donderdag',
+            'friday': 'vrijdag',
+            'saturday': 'zaterdag',
+            'sunday': 'zondag'
+        },
+        config: {
+			"apiBaseUrl": "https://api.myparcel.nl/",
+			"countryCode": "NL",
+			"carrierCode": "1",
+			"priceMondayDelivepostnlry": "2,55",
+			"priceMorningDelivery": "10,00",
+			"priceEveningDelivery": "2,55",
+			"priceSignature": "2,22",
+			"pricePickup": "3,33",
+            "pricePickupExpress": "5,00",
+			"priceOnlyRecipient":"2,00",
+			"allowMondayDelivery": "1",
+            "deliveryMorningTitel":"Ochtendlevering",
+            "deliveryStandardTitel":"Standaard levering",
+            "deliveryEveningTitel":"Avondlevering",
+            "allowMorningDelivery": true,
+            "allowEveningDelivery": true,
+			"allowSignature": true,
+			"allowOnlyRecipient": true,
+			"dropOffDays": "1;2;3;4;5;6",
+			"saturdayCutoffTime": "16:00",
+			"cutoffTime": "20:00",
+			"deliverydaysWindow": "7"
+        }
+    };
+</script>
+<script src="../js/myparcel.js"></script>
+<script>
+	MyParcel.init(data);
+</script>
+
+</body>
+</html>
