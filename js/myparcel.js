@@ -608,9 +608,15 @@ MyParcel = {
 		MyParcel.showSpinner();
 		MyParcel.clearPickUpLocations();
 
-        var cc 				= this.data.address.cc;
-        var postalCode 		= this.data.address.postalCode;
-        var number 			= this.data.address.number;
+		var cc 				= this.data.address.cc;
+		var postalCode 		= this.data.address.postalCode;
+		var number 			= this.data.address.number;
+
+		if (postalCode == '' || number == ''){
+			 MyParcel.showMessage(
+				 '<h3>Adres gegevens zijn niet ingevuld</h3>'
+			 );
+		}
         if (cc === "BE") {
             var numberExtra 	= this.data.address.numberExtra;
             var street 			= this.data.address.street;
@@ -645,6 +651,7 @@ MyParcel = {
 				if(response.errors){
 					$.each(response.errors, function(key, value){
 						/* Postalcode housenumber combination not found or not recognised. */
+						console.log(value.code);
 						if(value.code == '3212' || value.code == '3505'){
 							MyParcel.showRetry();
 						}
