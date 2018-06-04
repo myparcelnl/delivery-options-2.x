@@ -437,9 +437,14 @@ MyParcel = {
 
 	hidePickUpLocations: function()
 	{
+        if(!MyParcel.data.config.allowPickupPoints) {
+            $('#mypa-pickup-location-selector').hide();
+        }
+
 		$('#mypa-pickup-options').hide();
 		$('#mypa-pickup').hide();
 		$('#mypa-pickup-express').hide();
+
 	},
 
 
@@ -452,15 +457,19 @@ MyParcel = {
 
 	showPickUpLocations: function()
 	{
-		var html = "";
-		$.each(MyParcel.data.deliveryOptions.data.pickup, function(key, value){
-			var distance = parseFloat(Math.round(value.distance)/1000).toFixed(2);
-			html += '<option value="' + key + '">' + value.location + ', ' + value.street + ' ' + value.number + ", " + value.city + " (" + distance + " KM) </option>\n";
-		});
-		$('#mypa-pickup-location').html(html);
-        $("#mypa-pickup-selector").prop("checked", true);
-        $('#mypa-pickup-options').show();
-        $('#mypa-pickup').show();
+        if(MyParcel.data.config.allowPickupPoints) {
+
+            var html = "";
+            $.each(MyParcel.data.deliveryOptions.data.pickup, function (key, value) {
+                var distance = parseFloat(Math.round(value.distance) / 1000).toFixed(2);
+                html += '<option value="' + key + '">' + value.location + ', ' + value.street + ' ' + value.number + ", " + value.city + " (" + distance + " KM) </option>\n";
+            });
+            $('#mypa-pickup-location').html(html);
+            $("#mypa-pickup-selector").prop("checked", true);
+            $('#mypa-pickup-location-selector').show();
+            $('#mypa-pickup-options').show();
+            $('#mypa-pickup').show();
+        }
 	},
 
 	/*
