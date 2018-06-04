@@ -221,6 +221,7 @@ MyParcel = {
 	{
 		$('#mypa-message').hide();
 		$('#mypa-message').html(' ');
+		$('#mypa-delivery-option-form').show();
 	},
 
 	/*
@@ -234,6 +235,8 @@ MyParcel = {
 	{
 		$('#mypa-message').html(message);
 		$('#mypa-message').show();
+		$('#mypa-delivery-option-form').hide();
+
 	},
 
 	/*
@@ -538,8 +541,9 @@ MyParcel = {
 
 	retryPostalcodeHouseNumber: function()
 	{
-		$(triggerPostalCode).val( $('#mypa-error-postcode').val() );
-		$(triggerHouseNumber).val( $('#mypa-error-number').val() );
+        this.data.address.postalCode = $('#mypa-error-postcode').val();
+        this.data.address.number = $('#mypa-error-number').val();
+
 		MyParcel.hideMessage();
 		MyParcel.callDeliveryOptions();
 		$('#mypa-deliver-pickup-deliver').click();
@@ -573,10 +577,10 @@ MyParcel = {
 			'<h3>Huisnummer/postcode combinatie onbekend</h3>' +
 			'<div class="full-width mypa-error">'+
 			'<label for="mypa-error-postcode">Postcode</label>' +
-			'<input type="text" name="mypa-error-postcode" id="mypa-error-postcode" value="'+$(triggerPostalCode).val() + '">' +
+			'<input type="text" name="mypa-error-postcode" id="mypa-error-postcode" value="'+ MyParcel.data.address.postalCode +'">' +
 			'</div><div class="full-width mypa-error">' + 
 			'<label for="mypa-error-number">Huisnummer</label>' +
-			'<input type="text" name="mypa-error-number" id="mypa-error-number" value="'+$(triggerHouseNumber).val() + '">' +
+			'<input type="text" name="mypa-error-number" id="mypa-error-number" value="'+ MyParcel.data.address.number +'">' +
 			'<br><button id="mypa-error-try-again">Opnieuw</button>' +
 			'</div>'
 		);
@@ -616,7 +620,7 @@ MyParcel = {
 			number = number + numberExtra;
 		}
 
-		/* Don't call API unless both PC and House Number are set */
+		/* Don't call API unless both Postcode and House Number are set */
 		if(!number || !postalCode) {
 			MyParcel.hideSpinner();
 			MyParcel.showFallBackDelivery();
@@ -638,13 +642,12 @@ MyParcel = {
 			.done(function(response){
 
 				MyParcel.data.deliveryOptions = response;
-
 				if(response.errors){
 					$.each(response.errors, function(key, value){
 						/* Postalcode housenumber combination not found or not recognised. */
 						if(value.code == '3212' || value.code == '3505'){
 							MyParcel.showRetry();
-						} 
+						}
 
 						/* Any other error */
 						else {

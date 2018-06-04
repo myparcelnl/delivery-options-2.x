@@ -126,10 +126,7 @@
 #mypa-message {
 	z-index: 999;
 	display: none;
-	padding: 20px;
 	background-color: white;
-	border: 1px solid black;
-	border-radius: 3px;
 	margin: 0;
 }
 
