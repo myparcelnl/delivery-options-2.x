@@ -39,6 +39,11 @@ MyParcel = {
 	},
 
 	setCurrentDeliveryOptions: function () {
+    	if (typeof MyParcel.storeDeliveryOptions === 'undefined') {
+            console.error('setCurrentDeliveryOptions() MyParcel.storeDeliveryOptions === undefined');
+            return;
+		}
+
     	var selectedDate 	= $('#mypa-select-date').val();
 		var selectDateKey 	=	MyParcel.storeDeliveryOptions.data.delivery[selectedDate]['time'];
 
@@ -161,10 +166,10 @@ MyParcel = {
     defaultCheckCheckbox: function(selectedOption){
 		if(selectedOption == 'mypa-only-recipient'){
             $('#mypa-only-recipient-selector').prop('checked', true).prop({disabled: true});
-            $('#mypa-only-recipient').html(' (Inclusief)');
+            $('#mypa-only-recipient-price').html(' (Inclusief)');
 		} else {
             $('#mypa-only-recipient-selector').prop('checked', false).removeAttr("disabled");
-            $('#mypa-only-recipient').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
+            $('#mypa-only-recipient-price').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
         }
 	},
 
@@ -219,8 +224,7 @@ MyParcel = {
 
 	hideMessage: function()
 	{
-		$('#mypa-message').hide();
-		$('#mypa-message').html(' ');
+		$('.mypa-massage-model').hide().html(' ');
 		$('#mypa-delivery-option-form').show();
 	},
 
@@ -233,8 +237,8 @@ MyParcel = {
 
 	showMessage: function(message)
 	{
-		$('#mypa-message').html(message);
-		$('#mypa-message').show();
+		$('.mypa-massage-model').show();
+		$('#mypa-message').html(message).show();
 		$('#mypa-delivery-option-form').hide();
 
 	},
@@ -250,7 +254,7 @@ MyParcel = {
 	{
 		$('#mypa-delivery-date').hide();
 		$('#mypa-pre-selectors-nl').hide();
-		$('#mypa-postnl-delivery').hide();
+		$('#mypa-delivery').hide();
         MyParcel.hideSignature();
         MyParcel.hideOnlyRecipient();
         MyParcel.hideMorningDelivery();
@@ -269,7 +273,7 @@ MyParcel = {
 	{
 		$('#mypa-pre-selectors-' +      this.data.address.cc.toLowerCase()).show();
 		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
-        $('#mypa-postnl-delivery').show();
+        $('#mypa-delivery').show();
 		$('#mypa-delivery-date').show();
 
 		MyParcel.hideSignature();
@@ -284,31 +288,6 @@ MyParcel = {
 	},
 
 	/*
-	 * hideAllDeliveryOptions
-	 *
-	 * Hides all available MyParcel delivery options.
-	 *
-	 */
-
-	hideAllDeliveryOptions: function()
-	{
-		$('.mypa-delivery-option').hide();
-		$('#mypa-delivery-selectors-be').hide();
-	},
-
-	/*
-	 * showAllDeliveryOptions
-	 *
-	 * Shows all available MyParcel delivery options.
-	 *
-	 */
-
-	showAllDeliveryOptions: function()
-	{
-		$('.mypa-delivery-option').show();
-	},
-
-	/*
 	 * showSpinner
 	 *
 	 * Shows the MyParcel spinner.
@@ -317,6 +296,7 @@ MyParcel = {
 
 	showSpinner: function()
 	{
+		$('.mypa-massage-model').hide();
 		$('#mypa-spinner').show();
 	},
 
@@ -355,26 +335,22 @@ MyParcel = {
 
     showSignature: function()
     {
-        $('.mypa-extra-delivery-option-signature').show();
-        $('#mypa-signature-price').show();
+        $('.mypa-extra-delivery-option-signature, #mypa-signature-price').show();
     },
 
 	hideSignature: function()
     {
-        $('.mypa-extra-delivery-option-signature').hide();
-        $('#mypa-signature-price').hide();
+        $('.mypa-extra-delivery-option-signature, #mypa-signature-price').hide();
     },
 
     showOnlyRecipient: function()
     {
-        $('#mypa-postnl-only-recipient').show();
-        $('#mypa-only-recipient-price').show();
+        $('#mypa-only-recipient, #mypa-only-recipient-price').show();
     },
 
     hideOnlyRecipient: function()
     {
-        $('#mypa-postnl-only-recipient').hide();
-        $('#mypa-only-recipient-price').hide();
+        $('#mypa-only-recipient, #mypa-only-recipient-price').hide();
     },
 
 	/*
@@ -444,9 +420,7 @@ MyParcel = {
             $('#mypa-pickup-location-selector').hide();
         }
 
-		$('#mypa-pickup-options').hide();
-		$('#mypa-pickup').hide();
-		$('#mypa-pickup-express').hide();
+		$('#mypa-pickup-options, #mypa-pickup, #mypa-pickup-express').hide();
 
 	},
 
@@ -467,11 +441,8 @@ MyParcel = {
                 var distance = parseFloat(Math.round(value.distance) / 1000).toFixed(2);
                 html += '<option value="' + key + '">' + value.location + ', ' + value.street + ' ' + value.number + ", " + value.city + " (" + distance + " KM) </option>\n";
             });
-            $('#mypa-pickup-location').html(html);
-            $("#mypa-pickup-selector").prop("checked", true);
-            $('#mypa-pickup-location-selector').show();
-            $('#mypa-pickup-options').show();
-            $('#mypa-pickup').show();
+            $('#mypa-pickup-location').html(html).prop("checked", true);
+            $('#mypa-pickup-location-selector, #mypa-pickup-options, #mypa-pickup').show();
         }
 	},
 
@@ -527,8 +498,7 @@ MyParcel = {
 			html += "<br>";
 		});
 
-		$('#mypa-location-details').html(html);
-		$('#mypa-location-details').show();
+		$('#mypa-location-details').html(html).show();
 	},
 
 	/*
@@ -543,8 +513,6 @@ MyParcel = {
 	{
         this.data.address.postalCode = $('#mypa-error-postcode').val();
         this.data.address.number = $('#mypa-error-number').val();
-
-		MyParcel.hideMessage();
 		MyParcel.callDeliveryOptions();
 		$('#mypa-deliver-pickup-deliver').click();
 	},
@@ -558,9 +526,11 @@ MyParcel = {
 
 	showFallBackDelivery: function()
 	{
-		MyParcel.hidePickUpLocations();
-		$('#mypa-delivery-date').val('Zo snel mogelijk.');
-		$('#mypa-deliver-pickup-deliver').click();
+        MyParcel.hideSpinner();
+        MyParcel.hideDelivery();
+        $('#mypa-select-date, #method-myparcel-normal').hide();
+        $('.mypa-is-pickup-element').hide();
+		$('#mypa-deliver-pickup-deliver-titel').html('Zo snel mogelijk bezorgen');
 	},
 
 
@@ -575,10 +545,10 @@ MyParcel = {
 	{
 		MyParcel.showMessage(
 			'<h3>Huisnummer/postcode combinatie onbekend</h3>' +
-			'<div class="full-width mypa-error">'+
+			'<div class="mypa-full-width mypa-error">'+
 			'<label for="mypa-error-postcode">Postcode</label>' +
 			'<input type="text" name="mypa-error-postcode" id="mypa-error-postcode" value="'+ MyParcel.data.address.postalCode +'">' +
-			'</div><div class="full-width mypa-error">' + 
+			'</div><div class="mypa-full-width mypa-error">' +
 			'<label for="mypa-error-number">Huisnummer</label>' +
 			'<input type="text" name="mypa-error-number" id="mypa-error-number" value="'+ MyParcel.data.address.number +'">' +
 			'<br><button id="mypa-error-try-again">Opnieuw</button>' +
@@ -611,6 +581,7 @@ MyParcel = {
 		var cc 				= this.data.address.cc;
 		var postalCode 		= this.data.address.postalCode;
 		var number 			= this.data.address.number;
+        var city 			= this.data.address.city;
 
 		if (postalCode == '' || number == ''){
 			 MyParcel.showMessage(
@@ -628,21 +599,21 @@ MyParcel = {
 
 		/* Don't call API unless both Postcode and House Number are set */
 		if(!number || !postalCode) {
-			MyParcel.hideSpinner();
 			MyParcel.showFallBackDelivery();
 			return;
 		}
 
-		/* add street for Belgium */
+		/* Make the api request */
 		$.get(this.data.config.apiBaseUrl + "delivery_options",
 			{
-                cc           			:this.data.address.cc,
-                postal_code  			:postalCode,
-                number       			:number,
-                carrier      			:this.data.config.carrierCode,
+				cc           			:this.data.address.cc,
+				postal_code  			:postalCode,
+				number       			:number,
+				city					:city,
+				carrier      			:this.data.config.carrier,
 				dropoff_days			:this.data.config.dropOffDays,
-                monday_delivery			:this.data.config.allowMondayDelivery,
-                deliverydays_window		:this.data.config.deliverydaysWindow,
+				monday_delivery			:this.data.config.allowMondayDelivery,
+				deliverydays_window		:this.data.config.deliverydaysWindow,
 				cutoff_time 			:this.data.config.cutoffTime
 			})
 			.done(function(response){
@@ -651,7 +622,6 @@ MyParcel = {
 				if(response.errors){
 					$.each(response.errors, function(key, value){
 						/* Postalcode housenumber combination not found or not recognised. */
-						console.log(value.code);
 						if(value.code == '3212' || value.code == '3505'){
 							MyParcel.showRetry();
 						}
@@ -665,21 +635,20 @@ MyParcel = {
 
 				/* No errors */
 				else {
+                    MyParcel.hideMessage();
 					MyParcel.showPickUpLocations();
                     MyParcel.showDeliveryDates();
-
 					if(MyParcel.data.deliveryOptions.data.delivery.length <= 0 ){
                         MyParcel.hideDeliveryDates();
 					}
-
 					MyParcel.storeDeliveryOptions = response;
-					$('#mypa-deliver-pickup-deliver').click();
 				}
 			})
 			.fail(function(){
 				MyParcel.showFallBackDelivery();
 			})
 			.always(function(){
+				$('#mypa-deliver-pickup-deliver').click();
 				MyParcel.hideSpinner();
 			});
 	}
