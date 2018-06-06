@@ -1,4 +1,11 @@
 /*
+ * The example_wrapper is only used as an example of the checkout
+ */
+.mypa-example_wrapper{
+	width: 400px;
+}
+
+/*
  * Styling delivery options
  */
 
@@ -7,11 +14,8 @@
 }
 
 #mypa-send-per-carrier {
-	background-color: #4169e1 !important;
-	color: white;
 	font-weight: bold;
 	width: 100%;
-	text-align: center;
 	background-color: transparent;
 }
 
@@ -27,6 +31,11 @@
 #mypa-delivery-option-form label {
 	width: 66%;
 }
+
+#mypa-select-date {
+	width:100%;
+}
+
 .myparcel-price::before {
 	content: "+€";
 }
@@ -47,8 +56,7 @@
 }
 
 
-#mypa-delivery-option-form label,
-#mypa-delivery-selectors-be label {
+#mypa-delivery-option-form label{
 	display: inline-block;
 	width: 80%;
 }
@@ -73,10 +81,6 @@
 	text-decoration: none;
 }
 
-.fa-question {
-	text-decoration: none;
-}
-
 #mypa-shop-mock {
 	margin-top: 500px;
 	background-color: #ccc;
@@ -84,7 +88,7 @@
 	margin-bottom: 25px;
 }
 
-.full-width {
+.mypa-full-width {
 	display: inline-block;
 	width: 100%;
 	margin-bottom: 1px;
@@ -93,8 +97,9 @@
 #mypa-pickup-location-selector li:nth-last-of-type(-n+2) {
 	margin-left: 30px;
 }
+
 #mypa-pickup-location{
-	width: 80%;
+	width: calc(100% - 25px);
 }
 
 #mypa-location-details {
@@ -127,11 +132,9 @@
 #mypa-message {
 	z-index: 999;
 	display: none;
-	padding: 20px;
 	background-color: white;
-	border: 1px solid black;
-	border-radius: 3px;
-	margin: 0;
+	margin: 20px 10px 0px 10px;
+	padding: 20px;
 }
 
 #mypa-spinner {
@@ -145,22 +148,40 @@
 	animation: spin 0.3s linear infinite;
 }
 
-#mypa-delivery-selectors-nl{
-	margin-left: 30px;
+.mypa-extra-delivery-options-padding-top {
+	padding-top: 10px;
 }
 
-#mypa-extra-delivery-options , #mypa-pickup-options{
-	margin: 5px 0px 0px 30px;
-}
-
-.fa-clock {
+.mypa-fa-clock {
 	width: 16px;
 	margin-bottom: -3px;
 }
 
-.fa-times{
+.mypa-fa-times{
 	width: 16px;
 	float: right;
+}
+
+.mypa-delivery-option-table {
+	width: 100%;
+}
+.mypa-delivery-option-table input {
+	vertical-align:top;
+}
+
+.mypa-delivery-option-table tr td:first-child {
+	white-space: nowrap;
+	width: 1px;
+}
+.mypa-delivery-option-table tr td:last-child {
+	white-space: nowrap;
+	vertical-align:top;
+}
+
+.mypa-massage-model {
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
 }
 
 @keyframes spin {
