@@ -1,4 +1,11 @@
 /*
+ * The example_wrapper is only used as an example of the checkout
+ */
+.mypa-example_wrapper{
+	width: 400px;
+}
+
+/*
  * Styling delivery options
  */
 
@@ -7,11 +14,8 @@
 }
 
 #mypa-send-per-carrier {
-	/*background-color: #4169e1 !important;*/
-	/*color: white;*/
 	font-weight: bold;
 	width: 100%;
-	/*text-align: center;*/
 	background-color: transparent;
 }
 
@@ -74,10 +78,6 @@
 
 .mypa-help {
 	color: black;
-	text-decoration: none;
-}
-
-.fa-question {
 	text-decoration: none;
 }
 
@@ -152,39 +152,35 @@
 	padding-top: 10px;
 }
 
-.fa-clock {
+.mypa-fa-clock {
 	width: 16px;
 	margin-bottom: -3px;
 }
 
-.fa-times{
+.mypa-fa-times{
 	width: 16px;
 	float: right;
 }
 
-.delivery-option-table {
+.mypa-delivery-option-table {
 	width: 100%;
 }
-.delivery-option-table input {
+.mypa-delivery-option-table input {
 	vertical-align:top;
 }
 
-.delivery-option-table tr td:first-child {
+.mypa-delivery-option-table tr td:first-child {
 	white-space: nowrap;
 	width: 1px;
 }
-.delivery-option-table tr td:last-child {
+.mypa-delivery-option-table tr td:last-child {
 	white-space: nowrap;
 	vertical-align:top;
-}
-.example_wrapper{
-	width: 400px;
 }
 
 .mypa-massage-model {
 	height: 100%;
 	overflow: auto;
-	background-color: rgb(0,0,0);
 	background-color: rgba(0,0,0,0.4);
 }
 

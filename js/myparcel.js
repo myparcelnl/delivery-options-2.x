@@ -18,16 +18,13 @@ MyParcel = {
 		}
 
 		/* Prices */
-        $('#mypa-morning-delivery').html(' ( + &euro;' + this.data.config.priceMorningDelivery +')');
-        $('#mypa-evening-delivery').html(' ( + &euro;' + this.data.config.priceEveningDelivery +')');
-		$('#mypa-signature-price').html(' ( + &euro;' + this.data.config.priceSignature +')');
-        $('#mypa-only-recipient-price').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
-		$('#mypa-delivery-monday-price').html(' ( + &euro;' + this.data.config.priceMondayDelivery +')');
+		$('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
+		$('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
+		$('#mypa-normal-delivery').html(MyParcel.getPriceHtml(this.data.config.priceNormalDelivery));
+		$('#mypa-signature-price').html(MyParcel.getPriceHtml(this.data.config.priceSignature));
+		$('#mypa-only-recipient-price').html(MyParcel.getPriceHtml(this.data.config.priceOnlyRecipient));
+		$('#mypa-pickup-price').html(MyParcel.getPriceHtml(this.data.config.pricePickup));
 
-
-		if(parseFloat(this.data.config.pricePickup) > 0){
-			$('#mypa-price-pickup').html(' ( + &euro;' + this.data.config.pricePickup +')');
-		}
 		/* Call delivery options */
 		MyParcel.callDeliveryOptions();	
 
@@ -36,6 +33,24 @@ MyParcel = {
 		$('#method-myparcel-normal').click();
 
         MyParcel.bind();
+	},
+
+    getPriceHtml: function(priceOfDeliveryOption){
+
+    	if (!priceOfDeliveryOption) {
+            var price = "";
+        }
+
+        if (parseFloat(priceOfDeliveryOption) >= 0){
+        	console.log(priceOfDeliveryOption);
+            var price = '( + &euro; ' + priceOfDeliveryOption + ' )' ;
+        }
+
+        if (isNaN(parseFloat(priceOfDeliveryOption)) && priceOfDeliveryOption){
+            var price = '( ' + priceOfDeliveryOption + ' )' ;
+        }
+
+    	return price;
 	},
 
 	setCurrentDeliveryOptions: function () {
@@ -104,7 +119,7 @@ MyParcel = {
 		});
 
         /* show default delivery options and hide PostNL options */
-        $('#mypa-deliver-pickup-deliver').on('click', function(){
+        $('#mypa-select-delivery').on('click', function(){
             MyParcel.setCurrentDeliveryOptions();
             MyParcel.showDelivery();
             MyParcel.hidePickUpLocations();
@@ -474,7 +489,7 @@ MyParcel = {
 			startTime = startTime.slice(0,-3);
 		}
 
-        html += '<svg  class="svg-inline--fa fa-times fa-w-12" aria-hidden="true" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z"></path></svg>'
+        html += '<svg  class="svg-inline--fa mypa-fa-times fa-w-12" aria-hidden="true" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M323.1 441l53.9-53.9c9.4-9.4 9.4-24.5 0-33.9L279.8 256l97.2-97.2c9.4-9.4 9.4-24.5 0-33.9L323.1 71c-9.4-9.4-24.5-9.4-33.9 0L192 168.2 94.8 71c-9.4-9.4-24.5-9.4-33.9 0L7 124.9c-9.4 9.4-9.4 24.5 0 33.9l97.2 97.2L7 353.2c-9.4 9.4-9.4 24.5 0 33.9L60.9 441c9.4 9.4 24.5 9.4 33.9 0l97.2-97.2 97.2 97.2c9.3 9.3 24.5 9.3 33.9 0z"></path></svg>'
 		html += '<span class="mypa-pickup-location-details-location"><h3>' + this.currentLocation.location  + '</h3></span>'
 		html += '<span class="mypa-pickup-location-details-street">' + this.currentLocation.street + '&nbsp;' + this.currentLocation.number + '</span>';
 		html += '<span class="mypa-pickup-location-details-city">' + this.currentLocation.postal_code + '&nbsp;' + this.currentLocation.city + '</span>';
@@ -514,7 +529,7 @@ MyParcel = {
         this.data.address.postalCode = $('#mypa-error-postcode').val();
         this.data.address.number = $('#mypa-error-number').val();
 		MyParcel.callDeliveryOptions();
-		$('#mypa-deliver-pickup-deliver').click();
+		$('#mypa-select-delivery').click();
 	},
 
 	/*
@@ -526,11 +541,11 @@ MyParcel = {
 
 	showFallBackDelivery: function()
 	{
-        MyParcel.hideSpinner();
-        MyParcel.hideDelivery();
-        $('#mypa-select-date, #method-myparcel-normal').hide();
-        $('.mypa-is-pickup-element').hide();
-		$('#mypa-deliver-pickup-deliver-titel').html('Zo snel mogelijk bezorgen');
+		MyParcel.hideSpinner();
+		MyParcel.hideDelivery();
+		$('#mypa-select-date, #method-myparcel-normal').hide();
+		$('.mypa-is-pickup-element').hide();
+		$('#mypa-select-delivery-titel').html('Zo snel mogelijk bezorgen');
 	},
 
 
@@ -635,21 +650,21 @@ MyParcel = {
 
 				/* No errors */
 				else {
-                    MyParcel.hideMessage();
+					MyParcel.hideMessage();
 					MyParcel.showPickUpLocations();
-                    MyParcel.showDeliveryDates();
+					MyParcel.showDeliveryDates();
 					if(MyParcel.data.deliveryOptions.data.delivery.length <= 0 ){
-                        MyParcel.hideDeliveryDates();
+						MyParcel.hideDeliveryDates();
 					}
 					MyParcel.storeDeliveryOptions = response;
 				}
+				MyParcel.hideSpinner();
 			})
 			.fail(function(){
 				MyParcel.showFallBackDelivery();
 			})
 			.always(function(){
-				$('#mypa-deliver-pickup-deliver').click();
-				MyParcel.hideSpinner();
+				$('#mypa-select-delivery').click();
 			});
 	}
 }
