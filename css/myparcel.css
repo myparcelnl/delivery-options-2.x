@@ -145,7 +145,7 @@
 	border-radius: 50%;
 	width: 32px;
 	height: 32px;
-	animation: spin 0.3s linear infinite;
+	animation: mypa-spin 0.3s linear infinite;
 }
 
 .mypa-extra-delivery-options-padding-top {
@@ -184,7 +184,7 @@
 	background-color: rgba(0,0,0,0.4);
 }
 
-@keyframes spin {
+@keyframes mypa-spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }

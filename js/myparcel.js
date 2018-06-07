@@ -42,11 +42,10 @@ MyParcel = {
         }
 
         if (parseFloat(priceOfDeliveryOption) >= 0){
-        	console.log(priceOfDeliveryOption);
             var price = '( + &euro; ' + priceOfDeliveryOption + ' )' ;
         }
 
-        if (isNaN(parseFloat(priceOfDeliveryOption)) && priceOfDeliveryOption){
+        if (priceOfDeliveryOption && isNaN(parseFloat(priceOfDeliveryOption))){
             var price = '( ' + priceOfDeliveryOption + ' )' ;
         }
 
