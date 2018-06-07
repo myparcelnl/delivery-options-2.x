@@ -184,7 +184,7 @@ MyParcel = {
             $('#mypa-only-recipient-price').html(' (Inclusief)');
 		} else {
             $('#mypa-only-recipient-selector').prop('checked', false).removeAttr("disabled");
-            $('#mypa-only-recipient-price').html(' ( + &euro;' + this.data.config.priceOnlyRecipient +')');
+            $('#mypa-only-recipient-price').html(MyParcel.getPriceHtml(this.data.config.priceOnlyRecipient));
         }
 	},
 
@@ -200,7 +200,7 @@ MyParcel = {
 		var isPickup	= $('#mypa-deliver-pickup-pickup').is(':checked');
 
 		if(isPickup && this.currentLocation.price_comment === "retailexpress"){
-			$('#mypa-pickup-express-price').html(' ( + &euro;' + this.data.config.pricePickupExpress +')');
+			$('#mypa-pickup-express-price').html(MyParcel.getPriceHtml(this.data.config.pricePickupExpress));
 			$('#mypa-pickup-express').show();
 
 		} else{
