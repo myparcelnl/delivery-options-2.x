@@ -6,7 +6,6 @@
 <div class="mypa-massage-model">
 	<div id="mypa-message"></div>
 </div>
-
 <div id="mypa-location-details"></div>
 <div class="mypa-example_wrapper">
 	<form id="mypa-delivery-option-form" class="" action="../" enctype="multipart/form-data" method="post" target="_self">
@@ -22,13 +21,19 @@
 								<input name="mypa-deliver-or-pickup" id="mypa-select-delivery" value="mypa-deliver" type="radio">
 							</td>
 							<td colspan="2">
-								<label id="mypa-select-delivery-titel" for="mypa-select-delivery">Bezorgen op</label>
+								<label id="mypa-select-delivery-titel" for="mypa-select-delivery"><span id="mypa-delivery-titel"></span></label>
+							</td>
+						</tr>
+						<tr id="mypa-delivery-date-select">
+							<td></td>
+							<td colspan="2">
+								<select name="mypa-delivery-date-select" id="mypa-select-date" title="Delivery date"></select>
 							</td>
 						</tr>
 						<tr id="mypa-delivery-date">
 							<td></td>
 							<td colspan="2">
-								<select name="mypa-delivery-date" id="mypa-select-date" title="Delivery date"></select>
+								<div name="mypa-delivery-date" id="mypa-date" title="Delivery date"> </div>
 							</td>
 						</tr>
 						<tr id="method-myparcel-delivery-morning-div">
@@ -69,7 +74,7 @@
 							</td>
 							<td>
 								<div class="mypa-delivery-option">
-									<span id="mypa-evening-delivery"> </span>
+									<span id="mypa-evening-delivery"></span>
 								</div>
 							</td>
 						</tr>
@@ -98,7 +103,7 @@
 								<input name="mypa-deliver-or-pickup" id="mypa-deliver-pickup-pickup" value="mypa-pickup" type="radio">
 							</td>
 							<td colspan="2">
-								<label for="mypa-deliver-pickup-pickup">Afhalen op locatie</label>
+								<label for="mypa-deliver-pickup-pickup"><span id="mypa-pickup-titel"></span></label>
 							</td>
 						</tr>
 						<tr id="mypa-pickup-options" class="mypa-is-pickup-element">
@@ -165,28 +170,35 @@
 			},
 			config: {
 				"apiBaseUrl": "https://api.myparcel.nl/",
-				"countryCode": "NL",
 				"carrier": "1",
+
 				"priceMorningDelivery": "10,00",
-                "priceNormalDelivery": "",
+				"priceNormalDelivery": "1",
 				"priceEveningDelivery": "2,55",
 				"priceSignature": "2,22",
 				"pricePickup": "3,33",
 				"pricePickupExpress": "5,00",
 				"priceOnlyRecipient":"2,00",
+
+				"deliveryTitel":"Bezorgen op",
+				"pickupTitel":"Afhalen op locatie",
 				"deliveryMorningTitel":"Ochtendlevering",
 				"deliveryStandardTitel":"Standaard levering",
 				"deliveryEveningTitel":"Avondlevering",
+
 				"allowMondayDelivery": "1",
 				"allowMorningDelivery": true,
 				"allowEveningDelivery": true,
 				"allowSignature": true,
 				"allowOnlyRecipient": true,
 				"allowPickupPoints": true,
+				"allowPickupExpress": true,
+
 				"dropOffDays": "1;2;3;4;5;6",
 				"saturdayCutoffTime": "16:00",
 				"cutoffTime": "15:00",
-				"deliverydaysWindow": "7"
+				"deliverydaysWindow": "0",
+				"dropoffDelay":"1"
 			}
 		};
 	</script>

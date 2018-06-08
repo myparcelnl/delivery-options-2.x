@@ -17,6 +17,14 @@ MyParcel = {
 			isMobile = false;
 		}
 
+		/* Titels of the options*/
+        if (MyParcel.data.config.deliveryTitel){
+            $('#mypa-delivery-titel').html(MyParcel.data.config.deliveryTitel);
+        }
+        if (MyParcel.data.config.pickupTitel){
+            $('#mypa-pickup-titel').html(MyParcel.data.config.pickupTitel);
+        }
+
 		/* Prices */
 		$('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
 		$('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
@@ -86,8 +94,12 @@ MyParcel = {
 
     },
     getDeliveryTime: function (configDeliveryTitel, deliveryMoment, deliveryTitel, startTime, endTime) {
-		startTime = startTime.replace(/(.*)\D\d+/, '$1');
-        endTime = endTime.replace(/(.*)\D\d+/, '$1');
+
+    	/* Check if carrier is 1 (PostNL)*/
+    	if(MyParcel.data.config.carrier == 1) {
+            startTime = startTime.replace(/(.*)\D\d+/, '$1');
+            endTime = endTime.replace(/(.*)\D\d+/, '$1');
+		}
 
         $('#mypa-'+deliveryMoment+'-titel').html(deliveryTitel);
 
@@ -198,7 +210,7 @@ MyParcel = {
 	{
 		var isPickup	= $('#mypa-deliver-pickup-pickup').is(':checked');
 
-		if(isPickup && this.currentLocation.price_comment === "retailexpress"){
+		if(isPickup && this.currentLocation.price_comment === "retailexpress" && MyParcel.data.config.allowPickupExpress){
 			$('#mypa-pickup-express-price').html(MyParcel.getPriceHtml(this.data.config.pricePickupExpress));
 			$('#mypa-pickup-express').show();
 
@@ -266,9 +278,7 @@ MyParcel = {
 
 	hideDelivery: function()
 	{
-		$('#mypa-delivery-date').hide();
-		$('#mypa-pre-selectors-nl').hide();
-		$('#mypa-delivery').hide();
+		$('#mypa-delivery-date-select, #mypa-pre-selectors-nl, #mypa-delivery, #mypa-normal-delivery').hide();
         MyParcel.hideSignature();
         MyParcel.hideOnlyRecipient();
         MyParcel.hideMorningDelivery();
@@ -287,8 +297,7 @@ MyParcel = {
 	{
 		$('#mypa-pre-selectors-' +      this.data.address.cc.toLowerCase()).show();
 		$('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
-        $('#mypa-delivery').show();
-		$('#mypa-delivery-date').show();
+        $('#mypa-delivery, #mypa-normal-delivery, #mypa-delivery-date-select').show();
 
 		MyParcel.hideSignature();
 		if(this.data.config.allowSignature){
@@ -396,15 +405,27 @@ MyParcel = {
 	{
         var html = "";
 
-        $.each(MyParcel.data.deliveryOptions.data.delivery, function(key, value){
-            html += '<option value="' + key + '">' + MyParcel.dateToString(value.date) + ' </option>\n';
-        });
-        $('#mypa-select-date').html(html);
+		$.each(MyParcel.data.deliveryOptions.data.delivery, function(key, value){
+			html += '<option value="' + key + '">' + MyParcel.dateToString(value.date) + ' </option>\n';
+		});
+
+		/* Hide the day selector when the value of the deliverydaysWindow is 0*/
+		if (MyParcel.data.config.deliverydaysWindow === 0){
+            $('#mypa-select-date').hide();
+		}
+
+		/* When deliverydaysWindow is 1, hide the day selector and show a div to show the date */
+        if (MyParcel.data.config.deliverydaysWindow === 1){
+            $('#mypa-select-date').hide();
+            $('#mypa-delivery-date').show();
+		}
+
+        $('#mypa-select-date, #mypa-date').html(html);
 	},
 
     hideDeliveryDates: function()
     {
-        $('#mypa-delivery-date').parent().hide();
+        $('#mypa-delivery-date-select').hide();
     },
 
 	/*
@@ -617,6 +638,13 @@ MyParcel = {
 			return;
 		}
 
+		/* Check if the deliverydaysWindow == 0 and hide the select input*/
+        this.deliveryDaysWindow = this.data.config.deliverydaysWindow;
+
+		if(this.deliveryDaysWindow == 0){
+			this.deliveryDaysWindow = 1
+		}
+
 		/* Make the api request */
 		$.get(this.data.config.apiBaseUrl + "delivery_options",
 			{
@@ -627,8 +655,9 @@ MyParcel = {
 				carrier      			:this.data.config.carrier,
 				dropoff_days			:this.data.config.dropOffDays,
 				monday_delivery			:this.data.config.allowMondayDelivery,
-				deliverydays_window		:this.data.config.deliverydaysWindow,
-				cutoff_time 			:this.data.config.cutoffTime
+				deliverydays_window		:this.deliveryDaysWindow,
+				cutoff_time 			:this.data.config.cutoffTime,
+				dropoff_delay			:this.data.config.dropoffDelay
 			})
 			.done(function(response){
 

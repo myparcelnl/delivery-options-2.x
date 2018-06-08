@@ -183,6 +183,9 @@
 	overflow: auto;
 	background-color: rgba(0,0,0,0.4);
 }
+#mypa-delivery-date{
+	display: none;
+}
 
 @keyframes mypa-spin {
 	0% { transform: rotate(0deg); }
