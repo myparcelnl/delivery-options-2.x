@@ -34,7 +34,7 @@ MyParcel = {
 		$('#mypa-pickup-price').html(MyParcel.getPriceHtml(this.data.config.pricePickup));
 
 		/* Call delivery options */
-		MyParcel.callDeliveryOptions();	
+		MyParcel.callDeliveryOptions();
 
 		/* Engage defaults */
 		MyParcel.hideDelivery();
@@ -378,7 +378,7 @@ MyParcel = {
 
 	/*
 	 * dateToString
-	 * 
+	 *
 	 * Convert api date string format to human readable string format
 	 *
 	 */
@@ -398,27 +398,33 @@ MyParcel = {
 	 * showDeliveryDates
 	 *
 	 * Show possible delivery dates.
-	 * 
+	 *
 	 */
 
 	showDeliveryDates: function()
 	{
         var html = "";
+        var deliveryWindow = parseInt(MyParcel.data.config.deliverydaysWindow);
 
 		$.each(MyParcel.data.deliveryOptions.data.delivery, function(key, value){
 			html += '<option value="' + key + '">' + MyParcel.dateToString(value.date) + ' </option>\n';
 		});
 
 		/* Hide the day selector when the value of the deliverydaysWindow is 0*/
-		if (MyParcel.data.config.deliverydaysWindow === 0){
+		if (deliveryWindow === 0){
             $('#mypa-select-date').hide();
 		}
 
 		/* When deliverydaysWindow is 1, hide the day selector and show a div to show the date */
-        if (MyParcel.data.config.deliverydaysWindow === 1){
+        if (deliveryWindow === 1){
             $('#mypa-select-date').hide();
             $('#mypa-delivery-date').show();
 		}
+
+        /* When deliverydaysWindow > 1, show the day selector */
+        if (deliveryWindow > 1){
+            $('#mypa-select-date').show();
+        }
 
         $('#mypa-select-date, #mypa-date').html(html);
 	},
@@ -555,7 +561,7 @@ MyParcel = {
 	/*
 	 * showFallBackDelivery
 	 *
-	 * If the API call fails and we have no data about delivery or pick up options 
+	 * If the API call fails and we have no data about delivery or pick up options
 	 * show the customer an "As soon as possible" option.
 	 */
 
@@ -572,7 +578,7 @@ MyParcel = {
 	/*
 	 * showRetru
 	 *
-	 * If a customer enters an unrecognised postal code housenumber combination show a 
+	 * If a customer enters an unrecognised postal code housenumber combination show a
 	 * pop-up so they can try again.
 	 */
 
