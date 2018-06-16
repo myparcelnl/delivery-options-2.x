@@ -461,7 +461,7 @@ MyParcel = {
             $('#mypa-pickup-location-selector').hide();
         }
 
-		$('#mypa-pickup-options, #mypa-pickup, #mypa-pickup-express').hide();
+		$('#mypa-pickup-options, #mypa-pickup, #mypa-pickup-express, #mypa-pickup-google-maps').hide();
 
 	},
 
@@ -473,9 +473,9 @@ MyParcel = {
 	 *
 	 */
 
-	showPickUpLocations: function()
-	{
-        if(MyParcel.data.config.allowPickupPoints) {
+	showPickUpLocations: function() {
+
+        if (MyParcel.data.config.allowPickupPoints) {
 
             var html = "";
             $.each(MyParcel.data.deliveryOptions.data.pickup, function (key, value) {
@@ -485,7 +485,11 @@ MyParcel = {
             $('#mypa-pickup-location').html(html).prop("checked", true);
             $('#mypa-pickup-location-selector, #mypa-pickup-options, #mypa-pickup').show();
         }
-	},
+
+        if (MyParcel.data.config.allowGoogleMaps) {
+			MyParcel.showPostnlPickupOnGoogleMaps();
+        }
+    },
 
 	/*
 	 * hideLocationDetails
@@ -494,8 +498,7 @@ MyParcel = {
 	 *
 	 */
 
-	hideLocationDetails: function()
-	{
+	hideLocationDetails: function() {
 		 $('#mypa-location-details').hide();
 	},
 
@@ -542,6 +545,50 @@ MyParcel = {
 		$('#mypa-location-details').html(html).show();
 	},
 
+    showPostnlPickupOnGoogleMaps: function () {
+
+        $('#mypa-pickup-google-maps').show();
+
+        var bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow();
+        var marker, i;
+
+        var locations = [
+            $.each(MyParcel.data.deliveryOptions.data.pickup, function (key, value) {
+                [value.location, value.latitude, value.longitude, key]
+            }),
+        ];
+
+        var map = new google.maps.Map(document.getElementById('map'),{
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        for (i = 0; i < locations[0].length; i++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[0][i]['latitude'], locations[0][i]['longitude']),
+                map: map
+            });
+            bounds.extend(marker.position);
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    infowindow.setContent(locations[0][i]['location']);
+                    infowindow.open(map, marker);
+                    map.setZoom(18);
+                    map.setCenter(marker.getPosition());
+                    console.log(locations[0][i]);
+                }
+            })(marker, i));
+        }
+        map.fitBounds(bounds);
+
+        /* zoom in the middel to 12 */
+        var listener = google.maps.event.addListener(map, "idle", function () {
+            map.setZoom(12);
+            google.maps.event.removeListener(listener);
+        });
+    },
+
 	/*
 	 * retryPostalcodeHouseNumber
 	 *
@@ -569,7 +616,7 @@ MyParcel = {
 	{
 		MyParcel.hideSpinner();
 		MyParcel.hideDelivery();
-		$('#mypa-select-date, #method-myparcel-normal').hide();
+		$('#mypa-select-date, #method-myparcel-normal, #mypa-normal-delivery').hide();
 		$('.mypa-is-pickup-element').hide();
 		$('#mypa-select-delivery-titel').html('Zo snel mogelijk bezorgen');
 	},

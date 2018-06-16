@@ -187,6 +187,17 @@
 	display: none;
 }
 
+#mypa-list-postnl-puckup option{
+	padding: 5px 0px 5px 0px;
+}
+
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+	height: 100%;
+	width: 60%;
+}
+
 @keyframes mypa-spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
