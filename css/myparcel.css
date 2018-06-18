@@ -178,7 +178,7 @@
 	vertical-align:top;
 }
 
-.mypa-massage-model {
+.mypa-message-model {
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0,0,0,0.4);
@@ -187,7 +187,7 @@
 	display: none;
 }
 
-#mypa-list-postnl-puckup option{
+#mypa-list-postnl-pickup option{
 	padding: 5px 0px 5px 0px;
 }
 

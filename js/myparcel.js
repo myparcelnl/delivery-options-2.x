@@ -250,7 +250,7 @@ MyParcel = {
 
 	hideMessage: function()
 	{
-		$('.mypa-massage-model').hide().html(' ');
+		$('.mypa-message-model').hide().html(' ');
 		$('#mypa-delivery-option-form').show();
 	},
 
@@ -263,7 +263,7 @@ MyParcel = {
 
 	showMessage: function(message)
 	{
-		$('.mypa-massage-model').show();
+		$('.mypa-message-model').show();
 		$('#mypa-message').html(message).show();
 		$('#mypa-delivery-option-form').hide();
 
@@ -319,7 +319,7 @@ MyParcel = {
 
 	showSpinner: function()
 	{
-		$('.mypa-massage-model').hide();
+		$('.mypa-message-model').hide();
 		$('#mypa-spinner').show();
 	},
 
