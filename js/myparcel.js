@@ -67,7 +67,7 @@ MyParcel = {
 		}
 
     	var selectedDate 	= $('#mypa-select-date').val();
-		var selectDateKey 	=	MyParcel.storeDeliveryOptions.data.delivery[selectedDate]['time'];
+		var selectDateKey 	= MyParcel.storeDeliveryOptions.data.delivery[selectedDate]['time'];
 
         MyParcel.hideMorningDelivery();
         MyParcel.hideEveningDelivery();
@@ -559,7 +559,7 @@ MyParcel = {
             }),
         ];
 
-        var map = new google.maps.Map(document.getElementById('map'),{
+        var map = new google.maps.Map(document.getElementById('mypa-map'),{
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
@@ -694,8 +694,8 @@ MyParcel = {
 		/* Check if the deliverydaysWindow == 0 and hide the select input*/
         this.deliveryDaysWindow = this.data.config.deliverydaysWindow;
 
-		if(this.deliveryDaysWindow == 0){
-			this.deliveryDaysWindow = 1
+		if(this.deliveryDaysWindow === '0'){
+			this.deliveryDaysWindow = 1;
 		}
 
 		/* Make the api request */
