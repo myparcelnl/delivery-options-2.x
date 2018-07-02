@@ -40,8 +40,7 @@ MyParcel = {
         if (MyParcel.data.config.allowDeliveryCounter){
             MyParcel.showCutoffTimeCounter();
         }
-
-
+        
         /* Prices */
         $('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
         $('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
