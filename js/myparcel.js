@@ -37,10 +37,6 @@ MyParcel = {
             $('#mypa-pickup-titel').html(MyParcel.data.config.pickupTitel);
         }
 
-        if (MyParcel.data.config.allowDeliveryCounter){
-            MyParcel.initCutoffTimeCounter();
-        }
-
         /* Prices */
         $('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
         $('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
@@ -817,55 +813,6 @@ MyParcel = {
         });
 
         return object;
-    },
-
-
-    /*
-    * initCutoffTimeCounter
-    *
-    * Count down the hours, minutes and seconds until the point of the cutoff time is reached.
-    *
-    */
-    initCutoffTimeCounter: function () {
-        var cutoffTime = MyParcel.data.config.cutoffTime.split(':');
-
-        /* if when seconds are not entered, it starts counting from 00 */
-        if (cutoffTime[2] === undefined){
-            cutoffTime[2] = '00';
-        }
-
-        /* Place the hours, minutes and seconds separately */
-        var now = new Date;
-        var endOfCutoffTime = new Date().setHours(cutoffTime[0], cutoffTime[1], cutoffTime[2]);
-
-        // When the cutoff time is reached, go to teh next day.
-        if (now > endOfCutoffTime) {
-            endOfCutoffTime = new Date().setHours(cutoffTime[0] + 24, cutoffTime[1], cutoffTime[2]);
-        }
-
-        setInterval(function () {
-            var remain = (endOfCutoffTime - new Date) / 1000;
-            MyParcel.showCutoffTimeCounter(remain);
-        }, 1000);
-    },
-
-    /*
-    * showCutoffTimeCounter
-    *
-    * Set the number of the count down on the screen
-    *
-    */
-    showCutoffTimeCounter: function (remain) {
-        /* Get the zero prefix from prefixIntWithZero and place it inside a variable */
-        var hours = MyParcel.prefixIntWithZero((remain / 60 / 60) % 60);
-        var minutes = MyParcel.prefixIntWithZero((remain / 60) % 60);
-        var seconds = MyParcel.prefixIntWithZero(remain % 60);
-
-        $( "#mypa-cutoff-time-counter" ).html(hours + ":" + minutes + ":" + seconds);
-    },
-
-    prefixIntWithZero: function (number) {
-        return ("0" + parseInt(number)).substr(-2);
     },
 
     /*
