@@ -38,9 +38,9 @@ MyParcel = {
         }
 
         if (MyParcel.data.config.allowDeliveryCounter){
-            MyParcel.showCutoffTimeCounter();
+            MyParcel.initCutoffTimeCounter();
         }
-        
+
         /* Prices */
         $('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
         $('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
@@ -821,15 +821,13 @@ MyParcel = {
 
 
     /*
-    * showCutoffTimeCounter
+    * initCutoffTimeCounter
     *
     * Count down the hours, minutes and seconds until the point of the cutoff time is reached.
     *
     */
-    showCutoffTimeCounter: function () {
-
+    initCutoffTimeCounter: function () {
         var cutoffTime = MyParcel.data.config.cutoffTime.split(':');
-        var start = new Date;
 
         /* if when seconds are not entered, it starts counting from 00 */
         if (cutoffTime[2] === undefined){
@@ -837,34 +835,38 @@ MyParcel = {
         }
 
         /* Place the hours, minutes and seconds separately */
-        start.setHours(cutoffTime[0], cutoffTime[1], cutoffTime[2]);
+        var now = new Date;
+        var endOfCutoffTime = new Date().setHours(cutoffTime[0], cutoffTime[1], cutoffTime[2]);
 
-        function pad(num) {
-            return ("0" + parseInt(num)).substr(-2);
+        // When the cutoff time is reached, go to teh next day.
+        if (now > endOfCutoffTime) {
+            endOfCutoffTime = new Date().setHours(cutoffTime[0] + 24, cutoffTime[1], cutoffTime[2]);
         }
 
-        /* countdown of the time */
-        function countDown() {
-            var now = new Date;
-
-            // When the cutoff time is reached, go to teh next day.
-            if (now > start) {
-                start.setDate(start.getDate() + 1);
-            }
-            var remain = ((start - now) / 1000);
-
-            /**/
-            var hours = pad((remain / 60 / 60) % 60);
-            var minutes = pad((remain / 60) % 60);
-            var seconds = pad(remain % 60);
-
-            $( "#mypa-cutoff-time-counter" ).html(hours + ":" + minutes + ":" + seconds);
-            setTimeout(countDown, 1000);
-        }
-
-        countDown();
+        setInterval(function () {
+            var remain = (endOfCutoffTime - new Date) / 1000;
+            MyParcel.showCutoffTimeCounter(remain);
+        }, 1000);
     },
 
+    /*
+    * showCutoffTimeCounter
+    *
+    * Set the number of the count down on the screen
+    *
+    */
+    showCutoffTimeCounter: function (remain) {
+        /* Get the zero prefix from prefixIntWithZero and place it inside a variable */
+        var hours = MyParcel.prefixIntWithZero((remain / 60 / 60) % 60);
+        var minutes = MyParcel.prefixIntWithZero((remain / 60) % 60);
+        var seconds = MyParcel.prefixIntWithZero(remain % 60);
+
+        $( "#mypa-cutoff-time-counter" ).html(hours + ":" + minutes + ":" + seconds);
+    },
+
+    prefixIntWithZero: function (number) {
+        return ("0" + parseInt(number)).substr(-2);
+    },
 
     /*
      * retryPostalcodeHouseNumber
