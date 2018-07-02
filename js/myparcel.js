@@ -163,6 +163,7 @@ MyParcel = {
             $('#mypa-show-location-details').on('click', function(){
                 MyParcel.setCurrentLocation();
                 MyParcel.showLocationDetails();
+                MyParcel.hideDelivery();
             });
         }
 
@@ -345,11 +346,11 @@ MyParcel = {
     },
 
     addStyleToPrice: function (chosenDelivery) {
-        $(chosenDelivery).addClass('boldPrice');
+        $(chosenDelivery).addClass('mypa-boldPrice');
     },
 
     removeStyleFromPrice: function (){
-        $('.mypa-delivery-option-table').find( "span" ).removeClass('boldPrice');
+        $('.mypa-delivery-option-table').find( "span" ).removeClass('mypa-boldPrice');
     },
 
     addDeliveryToExternalInput: function (deliveryMomentOfDay) {
@@ -704,6 +705,7 @@ MyParcel = {
 
     hideLocationDetails: function()
     {
+        $('#mypa-delivery-option-form').show();
         $('#mypa-location-details').hide();
     },
 
@@ -752,6 +754,7 @@ MyParcel = {
                 html += "<br>";
             });
 
+        $('#mypa-delivery-option-form').hide();
         $('#mypa-location-details').html(html).show();
     },
 
