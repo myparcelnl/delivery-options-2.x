@@ -341,11 +341,11 @@ MyParcel = {
     },
 
     addStyleToPrice: function (chosenDelivery) {
-        $(chosenDelivery).addClass('mypa-boldPrice');
+        $(chosenDelivery).addClass('mypa-bold-price');
     },
 
     removeStyleFromPrice: function (){
-        $('.mypa-delivery-option-table').find( "span" ).removeClass('mypa-boldPrice');
+        $('.mypa-delivery-option-table').find( "span" ).removeClass('mypa-bold-price');
     },
 
     addDeliveryToExternalInput: function (deliveryMomentOfDay) {
