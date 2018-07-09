@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sandbox</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="../css/myparcel.css">
+</head>
+<body>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <form>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h2>address</h2>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cc" class="col-sm-4 col-form-label">cc</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="cc" name="address[cc]" placeholder="cc" value="NL">
+                            <small id="ccHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="postalCode" class="col-sm-4 col-form-label">postalCode</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="postalCode" name="address[postalCode]" placeholder="postalCode" value="2131 BC">
+                            <small id="postalCodeHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="number" class="col-sm-4 col-form-label">number</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="number" name="address[number]" placeholder="number" value="679">
+                            <small id="numberHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="city" class="col-sm-4 col-form-label">city</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="city" name="address[city]" placeholder="city" value="Hoofddorp">
+                            <small id="cityHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h2>config</h2>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceNormalDelivery" class="col-sm-4 col-form-label">priceNormalDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceNormalDelivery" name="config[priceNormalDelivery]" placeholder="priceNormalDelivery" value="1">
+                            <small id="priceNormalDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="2,55">
+                            <small id="priceEveningDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="2,22">
+                            <small id="priceSignatureHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="3,33">
+                            <small id="pricePickupHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="5,00">
+                            <small id="pricePickupExpressHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="2,00">
+                            <small id="priceOnlyRecipientHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryTitel" class="col-sm-4 col-form-label">deliveryTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryTitel" name="config[deliveryTitel]" placeholder="deliveryTitel" value="Bezorgen op">
+                            <small id="deliveryTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pickupTitel" class="col-sm-4 col-form-label">pickupTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pickupTitel" name="config[pickupTitel]" placeholder="pickupTitel" value="Afhalen op locatie">
+                            <small id="pickupTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryMorningTitel" class="col-sm-4 col-form-label">deliveryMorningTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryMorningTitel" name="config[deliveryMorningTitel]" placeholder="deliveryMorningTitel" value="Ochtendlevering">
+                            <small id="deliveryMorningTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryStandardTitel" class="col-sm-4 col-form-label">deliveryStandardTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryStandardTitel" name="config[deliveryStandardTitel]" placeholder="deliveryStandardTitel" value="Standaard levering">
+                            <small id="deliveryStandardTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryEveningTitel" class="col-sm-4 col-form-label">deliveryEveningTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryEveningTitel" name="config[deliveryEveningTitel]" placeholder="deliveryEveningTitel" value="Avondlevering">
+                            <small id="deliveryEveningTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="signatureTitel" class="col-sm-4 col-form-label">signatureTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="signatureTitel" name="config[signatureTitel]" placeholder="signatureTitel" value="Handtekening">
+                            <small id="signatureTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="onlyRecipientTitel" class="col-sm-4 col-form-label">onlyRecipientTitel</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="onlyRecipientTitel" name="config[onlyRecipientTitel]" placeholder="onlyRecipientTitel" value="Alleen geadresseerde">
+                            <small id="onlyRecipientTitelHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowMondayDelivery" class="col-sm-4 col-form-label">allowMondayDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
+                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowMorningDelivery" class="col-sm-4 col-form-label">allowMorningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMorningDelivery" name="config[allowMorningDelivery]" placeholder="allowMorningDelivery" value="true">
+                            <small id="allowMorningDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowEveningDelivery" class="col-sm-4 col-form-label">allowEveningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">
+                            <small id="allowEveningDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowSignature" class="col-sm-4 col-form-label">allowSignature</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowSignature" name="config[allowSignature]" placeholder="allowSignature" value="true">
+                            <small id="allowSignatureHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowOnlyRecipient" class="col-sm-4 col-form-label">allowOnlyRecipient</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">
+                            <small id="allowOnlyRecipientHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowPickupPoints" class="col-sm-4 col-form-label">allowPickupPoints</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupPoints" name="config[allowPickupPoints]" placeholder="allowPickupPoints" value="true">
+                            <small id="allowPickupPointsHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowPickupExpress" class="col-sm-4 col-form-label">allowPickupExpress</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">
+                            <small id="allowPickupExpressHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dropOffDays" class="col-sm-4 col-form-label">dropOffDays</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
+                            <small id="dropOffDaysHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="16:00">
+                            <small id="saturdayCutoffTimeHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cutoffTime" class="col-sm-4 col-form-label">cutoffTime</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="15:00">
+                            <small id="cutoffTimeHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
+                            <small id="deliverydaysWindowHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dropoffDelay" class="col-sm-4 col-form-label">dropoffDelay</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="dropoffDelay" name="config[dropoffDelay]" placeholder="dropoffDelay" value="0">
+                            <small id="dropoffDelayHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-info">Toon volledige code</button>
+
+                <pre><code>
+                    &lt;script>
+                        var data = {
+                            address: {
+                                cc: 'NL',
+                                postalCode: '2131 BC',
+                                number: '679',
+                                city:'Hoofddorp'
+                            },
+                            txtWeekDays: [
+                                'Zondag',
+                                'Maandag',
+                                'Dinsdag',
+                                'Woensdag',
+                                'Donderdag',
+                                'Vrijdag',
+                                'Zaterdag'
+                            ],
+                            translateENtoNL: {
+                                'monday': 'maandag',
+                                'tuesday': 'dindsag',
+                                'wednesday': 'woensdag',
+                                'thursday': 'donderdag',
+                                'friday': 'vrijdag',
+                                'saturday': 'zaterdag',
+                                'sunday': 'zondag'
+                            },
+                            config: {
+                                "apiBaseUrl": "https://api.myparcel.nl/",
+                                "carrier": "1",
+                                "priceMorningDelivery": "10,00",
+                                "priceNormalDelivery": "1",
+                                "priceEveningDelivery": "2,55",
+                                "priceSignature": "2,22",
+                                "pricePickup": "3,33",
+                                "pricePickupExpress": "5,00",
+                                "priceOnlyRecipient":"2,00",
+                                "deliveryTitel":"Bezorgen op",
+                                "pickupTitel":"Afhalen op locatie",
+                                "deliveryMorningTitel":"Ochtendlevering",
+                                "deliveryStandardTitel":"Standaard levering",
+                                "deliveryEveningTitel":"Avondlevering",
+                                "signatureTitel": "Handtekening",
+                                "onlyRecipientTitel": "Alleen geadresseerde",
+                                "allowMondayDelivery": "1",
+                                "allowMorningDelivery": true,
+                                "allowEveningDelivery": true,
+                                "allowSignature": true,
+                                "allowOnlyRecipient": true,
+                                "allowPickupPoints": true,
+                                "allowPickupExpress": true,
+                                "dropOffDays": "1;2;3;4;5;6",
+                                "saturdayCutoffTime": "16:00",
+                                "cutoffTime": "15:00",
+                                "deliverydaysWindow": "5",
+                                "dropoffDelay":"1"
+                            }
+                        };
+                    &lt;/script>
+                </code></pre>
+            </div>
+            <div class="col-sm-4">
+
+                <input style="/*display: none;*/" id="mypa-input" name="mypa-post-nl-data">
+                <div id="mypa-load">
+                    <div id="mypa-spinner"></div>
+                    <div class="mypa-message-model">
+                        <div id="mypa-message"></div>
+                    </div>
+                    <div id="mypa-location-details"></div>
+                    <div class="mypa-example_wrapper">
+                        <div id="mypa-delivery-option-form">
+                            <table class="mypa-delivery-option-table">
+                                <tbody>
+                                <tr id="mypa-send-per-carrier">
+                                    <td id="mypa-txt-send-per-carrier" colspan="3">Bezorgopties</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input name="mypa-deliver-or-pickup" id="mypa-select-delivery" value="mypa-deliver" type="radio">
+                                    </td>
+                                    <td colspan="2">
+                                        <label id="mypa-select-delivery-titel" for="mypa-select-delivery"><span id="mypa-delivery-titel"></span></label>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-delivery-date-select">
+                                    <td></td>
+                                    <td colspan="2">
+                                        <select name="mypa-delivery-date-select" id="mypa-select-date" title="Delivery date"></select>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-delivery-date-text">
+                                    <td></td>
+                                    <td colspan="2">
+                                        <div name="mypa-delivery-date-text" id="mypa-date" title="Delivery date"></div>
+                                    </td>
+                                </tr>
+                                <tr id="method-myparcel-delivery-morning-div">
+                                    <td></td>
+                                    <td>
+                                        <div class="mypa-delivery-option" >
+                                            <input name="shipping-method" id="method-myparcel-delivery-morning" type="radio" value="myparcel-morning">
+                                            <label for="method-myparcel-delivery-morning"><span id="mypa-morning-titel"></span></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mypa-delivery-option">
+                                            <span id="mypa-morning-delivery"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-delivery-option method-myparcel-normal-div">
+                                    <td></td>
+                                    <td>
+                                        <div id="mypa-delivery" class="mypa-delivery-option">
+                                            <input name="shipping-method" id="method-myparcel-normal" type="radio" value="myparcel-normal">
+                                            <label for="method-myparcel-normal"><span id="mypa-standard-titel"></span></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mypa-delivery-option">
+                                            <span id="mypa-normal-delivery"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="method-myparcel-delivery-evening-div">
+                                    <td></td>
+                                    <td>
+                                        <div class="mypa-delivery-option">
+                                            <input name="shipping-method" id="method-myparcel-delivery-evening" type="radio" value="myparcel-delivery-evening" >
+                                            <label for="method-myparcel-delivery-evening"><span id="mypa-evening-titel"></span></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mypa-delivery-option">
+                                            <span id="mypa-evening-delivery"> </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="mypa-extra-delivery-option-signature">
+                                    <td></td>
+                                    <td id="mypa-signature" class=" mypa-extra-delivery-options-padding-top">
+                                        <div class="mypa-delivery-option">
+                                            <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signature-selector" >
+                                            <label for="mypa-signature-selector"><span id="mypa-signature-titel"></span></label>
+                                        </div>
+                                    </td>
+                                    <td class="mypa-extra-delivery-options-padding-top">
+                                        <span id="mypa-signature-price"></span>
+                                    </td>
+                                </tr>
+                                <tr class="mypa-extra-delivery-options">
+                                    <td></td>
+                                    <td id="mypa-only-recipient">
+                                        <div class="mypa-delivery-option">
+                                            <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only-recipient-selector" >
+                                            <label for="mypa-only-recipient-selector"><span id="mypa-only-recipient-titel"></span></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span id="mypa-only-recipient-price"></span>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-pickup-location-selector" class="mypa-is-pickup-element">
+                                    <td>
+                                        <input name="mypa-deliver-or-pickup" id="mypa-pickup-delivery" value="mypa-pickup" type="radio">
+                                    </td>
+                                    <td colspan="2">
+                                        <label for="mypa-pickup-delivery"><span id="mypa-pickup-titel"></span></label>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-pickup-options" class="mypa-is-pickup-element">
+                                    <td></td>
+                                    <td colspan="2">
+                                        <select name="mypa-pickup-location" id="mypa-pickup-location">
+                                            <option value="">Geen Locatie</option>
+                                        </select>
+                                        <span id="mypa-show-location-details"><svg class="svg-inline--fa mypa-fa-clock fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></svg></span>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-pickup" class="mypa-is-pickup-element">
+                                    <td></td>
+                                    <td>
+                                        <input name="method-myparcel-only-recipient-selector" id="mypa-pickup-selector" type="radio" value="myparcel-pickup-selector" >
+                                        <label for="mypa-pickup-selector">Ophalen vanaf 15:00</label>
+                                    </td>
+                                    <td>
+                                        <span id="mypa-pickup-price"></span>
+                                    </td>
+                                </tr>
+                                <tr id="mypa-pickup-express" class="mypa-is-pickup-element">
+                                    <td></td>
+                                    <td>
+                                        <input name="method-myparcel-only-recipient-selector" id="mypa-pickup-express-selector" type="radio" value="myparcel-pickup-express-selector" >
+                                        <label for="mypa-pickup-express-selector">Ophalen vanaf 09:00</label>
+                                    </td>
+                                    <td>
+                                        <span id="mypa-pickup-express-price"></span>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+    <script src="../js/myparcel.js"></script>
+</body>
+</html>
