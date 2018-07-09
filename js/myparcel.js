@@ -212,8 +212,7 @@ MyParcel = {
         {
             $('#s_method_myparcel_morning').click();
             MyParcel.DELIVERY_ONLY_RECIPIENT = 1;
-            MyParcel.addStyleToPrice('#mypa-morning-delivery');
-            MyParcel.addStyleToPrice('#mypa-only-recipient-price');
+            MyParcel.addStyleToPrice('#mypa-morning-delivery, #mypa-only-recipient-price');
 
             /**
              * Signature
@@ -245,8 +244,7 @@ MyParcel = {
                 $('#s_method_myparcel_delivery_signature_and_only_recipient_fee').click();
                 MyParcel.DELIVERY_SIGNED = 1;
                 MyParcel.DELIVERY_ONLY_RECIPIENT = 1;
-                MyParcel.addStyleToPrice('#mypa-signature-price');
-                MyParcel.addStyleToPrice('#mypa-only-recipient-price');
+                MyParcel.addStyleToPrice('#mypa-signature-price, #mypa-only-recipient-price');
             } else
 
             /**
@@ -283,8 +281,7 @@ MyParcel = {
         {
             $('#s_method_myparcel_evening').click();
             MyParcel.DELIVERY_ONLY_RECIPIENT = 1;
-            MyParcel.addStyleToPrice('#mypa-evening-delivery');
-            MyParcel.addStyleToPrice('#mypa-only-recipient-price');
+            MyParcel.addStyleToPrice('#mypa-evening-delivery, #mypa-only-recipient-price');
 
             /**
              * Signature
