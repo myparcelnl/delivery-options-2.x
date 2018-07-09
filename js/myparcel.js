@@ -755,44 +755,46 @@ MyParcel = {
 
     showPostnlPickupOnGoogleMaps: function () {
 
-        $('#mypa-pickup-google-maps').show();
+        $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyAyBuzlPSNhmRIEhIl-3ZUidj3fwXfsDSw&amp;sensor=false", function() {
+            $('#mypa-pickup-google-maps').show();
 
-        var bounds = new google.maps.LatLngBounds();
-        var infowindow = new google.maps.InfoWindow();
-        var marker, i;
+            var bounds = new google.maps.LatLngBounds();
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
 
-        var locations = [
-            $.each(MyParcel.data.deliveryOptions.data.pickup, function (key, value) {
-                [value.location, value.latitude, value.longitude, key]
-            }),
-        ];
+            var locations = [
+                $.each(MyParcel.data.deliveryOptions.data.pickup, function (key, value) {
+                    [value.location, value.latitude, value.longitude, key]
+                }),
+            ];
 
-        var map = new google.maps.Map(document.getElementById('mypa-map'),{
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
-        for (i = 0; i < locations[0].length; i++) {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(locations[0][i]['latitude'], locations[0][i]['longitude']),
-                map: map
+            var map = new google.maps.Map(document.getElementById('mypa-map'),{
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             });
-            bounds.extend(marker.position);
 
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    infowindow.setContent(locations[0][i]['location']);
-                    infowindow.open(map, marker);
-                    map.setZoom(18);
-                    map.setCenter(marker.getPosition());
-                }
-            })(marker, i));
-        }
-        map.fitBounds(bounds);
+            for (i = 0; i < locations[0].length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[0][i]['latitude'], locations[0][i]['longitude']),
+                    map: map
+                });
+                bounds.extend(marker.position);
 
-        /* zoom in the middel to 12 */
-        var listener = google.maps.event.addListener(map, "idle", function () {
-            map.setZoom(12);
-            google.maps.event.removeListener(listener);
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(locations[0][i]['location']);
+                        infowindow.open(map, marker);
+                        map.setZoom(18);
+                        map.setCenter(marker.getPosition());
+                    }
+                })(marker, i));
+            }
+            map.fitBounds(bounds);
+
+            /* zoom in the middel to 12 */
+            var listener = google.maps.event.addListener(map, "idle", function () {
+                map.setZoom(12);
+                google.maps.event.removeListener(listener);
+            });
         });
     },
 
@@ -957,7 +959,6 @@ MyParcel = {
                 /* No errors */
                 else {
                     MyParcel.hideMessage();
-                    MyParcel.showPickUpLocations();
                     MyParcel.showDeliveryDates();
                     if(MyParcel.data.deliveryOptions.data.delivery.length <= 0 ){
                         MyParcel.hideDeliveryDates();
