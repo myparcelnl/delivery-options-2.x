@@ -893,10 +893,11 @@ MyParcel = {
         MyParcel.showSpinner();
         MyParcel.clearPickUpLocations();
 
-        var cc 				= this.data.address.cc;
-        var postalCode 		= this.data.address.postalCode;
-        var number 			= this.data.address.number;
-        var city 			= this.data.address.city;
+        var cc 				        = this.data.address.cc;
+        var postalCode 	     	    = this.data.address.postalCode;
+        var number 			        = this.data.address.number;
+        var city 			        = this.data.address.city;
+        var mondayDeliveryActive    = 0;
 
         if (postalCode == '' || number == ''){
             MyParcel.showMessage(
@@ -925,19 +926,23 @@ MyParcel = {
             this.deliveryDaysWindow = 1;
         }
 
+        if (this.data.config.allowMondayDelivery === true){
+            mondayDeliveryActive = 1;
+        }
+
         /* Make the api request */
         $.get(this.data.config.apiBaseUrl + "delivery_options",
             {
-                cc           			:this.data.address.cc,
-                postal_code  			:postalCode,
-                number       			:number,
-                city					:city,
-                carrier      			:this.data.config.carrier,
-                dropoff_days			:this.data.config.dropOffDays,
-                monday_delivery			:this.data.config.allowMondayDelivery,
-                deliverydays_window		:this.deliveryDaysWindow,
-                cutoff_time 			:this.data.config.cutoffTime,
-                dropoff_delay			:this.data.config.dropoffDelay
+                cc                      :this.data.address.cc,
+                postal_code             :postalCode,
+                number                  :number,
+                city                    :city,
+                carrier                 :this.data.config.carrier,
+                dropoff_days            :this.data.config.dropOffDays,
+                monday_delivery         :mondayDeliveryActive,
+                deliverydays_window     :this.deliveryDaysWindow,
+                cutoff_time             :this.data.config.cutoffTime,
+                dropoff_delay           :this.data.config.dropoffDelay
             })
             .done(function(response){
 
