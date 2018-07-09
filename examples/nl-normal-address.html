@@ -3,9 +3,7 @@
 <link rel="stylesheet" href="../css/myparcel.css">
 
 <!--Get the selected options and place this inside a input-->
-<input style="/*display: none;*/" id="mypa-input" name="mypa-post-nl-data">
-<input style="/*display: none;*/" type="checkbox" name='mypa-signed' id="mypa-signed">
-<input style="/*display: none;*/" type="checkbox" name='mypa-recipient-only' id="mypa-recipient-only">
+<input style="display: none;" id="mypa-input" name="mypa-post-nl-data">
 
 <div id="mypa-load">
 	<div id="mypa-spinner"></div>
@@ -17,8 +15,8 @@
 		<div id="mypa-delivery-option-form">
 			<table class="mypa-delivery-option-table">
 				<tbody>
-				<tr id="mypa-send-per-carrier">
-					<td id="mypa-txt-send-per-carrier" colspan="3">Bezorgopties</td>
+				<tr>
+					<td id="mypa-send-per-carrier" colspan="2">Bezorgopties</td>
 				</tr>
 				<tr>
 					<td>
@@ -143,12 +141,12 @@
 						<span id="mypa-pickup-express-price"></span>
 					</td>
 				</tr>
-
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
+
 
 <script>
 	var data = {
@@ -180,13 +178,13 @@
 			"apiBaseUrl": "https://api.myparcel.nl/",
 			"carrier": "1",
 
-			"priceMorningDelivery": "10,00",
-			"priceNormalDelivery": "1",
-			"priceEveningDelivery": "2,55",
-			"priceSignature": "2,22",
-			"pricePickup": "3,33",
-			"pricePickupExpress": "5,00",
-			"priceOnlyRecipient":"2,00",
+			"priceMorningDelivery": "10.00",
+			"priceNormalDelivery": "5.85",
+			"priceEveningDelivery": "1.25",
+			"priceSignature": "0.36",
+			"priceOnlyRecipient":"0.29",
+			"pricePickup": "5.85",
+			"pricePickupExpress": "1.38",
 
 			"deliveryTitel":"Bezorgen op",
 			"pickupTitel":"Afhalen op locatie",
@@ -196,7 +194,7 @@
             "signatureTitel": "Handtekening",
             "onlyRecipientTitel": "Alleen geadresseerde",
 
-			"allowMondayDelivery": "1",
+			"allowMondayDelivery": true,
 			"allowMorningDelivery": true,
 			"allowEveningDelivery": true,
 			"allowSignature": true,
@@ -210,6 +208,7 @@
 			"deliverydaysWindow": "5",
 			"dropoffDelay":"1"
 		}
+
 	};
 </script>
 <script src="../js/myparcel.js"></script>
