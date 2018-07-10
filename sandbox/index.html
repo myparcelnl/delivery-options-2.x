@@ -20,144 +20,17 @@
                             <h2>config</h2>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="allowMondayDelivery" class="col-sm-4 col-form-label">allowMondayDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
-                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery, value 6 must be given with dropOffDays, value 1 must be given by monday_delivery. And on Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown.</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowMorningDelivery" class="col-sm-4 col-form-label">allowMorningDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMorningDelivery" name="config[allowMorningDelivery]" placeholder="allowMorningDelivery" value="true">
-                            <small id="allowMorningDeliveryHelp" class="form-text text-muted">Morning delivery</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="deliveryMorningTitle" class="col-sm-4 col-form-label">deliveryMorningTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
-                            <small id="deliveryMorningTitleHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowEveningDelivery" class="col-sm-4 col-form-label">allowEveningDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">
-                            <small id="allowEveningDeliveryHelp" class="form-text text-muted">Evening delivery</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowSignature" class="col-sm-4 col-form-label">allowSignature</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowSignature" name="config[allowSignature]" placeholder="allowSignature" value="true">
-                            <small id="allowSignatureHelp" class="form-text text-muted">Signature</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowOnlyRecipient" class="col-sm-4 col-form-label">allowOnlyRecipient</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">
-                            <small id="allowOnlyRecipientHelp" class="form-text text-muted">Only recipient</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowPickupPoints" class="col-sm-4 col-form-label">allowPickupPoints</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupPoints" name="config[allowPickupPoints]" placeholder="allowPickupPoints" value="true">
-                            <small id="allowPickupPointsHelp" class="form-text text-muted">Pickup points</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="allowPickupExpress" class="col-sm-4 col-form-label">allowPickupExpress</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">
-                            <small id="allowPickupExpressHelp" class="form-text text-muted">Pickup express</small>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>General</h3>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliveryTitle" class="col-sm-4 col-form-label">deliveryTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryTitle" name="config[deliveryTitle]" placeholder="deliveryTitle" value="Bezorgen op">
-                            <small id="deliveryTitleHelp" class="form-text text-muted">Delivery title</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="pickupTitle" class="col-sm-4 col-form-label">pickupTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pickupTitle" name="config[pickupTitle]" placeholder="pickupTitle" value="Afhalen op locatie">
-                            <small id="pickupTitleHelp" class="form-text text-muted">Pickup title</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="Standaard levering">
-                            <small id="deliveryStandardTitleHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
-                            <small id="deliveryEveningTitleHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="signatureTitle" class="col-sm-4 col-form-label">signatureTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="signatureTitle" name="config[signatureTitle]" placeholder="signatureTitle" value="Handtekening">
-                            <small id="signatureTitleHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="onlyRecipientTitle" class="col-sm-4 col-form-label">onlyRecipientTitle</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">
-                            <small id="onlyRecipientTitleHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="priceNormalDelivery" class="col-sm-4 col-form-label">priceNormalDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceNormalDelivery" name="config[priceNormalDelivery]" placeholder="priceNormalDelivery" value="1">
-                            <small id="priceNormalDeliveryHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="2,55">
-                            <small id="priceEveningDeliveryHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="2,22">
-                            <small id="priceSignatureHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="3,33">
-                            <small id="pricePickupHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="5,00">
-                            <small id="pricePickupExpressHelp" class="form-text text-muted">Help</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="2,00">
-                            <small id="priceOnlyRecipientHelp" class="form-text text-muted">Help</small>
+                            <small id="deliveryTitleHelp" class="form-text text-muted">General delivery title</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -195,12 +68,200 @@
                             <small id="dropoffDelayHelp" class="form-text text-muted">This options allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcels at PostNL when ordered before the cutoff time. By default this is 0 and max is 14. Carrier 1 (PostNL) only.</small>
                         </div>
                     </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Monday delivery</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowMondayDelivery" class="col-sm-4 col-form-label">allowMondayDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
+                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery, value 6 must be given with dropOffDays, value 1 must be given by monday_delivery. And on Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown.</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Morning delivery</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowMorningDelivery" class="col-sm-4 col-form-label">allowMorningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMorningDelivery" name="config[allowMorningDelivery]" placeholder="allowMorningDelivery" value="true">
+                            <small id="allowMorningDeliveryHelp" class="form-text text-muted">Morning delivery</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryMorningTitle" class="col-sm-4 col-form-label">deliveryMorningTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
+                            <small id="deliveryMorningTitleHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceMorningDelivery" class="col-sm-4 col-form-label">priceMorningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="1">
+                            <small id="priceMorningDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Standard delivery</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="Standaard levering">
+                            <small id="deliveryStandardTitleHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceStandardDelivery" class="col-sm-4 col-form-label">priceStandardDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="1">
+                            <small id="priceStandardDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Evening delivery</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowEveningDelivery" class="col-sm-4 col-form-label">allowEveningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">
+                            <small id="allowEveningDeliveryHelp" class="form-text text-muted">Evening delivery</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
+                            <small id="deliveryEveningTitleHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="2,55">
+                            <small id="priceEveningDeliveryHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Signature</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowSignature" class="col-sm-4 col-form-label">allowSignature</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowSignature" name="config[allowSignature]" placeholder="allowSignature" value="true">
+                            <small id="allowSignatureHelp" class="form-text text-muted">Signature</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="signatureTitle" class="col-sm-4 col-form-label">signatureTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="signatureTitle" name="config[signatureTitle]" placeholder="signatureTitle" value="Handtekening">
+                            <small id="signatureTitleHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="2,22">
+                            <small id="priceSignatureHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Only recipient</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowOnlyRecipient" class="col-sm-4 col-form-label">allowOnlyRecipient</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">
+                            <small id="allowOnlyRecipientHelp" class="form-text text-muted">Only recipient</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="onlyRecipientTitle" class="col-sm-4 col-form-label">onlyRecipientTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">
+                            <small id="onlyRecipientTitleHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="2,00">
+                            <small id="priceOnlyRecipientHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Pickup points</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowPickupPoints" class="col-sm-4 col-form-label">allowPickupPoints</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupPoints" name="config[allowPickupPoints]" placeholder="allowPickupPoints" value="true">
+                            <small id="allowPickupPointsHelp" class="form-text text-muted">Pickup points</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pickupTitle" class="col-sm-4 col-form-label">pickupTitle</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pickupTitle" name="config[pickupTitle]" placeholder="pickupTitle" value="Afhalen op locatie">
+                            <small id="pickupTitleHelp" class="form-text text-muted">Pickup title</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="3,33">
+                            <small id="pricePickupHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group row justify-content-md-center">
+                        <div class="col-sm-4">
+                            <h3>Pickup express</h3>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="allowPickupExpress" class="col-sm-4 col-form-label">allowPickupExpress</label>
+                        <div class="col-sm-8">
+                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">
+                            <small id="allowPickupExpressHelp" class="form-text text-muted">Pickup express</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="5,00">
+                            <small id="pricePickupExpressHelp" class="form-text text-muted">Help</small>
+                        </div>
+                    </div>
                 </form>
             </div>
 
             <!-- result -->
             <div class="col-sm-4 border-right">
-                <a class="btn btn-info" target="_blank" href="https://github.com/myparcelnl/checkout/blob/checkout-v2/examples/nl-normal-address.html">Full html</a>
+                <a class="btn btn-info" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html">Full html</a>
 
                 <pre><code id="result_code"></code></pre>
             </div>
@@ -254,9 +315,6 @@
                             <div id="mypa-delivery-option-form">
                                 <table class="mypa-delivery-option-table">
                                     <tbody>
-                                    <tr id="mypa-send-per-carrier">
-                                        <td id="mypa-txt-send-per-carrier" colspan="3">Bezorgopties</td>
-                                    </tr>
                                     <tr>
                                         <td>
                                             <input name="mypa-deliver-or-pickup" id="mypa-select-delivery" value="mypa-deliver" type="radio">
@@ -387,6 +445,9 @@
                         </div>
                     </div>
                     <hr>
+                    <p>
+                        In order to ensure that the right options are stored in your database, you can write your own code in myparcel.js. You can also use the following field to save the selected options.
+                    </p>
                     <input style="width: 100%;" id="mypa-input" name="mypa-post-nl-data">
                 </div>
             </div>

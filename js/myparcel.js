@@ -40,7 +40,7 @@ MyParcel = {
         /* Prices */
         $('#mypa-morning-delivery').html(MyParcel.getPriceHtml(this.data.config.priceMorningDelivery));
         $('#mypa-evening-delivery').html(MyParcel.getPriceHtml(this.data.config.priceEveningDelivery));
-        $('#mypa-normal-delivery').html(MyParcel.getPriceHtml(this.data.config.priceNormalDelivery));
+        $('#mypa-normal-delivery').html(MyParcel.getPriceHtml(this.data.config.priceStandardDelivery));
         $('#mypa-signature-price').html(MyParcel.getPriceHtml(this.data.config.priceSignature));
         $('#mypa-only-recipient-price').html(MyParcel.getPriceHtml(this.data.config.priceOnlyRecipient));
         $('#mypa-pickup-price').html(MyParcel.getPriceHtml(this.data.config.pricePickup));
