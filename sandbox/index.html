@@ -10,7 +10,6 @@
 </head>
 <body>
     <div class="container-fluid">
-
         <div class="row">
             <!-- config -->
             <div class="col-sm-4 border-right">
@@ -37,35 +36,34 @@
                         <label for="dropOffDays" class="col-sm-4 col-form-label">dropOffDays</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
-                            <small id="dropOffDaysHelp" class="form-text text-muted">This options allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. By default Saturday and Sunday are excluded. By default this is 0 and max is 14. Carrier 1 (PostNL) only.</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="16:00">
-                            <small id="saturdayCutoffTimeHelp" class="form-text text-muted">Help</small>
+                            <small id="dropOffDaysHelp" class="form-text text-muted">This options allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. By default Saturday and Sunday are excluded. By default this is 0 and max is 14.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cutoffTime" class="col-sm-4 col-form-label">cutoffTime</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="15:00">
-                            <small id="cutoffTimeHelp" class="form-text text-muted">Help</small>
+                            <small id="cutoffTimeHelp" class="form-text text-muted">This option allows the Merchant to indicate the latest cut-off time before which a consumer order will still be picked, packed and dispatched on the same/first set dropoff day, taking into account the dropoff-delay. Default time is 15h30. For example, if cutoff time is 15h30, Monday is a delivery day and there's no delivery delay; all orders placed Monday before 15h30 will be dropped of at PostNL on that same Monday in time for the Monday collection.</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="16:00">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
-                            <small id="deliverydaysWindowHelp" class="form-text text-muted">This options allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example, if set to 3 in her check-out, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to PostNL on Mondays). Min is 1. and max. is 14. Carrier 1 (PostNL) only.</small>
+                            <small id="deliverydaysWindowHelp" class="form-text text-muted">This options allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example, if set to 3 in her check-out, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to PostNL on Mondays). Min is 1. and max. is 14.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="dropoffDelay" class="col-sm-4 col-form-label">dropoffDelay</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="dropoffDelay" name="config[dropoffDelay]" placeholder="dropoffDelay" value="0">
-                            <small id="dropoffDelayHelp" class="form-text text-muted">This options allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcels at PostNL when ordered before the cutoff time. By default this is 0 and max is 14. Carrier 1 (PostNL) only.</small>
+                            <small id="dropoffDelayHelp" class="form-text text-muted">This options allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcels at PostNL when ordered before the cutoff time. By default this is 0 and max is 14.</small>
                         </div>
                     </div>
                     <hr/>
@@ -76,9 +74,9 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowMondayDelivery" class="col-sm-4 col-form-label">allowMondayDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
-                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery, value 6 must be given with dropOffDays, value 1 must be given by monday_delivery. And on Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown.</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
+                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery, value 6 must be given with dropOffDays, value 1 must be given by monday_delivery. And on Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown. <a href="https://blog.myparcel.nl/maandagbezorging/" target="_blank">More information</a></small>
                         </div>
                     </div>
                     <hr/>
@@ -89,23 +87,20 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowMorningDelivery" class="col-sm-4 col-form-label">allowMorningDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowMorningDelivery" name="config[allowMorningDelivery]" placeholder="allowMorningDelivery" value="true">
-                            <small id="allowMorningDeliveryHelp" class="form-text text-muted">Morning delivery</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowMorningDelivery" name="config[allowMorningDelivery]" placeholder="allowMorningDelivery" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliveryMorningTitle" class="col-sm-4 col-form-label">deliveryMorningTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
-                            <small id="deliveryMorningTitleHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceMorningDelivery" class="col-sm-4 col-form-label">priceMorningDelivery</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="1">
-                            <small id="priceMorningDeliveryHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -118,14 +113,12 @@
                         <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="Standaard levering">
-                            <small id="deliveryStandardTitleHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceStandardDelivery" class="col-sm-4 col-form-label">priceStandardDelivery</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="1">
-                            <small id="priceStandardDeliveryHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -136,23 +129,20 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowEveningDelivery" class="col-sm-4 col-form-label">allowEveningDelivery</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">
-                            <small id="allowEveningDeliveryHelp" class="form-text text-muted">Evening delivery</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
-                            <small id="deliveryEveningTitleHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="2,55">
-                            <small id="priceEveningDeliveryHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -163,23 +153,20 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowSignature" class="col-sm-4 col-form-label">allowSignature</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowSignature" name="config[allowSignature]" placeholder="allowSignature" value="true">
-                            <small id="allowSignatureHelp" class="form-text text-muted">Signature</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowSignature" name="config[allowSignature]" placeholder="allowSignature" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="signatureTitle" class="col-sm-4 col-form-label">signatureTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="signatureTitle" name="config[signatureTitle]" placeholder="signatureTitle" value="Handtekening">
-                            <small id="signatureTitleHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="2,22">
-                            <small id="priceSignatureHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -190,23 +177,20 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowOnlyRecipient" class="col-sm-4 col-form-label">allowOnlyRecipient</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">
-                            <small id="allowOnlyRecipientHelp" class="form-text text-muted">Only recipient</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="onlyRecipientTitle" class="col-sm-4 col-form-label">onlyRecipientTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">
-                            <small id="onlyRecipientTitleHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="2,00">
-                            <small id="priceOnlyRecipientHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -217,23 +201,20 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowPickupPoints" class="col-sm-4 col-form-label">allowPickupPoints</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupPoints" name="config[allowPickupPoints]" placeholder="allowPickupPoints" value="true">
-                            <small id="allowPickupPointsHelp" class="form-text text-muted">Pickup points</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowPickupPoints" name="config[allowPickupPoints]" placeholder="allowPickupPoints" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pickupTitle" class="col-sm-4 col-form-label">pickupTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="pickupTitle" name="config[pickupTitle]" placeholder="pickupTitle" value="Afhalen op locatie">
-                            <small id="pickupTitleHelp" class="form-text text-muted">Pickup title</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="3,33">
-                            <small id="pricePickupHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                     <hr/>
@@ -244,16 +225,14 @@
                     </div>
                     <div class="form-group row">
                         <label for="allowPickupExpress" class="col-sm-4 col-form-label">allowPickupExpress</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" checked class="form-control form-control-sm" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">
-                            <small id="allowPickupExpressHelp" class="form-text text-muted">Pickup express</small>
+                        <div class="col-sm-8 checkbox-padding">
+                            <input type="checkbox" checked class="form-control" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="5,00">
-                            <small id="pricePickupExpressHelp" class="form-text text-muted">Help</small>
                         </div>
                     </div>
                 </form>
@@ -261,9 +240,10 @@
 
             <!-- result -->
             <div class="col-sm-4 border-right">
-                <a class="btn btn-info" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html">Full html</a>
-
-                <pre><code id="result_code"></code></pre>
+                <a class="btn btn-info" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html">Original code including js, css and HTML</a>
+                <pre>
+                    <code id="result_code"></code>
+                </pre>
             </div>
 
             <div class="col-sm-4">
@@ -380,9 +360,8 @@
                                     <tr class="mypa-extra-delivery-option-signature">
                                         <td></td>
                                         <td id="mypa-signature" class=" mypa-extra-delivery-options-padding-top">
-                                            <div class="mypa-delivery-option">
-                                                <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signature-selector" >
-                                                <label for="mypa-signature-selector"><span id="mypa-signature-title"></span></label>
+                                            <div class="mypa-delivery-option checkbox-padding">
+                                                <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signaturelabel for="mypa-signature-selector"><span id="mypa-signature-title"></span></label>
                                             </div>
                                         </td>
                                         <td class="mypa-extra-delivery-options-padding-top">
@@ -392,8 +371,8 @@
                                     <tr class="mypa-extra-delivery-options">
                                         <td></td>
                                         <td id="mypa-only-recipient">
-                                            <div class="mypa-delivery-option">
-                                                <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only-recipient-selector" >
+                                            <div class="mypa-delivery-option checkbox-padding">
+                                                <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only
                                                 <label for="mypa-only-recipient-selector"><span id="mypa-only-recipient-title"></span></label>
                                             </div>
                                         </td>
