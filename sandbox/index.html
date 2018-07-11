@@ -4,24 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Sandbox</title>
+    <link rel="shortcut icon" href="https://backoffice.myparcel.nl/images/favicon/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="sandbox.css"/>
     <link rel="stylesheet" href="../css/myparcel.css">
+    <link href="prism.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container-fluid">
+        <div class="row header">
+            <div class="col-sm-12 text-center">
+                <h1>MyParcel checkout sandbox</h1>
+            </div>
+        </div>
+        <div class="row" style="margin-top:30px; margin-bottom: 10px;">
+            <div class="col-sm-4">
+                <h2>Config</h2>
+                <p>This sandbox is meant to provide clarity about the MyParcel delivery options. Below you can see all possible options for MyParcel NL. Change the options to see the result.</p>
+            </div>
+            <div class="col-sm-4">
+                <h2>Code</h2>
+                <p>If you adjust the options in the left column, you will see the change in the code below. In the code below you can see that an object has been built and that object is used in a function. You could build this object by adjusting the values inline with backend code. But it would be better if you can retrieve this object by means of a (rest) api.</p>
+                <a class="btn btn-info center-block" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html" style="margin-top: 20px;">Original code including js, css and HTML</a>
+            </div>
+            <div class="col-sm-4">
+                <h2>Address</h2>
+                <p>In order to get the right options, MyParcel needs country, postal code and number. Number must be sent without number suffix. If you only have a full address with street and number suffix, use the <a href="https://github.com/myparcelnl/sdk/blob/master/src/Model/Repository/MyParcelConsignmentRepository.php#L34-L42" target="_blank">this regex</a> (php).</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+            </div>
+        </div>
         <div class="row">
             <!-- config -->
             <div class="col-sm-4 border-right">
                 <form id="config">
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
-                            <h2>config</h2>
-                        </div>
-                    </div>
-                    <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>General</h3>
                         </div>
                     </div>
@@ -36,7 +57,7 @@
                         <label for="dropOffDays" class="col-sm-4 col-form-label">dropOffDays</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
-                            <small id="dropOffDaysHelp" class="form-text text-muted">This options allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. By default Saturday and Sunday are excluded. By default this is 0 and max is 14.</small>
+                            <small id="dropOffDaysHelp" class="form-text text-muted">This options allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. Monday is 1 and Saturday is 6.</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -67,8 +88,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Monday delivery</h3>
                         </div>
                     </div>
@@ -80,8 +101,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Morning delivery</h3>
                         </div>
                     </div>
@@ -104,8 +125,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Standard delivery</h3>
                         </div>
                     </div>
@@ -122,8 +143,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Evening delivery</h3>
                         </div>
                     </div>
@@ -146,8 +167,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Signature</h3>
                         </div>
                     </div>
@@ -170,8 +191,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Only recipient</h3>
                         </div>
                     </div>
@@ -194,8 +215,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Pickup points</h3>
                         </div>
                     </div>
@@ -218,8 +239,8 @@
                         </div>
                     </div>
                     <hr/>
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
+                    <div class="form-group row justify-content-end">
+                        <div class="col-sm-8">
                             <h3>Pickup express</h3>
                         </div>
                     </div>
@@ -240,24 +261,19 @@
 
             <!-- result -->
             <div class="col-sm-4 border-right">
-                <a class="btn btn-info" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html">Original code including js, css and HTML</a>
-                <pre>
-                    <code id="result_code"></code>
-                </pre>
+                <pre><code id="result_code" class="language-javascript box"></code></pre>
             </div>
 
             <div class="col-sm-4">
                 <!-- address -->
                 <form id="address">
-                    <div class="form-group row justify-content-md-center">
-                        <div class="col-sm-4">
-                            <h2>address</h2>
-                        </div>
-                    </div>
                     <div class="form-group row">
                         <label for="cc" class="col-sm-4 col-form-label">cc</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="cc" name="address[cc]" placeholder="cc" value="NL">
+                            <select name="address[cc]" id="cc" class="form-control form-control-sm">
+                                <option value="NL">Dutch language</option>
+                                <option value="BE">Belgian language</option>
+                            </select>
                             <small id="ccHelp" class="form-text text-muted">The country code for which to fetch the delivery options. This code can only be used in the Netherlands or Belgium ( cc=NL or cc=BE ).</small>
                         </div>
                     </div>
@@ -272,7 +288,7 @@
                         <label for="number" class="col-sm-4 col-form-label">number</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="number" name="address[number]" placeholder="number" value="679">
-                            <small id="numberHelp" class="form-text text-muted">The street number for which to fetch the delivery options. House number without letters</small>
+                            <small id="numberHelp" class="form-text text-muted">The street number for which to fetch the delivery options. House number without number suffix</small>
                         </div>
                     </div>
                     <hr/>
@@ -285,7 +301,7 @@
 
                 <!-- checkout -->
                 <div id="result_checkout">
-                    <div id="mypa-load">
+                    <div id="mypa-load" class="box">
                         <div id="mypa-spinner"></div>
                         <div class="mypa-message-model">
                             <div id="mypa-message"></div>
@@ -360,7 +376,7 @@
                                     <tr class="mypa-extra-delivery-option-signature">
                                         <td></td>
                                         <td id="mypa-signature" class=" mypa-extra-delivery-options-padding-top">
-                                            <div class="mypa-delivery-option checkbox-padding">
+                                            <div class="mypa-delivery-option">
                                                 <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signaturelabel for="mypa-signature-selector"><span id="mypa-signature-title"></span></label>
                                             </div>
                                         </td>
@@ -371,7 +387,7 @@
                                     <tr class="mypa-extra-delivery-options">
                                         <td></td>
                                         <td id="mypa-only-recipient">
-                                            <div class="mypa-delivery-option checkbox-padding">
+                                            <div class="mypa-delivery-option">
                                                 <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only
                                                 <label for="mypa-only-recipient-selector"><span id="mypa-only-recipient-title"></span></label>
                                             </div>
@@ -424,22 +440,22 @@
                         </div>
                     </div>
                     <hr>
-                    <p>
-                        In order to ensure that the right options are stored in your database, you can write your own code in myparcel.js. You can also use the following field to save the selected options.
-                    </p>
-                    <input style="width: 100%;" id="mypa-input" name="mypa-post-nl-data">
+                    <small class="text-muted">
+                        In order to ensure that the right options are stored in your database, you can write your own code in myparcel.js. Normally you would make this input field invisible. Every time an option is chosen, mapExternalWebshopTriggers (myparcel.js) is called. You can place your code in this function. For example; to save the data or to perform cms dependent actions. You can also use the following field to save the selected options.
+                    </small>
+                    <input style="width: 100%; margin-top: 10px" id="mypa-input" name="mypa-post-nl-data">
                 </div>
             </div>
         </div>
-    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
-    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-    <script src="../js/myparcel.js"></script>
-    <script src="sandbox.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="../js/myparcel.js"></script>
+        <script src="prism.js"></script>
+        <script src="sandbox.js"></script>
 
         <script>
             Sandbox.init();
         </script>
-</body>
+    </body>
 </html>

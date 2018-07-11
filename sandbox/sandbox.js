@@ -51,7 +51,7 @@ Sandbox = {
     },
 
     setOptions: function () {
-        $("input[name^='config'], input[name^='address']").each(function () {
+        $("input[name^='config'], input[name^='address'], select[name^='address']").each(function () {
             let name = $(this).attr('name');
             let val;
 
@@ -77,7 +77,14 @@ Sandbox = {
 
     showResultCode: function () {
 
-        code = '\n<script>\n' + JSON.stringify(Sandbox.formOptions, null, '    ') + '\n<script>';
+        code = '<script>' +
+            '\n' +
+            'var data = ' +
+            JSON.stringify(Sandbox.formOptions, null, '    ') +
+            ';\n' +
+            'MyParcel.init(data);' +
+            '\n' +
+            '<script>';
 
         $('#result_code').html(Sandbox.htmlEncode(code));
     },

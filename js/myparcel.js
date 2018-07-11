@@ -857,32 +857,31 @@ MyParcel = {
      *
      */
 
-    callDeliveryOptions: function()
-    {
+    callDeliveryOptions: function() {
         MyParcel.showSpinner();
         MyParcel.clearPickUpLocations();
 
-        var cc 				= this.data.address.cc;
-        var postalCode 		= this.data.address.postalCode;
-        var number 			= this.data.address.number;
-        var city 			= this.data.address.city;
+        var cc = this.data.address.cc;
+        var postalCode = this.data.address.postalCode;
+        var number = this.data.address.number;
+        var city = this.data.address.city;
 
-        if (postalCode == '' || number == ''){
+        if (postalCode == '' || number == '') {
             MyParcel.showMessage(
                 '<h3>Adres gegevens zijn niet ingevuld</h3>'
             );
         }
         if (cc === "BE") {
-            var numberExtra 	= this.data.address.numberExtra;
-            var street 			= this.data.address.street;
+            var numberExtra = this.data.address.numberExtra;
+            var street = this.data.address.street;
         }
 
-        if(numberExtra){
+        if (numberExtra) {
             number = number + numberExtra;
         }
 
         /* Don't call API unless both Postcode and House Number are set */
-        if(!number || !postalCode) {
+        if (!number || !postalCode) {
             MyParcel.showFallBackDelivery();
             return;
         }
@@ -890,31 +889,30 @@ MyParcel = {
         /* Check if the deliverydaysWindow == 0 and hide the select input*/
         this.deliveryDaysWindow = this.data.config.deliverydaysWindow;
 
-        if(this.deliveryDaysWindow === 0){
+        if (this.deliveryDaysWindow === 0) {
             this.deliveryDaysWindow = 1;
         }
 
-        /* Make the api request */
-        $.get(this.data.config.apiBaseUrl + "delivery_options",
-            {
-                cc           			:this.data.address.cc,
-                postal_code  			:postalCode,
-                number       			:number,
-                city					:city,
-                carrier      			:this.data.config.carrier,
-                dropoff_days			:this.data.config.dropOffDays,
-                monday_delivery			:this.data.config.allowMondayDelivery,
-                deliverydays_window		:this.deliveryDaysWindow,
-                cutoff_time 			:this.data.config.cutoffTime,
-                dropoff_delay			:this.data.config.dropoffDelay
-            })
-            .done(function(response){
-
+        $.ajax({
+            url: this.data.config.apiBaseUrl + "delivery_options",
+            data: {
+                cc: this.data.address.cc,
+                postal_code: postalCode,
+                number: number,
+                city: city,
+                carrier: this.data.config.carrier,
+                dropoff_days: this.data.config.dropOffDays,
+                monday_delivery: this.data.config.allowMondayDelivery,
+                deliverydays_window: this.deliveryDaysWindow,
+                cutoff_time: this.data.config.cutoffTime,
+                dropoff_delay: this.data.config.dropoffDelay
+            },
+            success: function (response) {
                 MyParcel.result.deliveryOptions = response;
-                if(response.errors){
-                    $.each(response.errors, function(key, value){
+                if (response.errors) {
+                    $.each(response.errors, function (key, value) {
                         /* Postalcode housenumber combination not found or not recognised. */
-                        if(value.code == '3212' || value.code == '3505'){
+                        if (value.code == '3212' || value.code == '3505') {
                             MyParcel.showRetry();
                         }
 
@@ -930,18 +928,19 @@ MyParcel = {
                     MyParcel.hideMessage();
                     MyParcel.showPickUpLocations();
                     MyParcel.showDeliveryDates();
-                    if(MyParcel.result.deliveryOptions.data.delivery.length <= 0 ){
+                    if (MyParcel.result.deliveryOptions.data.delivery.length <= 0) {
                         MyParcel.hideDeliveryDates();
                     }
                     MyParcel.storeDeliveryOptions = response;
                 }
                 MyParcel.hideSpinner();
-            })
-            .fail(function(){
+            },
+            error: function () {
                 MyParcel.showFallBackDelivery();
-            })
-            .always(function(){
+            },
+            complete: function () {
                 $('#mypa-select-delivery').click();
-            });
+            }
+        });
     }
 }

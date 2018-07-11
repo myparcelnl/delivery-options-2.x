@@ -57,6 +57,7 @@
 #mypa-delivery-option-form label{
 	display: inline-block;
 	width: 80%;
+	margin: 0;
 }
 #mypa-error-try-again{
 	margin-top: 18px;
