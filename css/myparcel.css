@@ -31,10 +31,6 @@
 	width:100%;
 }
 
-.myparcel-price::before {
-	content: "+€";
-}
-
 .mypa-error label {
 	display: inline-block;
 	width: 50%;
@@ -120,7 +116,8 @@
 .mypa-pickup-location-details-time  {
 	margin-bottom: 5px;
 	display: inline-block;
-	width: 100%;
+	width: 50%;
+	float: left;
 }
 
 .mypa-pickup-location-details-day {
@@ -163,7 +160,6 @@
 .mypa-delivery-option-table {
 	width: 100%;
 }
-
 .mypa-delivery-option-table tr td:first-child {
 	white-space: nowrap;
 	width: 20px;
@@ -175,11 +171,15 @@
 	white-space: nowrap;
 	vertical-align:top;
 }
+.mypa-postnl-logo{
+	width: 134px;
+	float: right;
+	margin: 35px 34px 0 0;
+}
 
 .mypa-message-model {
 	height: 100%;
 	overflow: auto;
-	background-color: rgba(0,0,0,0.4);
 }
 #mypa-delivery-date-text{
 	display: none;
@@ -187,6 +187,9 @@
 
 #mypa-list-postnl-pickup option{
 	padding: 5px 0px 5px 0px;
+}
+.mypa-bold-price{
+	font-weight: bold;
 }
 
 @keyframes mypa-spin {

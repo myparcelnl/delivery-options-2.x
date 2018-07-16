@@ -3,9 +3,7 @@
 <link rel="stylesheet" href="../css/myparcel.css">
 
 <!--Get the selected options and place this inside a input-->
-<input style="/*display: none;*/" id="mypa-input" name="mypa-post-nl-data">
-<input style="/*display: none;*/" type="checkbox" name='mypa-signed' id="mypa-signed">
-<input style="/*display: none;*/" type="checkbox" name='mypa-recipient-only' id="mypa-recipient-only">
+<input style="display: none;" id="mypa-input" name="mypa-post-nl-data">
 
 <div id="mypa-load">
 	<div id="mypa-spinner"></div>
@@ -152,7 +150,6 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyBuzlPSNhmRIEhIl-3ZUidj3fwXfsDSw&amp;sensor=false"></script>
 <script>
     var data = {
         address: {
@@ -183,13 +180,13 @@
             "apiBaseUrl": "https://api.myparcel.nl/",
             "carrier": "1",
 
-            "priceMorningDelivery": "10,00",
-            "priceStandardDelivery": "1",
-            "priceEveningDelivery": "2,55",
-            "priceSignature": "2,22",
-            "pricePickup": "3,33",
-            "pricePickupExpress": "5,00",
-            "priceOnlyRecipient":"2,00",
+			"priceMorningDelivery": "10.00",
+			"priceStandardDelivery": "5.85",
+			"priceEveningDelivery": "1.25",
+			"priceSignature": "0.36",
+			"priceOnlyRecipient":"0.29",
+			"pricePickup": "5.85",
+			"pricePickupExpress": "1.38",
 
             "deliveryTitle":"Bezorgen op",
             "pickupTitle":"Afhalen op locatie",
@@ -199,7 +196,7 @@
             "signatureTitle": "Handtekening",
             "onlyRecipientTitle": "Alleen geadresseerde",
 
-            "allowMondayDelivery": "1",
+            "allowMondayDelivery": true,
             "allowMorningDelivery": true,
             "allowEveningDelivery": true,
             "allowSignature": true,
