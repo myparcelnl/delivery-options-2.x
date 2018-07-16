@@ -62,11 +62,11 @@ MyParcel = {
         }
 
         if (parseFloat(priceOfDeliveryOption) >= 0) {
-            var price = '( + &euro; ' + priceOfDeliveryOption + ' )';
+            var price = '&euro; ' + priceOfDeliveryOption;
         }
 
         if (priceOfDeliveryOption && isNaN(parseFloat(priceOfDeliveryOption))) {
-            var price = '( ' + priceOfDeliveryOption + ' )';
+            var price = priceOfDeliveryOption;
         }
 
         return price;
@@ -339,10 +339,7 @@ MyParcel = {
 
         if (currentDeliveryData !== null) {
 
-
-            console.log(currentDeliveryData);
             currentDeliveryData.signed = 1;
-            console.log(currentDeliveryData);
             $('#mypa-input').val(JSON.stringify(currentDeliveryData));
         }
     },
@@ -772,8 +769,7 @@ MyParcel = {
             if (info.location_code === locationId) {
                 object = info;
                 return false;
-            }
-            ;
+            };
         });
 
         return object;
