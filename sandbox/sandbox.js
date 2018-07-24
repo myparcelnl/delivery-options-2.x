@@ -36,7 +36,7 @@ Sandbox = {
 
         Sandbox.renderOptions();
 
-        $("input[name^='config'], input[name^='address']").on('mouseup keyup', function() {
+        $("input[name^='config'], input[name^='address'],select[name^='address']").on('change', function() {
             clearTimeout(inputTimeout);
             inputTimeout = setTimeout(function(){
                 Sandbox.renderOptions()
