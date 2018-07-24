@@ -37,7 +37,7 @@
                 <hr>
             </div>
         </div>
-        <div class="row">
+        <div class="row fade1">
             <!-- config -->
             <div class="col-sm-4 border-right">
                 <form id="config">
@@ -122,7 +122,7 @@
                     <div class="form-group row">
                         <label for="priceMorningDelivery" class="col-sm-4 col-form-label">priceMorningDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="1">
+                            <input type="input" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="10">
                         </div>
                     </div>
                     <hr/>
@@ -130,7 +130,7 @@
                         <div class="col-sm-8">
                             <h3>Standard delivery</h3>
                         </div>
-                    </div>
+                    </div>priceMorningDelivery
                     <div class="form-group row">
                         <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
                         <div class="col-sm-8">
@@ -141,7 +141,7 @@
                     <div class="form-group row">
                         <label for="priceStandardDelivery" class="col-sm-4 col-form-label">priceStandardDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="1">
+                            <input type="input" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="5.85">
                         </div>
                     </div>
                     <hr/>
@@ -190,7 +190,7 @@
                     <div class="form-group row">
                         <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="2,22">
+                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="0.36">
                         </div>
                     </div>
                     <hr/>
@@ -214,7 +214,7 @@
                     <div class="form-group row">
                         <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="2,00">
+                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="0.29">
                         </div>
                     </div>
                     <hr/>
@@ -238,7 +238,7 @@
                     <div class="form-group row">
                         <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="3,33">
+                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="5.85">
                         </div>
                     </div>
                     <hr/>
@@ -263,11 +263,11 @@
             </div>
 
             <!-- result -->
-            <div class="col-sm-4 border-right">
+            <div class="col-sm-4 border-right fade2">
                 <pre><code id="result_code" class="language-javascript box"></code></pre>
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4 fade3">
                 <!-- address -->
                 <form id="address">
                     <div class="form-group row">

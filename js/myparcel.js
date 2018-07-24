@@ -590,6 +590,7 @@ MyParcel = {
         /* When deliverydaysWindow > 1, show the day selector */
         if (deliveryWindow > 1) {
             $('#mypa-select-date').show();
+            $('#mypa-delivery-date-text').hide();
         }
 
         $('#mypa-select-date, #mypa-date').html(html);

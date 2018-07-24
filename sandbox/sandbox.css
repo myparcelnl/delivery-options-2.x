@@ -38,3 +38,23 @@ a {
     background-color: #1eb9c4;
     background-image: linear-gradient(120deg, #57595a, #1eb9c4);
 }
+
+div[class*="fade"] {
+    animation: fadeIn 2s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+.fade1 {
+    animation-delay: 0s;
+}
+.fade2 {
+    animation-delay: 3s;
+}
+.fade3 {
+    animation-delay: 6s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
