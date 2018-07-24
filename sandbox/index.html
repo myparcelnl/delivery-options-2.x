@@ -20,16 +20,16 @@
         <div class="row" style="margin-top:30px; margin-bottom: 10px;">
             <div class="col-sm-4">
                 <h2>Config</h2>
-                <p>This sandbox is meant to provide clarity about the MyParcel delivery options. Below you can see all possible options for MyParcel NL. Change the options to see the result.</p>
+                <p>This sandbox is meant to provide clarity about the <a target="_blank" href="https://myparcelnl.github.io/api/#8">MyParcel delivery options</a>. Below you can see all possible options for MyParcel NL. Change the options to see the result.</p>
             </div>
             <div class="col-sm-4">
                 <h2>Code</h2>
                 <p>If you adjust the options in the left column, you will see the change in the code below. In the code below you can see that an object has been built and that object is used in a function. You could build this object by adjusting the values inline with backend code. But it would be better if you can retrieve this object by means of a (rest) api.</p>
-                <a class="btn btn-info center-block" target="_blank" href="https://github.com/myparcelnl/checkout/blob/master/examples/nl-normal-address.html" style="margin-top: 20px;">Original code including js, css and HTML</a>
+                <a class="btn btn-info center-block" target="_blank" href="https://github.com/myparcelnl/checkout" style="margin-top: 20px;">Original code including js, css and HTML</a>
             </div>
             <div class="col-sm-4">
                 <h2>Address</h2>
-                <p>In order to get the right options, MyParcel needs country, postal code and number. Number must be sent without number suffix. If you only have a full address with street and number suffix, use the <a href="https://github.com/myparcelnl/sdk/blob/master/src/Model/Repository/MyParcelConsignmentRepository.php#L34-L42" target="_blank">this regex</a> (php).</p>
+                <p>In order to get the right options, MyParcel needs country, postal code and number. Number must be sent without number suffix. If you only have a full address with street and number suffix, use <a href="https://github.com/myparcelnl/sdk/blob/master/src/Model/Repository/MyParcelConsignmentRepository.php#L34-L42" target="_blank">this regex</a> (php).</p>
             </div>
         </div>
         <div class="row">
@@ -57,34 +57,28 @@
                         <label for="dropOffDays" class="col-sm-4 col-form-label">dropOffDays</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
-                            <small id="dropOffDaysHelp" class="form-text text-muted">This options allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. Monday is 1 and Saturday is 6.</small>
+                            <small id="dropOffDaysHelp" class="form-text text-muted">This option allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. Monday is 1 and Saturday is 6.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cutoffTime" class="col-sm-4 col-form-label">cutoffTime</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="15:00">
-                            <small id="cutoffTimeHelp" class="form-text text-muted">This option allows the Merchant to indicate the latest cut-off time before which a consumer order will still be picked, packed and dispatched on the same/first set dropoff day, taking into account the dropoff-delay. Default time is 15h30. For example, if cutoff time is 15h30, Monday is a delivery day and there's no delivery delay; all orders placed Monday before 15h30 will be dropped of at PostNL on that same Monday in time for the Monday collection.</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
-                        <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="16:00">
+                            <input type="input" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="17:00">
+                            <small id="cutoffTimeHelp" class="form-text text-muted">This option allows the Merchant to indicate the latest cut-off time before an order will still be picked, packed and dispatched on the same/first set dropoff day, taking into account the dropoff-delay. Industry standard default time is 17:00. For example, if cutoff time is 17:00, Monday is a delivery day and there's no delivery delay; all orders placed Monday before 17:00 will be dropped of at PostNL on that same Monday in time for the Monday collection and delivery on Tuesday.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
-                            <small id="deliverydaysWindowHelp" class="form-text text-muted">This options allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example, if set to 3 in her check-out, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to PostNL on Mondays). Min is 1. and max. is 14.</small>
+                            <small id="deliverydaysWindowHelp" class="form-text text-muted">This option allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example; If set to 3 (days) in her checkout, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to PostNL on Mondays). Min. is 1 and max. is 14.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="dropoffDelay" class="col-sm-4 col-form-label">dropoffDelay</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="dropoffDelay" name="config[dropoffDelay]" placeholder="dropoffDelay" value="0">
-                            <small id="dropoffDelayHelp" class="form-text text-muted">This options allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcels at PostNL when ordered before the cutoff time. By default this is 0 and max is 14.</small>
+                            <small id="dropoffDelayHelp" class="form-text text-muted">This option allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcel at PostNL when ordered before the cutoff time. By default this is 0 and max. is 14.</small>
                         </div>
                     </div>
                     <hr/>
@@ -97,7 +91,13 @@
                         <label for="allowMondayDelivery" class="col-sm-4 col-form-label">allowMondayDelivery</label>
                         <div class="col-sm-8 checkbox-padding">
                             <input type="checkbox" checked class="form-control" id="allowMondayDelivery" name="config[allowMondayDelivery]" placeholder="allowMondayDelivery" value="true">
-                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery, value 6 must be given with dropOffDays, value 1 must be given by monday_delivery. And on Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown. <a href="https://blog.myparcel.nl/maandagbezorging/" target="_blank">More information</a></small>
+                            <small id="allowMondayDeliveryHelp" class="form-text text-muted">Monday delivery is only possible when the package is delivered before 15.00 on Saturday at the designated PostNL locations. Note: To activate Monday delivery value 6 must be given with dropOffDays and value 1 must be given by monday_delivery. On Saturday the cutoffTime must be before 15:00 (14:30 recommended) so that Monday will be shown. <a href="https://blog.myparcel.nl/maandagbezorging/" target="_blank">More information about this free service.</a></small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
+                        <div class="col-sm-8">
+                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="14:30">
                         </div>
                     </div>
                     <hr/>
@@ -116,6 +116,7 @@
                         <label for="deliveryMorningTitle" class="col-sm-4 col-form-label">deliveryMorningTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
+                            <small id="deliveryMorningTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -134,6 +135,7 @@
                         <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="Standaard levering">
+                            <small id="deliveryStandardTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -158,12 +160,13 @@
                         <label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
+                            <small id="deliveryEveningTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="2,55">
+                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="1,25">
                         </div>
                     </div>
                     <hr/>
@@ -253,7 +256,7 @@
                     <div class="form-group row">
                         <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="5,00">
+                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="7,23">
                         </div>
                     </div>
                 </form>
@@ -281,7 +284,7 @@
                         <label for="postalCode" class="col-sm-4 col-form-label">postalCode</label>
                         <div class="col-sm-8">
                             <input type="input" class="form-control form-control-sm" id="postalCode" name="address[postalCode]" placeholder="postalCode" value="2131 BC">
-                            <small id="postalCodeHelp" class="form-text text-muted">The postal code for which to fetch the delivery options.</small>
+                            <small id="postalCodeHelp" class="form-text text-muted">The postal code to fetch the delivery options.</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -307,7 +310,6 @@
                             <div id="mypa-message"></div>
                         </div>
                         <div id="mypa-location-details"></div>
-                        <div class="mypa-example_wrapper">
                             <div id="mypa-delivery-option-form">
                                 <table class="mypa-delivery-option-table">
                                     <tbody>
@@ -377,7 +379,7 @@
                                         <td></td>
                                         <td id="mypa-signature" class=" mypa-extra-delivery-options-padding-top">
                                             <div class="mypa-delivery-option">
-                                                <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signaturelabel for="mypa-signature-selector"><span id="mypa-signature-title"></span></label>
+                                                <input name="myparcel-signature-selector" id="mypa-signature-selector" type="checkbox" value="myparcel-signaturelabel" for="mypa-signature-selector"><span id="mypa-signature-title"></span></label>
                                             </div>
                                         </td>
                                         <td class="mypa-extra-delivery-options-padding-top">
@@ -388,7 +390,7 @@
                                         <td></td>
                                         <td id="mypa-only-recipient">
                                             <div class="mypa-delivery-option">
-                                                <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only
+                                                <input name="method-myparcel-only-recipient-selector" id="mypa-only-recipient-selector" type="checkbox" value="myparcel-only">
                                                 <label for="mypa-only-recipient-selector"><span id="mypa-only-recipient-title"></span></label>
                                             </div>
                                         </td>
