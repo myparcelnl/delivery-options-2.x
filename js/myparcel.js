@@ -495,6 +495,7 @@ MyParcel = {
      */
 
     showSpinner: function () {
+        $('#mypa-delivery-option-form').hide();
         $('.mypa-message-model').hide();
         $('#mypa-spinner').show();
     },
