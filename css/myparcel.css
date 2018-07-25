@@ -188,6 +188,29 @@
 	font-weight: bold;
 }
 
+}
+
+@media only screen and (max-width: 600px) {
+
+	.mypa-delivery-option-table tr {
+		height: 30px !important;
+	}
+	.mypa-postnl-logo{
+		width: 100%;
+		height: 110px;
+		float: none;
+		margin: 0;
+
+	}
+	.mypa-extra-delivery-options-padding-top {
+		padding: 15px 0px 10px 0px;
+	}
+
+	.mypa-pickup-location-details-location, .mypa-pickup-location-details-phone, .mypa-pickup-location-details-city, .mypa-pickup-location-details-time {
+		width: 90%;
+	}
+}
+
 @keyframes mypa-spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
