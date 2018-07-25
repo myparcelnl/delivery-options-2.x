@@ -788,6 +788,10 @@ MyParcel = {
     retryPostalcodeHouseNumber: function () {
         this.data.address.postalCode = $('#mypa-error-postcode').val();
         this.data.address.number = $('#mypa-error-number').val();
+
+        $('#postalCode').val(this.data.address.postalCode);
+        $('#number').val(this.data.address.number);
+
         MyParcel.callDeliveryOptions();
         $('#mypa-select-delivery').click();
     },
@@ -857,7 +861,7 @@ MyParcel = {
 
         if (postalCode == '' || number == '') {
             MyParcel.showMessage(
-                '<h3>Adres gegevens zijn niet ingevuld</h3>'
+                '<h3>Adresgegevens zijn niet ingevuld</h3>'
             );
         }
         if (cc === "BE") {
