@@ -98,11 +98,9 @@
 }
 
 #mypa-location-details {
-	z-index: 999;
 	padding: 20px;
 	border: 1px solid black;
 	border-radius: 3px;
-	position: absolute;
 	min-width: 300px;
 	max-width: 400px;
 	margin: 5px;
@@ -172,7 +170,7 @@
 	vertical-align:top;
 }
 .mypa-postnl-logo{
-	width: 134px;
+	width: 100px;
 	float: right;
 	margin: 35px 34px 0 0;
 }
