@@ -2,6 +2,8 @@
 
 
 - [Installation](#installation)
+- [Requirements](#requirements)
+- [Example](#example)
 
 ---
 Please, star this repository if you use this repository. :star:
@@ -16,5 +18,9 @@ You can download the zip on the projects [releases](https://github.com/myparceln
 4. Get the HTML content of an examples file and place it inside your project.  
 
 
+### Requirements
 
-Go to [Sandbox](https://myparcelnl.github.io/checkout/sandbox/)
+The MyParcel checkout works with jQuery 3.x.
+
+### Example
+An example of the checkout functionality can be found via our[Sandbox](https://myparcelnl.github.io/checkout/sandbox/)example.
