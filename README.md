@@ -23,4 +23,4 @@ You can download the zip on the projects [releases](https://github.com/myparceln
 The MyParcel checkout works with jQuery 3.x.
 
 ### Example
-An example of the checkout functionality can be found via our[Sandbox](https://myparcelnl.github.io/checkout/sandbox/)example.
+An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/) example.
