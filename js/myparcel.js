@@ -497,7 +497,7 @@ MyParcel = {
     showSpinner: function () {
         $('#mypa-delivery-option-form').hide();
         $('.mypa-message-model').hide();
-        $('#mypa-spinner').show();
+        $('#mypa-spinner-model').show();
     },
 
 
@@ -509,7 +509,7 @@ MyParcel = {
      */
 
     hideSpinner: function () {
-        $('#mypa-spinner').hide();
+        $('#mypa-spinner-model').hide();
     },
 
     showMorningDelivery: function () {

@@ -123,16 +123,6 @@
 	width: 30%;
 }
 
-#mypa-spinner {
-	margin: 50px 0 50px 125px;
-	border: 16px solid #f3f3f3;
-	border-top: 16px solid #939393;
-	border-radius: 50%;
-	width: 32px;
-	height: 32px;
-	animation: mypa-spin 0.6s linear infinite;
-}
-
 .mypa-extra-delivery-options-padding-top {
 	padding-top: 10px;
 }
@@ -188,6 +178,34 @@
 	font-weight: bold;
 }
 
+#mypa-spinner-model {
+	position: relative;
+	display: table;
+	margin: auto auto;
+}
+
+#mypa-spinner-model img{
+	position: absolute;
+	top: 22%;
+	left: 22%;
+	width: 62%;
+}
+
+#mypa-spinner {
+	position: relative;
+	display: inline-block;
+	width: 90px;
+	height: 90px;
+	border-top: 3px solid #ff8c00;
+	border-radius: 100%;
+	border-top-color: #ff8c00;
+	animation: mypa-spin 1.2s linear infinite;
+
+}
+
+@keyframes mypa-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 @media only screen and (max-width: 600px) {
@@ -209,9 +227,4 @@
 	.mypa-pickup-location-details-location, .mypa-pickup-location-details-phone, .mypa-pickup-location-details-city, .mypa-pickup-location-details-time {
 		width: 90%;
 	}
-}
-
-@keyframes mypa-spin {
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
 }
