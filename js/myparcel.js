@@ -323,14 +323,6 @@ MyParcel = {
         $('#mypa-input').val(JSON.stringify(result));
     },
 
-    addStyleToPrice: function (chosenDelivery) {
-        $(chosenDelivery).addClass('mypa-bold-price');
-    },
-
-    removeStyleFromPrice: function () {
-        $('.mypa-delivery-option-table').find("span").removeClass('mypa-bold-price');
-    },
-
     addDeliveryToExternalInput: function (deliveryMomentOfDay) {
 
         var deliveryDateId = $('#mypa-select-date').val();
@@ -342,6 +334,14 @@ MyParcel = {
             currentDeliveryData.signed = 1;
             $('#mypa-input').val(JSON.stringify(currentDeliveryData));
         }
+    },
+
+    addStyleToPrice: function (chosenDelivery) {
+        $(chosenDelivery).addClass('mypa-bold-price');
+    },
+
+    removeStyleFromPrice: function () {
+        $('.mypa-delivery-option-table').find("span").removeClass('mypa-bold-price');
     },
 
 
