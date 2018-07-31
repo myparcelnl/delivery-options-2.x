@@ -456,7 +456,7 @@ MyParcel = {
      */
 
     hideDelivery: function () {
-        $('#mypa-delivery-date-select, #mypa-pre-selectors-nl, #mypa-delivery, #mypa-normal-delivery').hide();
+        $('#mypa-delivery-date-select, #mypa-pre-selectors-nl, #mypa-delivery-date-text, #mypa-delivery, #mypa-normal-delivery').hide();
         MyParcel.hideSignature();
         MyParcel.hideOnlyRecipient();
         MyParcel.hideMorningDelivery();
