@@ -21,7 +21,7 @@ You can download the zip on the projects [releases](https://github.com/myparceln
 
 ### Requirements
 
-The MyParcel checkout works with jQuery 3.x.
+The MyParcel checkout works with jQuery  1.x, 2.x en 3.x
 
 ### Example
 An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/) example.
@@ -29,10 +29,6 @@ An example of the checkout functionality can be found via our [Sandbox](https://
 
 ### Usage
 Make sure that the myparcel.js are loaded before the initialize function.
-
-To initialize the checkout the init object should be constructed.
-
-```MyParcel.init(data);```
 
 Inside the data you must have to send the following code
 ```
@@ -98,6 +94,10 @@ var data = {
  };
 ```
 The above value of the array is configurable, as soon as there is an adjustment it will also be visible inside the checkout.
+
+To initialize the checkout the init object should be constructed.
+
+```MyParcel.init(data);```
 
 When there is no title by ```deliveryMorningTitle```, ```deliveryStandardTitle``` and ```deliveryEveningTitle``` , the delivery time will automatically be visible.
 
