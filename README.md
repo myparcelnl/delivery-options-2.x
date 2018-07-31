@@ -11,7 +11,7 @@ Please, star this repository if you use this repository. :star:
 
 ### Installation
 
-You can download the zip on the projects [releases](https://github.com/myparcelnl/checkout/releases){:target="_blank"} page.
+You can download the zip on the projects [releases](https://github.com/myparcelnl/checkout/releases) page.
 
 1. Download the package zip.
 2. Unzip the contents of the zip file.
@@ -24,7 +24,7 @@ You can download the zip on the projects [releases](https://github.com/myparceln
 The MyParcel checkout works with jQuery 3.x.
 
 ### Example
-An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/){:target="_blank"} example.
+An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/) example.
 
 
 ### Usage
