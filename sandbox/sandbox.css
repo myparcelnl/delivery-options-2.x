@@ -48,10 +48,10 @@ div[class*="fade"] {
     animation-delay: 0s;
 }
 .fade2 {
-    animation-delay: 3s;
+    animation-delay: 4s;
 }
 .fade3 {
-    animation-delay: 6s;
+    animation-delay: 8s;
 }
 
 @keyframes fadeIn {
