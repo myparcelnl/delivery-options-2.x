@@ -330,8 +330,8 @@ MyParcel = {
         var currentDeliveryData = MyParcel.triggerDefaultOptionDelivery(deliveryDateId, deliveryMomentOfDay);
 
         if (currentDeliveryData !== null) {
-
-            currentDeliveryData.signed = 1;
+            currentDeliveryData.signed = MyParcel.DELIVERY_SIGNED;
+            currentDeliveryData.only_recipient = MyParcel.DELIVERY_ONLY_RECIPIENT
             $('#mypa-input').val(JSON.stringify(currentDeliveryData));
         }
     },
