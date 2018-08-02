@@ -578,8 +578,9 @@ MyParcel = {
             html += '<option value="' + key + '">' + MyParcel.dateToString(value.date) + ' </option>\n';
         });
 
-        /* Hide the day selector when the value of the deliverydaysWindow is 0*/
-        if (deliveryWindow === 0) {
+
+        /* Hide the day selector when the value of the deliverydaysWindow is 0 or is NaN*/
+        if (deliveryWindow === 0 || isNaN(deliveryWindow)) {
             $('#mypa-select-date').hide();
         }
 
@@ -599,7 +600,7 @@ MyParcel = {
     },
 
     hideDeliveryDates: function () {
-        $('#mypa-delivery-date-text').parent().hide();
+        $('#mypa-delivery-date-text').hide();
     },
 
     /*
@@ -884,7 +885,7 @@ MyParcel = {
         /* Check if the deliverydaysWindow == 0 and hide the select input*/
         this.deliveryDaysWindow = this.data.config.deliverydaysWindow;
 
-        if (this.deliveryDaysWindow === "0"  || this.deliveryDaysWindow === "") {
+        if (this.deliveryDaysWindow <= 0) {
             this.deliveryDaysWindow = 1;
         }
 
