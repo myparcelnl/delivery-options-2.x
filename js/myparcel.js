@@ -473,19 +473,21 @@ MyParcel = {
      */
 
     showDelivery: function () {
-        $('#mypa-pre-selectors-' + this.data.address.cc.toLowerCase()).show();
-        $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
-        $('#mypa-delivery-date-select, .mypa-extra-delivery-options').show();
-        $('#mypa-delivery').parent().parent().show();
+        if (MyParcel.data.address.cc === "NL") {
+            $('#mypa-pre-selectors-' + this.data.address.cc.toLowerCase()).show();
+            $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
+            $('#mypa-delivery-date-select, .mypa-extra-delivery-options').show();
+            $('#mypa-delivery').parent().parent().show();
 
-        MyParcel.hideSignature();
-        if (this.data.config.allowSignature) {
-            MyParcel.showSignature();
-        }
+            MyParcel.hideSignature();
+            if (this.data.config.allowSignature) {
+                MyParcel.showSignature();
+            }
 
-        MyParcel.hideOnlyRecipient();
-        if (this.data.config.allowOnlyRecipient) {
-            MyParcel.showOnlyRecipient();
+            MyParcel.hideOnlyRecipient();
+            if (this.data.config.allowOnlyRecipient) {
+                MyParcel.showOnlyRecipient();
+            }
         }
     },
 
@@ -933,6 +935,7 @@ MyParcel = {
         else {
             MyParcel.hideMessage();
             MyParcel.showDeliveryDates();
+
             if (MyParcel.result.deliveryOptions.data.delivery.length <= 0) {
                 MyParcel.hideDeliveryDates();
             }
