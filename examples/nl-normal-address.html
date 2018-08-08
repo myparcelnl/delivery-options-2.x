@@ -21,6 +21,9 @@
 		<div id="mypa-delivery-option-form">
 			<table class="mypa-delivery-option-table">
 				<tbody>
+				<tr id="mypa-send-per-carrier">
+					<td id="mypa-txt-send-per-carrier" colspan="3"><span id="mypa-header-delivery-title"></span></td>
+				</tr>
 				<tr>
 					<td>
 						<input name="mypa-deliver-or-pickup" id="mypa-select-delivery" value="mypa-deliver" type="radio">
@@ -155,9 +158,9 @@
 <script>
 	var data = {
 		address: {
-			cc: 'NL',
-			postalCode: '2131 BC',
-			number: '679',
+			cc: 'BE',
+			postalCode: '2000',
+			number: '16',
 			city:'Hoofddorp'
 		},
 		txtWeekDays: [
@@ -190,7 +193,8 @@
 			"pricePickup": "5.85",
 			"pricePickupExpress": "1.38",
 
-			"deliveryTitle":"Bezorgen op",
+            "headerDeliveryTitle":"Bezorgopties",
+			"deliveryTitle":"Bezorgen",
 			"pickupTitle":"Afhalen op locatie",
 			"deliveryMorningTitle":"Ochtendlevering",
 			"deliveryStandardTitle":"Standaard levering",

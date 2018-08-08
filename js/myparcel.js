@@ -24,6 +24,9 @@ MyParcel = {
         }
 
         /* Titles of the options*/
+        if (MyParcel.data.config.headerDeliveryTitle) {
+            $('#mypa-header-delivery-title').html(MyParcel.data.config.headerDeliveryTitle);
+        }
         if (MyParcel.data.config.deliveryTitle) {
             $('#mypa-delivery-title').html(MyParcel.data.config.deliveryTitle);
         }
@@ -474,6 +477,7 @@ MyParcel = {
 
     showDelivery: function () {
         if (MyParcel.data.address.cc === "NL") {
+            $('#mypa-txt-send-per-carrier').hide();
             $('#mypa-pre-selectors-' + this.data.address.cc.toLowerCase()).show();
             $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
             $('#mypa-delivery-date-select, .mypa-extra-delivery-options').show();
