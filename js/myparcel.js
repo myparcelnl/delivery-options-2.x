@@ -942,7 +942,6 @@ MyParcel = {
         else {
             MyParcel.hideMessage();
             MyParcel.showDeliveryDates();
-
             if (MyParcel.result.deliveryOptions.data.delivery.length <= 0) {
                 MyParcel.hideDeliveryDates();
             }
