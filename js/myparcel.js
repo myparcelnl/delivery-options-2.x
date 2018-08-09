@@ -91,27 +91,30 @@ MyParcel = {
 
             if (value['price_comment'] == 'morning' && MyParcel.data.config.allowMorningDelivery) {
                 var morningTitle = MyParcel.data.config.deliveryMorningTitle;
-                MyParcel.getDeliveryTime(morningTitle, 'morning', MyParcel.data.config.deliveryMorningTitle, value['start'], value['end']);
+                MyParcel.getDeliveryTime(morningTitle, 'morning', value['start'], value['end']);
                 MyParcel.showMorningDelivery();
             }
             if (value['price_comment'] == 'standard') {
                 var standardTitle = MyParcel.data.config.deliveryStandardTitle;
-                MyParcel.getDeliveryTime(standardTitle, 'standard', MyParcel.data.config.deliveryStandardTitle, value['start'], value['end']);
+                if(MyParcel.data.address.cc === 'NL'){
+                    standardTitle = MyParcel.data.config.NLdeliveryStandardTitle;
+                }
+                MyParcel.getDeliveryTime(standardTitle, 'standard', value['start'], value['end']);
 
             }
             if (value['price_comment'] == 'avond' && MyParcel.data.config.allowEveningDelivery) {
                 var eveningTitle = MyParcel.data.config.deliveryEveningTitle;
-                MyParcel.getDeliveryTime(eveningTitle, 'evening', MyParcel.data.config.deliveryEveningTitle, value['start'], value['end']);
+                MyParcel.getDeliveryTime(eveningTitle, 'evening', value['start'], value['end']);
                 MyParcel.showEveningDelivery();
             }
 
         });
     },
-    getDeliveryTime: function (configDeliveryTitle, deliveryMoment, deliveryTitle, startTime, endTime) {
+    getDeliveryTime: function (configDeliveryTitle, deliveryMoment, startTime, endTime) {
         startTime = startTime.replace(/(.*)\D\d+/, '$1');
         endTime = endTime.replace(/(.*)\D\d+/, '$1');
 
-        $('#mypa-' + deliveryMoment + '-title').html(deliveryTitle);
+        $('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
             $('#mypa-' + deliveryMoment + '-title').html(startTime + ' - ' + endTime);
@@ -476,12 +479,12 @@ MyParcel = {
      */
 
     showDelivery: function () {
+        $('#mypa-delivery').parent().parent().show();
+
         if (MyParcel.data.address.cc === "NL") {
-            $('#mypa-txt-send-per-carrier').hide();
             $('#mypa-pre-selectors-' + this.data.address.cc.toLowerCase()).show();
             $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
             $('#mypa-delivery-date-select, .mypa-extra-delivery-options').show();
-            $('#mypa-delivery').parent().parent().show();
 
             MyParcel.hideSignature();
             if (this.data.config.allowSignature) {
