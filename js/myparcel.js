@@ -869,6 +869,7 @@ MyParcel = {
         var postalCode = this.data.address.postalCode;
         var number = this.data.address.number;
         var city = this.data.address.city;
+        var cutoffTime = this.data.config.cutoffTime;
         var mondayDeliveryActive = 0;
 
         if (postalCode == '' || number == '') {
@@ -902,6 +903,10 @@ MyParcel = {
             mondayDeliveryActive = 1;
         }
 
+        if (new Date().getDay() === 6){
+            cutoffTime = this.data.config.saturdayCutoffTime;
+        }
+
         var url = this.data.config.apiBaseUrl + "delivery_options";
         var params = {
             cc: this.data.address.cc,
@@ -912,7 +917,7 @@ MyParcel = {
             dropoff_days: this.data.config.dropOffDays,
             monday_delivery: mondayDeliveryActive,
             deliverydays_window: this.deliveryDaysWindow,
-            cutoff_time: this.data.config.cutoffTime,
+            cutoff_time: cutoffTime,
             dropoff_delay: this.data.config.dropoffDelay
         };
 
