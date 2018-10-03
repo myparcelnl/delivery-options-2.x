@@ -1,96 +1,111 @@
-This software serves as an example to the uses of the MyParcel delivery end-points. This is a example checkout for webshops.
+# MyParcel Checkout
 
-## Installation notes
 
-The added coffeescript need to be compiled to javasrcipt in order to run the checkout.
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Example](#example)
+- [Usage](#usage)
 
-### Examples
+---
+Please, star this repository if you use this repository. :star:
 
-There are 2 examples available for Dutch addresses:
+### Installation
 
-[Normal NL version](https://myparcelnl.github.io/checkout/docs/) | 
-[iFrame NL version](https://myparcelnl.github.io/checkout/docs/iframe-example.html)
+You can download the zip on the projects [releases](https://github.com/myparcelnl/checkout/releases) page.
 
-There is 1 sample available for Belgian addresses:
+1. Download the package zip.
+2. Unzip the contents of the zip file.
+3. Require the js/myparcel.js and add the css/myparcel.css files to your project. 
+4. Get the HTML content of the examples / an example file and place it inside your project.  
 
-[Normal BE version](https://myparcelnl.github.io/checkout/docs/example-be.html)
 
 ### Requirements
 
-- [Nodejs](https://nodejs.org/en/)
-- [Coffeescript compiler](https://www.npmjs.com/package/coffee-script)
+The MyParcel checkout works with jQuery  1.x, 2.x en 3.x
 
-### Compilation
+### Example
+An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/) example.
 
-Make sure that nodejs and the coffeesrcipt compiler are installed. To compile the coffeescript to javascript run the following command
 
-```bash
-coffee -c myparcel.coffee
+### Usage
+Make sure that the myparcel.js is loaded before the initialize function.
+
+Inside the data you have to send the following code:
 ```
-
-OR with a source map for debugging
-
-```bash
-coffee -cm myparcel.coffee
+var data = {
+    address: {
+        cc: 'NL',
+        postalCode: '2131 BC',
+        number: '679',
+        city:'Hoofddorp'
+    },
+    txtWeekDays: [
+        'Zondag',
+        'Maandag',
+        'Dinsdag',
+        'Woensdag',
+        'Donderdag',
+        'Vrijdag',
+        'Zaterdag'
+    ],
+    translateENtoNL: {
+        'monday': 'maandag',
+        'tuesday': 'dindsag',
+        'wednesday': 'woensdag',
+        'thursday': 'donderdag',
+        'friday': 'vrijdag',
+        'saturday': 'zaterdag',
+        'sunday': 'zondag'
+    },
+    config: {
+        "apiBaseUrl": "https://api.myparcel.nl/",
+        "carrier": "1",
+    
+        "priceMorningDelivery": "10.00",
+        "priceStandardDelivery": "5.85",
+        "priceEveningDelivery": "1.25",
+        "priceSignature": "0.36",
+        "priceOnlyRecipient":"0.29",
+        "pricePickup": "5.85",
+        "pricePickupExpress": "1.38",
+    
+        "deliveryTitle":"Bezorgen op",
+        "pickupTitle":"Afhalen op locatie",
+        "deliveryMorningTitle":"Ochtendlevering",
+        "deliveryStandardTitle":"Standaard levering",
+        "deliveryEveningTitle":"Avondlevering",
+        "signatureTitle": "Handtekening",
+        "onlyRecipientTitle": "Alleen geadresseerde",
+    
+        "allowMondayDelivery": true,
+        "allowMorningDelivery": true,
+        "allowEveningDelivery": true,
+        "allowSignature": true,
+        "allowOnlyRecipient": true,
+        "allowPickupPoints": true,
+        "allowPickupExpress": true,
+    
+        "dropOffDays": "1;2;3;4;5;6",
+        "saturdayCutoffTime": "16:00",
+        "cutoffTime": "15:00",
+        "deliverydaysWindow": "5",
+        "dropoffDelay":"1"
+    }
+ };
 ```
+The above values of the array are configurable. As soon as a value chages it will be visible in the checkout.
 
-For more information visit the [coffeescript page](http://coffeescript.org/)
+To initialize the checkout the init object should be constructed.
 
-## Usage
+```MyParcel.init(data);```
 
-Make sure all included javascript libaries are loaded before the `myparcel.js` is loaded. Make sure the `webcomponents.min.js` is loaded before all else.
-
-To configure the checkout the following object need to be set:
-
-```javascript
-window.mypa.settings = {
-	cc: 'NL', // String - Values: "NL"(Default) or "BE"
-	number: '100', // String - Required
-	street: 'Street name', // String - Required
-	postal_code: '1111AA', // String - Required
-	price: {
-		NL: {
-			morning: '&#8364; 12,00', // String - Make sure too add the currency in proper format
-			default: '&#8364; 12,00', // String
-			night: '&#8364; 12,00', // String
-			pickup: '&#8364; 12,00', // String
-			pickup_express: '&#8364; 12,00', // String
-			signed: '&#8364; 12,00', // String
-			only_recipient: '&#8364; 12,00', // String
-			combi_options: '&#8364; 12,00', // String
-		},
-		BE: {
-			default: '&#8364; 12,00', // String
-			pickup: '&#8364; 12,00', // String
-		}
-	},
-	base_url: 'https://api.myparcel.nl/delivery_options', // Required
-	text: {
-		signed: 'Text to show instead of default text',
-		only_recipient: 'Text to show instead of default text'
-	}
-};
-```
-
-To initialize the checkout the myparcel object should be constructed
-
-```js
-myparcel = new MyParcel();
-```
+When there is no title at ```deliveryMorningTitle```, ```deliveryStandardTitle``` or ```deliveryEveningTitle``` , the delivery time will automatically be visible.
 
 To get the object with the selected option of the user do the following
 
-```js
+```
 json = $('#mypa-input').val();
 obj = JSON.parse(json);
 ```
 
-This configuration can be changed after the checkout has loaded. The config need to be reloaded after is has changed. This can be done using the `updatePage` function.
-
-Not all fields are required for the checkout to function.
-
-For the `signed` and `only_recipient` option if disabled is given as string the option wont shown.
-
-### Troubleshooting
-
-Webcomponents might not be compatible with all other libraries (I.E some versions of prototype.js). A simple way around this issue is to run the checkout on a seperate page and load the html on a iframe. This creates the same effect as the shadow DOM does.
+When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@myparcel.nl
