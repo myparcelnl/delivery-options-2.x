@@ -155,7 +155,7 @@
 	white-space: nowrap;
 	vertical-align:top;
 }
-.mypa-postnl-logo{
+.mypa-bpost-logo{
 	width: 100px;
 	float: right;
 	margin: 45px 8px 0 0;
@@ -175,7 +175,7 @@
 	display: none;
 }
 
-#mypa-list-postnl-pickup option{
+#mypa-list-bpost-pickup option{
 	padding: 5px 0px 5px 0px;
 }
 .mypa-bold-price{
@@ -200,9 +200,9 @@
 	display: inline-block;
 	width: 90px;
 	height: 90px;
-	border-top: 3px solid #ff8c00;
+	border-top: 3px solid #ef2736;
 	border-radius: 100%;
-	border-top-color: #ff8c00;
+	border-top-color: #ef2736;
 	animation: mypa-spin 1.2s linear infinite;
 
 }
@@ -217,7 +217,7 @@
 	.mypa-delivery-option-table tr {
 		height: 30px !important;
 	}
-	.mypa-postnl-logo{
+	.mypa-bpost-logo{
 		float: none;
 		margin: 0 100% 0 0;
 
