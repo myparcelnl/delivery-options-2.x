@@ -80,7 +80,7 @@ MyParcel = {
         }
 
         var escapeElem = document.createElement('P');
-        escapeElem.innerText = priceOfDeliveryOptionOrig;
+        // escapeElem.innerText = priceOfDeliveryOptionOrig;
         var priceOfDeliveryOption = escapeElem.innerText;
 
         if (parseFloat(priceOfDeliveryOption) >= 0) {
@@ -716,7 +716,7 @@ MyParcel = {
 
         $.each(
             currentLocation.opening_hours, function(weekday, value) {
-                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.config[weekday] + "</span>";
+                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.translateENtoNL[weekday] + "</span>";
 
                 if (value[0] === undefined) {
                     html += '<span class="mypa-time">' + MyParcel.data.config.closed + '</span>';
