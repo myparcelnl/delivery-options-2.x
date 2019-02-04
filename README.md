@@ -11,7 +11,7 @@ Please, star this repository if you use this repository. :star:
 
 ### Installation
 
-You can download the zip on the projects [releases](https://github.com/myparcelnl/checkout/releases) page.
+You can download the zip on the projects [releases](https://github.com/myparcelbe/checkout/releases) page.
 
 1. Download the package zip.
 2. Unzip the contents of the zip file.
