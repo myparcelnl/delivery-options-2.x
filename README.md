@@ -24,7 +24,7 @@ You can download the zip on the projects [releases](https://github.com/myparceln
 The MyParcel checkout works with jQuery  1.x, 2.x en 3.x
 
 ### Example
-An example of the checkout functionality can be found via our [Sandbox](https://myparcelbe.github.io/checkout/sandbox/) example.
+An example of the checkout functionality can be found via our [Sandbox](https://myparcelnl.github.io/checkout/sandbox/) example.
 
 
 ### Usage
@@ -34,10 +34,10 @@ Inside the data you have to send the following code:
 ```js
 var data = {
     address: {
-        cc: 'BE',
-        postalCode: '2000',
-        number: '16',
-        city:'Antwerpen'
+        cc: 'NL',
+        postalCode: '2131 BC',
+        number: '679',
+        city:'Hoofddorp'
     },
     txtWeekDays: [
         'Zondag',
@@ -71,15 +71,22 @@ var data = {
     
         "deliveryTitle":"Bezorgen op",
         "pickupTitle":"Afhalen op locatie",
+        "deliveryMorningTitle":"Ochtendlevering",
         "deliveryStandardTitle":"Standaard levering",
+        "deliveryEveningTitle":"Avondlevering",
         "signatureTitle": "Handtekening",
+        "onlyRecipientTitle": "Alleen geadresseerde",
     
-        "allowSaturdayDelivery": true,
+        "allowMondayDelivery": true,
+        "allowMorningDelivery": true,
+        "allowEveningDelivery": true,
         "allowSignature": true,
+        "allowOnlyRecipient": true,
         "allowPickupPoints": true,
         "allowPickupExpress": true,
     
         "dropOffDays": "1;2;3;4;5;6",
+        "saturdayCutoffTime": "16:00",
         "cutoffTime": "15:00",
         "deliverydaysWindow": "5",
         "dropoffDelay":"1"
@@ -101,4 +108,4 @@ json = $('#mypa-input').val();
 obj = JSON.parse(json);
 ```
 
-When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@sendmyparcel.be
+When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@myparcel.nl
