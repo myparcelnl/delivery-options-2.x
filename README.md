@@ -50,7 +50,7 @@ var data = {
     ],
     translateENtoNL: {
         'monday': 'maandag',
-        'tuesday': 'dindsag',
+        'tuesday': 'dinsdag',
         'wednesday': 'woensdag',
         'thursday': 'donderdag',
         'friday': 'vrijdag',
