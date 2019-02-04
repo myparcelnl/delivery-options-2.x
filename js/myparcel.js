@@ -68,8 +68,6 @@ MyParcel = {
 
     showPrices: function(prices) {
         $.each(prices, function(selectName, price) {
-            console.log(price);
-            console.log(selectName);
             $('#mypa-' + selectName + '-delivery, #mypa-' + selectName + '-price').html(MyParcel.getPriceHtml(price));
         });
     },
