@@ -7,7 +7,6 @@
 - [Usage](#usage)
 
 ---
-Please, star this repository if you use this repository. :star:
 
 ### Installation
 

@@ -25,19 +25,19 @@ MyParcel = {
 
         /* Titles of the options*/
         if (MyParcel.data.config.headerDeliveryTitle) {
-            $('#mypa-header-delivery-title').html(MyParcel.data.config.headerDeliveryTitle);
+            $('#mypa-header-delivery-title').text(MyParcel.data.config.headerDeliveryTitle);
         }
         if (MyParcel.data.config.deliveryTitle) {
-            $('#mypa-delivery-title').html(MyParcel.data.config.deliveryTitle);
+            $('#mypa-delivery-title').text(MyParcel.data.config.deliveryTitle);
         }
         if (MyParcel.data.config.onlyRecipientTitle) {
-            $('#mypa-only-recipient-title').html(MyParcel.data.config.onlyRecipientTitle);
+            $('#mypa-only-recipient-title').text(MyParcel.data.config.onlyRecipientTitle);
         }
         if (MyParcel.data.config.signatureTitle) {
-            $('#mypa-signature-title').html(MyParcel.data.config.signatureTitle);
+            $('#mypa-signature-title').text(MyParcel.data.config.signatureTitle);
         }
         if (MyParcel.data.config.pickupTitle) {
-            $('#mypa-pickup-title').html(MyParcel.data.config.pickupTitle);
+            $('#mypa-pickup-title').text(MyParcel.data.config.pickupTitle);
         }
 
         /* Prices */
@@ -58,11 +58,14 @@ MyParcel = {
         MyParcel.bind();
     },
 
-    getPriceHtml: function (priceOfDeliveryOption) {
-
-        if (!priceOfDeliveryOption) {
-            var price = "";
+    getPriceHtml: function (priceOfDeliveryOptionOrig) {
+        if (!priceOfDeliveryOption || (typeof priceOfDeliveryOption !== 'string' && typeof priceOfDeliveryOption !== 'number')) {
+            return "";
         }
+
+        var escapeElem = document.createElement('P');
+        escapeElem.innerText = priceOfDeliveryOptionOrig;
+        var priceOfDeliveryOption = escapeElem.innerText;
 
         if (parseFloat(priceOfDeliveryOption) >= 0) {
             var price = '&euro; ' + priceOfDeliveryOption;
@@ -114,10 +117,10 @@ MyParcel = {
         startTime = startTime.replace(/(.*)\D\d+/, '$1');
         endTime = endTime.replace(/(.*)\D\d+/, '$1');
 
-        $('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
+        $('#mypa-' + deliveryMoment + '-title').text(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
-            $('#mypa-' + deliveryMoment + '-title').html(startTime + ' - ' + endTime);
+            $('#mypa-' + deliveryMoment + '-title').text(startTime + ' - ' + endTime);
         }
 
     },
@@ -381,7 +384,7 @@ MyParcel = {
     defaultCheckCheckbox: function (selectedOption) {
         if (selectedOption === 'mypa-only-recipient') {
             $('#mypa-only-recipient-selector').prop('checked', true).prop({disabled: true});
-            $('#mypa-only-recipient-price').html('Inclusief');
+            $('#mypa-only-recipient-price').text('Inclusief');
         } else {
             $('#mypa-only-recipient-selector').prop('checked', false).removeAttr("disabled");
             $('#mypa-only-recipient-price').html(MyParcel.getPriceHtml(this.data.config.priceOnlyRecipient));
@@ -449,7 +452,7 @@ MyParcel = {
      */
 
     showMessage: function (message) {
-        $('.mypa-message-model').html(message).show();
+        $('.mypa-message-model').text(message).show();
         $('#mypa-delivery-option-form').hide();
 
     },
@@ -820,7 +823,7 @@ MyParcel = {
         MyParcel.hideDelivery();
         $('#mypa-select-date, #method-myparcel-normal').hide();
         $('.mypa-is-pickup-element').hide();
-        $('#mypa-select-delivery-title').html('Zo snel mogelijk bezorgen');
+        $('#mypa-select-delivery-title').text('Zo snel mogelijk bezorgen');
     },
 
 
