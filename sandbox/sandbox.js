@@ -20,7 +20,16 @@ Sandbox = {
             'sunday': 'zondag'
         },
         'config': {
-            'apiBaseUrl': 'https://api.sendmyparcel.be/'
+            'apiBaseUrl': 'https://api.sendmyparcel.be/',
+            'addressNotFound': 'Adresgegevens niet ingevuld',
+            'pickUpFrom': 'Afhalen vanaf',
+            'openingHours': 'Openingstijden',
+            'closed': 'Gesloten',
+            'postcode': 'Postcode',
+            'houseNumber': 'Huisnummer',
+            'city': 'Plaats',
+            'retry': 'Opnieuw',
+            'wrongHouseNumberCity': 'Combinatie postcode/plaats onbekend'
         }
     },
 
@@ -74,11 +83,12 @@ Sandbox = {
     },
 
     showResultCode: function () {
-        delete Sandbox.formOptions.deliveryOptions;
+        visibleOptions = Sandbox.formOptions;
+        delete visibleOptions.deliveryOptions;
         code = '<script>' +
             '\n' +
             'var data = ' +
-            JSON.stringify(Sandbox.formOptions, null, '  ') +
+            JSON.stringify(visibleOptions, null, '  ') +
             ';\n' +
             'MyParcel.init(data);' +
             '\n' +
