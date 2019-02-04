@@ -29,17 +29,17 @@ MyParcel = {
 
         /* Titles of the options*/
         if (MyParcel.data.config.deliveryTitle) {
-            $('#mypa-delivery-title').html(MyParcel.data.config.deliveryTitle);
+            $('#mypa-delivery-title').text(MyParcel.data.config.deliveryTitle);
         }
         if (MyParcel.data.config.headerDeliveryOptions) {
             $('#mypa-delivery-options-title').html(MyParcel.data.config.headerDeliveryOptions);
             $('#header-delivery-options-title').show();
         }
         if (MyParcel.data.config.onlyRecipientTitle) {
-            $('#mypa-only-recipient-title').html(MyParcel.data.config.onlyRecipientTitle);
+            $('#mypa-only-recipient-title').text(MyParcel.data.config.onlyRecipientTitle);
         }
         if (MyParcel.data.config.signatureTitle) {
-            $('#mypa-signature-title').html(MyParcel.data.config.signatureTitle);
+            $('#mypa-signature-title').text(MyParcel.data.config.signatureTitle);
         }
         if (MyParcel.data.config.pickupTitle) {
             $('#mypa-pickup-title').html(MyParcel.data.config.pickupTitle);
@@ -78,6 +78,10 @@ MyParcel = {
         if (!priceOfDeliveryOption) {
             price = "";
         }
+
+        var escapeElem = document.createElement('P');
+        escapeElem.innerText = priceOfDeliveryOptionOrig;
+        var priceOfDeliveryOption = escapeElem.innerText;
 
         if (parseFloat(priceOfDeliveryOption) >= 0) {
             price = '+ &euro; ' + Number(priceOfDeliveryOption).toFixed(2).replace(".", ",");
@@ -129,10 +133,10 @@ MyParcel = {
         startTime = startTime.replace(/(.*)\D\d+/, '$1');
         endTime = endTime.replace(/(.*)\D\d+/, '$1');
 
-        $('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
+        $('#mypa-' + deliveryMoment + '-title').text(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
-            $('#mypa-' + deliveryMoment + '-title').html(startTime + ' - ' + endTime);
+            $('#mypa-' + deliveryMoment + '-title').text(startTime + ' - ' + endTime);
         }
     },
 
@@ -400,7 +404,7 @@ MyParcel = {
     defaultCheckCheckbox: function(selectedOption) {
         if (selectedOption === 'mypa-only-recipient') {
             $('#mypa-only-recipient-selector').prop('checked', true).prop({disabled: true});
-            $('#mypa-only-recipient-price').html('Inclusief');
+            $('#mypa-only-recipient-price').text('Inclusief');
         } else {
             $('#mypa-only-recipient-selector').prop('checked', false).removeAttr("disabled");
             $('#mypa-only-recipient-price').html(MyParcel.getPriceHtml(this.data.config.priceOnlyRecipient));
