@@ -66,7 +66,6 @@ var data = {
         "priceSignature": "0.36",
         "priceOnlyRecipient":"0.29",
         "pricePickup": "5.85",
-        "pricePickupExpress": "1.38",
     
         "deliveryTitle":"Bezorgen op",
         "pickupTitle":"Afhalen op locatie",
@@ -76,7 +75,6 @@ var data = {
         "allowSaturdayDelivery": true,
         "allowSignature": true,
         "allowPickupPoints": true,
-        "allowPickupExpress": true,
     
         "dropOffDays": "1;2;3;4;5;6",
         "cutoffTime": "15:00",
