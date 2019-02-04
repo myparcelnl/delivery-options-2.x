@@ -20,7 +20,16 @@ Sandbox = {
             'sunday': 'zondag'
         },
         'config': {
-            'apiBaseUrl': 'https://api.myparcel.nl/'
+            'apiBaseUrl': 'https://api.myparcel.nl/',
+            'addressNotFound': 'Adresgegevens niet ingevuld',
+            'pickUpFrom': 'Afhalen vanaf',
+            'openingHours': 'Openingstijden',
+            'closed': 'Gesloten',
+            'postcode': 'Postcode',
+            'houseNumber': 'Huisnummer',
+            'city': 'Plaats',
+            'retry': 'Opnieuw',
+            'wrongHouseNumberCity': 'Combinatie postcode/plaats onbekend'
         }
     },
 
