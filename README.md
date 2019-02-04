@@ -58,7 +58,7 @@ var data = {
         'sunday': 'zondag'
     },
     config: {
-        "apiBaseUrl": "https://api.myparcel.nl/",
+        "apiBaseUrl": "https://api.sendmyparcel.be/",
         "carrier": "1",
     
         "priceMorningDelivery": "10.00",

@@ -67,13 +67,20 @@
                             <small id="cutoffTimeHelp" class="form-text text-muted">This option allows the Merchant to indicate the latest cut-off time before an order will still be picked, packed and dispatched on the same/first set drop-off day, taking into account the drop-off delay. Industry standard default time is 17:00. For example, if cutoff time is 17:00, Monday is a delivery day and there's no delivery delay; all orders placed Monday before 17:00 will be dropped of at bpost on that same Monday in time for the Monday collection and delivery on Tuesday.</small>
                         </div>
                     </div>
-                    <!--<div class="form-group row">-->
-                        <!--<label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">-->
-                            <!--<small id="deliverydaysWindowHelp" class="form-text text-muted">This option allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example; If set to 3 (days) in her checkout, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to bpost on Mondays). Min. is 1 and max. is 14.</small>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <div class="form-group row">
+                        <label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="deliverydaysWindow"
+                                   name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
+                            <small id="deliverydaysWindowHelp" class="form-text text-muted">This option allows the
+                                Merchant to set the number of days into the future for which she wants to show her
+                                consumers delivery options. For example; If set to 3 (days) in her checkout, a consumer
+                                ordering on Monday will see possible delivery options for Tuesday, Wednesday and
+                                Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes
+                                to bpost on Mondays). Min. is 1 and max. is 14.
+                            </small>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="dropoffDelay" class="col-sm-4 col-form-label">dropoffDelay</label>
                         <div class="col-sm-8">
@@ -147,33 +154,6 @@
                         </div>
                     </div>
                     <hr/>
-
-                    <!--<div class="form-group row justify-content-end">-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<h3>Evening delivery</h3>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="allowEveningDelivery" class="col-sm-4 col-form-label">allowEveningDelivery</label>-->
-                        <!--<div class="col-sm-8 checkbox-padding">-->
-                            <!--<input type="checkbox" checked class="form-control" id="allowEveningDelivery" name="config[allowEveningDelivery]" placeholder="allowEveningDelivery" value="true">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">-->
-                            <!--<small id="deliveryEveningTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="1,25">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<hr/>-->
-
                     <div class="form-group row justify-content-end">
                         <div class="col-sm-8">
                             <h3>Signature</h3>
@@ -198,30 +178,6 @@
                         </div>
                     </div>
                     <hr/>
-                    <!--<div class="form-group row justify-content-end">-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<h3>Only recipient</h3>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="allowOnlyRecipient" class="col-sm-4 col-form-label">allowOnlyRecipient</label>-->
-                        <!--<div class="col-sm-8 checkbox-padding">-->
-                            <!--<input type="checkbox" checked class="form-control" id="allowOnlyRecipient" name="config[allowOnlyRecipient]" placeholder="allowOnlyRecipient" value="true">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="onlyRecipientTitle" class="col-sm-4 col-form-label">onlyRecipientTitle</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="0.29">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<hr/>-->
                     <div class="form-group row justify-content-end">
                         <div class="col-sm-8">
                             <h3>Pickup points</h3>
@@ -245,37 +201,6 @@
                             <input type="text" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="5.85">
                         </div>
                     </div>
-                    <hr/>
-                    <!--<div class="form-group row justify-content-end">-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<h3>Pickup express</h3>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="allowPickupExpress" class="col-sm-4 col-form-label">allowPickupExpress</label>-->
-                        <!--<div class="col-sm-8 checkbox-padding">-->
-                            <!--<input type="checkbox" checked class="form-control" id="allowPickupExpress" name="config[allowPickupExpress]" placeholder="allowPickupExpress" value="true">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="7,23">-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group row justify-content-end">-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<h3>Belgium delivery</h3>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group row">-->
-                        <!--<label for="BEdeliveryTitle" class="col-sm-4 col-form-label">BEdeliveryTitle</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control form-control-sm" id="BEdeliveryTitle" name="config[BEdeliveryTitle]" placeholder="BE-deliveryTitle" value="Thuis of op het werk">-->
-                            <!--<small id="BEdeliveryTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible for a Belgium delivery.</small>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </form>
             </div>
 
@@ -290,11 +215,8 @@
                     <div class="form-group row">
                         <label for="cc" class="col-sm-4 col-form-label">cc</label>
                         <div class="col-sm-8">
-                            <select name="address[cc]" id="cc" class="form-control form-control-sm">
-                                <option value="BE">BE</option>
-                                <option value="NL">NL</option>
-                            </select>
-                            <small id="ccHelp" class="form-text text-muted">The country code for which to fetch the delivery options. This code can only be used in Belgium or the Netherlands( cc=BE or cc=NL ).</small>
+                            <input name="address[cc]" id="cc" class="form-control form-control-sm" disabled value="BE" />
+                            <small id="ccHelp" class="form-text text-muted">The country code for which to fetch the delivery options. This code can only be used in Belgium (cc=BE).</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -464,7 +386,7 @@
                     <small class="text-muted">
                         In order to ensure that the right options are stored in your database, you can write your own code in myparcel.js. Every time an option is chosen, mapExternalWebshopTriggers (myparcel.js) is called. You can place your code in this function. For example; to save the data or to perform cms dependent actions. You can also use the following field to save the selected options. Normally you would make this input field invisible.
                     </small>
-                    <input style="width: 100%; margin-top: 10px" id="mypa-input" name="mypa-post-nl-data">
+                    <input style="width: 100%; margin-top: 10px" id="mypa-input" name="mypa-bpost-data">
                 </div>
             </div>
         </div>

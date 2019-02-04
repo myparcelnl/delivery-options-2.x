@@ -2,9 +2,9 @@
  * Code for Magento @Richard
  */
 var MyParcel = new MyParcel({
-    cc: 'NL',
-    number: '55',
-    postal_code: '2231je',
+    cc: 'BE',
+    number: '16',
+    postal_code: '2000',
 });
 
 MyParcel.myparcelOptionChanged = function (data) {
