@@ -16,6 +16,11 @@ MyParcel = {
     DELIVERY_SIGNATURE:      0,
     DELIVERY_ONLY_RECIPIENT: 0,
 
+    CC_ALLOWED_SIGNATURE:              ['NL', 'BE'],
+    CC_ALLOWED_DELIVERY_DAYS_WINDOW:   ['NL', 'BE'],
+    CC_ALLOWED_ONLY_RECIPIENT:         ['NL'],
+    CC_ALLOWED_EXTRA_DELIVERY_OPTIONS: ['NL'],
+
     SPLIT_STREET_REGEX: /(.*?)\s?(\d{1,4})[/\s\-]{0,2}([a-zA-Z]{1}\d{1,3}|-\d{1,4}|\d{2}\w{1,2}|[a-zA-Z]{1}[a-zA-Z\s]{0,3})?$/g,
 
     init: function(externalData) {
@@ -45,7 +50,7 @@ MyParcel = {
         var prices = {
             'morning':        this.data.config.priceMorningDelivery,
             'evening':        this.data.config.priceEveningDelivery,
-            'normal':         this.data.config.priceNormalDelivery,
+            'normal':         this.data.config.priceStandardDelivery,
             'signature':      this.data.config.priceSignature,
             'only-recipient': this.data.config.priceOnlyRecipient,
             'pickup':         this.data.config.pricePickup
@@ -110,9 +115,6 @@ MyParcel = {
 
             if (value['price_comment'] == 'standard') {
                 var standardTitle = MyParcel.data.config.deliveryStandardTitle;
-                if (MyParcel.data.address.cc === 'BE') {
-                    standardTitle = MyParcel.data.config.BEdeliveryStandardTitle;
-                }
                 MyParcel.getDeliveryTime(standardTitle, 'standard', value['start'], value['end']);
             }
             if (value['price_comment'] == 'avond' && MyParcel.data.config.allowEveningDelivery) {
@@ -484,32 +486,27 @@ MyParcel = {
      * Shows interface part for delivery.
      *
      */
-    showDelivery: function() {
-
+    showDelivery: function () {
         $('#mypa-delivery').parent().parent().show();
+        MyParcel.hideSignature();
+        MyParcel.hideOnlyRecipient();
+        cc = MyParcel.data.address.cc;
 
-        if (MyParcel.data.address.cc === "NL") {
-            $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
-            $('.mypa-extra-delivery-options').show();
-
-            if (this.data.config.deliverydaysWindow >= 2) {
-                $('#mypa-delivery-date-select').show();
-            }
-
-            MyParcel.hideSignature();
-            if (this.data.config.allowSignature) {
-                MyParcel.showSignature();
-            }
-
-            MyParcel.hideOnlyRecipient();
-            if (this.data.config.allowOnlyRecipient) {
-                MyParcel.showOnlyRecipient();
-            }
+        if (MyParcel.CC_ALLOWED_DELIVERY_DAYS_WINDOW.includes(cc) && this.data.config.deliverydaysWindow >= 2) {
+            $('#mypa-delivery-date-select').show();
         }
 
-        if (MyParcel.data.address.cc === 'BE') {
-            $('#mypa-delivery-title').html(MyParcel.data.config.BEdeliveryTitle);
-            $('#mypa-delivery-date-text').hide();
+        if (MyParcel.CC_ALLOWED_SIGNATURE.includes(cc) && this.data.config.allowSignature) {
+            MyParcel.showSignature();
+        }
+
+        if (MyParcel.CC_ALLOWED_ONLY_RECIPIENT.includes(cc) && this.data.config.allowOnlyRecipient) {
+            MyParcel.showOnlyRecipient();
+        }
+
+        if (MyParcel.CC_ALLOWED_EXTRA_DELIVERY_OPTIONS.includes(cc)) {
+            $('#mypa-delivery-selectors-' + this.data.address.cc.toLowerCase()).show();
+            $('.mypa-extra-delivery-options').show();
         }
     },
 
