@@ -1,8 +1,6 @@
 Sandbox = {
     formOptions: {
-        'address': {
-            'carrier': 2
-        },
+        'address': {},
         'txtWeekDays': [
             'Zondag',
             'Maandag',
@@ -22,6 +20,7 @@ Sandbox = {
             'sunday': 'zondag'
         },
         'config': {
+            'carrier': 2,
             'apiBaseUrl': 'https://api.sendmyparcel.be/',
             'addressNotFound': 'Adresgegevens niet ingevuld',
             'pickUpFrom': 'Afhalen vanaf',
