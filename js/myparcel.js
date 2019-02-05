@@ -699,7 +699,7 @@ MyParcel = {
 
         jQuery.each(
             currentLocation.opening_hours, function(weekday, value) {
-                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.config[weekday] + "</span>";
+                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.translateENtoNL[weekday] + "</span>";
 
                 if (value[0] === undefined) {
                     html += '<span class="mypa-time">' + MyParcel.data.config.closed + '</span>';
@@ -794,30 +794,8 @@ MyParcel = {
 
     setAddressFromInputFields: function() {
         this.data.address.cc = $('#cc').val();
-        this.data.address.number = $('#number').val();
-        this.data.address.postalCode = $('#postalCode').val();
-    },
-
-    /*
-     * splitFullStreetFromInput
-     *
-     * Split full street into parts and returning empty array if there's no street entered
-     */
-    splitFullStreetFromInput: function(fullStreet) {
-        result = {
-            streetName:        '',
-            houseNumber:       '',
-            houseNumberSuffix: '',
-        };
-
-        if (fullStreet && fullStreet.length > 0) {
-            streetParts = new RegExp(MyParcel.SPLIT_STREET_REGEX).exec(fullStreet);
-            result.streetName = streetParts[1];
-            result.houseNumber = streetParts[2];
-            result.houseNumberSuffix = streetParts[3];
-        }
-
-        return result;
+        this.data.address.number = $('#number').val().trim();
+        this.data.address.postalCode = $('#postalCode').val().trim();
     },
 
     /*
@@ -859,8 +837,8 @@ MyParcel = {
         jQuery.get(this.data.config.apiBaseUrl + "delivery_options",
             {
                 cc:                  this.data.address.cc,
-                postal_code:         this.data.address.postalCode.trim(),
-                number:              this.data.address.number.trim(),
+                postal_code:         this.data.address.postalCode,
+                number:              this.data.address.number,
                 city:                this.data.address.city,
                 carrier:             this.data.config.carrier,
                 dropoff_days:        this.data.config.dropOffDays,
