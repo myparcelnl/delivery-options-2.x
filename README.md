@@ -83,13 +83,14 @@ var data = {
     }
  };
 ```
-The above values of the array are configurable. As soon as a value chages it will be visible in the checkout.
+
+The above values of the array are configurable. As soon as a value changes it will be visible in the checkout.
 
 To initialize the checkout the init object should be constructed.
 
 ```MyParcel.init(data);```
 
-When there is no title at ```deliveryMorningTitle```, ```deliveryStandardTitle``` or ```deliveryEveningTitle``` , the delivery time will automatically be visible.
+When there is no title at `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible.
 
 To get the object with the selected option of the user do the following
 
