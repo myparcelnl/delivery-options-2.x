@@ -737,18 +737,18 @@ MyParcel = {
     },
 
     /*
-     * retryPostalCodeHouseNumber
+     * retryPostalCodeCity
      *
-     * After detecting an unrecognised postal code / house number combination the user can try again.
+     * After detecting an unrecognised postal code / city combination the user can try again.
      * This function copies the newly entered data back into the webshop forms.
      *
      */
-    retryPostalCodeHouseNumber: function() {
+    retryPostalCodeCity: function() {
         var retryPostalCode = jQuery('#mypa-error-postcode').val();
-        var retryNumber = jQuery('#mypa-error-number').val();
+        var retryCity = jQuery('#mypa-error-city').val();
 
         jQuery('#postalCode').val(retryPostalCode);
-        jQuery('#number').val(retryNumber);
+        jQuery('#city').val(retryCity);
 
         MyParcel.callDeliveryOptions();
         jQuery('#mypa-select-delivery').click();
@@ -775,13 +775,13 @@ MyParcel = {
      */
     showRetry: function() {
         MyParcel.showMessage(
-            '<h3>' + MyParcel.data.config.wrongHouseNumberPostcode + '</h3>' +
+            '<h3>' + MyParcel.data.config.wrongPostalCodeCity + '</h3>' +
             '<div class="mypa-full-width mypa-error">' +
             '<label for="mypa-error-postcode">' + MyParcel.data.config.postcode + '</label>' +
             '<input type="text" name="mypa-error-postcode" id="mypa-error-postcode" value="' + MyParcel.data.address.postalCode + '">' +
             '</div><div class="mypa-full-width mypa-error">' +
-            '<label for="mypa-error-number">' + MyParcel.data.config.houseNumber + '</label>' +
-            '<input type="text" name="mypa-error-number" id="mypa-error-number" value="' + MyParcel.data.address.number + '">' +
+            '<label for="mypa-error-city">' + MyParcel.data.config.city + '</label>' +
+            '<input type="text" name="mypa-error-city" id="mypa-error-city" value="' + MyParcel.data.address.city + '">' +
             '<br><div id="mypa-error-try-again" class="btn btn-info">' + MyParcel.data.config.retry + '</div>' +
             '</div>'
         );
@@ -791,36 +791,14 @@ MyParcel = {
 
         /* bind trigger to new button */
         jQuery('#mypa-error-try-again').on('click', function() {
-            MyParcel.retryPostalCodeHouseNumber();
+            MyParcel.retryPostalCodeCity();
         });
     },
 
     setAddressFromInputFields: function() {
         this.data.address.cc = $('#cc').val();
-        this.data.address.number = $('#number').val();
-        this.data.address.postalCode = $('#postalCode').val();
-    },
-
-    /*
-     * splitFullStreetFromInput
-     *
-     * Split full street into parts and returning empty array if there's no street entered
-     */
-    splitFullStreetFromInput: function(fullStreet) {
-        result = {
-            streetName:        '',
-            houseNumber:       '',
-            houseNumberSuffix: '',
-        };
-
-        if (fullStreet && fullStreet.length > 0) {
-            streetParts = new RegExp(MyParcel.SPLIT_STREET_REGEX).exec(fullStreet);
-            result.streetName = streetParts[1];
-            result.houseNumber = streetParts[2];
-            result.houseNumberSuffix = streetParts[3];
-        }
-
-        return result;
+        this.data.address.city = $('#city').val().trim();
+        this.data.address.postalCode = $('#postalCode').val().trim();
     },
 
     /*
@@ -837,7 +815,7 @@ MyParcel = {
         MyParcel.setAddressFromInputFields();
 
         // Hide PostNL field if there is no address entered
-        if (!MyParcel.data.address.postalCode || !MyParcel.data.address.number) {
+        if (!MyParcel.data.address.postalCode && !MyParcel.data.address.city) {
             MyParcel.hideSpinner();
             MyParcel.showMessage(
                 '<h3>' + MyParcel.data.config.addressNotFound + '</h3>'
@@ -856,10 +834,10 @@ MyParcel = {
         jQuery.get(this.data.config.apiBaseUrl + "delivery_options",
             {
                 cc:                  this.data.address.cc,
-                postal_code:         this.data.address.postalCode.trim(),
-                number:              this.data.address.number.trim(),
+                postal_code:         this.data.address.postalCode,
+                number:              this.data.address.number,
                 city:                this.data.address.city,
-                carrier:             this.data.config.carrier,
+                carrier:             this.data.address.carrier,
                 dropoff_days:        this.data.config.dropOffDays,
                 monday_delivery:     this.data.config.allowMondayDelivery,
                 deliverydays_window: this.deliveryDaysWindow,

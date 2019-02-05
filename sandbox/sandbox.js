@@ -1,6 +1,8 @@
 Sandbox = {
     formOptions: {
-        'address': {},
+        'address': {
+            'carrier': 2
+        },
         'txtWeekDays': [
             'Zondag',
             'Maandag',
@@ -29,7 +31,7 @@ Sandbox = {
             'houseNumber': 'Huisnummer',
             'city': 'Plaats',
             'retry': 'Opnieuw',
-            'wrongHouseNumberCity': 'Combinatie postcode/plaats onbekend'
+            'wrongPostalCodeCity': 'Combinatie postcode/plaats onbekend'
         }
     },
 
@@ -62,14 +64,15 @@ Sandbox = {
     setOptions: function () {
         $("input[name^='config'], input[name^='address'], select[name^='address']").each(function () {
             val = null;
+            keys = $(this).attr('name').match(/([a-z]+)\[([a-zA-Z0-9]{1,50})]/);
 
-            if ($(this).is(':checkbox')) {
+            if (keys[2] === 'deliverydaysWindow') {
+                val = $(this).is(':checked') ? '1' : '0';
+            } else if ($(this).is(':checkbox')) {
                 val = $(this).is(':checked');
             } else {
                 val = $(this).val();
             }
-
-            keys = $(this).attr('name').match(/([a-z]+)\[([a-zA-Z0-9]{1,50})]/);
 
             if (val === 'true') {
                 val = true;
