@@ -837,7 +837,7 @@ MyParcel = {
         MyParcel.setAddressFromInputFields();
 
         // Hide PostNL field if there is no address entered
-        if (MyParcel.data.address.postalCode == '' || MyParcel.data.address.number == '') {
+        if (!MyParcel.data.address.postalCode || !MyParcel.data.address.number) {
             MyParcel.hideSpinner();
             MyParcel.showMessage(
                 '<h3>' + MyParcel.data.config.addressNotFound + '</h3>'
