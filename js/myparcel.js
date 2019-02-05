@@ -195,8 +195,6 @@ MyParcel = {
             MyParcel.defaultCheckCheckbox('method-myparcel-normal');
         });
 
-        // $('#mypa-pickup-express').hide();  /* todo: move */
-
         jQuery('#mypa-pickup-delivery, #mypa-pickup-location').on('change', function(e) {
             MyParcel.setCurrentLocation();
             MyParcel.toggleDeliveryOptions();
@@ -462,8 +460,7 @@ MyParcel = {
      */
     hideDelivery: function() {
         jQuery('#mypa-delivery-date-text,.mypa-extra-delivery-options').hide();
-        jQuery('#mypa-select-date').parent().parent().hide();
-        jQuery('#mypa-delivery').parent().parent().hide();
+        jQuery('#mypa-select-date, #mypa-delivery').parent().parent().hide();
         MyParcel.hideSignature();
         MyParcel.hideOnlyRecipient();
         MyParcel.hideMorningDelivery();
