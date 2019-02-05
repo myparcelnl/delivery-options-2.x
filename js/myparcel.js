@@ -212,14 +212,6 @@ MyParcel = {
         jQuery('#mypa-load input, #mypa-load select').on('input', function() {
             MyParcel.mapExternalWebshopTriggers()
         });
-
-        fields = window.myparcel_is_using_split_address_fields
-            ? '#billing_house_number, #shipping_house_number'
-            : '#billing_address_1, #shipping_address_1';
-
-        jQuery('#billing_country, #shipping_country, #billing_postcode, #shipping_postcode, ' + fields).on('change', function() {
-            MyParcel.callDeliveryOptions();
-        });
     },
 
     mapExternalWebshopTriggers: function() {
@@ -458,10 +450,8 @@ MyParcel = {
      *
      */
     showMessage: function(message) {
-        jQuery('.mypa-message-model').show();
-        jQuery('#mypa-message').html(message).show();
+        jQuery('.mypa-message-model').html(message).show();
         jQuery('#mypa-delivery-option-form').hide();
-
     },
 
     /*
@@ -757,17 +747,8 @@ MyParcel = {
         var retryPostalCode = jQuery('#mypa-error-postcode').val();
         var retryNumber = jQuery('#mypa-error-number').val();
 
-        if (window.myparcel_is_using_split_address_fields) {
-            jQuery('#billing_house_number').val(retryNumber);
-        } else {
-            address = MyParcel.data.address.street + ' ' + retryNumber;
-            if (typeof MyParcel.data.address.numberSuffix !== 'undefined') {
-                address += MyParcel.data.address.numberSuffix
-            }
-
-            jQuery('#billing_address_1').val(address);
-        }
-        jQuery('#billing_postcode').val(retryPostalCode);
+        jQuery('#postalCode').val(retryPostalCode);
+        jQuery('#number').val(retryNumber);
 
         MyParcel.callDeliveryOptions();
         jQuery('#mypa-select-delivery').click();
@@ -801,7 +782,7 @@ MyParcel = {
             '</div><div class="mypa-full-width mypa-error">' +
             '<label for="mypa-error-number">' + MyParcel.data.config.houseNumber + '</label>' +
             '<input type="text" name="mypa-error-number" id="mypa-error-number" value="' + MyParcel.data.address.number + '">' +
-            '<br><div id="mypa-error-try-again" class="button btn">' + MyParcel.data.config.again + '</div>' +
+            '<br><div id="mypa-error-try-again" class="btn btn-info">' + MyParcel.data.config.retry + '</div>' +
             '</div>'
         );
 
@@ -815,42 +796,9 @@ MyParcel = {
     },
 
     setAddressFromInputFields: function() {
-        addressType = jQuery('#ship-to-different-address-checkbox').prop('checked') ? 'shipping' : 'billing';
-        address = MyParcel.getAddressInputValues(addressType);
-
-        if (!MyParcel.getAddressInputValues('billing').postalCode) {
-            return;
-        }
-
-        this.data.address.street = address.streetName;
-        this.data.address.number = address.houseNumber;
-        this.data.address.numberSuffix = address.houseNumberSuffix;
-        this.data.address.cc = address.country;
-        this.data.address.postalCode = address.postalCode;
-        this.data.address.city = address.city;
-    },
-
-    getAddressInputValues: function(type) {
-        streetParts = {};
-        input = {
-            'fullStreet': jQuery('#' + type + '_address_1').val(),
-            'postalCode': jQuery('#' + type + '_postcode').val(),
-            'city':       jQuery('#' + type + '_city').val(),
-            'country':    jQuery('#' + type + '_country').val(),
-        };
-
-        if (window.myparcel_is_using_split_address_fields) {
-            input.streetName = jQuery('#' + type + '_street_name').val();
-            input.houseNumber = jQuery('#' + type + '_house_number').val();
-            input.houseNumberSuffix = jQuery('#' + type + '_house_number_suffix').val();
-        } else {
-            streetParts = MyParcel.splitFullStreetFromInput(input.fullStreet);
-            input.streetName = streetParts.streetName;
-            input.houseNumber = streetParts.houseNumber;
-            input.houseNumberSuffix = streetParts.houseNumberSuffix;
-        }
-
-        return input;
+        this.data.address.cc = $('#cc').val();
+        this.data.address.number = $('#number').val();
+        this.data.address.postalCode = $('#postalCode').val();
     },
 
     /*
@@ -923,7 +871,7 @@ MyParcel = {
                 if (response.errors) {
                     jQuery.each(response.errors, function(key, value) {
                         /* Postal code & house number combination not found or not recognised. */
-                        if (value.code == '3212' || value.code == '3505') {
+                        if (value.code === 3212 || value.code === 3505) {
                             MyParcel.showRetry();
                         }
 

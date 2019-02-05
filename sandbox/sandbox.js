@@ -29,7 +29,7 @@ Sandbox = {
             'houseNumber': 'Huisnummer',
             'city': 'Plaats',
             'retry': 'Opnieuw',
-            'wrongHouseNumberCity': 'Combinatie postcode/plaats onbekend'
+            'wrongHouseNumberPostcode': 'Combinatie postcode/huisnummer onbekend'
         }
     },
 
