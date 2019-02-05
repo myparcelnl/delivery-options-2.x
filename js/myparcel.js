@@ -842,11 +842,17 @@ MyParcel = {
             return;
         }
 
-        /* Check if the deliverydaysWindow == 0 and hide the select input*/
-        this.deliveryDaysWindow = this.data.config.deliverydaysWindow;
+        deliveryDaysWindow = this.data.config.deliverydaysWindow;
+        mondayDeliveryActive = this.data.config.allowMondayDelivery ? 1 : 0;
+        cutoffTime = this.data.config.cutoff_time;
 
-        if (this.deliveryDaysWindow === '0') {
-            this.deliveryDaysWindow = 1;
+        /* Check if the deliverydaysWindow is 0 and hide the select input*/
+        if (deliveryDaysWindow === '0') {
+            deliveryDaysWindow = 1;
+        }
+
+        if (new Date().getDay() === 6) {
+            cutoffTime = this.data.config.saturdayCutoffTime;
         }
 
         /* Make the api request */
@@ -858,9 +864,9 @@ MyParcel = {
                 city:                this.data.address.city,
                 carrier:             this.data.config.carrier,
                 dropoff_days:        this.data.config.dropOffDays,
-                monday_delivery:     this.data.config.allowMondayDelivery,
-                deliverydays_window: this.deliveryDaysWindow,
-                cutoff_time:         this.data.config.cutoffTime,
+                monday_delivery:     mondayDeliveryActive,
+                deliverydays_window: deliveryDaysWindow,
+                cutoff_time:         cutoffTime,
                 dropoff_delay:       this.data.config.dropoffDelay
             })
             .done(function(response) {
