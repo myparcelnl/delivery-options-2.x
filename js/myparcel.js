@@ -699,7 +699,7 @@ MyParcel = {
 
         jQuery.each(
             currentLocation.opening_hours, function(weekday, value) {
-                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.config[weekday] + "</span>";
+                html += '<span class="mypa-pickup-location-details-day">' + MyParcel.data.translateENtoNL[weekday] + "</span>";
 
                 if (value[0] === undefined) {
                     html += '<span class="mypa-time">' + MyParcel.data.config.closed + '</span>';
@@ -827,6 +827,19 @@ MyParcel = {
             this.deliveryDaysWindow = 1;
         }
 
+        deliveryDaysWindow = this.data.config.deliverydaysWindow;
+        saturdayDeliveryActive = this.data.config.allowSaturdayDelivery ? 1 : 0;
+        cutoffTime = this.data.config.cutoff_time;
+
+        /* Check if the deliverydaysWindow is 0 and hide the select input*/
+        if (deliveryDaysWindow === '0') {
+            deliveryDaysWindow = 1;
+        }
+
+        if (new Date().getDay() === 6) {
+            cutoffTime = this.data.config.saturdayCutoffTime;
+        }
+
         /* Make the api request */
         jQuery.get(this.data.config.apiBaseUrl + "delivery_options",
             {
@@ -834,11 +847,11 @@ MyParcel = {
                 postal_code:         this.data.address.postalCode,
                 number:              this.data.address.number,
                 city:                this.data.address.city,
-                carrier:             this.data.address.carrier,
+                carrier:             this.data.config.carrier,
                 dropoff_days:        this.data.config.dropOffDays,
-                monday_delivery:     this.data.config.allowMondayDelivery,
-                deliverydays_window: this.deliveryDaysWindow,
-                cutoff_time:         this.data.config.cutoffTime,
+                saturday_delivery:   saturdayDeliveryActive,
+                deliverydays_window: deliveryDaysWindow,
+                cutoff_time:         cutoffTime,
                 dropoff_delay:       this.data.config.dropoffDelay
             })
             .done(function(response) {
