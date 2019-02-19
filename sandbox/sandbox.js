@@ -45,6 +45,10 @@ Sandbox = {
 
         Sandbox.renderOptions();
 
+        $("input[name^='config[price']").on('blur', function() {
+          $(this).val(Sandbox.replaceCommas($(this).val()));
+        });
+
         $("input[name^='config'], input[name^='address'],select[name^='address']").on('change', function() {
             clearTimeout(inputTimeout);
             inputTimeout = setTimeout(function(){
@@ -105,5 +109,9 @@ Sandbox = {
         // create a in-memory div, set it's inner text(which jQuery automatically encodes)
         // then grab the encoded contents back out. The div never exists on the page.
         return $('<div/>').text(value).html();
+    },
+
+    replaceCommas: function(input) {
+        return input.replace(/,/, '.');
     }
 };
