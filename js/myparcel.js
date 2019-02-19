@@ -821,7 +821,7 @@ MyParcel = {
 
         deliveryDaysWindow = this.data.config.deliverydaysWindow;
         mondayDeliveryActive = this.data.config.allowMondayDelivery ? 1 : 0;
-        cutoffTime = this.data.config.cutoff_time;
+        cutoffTime = this.data.config.cutoffTime;
 
         /* Check if the deliverydaysWindow is 0 and hide the select input*/
         if (deliveryDaysWindow === '0') {
