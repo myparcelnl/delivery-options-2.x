@@ -84,7 +84,9 @@ MyParcel = {
         }
 
         if (parseFloat(priceOfDeliveryOption) < 0) {
-            price = "<p class='colorGreen'>"+'- &euro; ' + Number(priceOfDeliveryOption).toFixed(2).replace(/-|\./g,function(match) {return (match==".")?",":""})+"</p>";
+            price = '<p class="text-success">' + '- &euro; ' + Number(priceOfDeliveryOption).toFixed(2).replace(/[-.]/g, function (match) {
+                return (match === '.') ? ',' : '';
+            }) + '</p>';
         }
 
         if (priceOfDeliveryOption && isNaN(parseFloat(priceOfDeliveryOption))) {
