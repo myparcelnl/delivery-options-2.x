@@ -126,9 +126,6 @@ MyParcel = {
     },
 
     getDeliveryTime: function(configDeliveryTitle, deliveryMoment, startTime, endTime) {
-        startTime = startTime.replace(/(.*)\D\d+/, '$1');
-        endTime = endTime.replace(/(.*)\D\d+/, '$1');
-
         jQuery('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
