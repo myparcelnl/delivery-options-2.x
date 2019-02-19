@@ -129,7 +129,7 @@ MyParcel = {
         jQuery('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
-            jQuery('#mypa-' + deliveryMoment + '-title').html(startTime + ' - ' + endTime);
+            jQuery('#mypa-' + deliveryMoment + '-title').html(startTime + ' – ' + endTime);
         }
     },
 
