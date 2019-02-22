@@ -29,7 +29,10 @@
             </div>
             <div class="col-sm-4">
                 <h2>Address</h2>
-                <p>In order to get the right options, MyParcel needs country, postal code and number. Number must be sent without number suffix. If you only have a full address with street and number suffix, use <a href="https://github.com/myparcelnl/sdk/blob/master/src/Model/Repository/MyParcelConsignmentRepository.php#L34-L42" target="_blank">this regex</a> (php).</p>
+                <p>In order to get the right options, MyParcel needs country, postal code and number. Number must be
+                    sent without number suffix. If you only have a full address with street and number suffix, use <a
+                      href="https://github.com/myparcelnl/sdk/blob/master/src/Model/Repository/MyParcelConsignmentRepository.php#L34-L43"
+                      target="_blank">this regex</a> (php).</p>
             </div>
         </div>
         <div class="row">
@@ -49,35 +52,35 @@
                     <div class="form-group row">
                         <label for="deliveryTitle" class="col-sm-4 col-form-label">deliveryTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryTitle" name="config[deliveryTitle]" placeholder="deliveryTitle" value="Bezorgen op">
+                            <input type="text" class="form-control form-control-sm" id="deliveryTitle" name="config[deliveryTitle]" placeholder="deliveryTitle" value="Bezorgen op">
                             <small id="deliveryTitleHelp" class="form-text text-muted">General delivery title</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="dropOffDays" class="col-sm-4 col-form-label">dropOffDays</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
+                            <input type="text" class="form-control form-control-sm" id="dropOffDays" name="config[dropOffDays]" placeholder="dropOffDays" value="1;2;3;4;5;6">
                             <small id="dropOffDaysHelp" class="form-text text-muted">This option allows the Merchant to set the days she normally goes to PostNL to hand in her parcels. Monday is 1 and Saturday is 6.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cutoffTime" class="col-sm-4 col-form-label">cutoffTime</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="17:00">
+                            <input type="text" class="form-control form-control-sm" id="cutoffTime" name="config[cutoffTime]" placeholder="cutoffTime" value="17:00">
                             <small id="cutoffTimeHelp" class="form-text text-muted">This option allows the Merchant to indicate the latest cut-off time before an order will still be picked, packed and dispatched on the same/first set dropoff day, taking into account the dropoff-delay. Industry standard default time is 17:00. For example, if cutoff time is 17:00, Monday is a delivery day and there's no delivery delay; all orders placed Monday before 17:00 will be dropped of at PostNL on that same Monday in time for the Monday collection and delivery on Tuesday.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="deliverydaysWindow" class="col-sm-4 col-form-label">deliverydaysWindow</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
+                            <input type="text" class="form-control form-control-sm" id="deliverydaysWindow" name="config[deliverydaysWindow]" placeholder="deliverydaysWindow" value="5">
                             <small id="deliverydaysWindowHelp" class="form-text text-muted">This option allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example; If set to 3 (days) in her checkout, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it's before the cut-off time and she goes to PostNL on Mondays). Min. is 1 and max. is 14.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="dropoffDelay" class="col-sm-4 col-form-label">dropoffDelay</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="dropoffDelay" name="config[dropoffDelay]" placeholder="dropoffDelay" value="0">
+                            <input type="text" class="form-control form-control-sm" id="dropoffDelay" name="config[dropoffDelay]" placeholder="dropoffDelay" value="0">
                             <small id="dropoffDelayHelp" class="form-text text-muted">This option allows the Merchant to set the number of days it takes her to pick, pack and hand in her parcel at PostNL when ordered before the cutoff time. By default this is 0 and max. is 14.</small>
                         </div>
                     </div>
@@ -97,7 +100,7 @@
                     <div class="form-group row">
                         <label for="saturdayCutoffTime" class="col-sm-4 col-form-label">saturdayCutoffTime</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="14:30">
+                            <input type="text" class="form-control form-control-sm" id="saturdayCutoffTime" name="config[saturdayCutoffTime]" placeholder="saturdayCutoffTime" value="14:30">
                         </div>
                     </div>
                     <hr/>
@@ -115,14 +118,14 @@
                     <div class="form-group row">
                         <label for="deliveryMorningTitle" class="col-sm-4 col-form-label">deliveryMorningTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
+                            <input type="text" class="form-control form-control-sm" id="deliveryMorningTitle" name="config[deliveryMorningTitle]" placeholder="deliveryMorningTitle" value="Ochtendlevering">
                             <small id="deliveryMorningTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceMorningDelivery" class="col-sm-4 col-form-label">priceMorningDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="10">
+                            <input type="text" class="form-control form-control-sm" id="priceMorningDelivery" name="config[priceMorningDelivery]" placeholder="priceMorningDelivery" value="10">
                         </div>
                     </div>
                     <hr/>
@@ -134,14 +137,14 @@
                     <div class="form-group row">
                         <label for="deliveryStandardTitle" class="col-sm-4 col-form-label">deliveryStandardTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="">
+                            <input type="text" class="form-control form-control-sm" id="deliveryStandardTitle" name="config[deliveryStandardTitle]" placeholder="deliveryStandardTitle" value="">
                             <small id="deliveryStandardTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceStandardDelivery" class="col-sm-4 col-form-label">priceStandardDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="5.85">
+                            <input type="text" class="form-control form-control-sm" id="priceStandardDelivery" name="config[priceStandardDelivery]" placeholder="priceStandardDelivery" value="5.85">
                         </div>
                     </div>
                     <hr/>
@@ -159,14 +162,14 @@
                     <div class="form-group row">
                         <label for="deliveryEveningTitle" class="col-sm-4 col-form-label">deliveryEveningTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
+                            <input type="text" class="form-control form-control-sm" id="deliveryEveningTitle" name="config[deliveryEveningTitle]" placeholder="deliveryEveningTitle" value="Avondlevering">
                             <small id="deliveryEveningTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceEveningDelivery" class="col-sm-4 col-form-label">priceEveningDelivery</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="1,25">
+                            <input type="text" class="form-control form-control-sm" id="priceEveningDelivery" name="config[priceEveningDelivery]" placeholder="priceEveningDelivery" value="1.25">
                         </div>
                     </div>
                     <hr/>
@@ -184,13 +187,13 @@
                     <div class="form-group row">
                         <label for="signatureTitle" class="col-sm-4 col-form-label">signatureTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="signatureTitle" name="config[signatureTitle]" placeholder="signatureTitle" value="Handtekening">
+                            <input type="text" class="form-control form-control-sm" id="signatureTitle" name="config[signatureTitle]" placeholder="signatureTitle" value="Handtekening">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceSignature" class="col-sm-4 col-form-label">priceSignature</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="0.36">
+                            <input type="text" class="form-control form-control-sm" id="priceSignature" name="config[priceSignature]" placeholder="priceSignature" value="0.36">
                         </div>
                     </div>
                     <hr/>
@@ -208,13 +211,13 @@
                     <div class="form-group row">
                         <label for="onlyRecipientTitle" class="col-sm-4 col-form-label">onlyRecipientTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">
+                            <input type="text" class="form-control form-control-sm" id="onlyRecipientTitle" name="config[onlyRecipientTitle]" placeholder="onlyRecipientTitle" value="Alleen geadresseerde">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="priceOnlyRecipient" class="col-sm-4 col-form-label">priceOnlyRecipient</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="0.29">
+                            <input type="text" class="form-control form-control-sm" id="priceOnlyRecipient" name="config[priceOnlyRecipient]" placeholder="priceOnlyRecipient" value="0.29">
                         </div>
                     </div>
                     <hr/>
@@ -232,13 +235,19 @@
                     <div class="form-group row">
                         <label for="pickupTitle" class="col-sm-4 col-form-label">pickupTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pickupTitle" name="config[pickupTitle]" placeholder="pickupTitle" value="Afhalen op locatie">
+                            <input type="text" class="form-control form-control-sm" id="pickupTitle" name="config[pickupTitle]" placeholder="pickupTitle" value="Afhalen op locatie">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pricePickup" class="col-sm-4 col-form-label">pricePickup</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickup" name="config[pricePickup]" placeholder="pricePickup" value="5.85">
+                            <input type="text" class="form-control form-control-sm" id="pricePickup"
+                                   name="config[pricePickup]" placeholder="pricePickup" value="5.85">
+                            <small id="pricePickupHelp" class="form-text text-muted">It's possible to fill in a
+                                positive or negative amount. Would you like to give a discount for the use of this
+                                feature or would you like to calculate extra costs? If the amount is negative the price
+                                will appear green in the checkout.
+                            </small>
                         </div>
                     </div>
                     <hr/>
@@ -256,7 +265,7 @@
                     <div class="form-group row">
                         <label for="pricePickupExpress" class="col-sm-4 col-form-label">pricePickupExpress</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="7,23">
+                            <input type="text" class="form-control form-control-sm" id="pricePickupExpress" name="config[pricePickupExpress]" placeholder="pricePickupExpress" value="7.23">
                         </div>
                     </div>
                     <div class="form-group row justify-content-end">
@@ -267,7 +276,7 @@
                     <div class="form-group row">
                         <label for="BEdeliveryTitle" class="col-sm-4 col-form-label">BEdeliveryTitle</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="BEdeliveryTitle" name="config[BEdeliveryTitle]" placeholder="BE-deliveryTitle" value="Thuis of op het werk">
+                            <input type="text" class="form-control form-control-sm" id="BEdeliveryTitle" name="config[BEdeliveryTitle]" placeholder="BE-deliveryTitle" value="Thuis of op het werk">
                             <small id="BEdeliveryTitleHelp" class="form-text text-muted">When there is no title, the delivery time will automatically be visible for a Belgium delivery.</small>
                         </div>
                     </div>
@@ -295,14 +304,14 @@
                     <div class="form-group row">
                         <label for="postalCode" class="col-sm-4 col-form-label">postalCode</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="postalCode" name="address[postalCode]" placeholder="postalCode" value="2131 BC">
+                            <input type="text" class="form-control form-control-sm" id="postalCode" name="address[postalCode]" placeholder="postalCode" value="2131 BC">
                             <small id="postalCodeHelp" class="form-text text-muted">The postal code to fetch the delivery options.</small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="number" class="col-sm-4 col-form-label">number</label>
                         <div class="col-sm-8">
-                            <input type="input" class="form-control form-control-sm" id="number" name="address[number]" placeholder="number" value="679">
+                            <input type="text" class="form-control form-control-sm" id="number" name="address[number]" placeholder="number" value="679">
                             <small id="numberHelp" class="form-text text-muted">The street number for which to fetch the delivery options. House number without number suffix</small>
                         </div>
                     </div>

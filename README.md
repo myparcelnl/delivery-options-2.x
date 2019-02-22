@@ -31,7 +31,7 @@ An example of the checkout functionality can be found via our [Sandbox](https://
 Make sure that the myparcel.js is loaded before the initialize function.
 
 Inside the data you have to send the following code:
-```
+```js
 var data = {
     address: {
         cc: 'NL',
@@ -50,7 +50,7 @@ var data = {
     ],
     translateENtoNL: {
         'monday': 'maandag',
-        'tuesday': 'dindsag',
+        'tuesday': 'dinsdag',
         'wednesday': 'woensdag',
         'thursday': 'donderdag',
         'friday': 'vrijdag',
@@ -93,17 +93,18 @@ var data = {
     }
  };
 ```
-The above values of the array are configurable. As soon as a value chages it will be visible in the checkout.
+
+The above values of the array are configurable. As soon as a value changes it will be visible in the checkout.
 
 To initialize the checkout the init object should be constructed.
 
 ```MyParcel.init(data);```
 
-When there is no title at ```deliveryMorningTitle```, ```deliveryStandardTitle``` or ```deliveryEveningTitle``` , the delivery time will automatically be visible.
+When there is no title at `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible.
 
 To get the object with the selected option of the user do the following
 
-```
+```js
 json = $('#mypa-input').val();
 obj = JSON.parse(json);
 ```

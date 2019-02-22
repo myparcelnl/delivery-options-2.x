@@ -12,7 +12,7 @@ Sandbox = {
         ],
         'translateENtoNL': {
             'monday': 'maandag',
-            'tuesday': 'dindsag',
+            'tuesday': 'dinsdag',
             'wednesday': 'woensdag',
             'thursday': 'donderdag',
             'friday': 'vrijdag',
@@ -20,14 +20,23 @@ Sandbox = {
             'sunday': 'zondag'
         },
         'config': {
-            "apiBaseUrl": "https://api.myparcel.nl/"
+            'apiBaseUrl': 'https://api.myparcel.nl/',
+            'addressNotFound': 'Adresgegevens niet ingevuld',
+            'pickUpFrom': 'Afhalen vanaf',
+            'openingHours': 'Openingstijden',
+            'closed': 'Gesloten',
+            'postcode': 'Postcode',
+            'houseNumber': 'Huisnummer',
+            'city': 'Plaats',
+            'retry': 'Opnieuw',
+            'wrongHouseNumberPostcode': 'Combinatie postcode/huisnummer onbekend'
         }
     },
 
     showFullCode: false,
 
     init: function() {
-        let inputTimeout;
+        inputTimeout = null;
 
         $('#js-show_full_code').click(function () {
             Sandbox.showFullCode = true;
@@ -35,6 +44,10 @@ Sandbox = {
         });
 
         Sandbox.renderOptions();
+
+        $("input[name^='config[price']").on('blur', function() {
+          $(this).val(Sandbox.replaceCommas($(this).val()));
+        });
 
         $("input[name^='config'], input[name^='address'],select[name^='address']").on('change', function() {
             clearTimeout(inputTimeout);
@@ -52,9 +65,7 @@ Sandbox = {
 
     setOptions: function () {
         $("input[name^='config'], input[name^='address'], select[name^='address']").each(function () {
-            let name = $(this).attr('name');
-            let val;
-
+            val = null;
 
             if ($(this).is(':checkbox')) {
                 val = $(this).is(':checked');
@@ -62,7 +73,7 @@ Sandbox = {
                 val = $(this).val();
             }
 
-            let keys = name.match(/([a-z]+)\[([a-zA-Z0-9]{1,50})/);
+            keys = $(this).attr('name').match(/([a-z]+)\[([a-zA-Z0-9]{1,50})]/);
 
             if (val === 'true') {
                 val = true;
@@ -76,26 +87,31 @@ Sandbox = {
     },
 
     showResultCode: function () {
-
+        delete Sandbox.formOptions.deliveryOptions;
         code = '<script>' +
             '\n' +
             'var data = ' +
-            JSON.stringify(Sandbox.formOptions, null, '    ') +
+            JSON.stringify(Sandbox.formOptions, null, '  ') +
             ';\n' +
             'MyParcel.init(data);' +
             '\n' +
-            '<script>';
+            '</script>';
 
         $('#result_code').html(Sandbox.htmlEncode(code));
     },
 
     showResultCheckout: function () {
         MyParcel.init(Sandbox.formOptions);
+        Prism.highlightAll();
     },
 
     htmlEncode: function(value){
-        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
-        //then grab the encoded contents back out.  The div never exists on the page.
+        // create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        // then grab the encoded contents back out. The div never exists on the page.
         return $('<div/>').text(value).html();
+    },
+
+    replaceCommas: function(input) {
+        return input.replace(/,/, '.');
     }
 };
