@@ -79,10 +79,6 @@ MyParcel = {
             price = "";
         }
 
-        var escapeElem = document.createElement('P');
-        escapeElem.innerText = priceOfDeliveryOptionOrig;
-        var priceOfDeliveryOption = escapeElem.innerText;
-
         if (parseFloat(priceOfDeliveryOption) >= 0) {
             price = '+ &euro; ' + Number(priceOfDeliveryOption).toFixed(2).replace(".", ",");
         }
