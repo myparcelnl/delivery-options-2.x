@@ -554,11 +554,13 @@ MyParcel = {
     },
 
     showOnlyRecipient: function() {
-        jQuery('#mypa-only-recipient, #mypa-only-recipient-price').parent().show();
+        jQuery('#mypa-only-recipient').show();
+        jQuery('#mypa-only-recipient-price').parent().show();
     },
 
     hideOnlyRecipient: function() {
-        jQuery('#mypa-only-recipient, #mypa-only-recipient-price').parent().hide();
+        jQuery('#mypa-only-recipient').hide();
+        jQuery('#mypa-only-recipient-price').parent().hide();
     },
 
     /*
