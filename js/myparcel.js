@@ -109,19 +109,19 @@ MyParcel = {
         MyParcel.hideEveningDelivery();
 
         jQuery.each(selectDateKey, function(key, value) {
-            if (value['price_comment'] == 'morning' && MyParcel.data.config.allowMorningDelivery) {
+            if (value['price_comment'] === 'morning' && MyParcel.data.config.allowMorningDelivery) {
                 var morningTitle = MyParcel.data.config.deliveryMorningTitle;
-                MyParcel.getDeliveryTime(morningTitle, 'morning', value['start'], value['end']);
+                MyParcel.getDeliveryTime(morningTitle, 'morning', value.start, value.end);
                 MyParcel.showMorningDelivery();
             }
 
-            if (value['price_comment'] == 'standard') {
+            if (value['price_comment'] === 'standard') {
                 var standardTitle = MyParcel.data.config.deliveryStandardTitle;
-                MyParcel.getDeliveryTime(standardTitle, 'standard', value['start'], value['end']);
+                MyParcel.getDeliveryTime(standardTitle, 'standard', value.start, value.end);
             }
-            if (value['price_comment'] == 'avond' && MyParcel.data.config.allowEveningDelivery) {
+            if (value['price_comment'] === 'avond' && MyParcel.data.config.allowEveningDelivery) {
                 var eveningTitle = MyParcel.data.config.deliveryEveningTitle;
-                MyParcel.getDeliveryTime(eveningTitle, 'evening', value['start'], value['end']);
+                MyParcel.getDeliveryTime(eveningTitle, 'evening', value.start, value.end);
                 MyParcel.showEveningDelivery();
             }
         });
@@ -131,6 +131,9 @@ MyParcel = {
         jQuery('#mypa-' + deliveryMoment + '-title').html(configDeliveryTitle);
 
         if (!configDeliveryTitle) {
+            startTime = startTime.length === 8 ? startTime.substr(0, 5) : startTime;
+            endTime = endTime.length === 8 ? endTime.substr(0, 5) : endTime;
+
             jQuery('#mypa-' + deliveryMoment + '-title').html(startTime + ' – ' + endTime);
         }
     },
@@ -551,11 +554,13 @@ MyParcel = {
     },
 
     showOnlyRecipient: function() {
-        jQuery('#mypa-only-recipient, #mypa-only-recipient-price').parent().show();
+        jQuery('#mypa-only-recipient').show();
+        jQuery('#mypa-only-recipient-price').parent().show();
     },
 
     hideOnlyRecipient: function() {
-        jQuery('#mypa-only-recipient, #mypa-only-recipient-price').parent().hide();
+        jQuery('#mypa-only-recipient').hide();
+        jQuery('#mypa-only-recipient-price').parent().hide();
     },
 
     /*
