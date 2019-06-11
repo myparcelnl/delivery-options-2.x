@@ -339,8 +339,8 @@ MyParcel = {
             result.price_comment = MyParcel.DELIVERY_PICKUP;
         }
 
-        jQuery('body').trigger('update_checkout');
         jQuery('#mypa-input').val(JSON.stringify(result));
+        jQuery('body').trigger('update_checkout');
     },
 
     addDeliveryToExternalInput: function(deliveryMomentOfDay) {
