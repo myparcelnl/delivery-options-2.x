@@ -1,0 +1,74 @@
+@import "variables";
+@import "keyframes";
+@import "loader";
+@import "tooltip";
+
+.myparcel-checkout {
+  position: relative;
+  border: 1px solid #ddd;
+  box-shadow: 4px 4px 10px #22222225;
+  border-radius: 3px;
+  padding: 15px;
+
+  &__d--block {
+    display: block;
+  }
+
+  &__overflow-wrapper {
+    //max-height: 400px;
+    //overflow: scroll;
+  }
+
+  &__image-large {
+    max-width: 5em;
+  }
+
+  &__choice-image {
+
+    & > td:first-child {
+      padding-top: $choice-image-size / 4;
+    }
+
+    img {
+      user-select: none;
+      display: inline-block;
+      width: $choice-image-size;
+      height: $choice-image-size;
+    }
+  }
+
+  table {
+    margin: 0;
+    width: 100%;
+
+    td {
+      padding: 0;
+      vertical-align: top;
+
+      label {
+        display: block;
+      }
+
+      &.myparcel-checkout__input {
+        width: 1px;
+        padding-right: 6px;
+      }
+    }
+  }
+
+  &__select {
+    width: 100%;
+  }
+
+  &__float-right {
+    float: right;
+  }
+
+  &__text-bold {
+    font-weight: 700;
+  }
+
+  &__text-green {
+    color: $positive;
+  }
+}

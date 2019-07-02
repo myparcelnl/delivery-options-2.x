@@ -1,0 +1,22 @@
+.myparcel-checkout__tooltip {
+
+  &__close {
+    position: absolute;
+    right: $tooltip-content-padding;
+
+    img {
+      width: 1em;
+      cursor: pointer;
+    }
+  }
+
+  &__content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: $tooltip-content-padding;
+    background-color: white;
+  }
+}

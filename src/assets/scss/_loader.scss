@@ -1,0 +1,36 @@
+.myparcel-checkout__loader {
+  position: relative;
+  margin: auto;
+  text-align: center;
+
+  img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50px;
+  }
+
+  span {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-top: 3px solid $primary;
+    border-radius: 100%;
+    animation: spin 1.2s linear infinite;
+  }
+
+  &--logo span {
+    width: 90px;
+    height: 90px;
+  }
+
+  @each $carrier in map_keys($carriers) {
+    &--#{$carrier} span {
+      border-top-color: map_get($carriers, $carrier);
+    }
+  }
+}

@@ -5,11 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode development && cp /Users/edie/projects/myparcel/checkout-2/dist/app.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js",
+    "build:sandbox": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-regular-svg-icons": "^5.9.0",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
     "core-js": "^2.6.9",
+    "debounce": "^1.2.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
