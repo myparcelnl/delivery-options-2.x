@@ -7,7 +7,7 @@ export default {
   },
   config: {
     // CUSTOM!
-    carriers: '1,2,3',
+    carriers: '1',
     currency: 'EUR',
     // END OF CUSTOM
     apiBaseUrl: 'https://api.myparcel.nl/',
@@ -19,6 +19,9 @@ export default {
     priceOnlyRecipient: 0.23,
     pricePickup: -1,
     pricePickupExpress: 3.95,
+    // CUSTOM
+    allowDeliveryOptions: 1,
+    // END OF CUSTOM
     allowMondayDelivery: 1,
     allowMorningDelivery: 1,
     allowEveningDelivery: 1,

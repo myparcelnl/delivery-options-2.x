@@ -2,9 +2,9 @@ export const CARRIER_POSTNL = 1;
 export const CARRIER_BPOST = 2;
 export const CARRIER_DPD = 3;
 
-export const DELIVERY_MORNING = 1;
-export const DELIVERY_STANDARD = 2;
-export const DELIVERY_EVENING = 3;
+export const DELIVERY_MORNING = 'morning';
+export const DELIVERY_STANDARD = 'standard';
+export const DELIVERY_EVENING = 'evening';
 
 export const DELIVERY_PICKUP_STANDARD = 4;
 export const DELIVERY_PICKUP_EXPRESS = 5;
@@ -21,7 +21,7 @@ export const formConfig = {
    *
    * @see https://myparcelnl.github.io/api/#7_C
    */
-  additionalOptions: {
+  deliveryAdditionalOptions: {
     signature: {
       enabled: 'allowSignature',
       name: 'signature',

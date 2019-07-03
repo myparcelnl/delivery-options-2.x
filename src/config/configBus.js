@@ -1,8 +1,9 @@
 import Vue from 'vue';
-import demoConfig from './demoConfig';
+import defaultConfig from './defaultConfig';
+import demoConfig from './demo/demoConfig';
 import { formConfig } from './formConfig';
 
-const mock = true;
+const mock = false;
 
 /**
  * @typedef {Object} window.MyParcelConfig
@@ -22,20 +23,14 @@ if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
  * @returns {{txtWeekDays, address, textToTranslate, config}}
  */
 const getConfig = () => {
-  // console.log('getConfig; address:',
-  //   (typeof window.MyParcelConfig === 'string' ? JSON.parse(window.MyParcelConfig) : window.MyParcelConfig).address);
   const data = typeof window.MyParcelConfig === 'string' ? JSON.parse(window.MyParcelConfig) : window.MyParcelConfig;
-
-  // TODO temp default to euro
-  if (!data.config.hasOwnProperty('currency')) {
-    data.config.currency = 'EUR';
-  }
 
   data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
     return formConfig.carriers[carrier];
   });
 
-  return data;
+  // Merge the config data with the default config
+  return { ...defaultConfig, ...data };
 };
 
 /**
@@ -43,16 +38,35 @@ const getConfig = () => {
  */
 export const configBus = new Vue({
   data: {
+
+    /**
+       * The API URL to use.
+       * @type {String}
+       */
+    apiURL: 'http://api.dev.myparcel.nl',
+
     values: {},
+
     mock,
+
     mockDelay: 200,
+
+    /**
+     * Whether to show the checkout at all or not.
+     */
     showCheckout: true,
+
+    /**
+     * The config data
+     */
     ...getConfig(),
   },
   computed: {
     isMultiCarrier() {
       return this.config.carrierData.length > 1;
     },
+  },
+  methods: {
 
     /**
      * Parameters for the delivery options request.
@@ -69,7 +83,7 @@ export const configBus = new Vue({
      *  cutoff_time: string
      *  }}
      */
-    requestParameters() {
+    getRequestParameters(carrier) {
       return {
         cc: this.address.cc,
         postal_code: this.address.postalCode,
@@ -79,11 +93,9 @@ export const configBus = new Vue({
         dropoff_days: this.config.dropOffDays,
         dropoff_delay: this.config.dropoffDelay,
         monday_delivery: this.config.allowMondayDelivery,
-        carriers: this.config.carriers,
+        carrier: carrier || 1,
       };
     },
-  },
-  methods: {
 
     /**
      * Update the address using the config.
@@ -113,18 +125,6 @@ export const configBus = new Vue({
 
       return formatter.format(Math.abs(price));
     },
-
-    /**
-     * Update the values with given data.
-     *
-     * @param {{name: String, value: *}} data - Data object.
-     */
-    // updateData(data) {
-    //   // console.log('updateData');
-    //   // this.values[data.name] = data.value;
-    //   // console.log(this.values);
-    //   this.$emit('update', data);
-    // },
 
     /**
      * Check if a given option is enabled in the config or not. Returns false if the option is not present in the config

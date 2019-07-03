@@ -13,7 +13,9 @@
           [`myparcel-checkout__${option.name}--${choice.name}`]: true,
           'myparcel-checkout__choice-image': choice.hasOwnProperty('image')
         }">
-        <td class="myparcel-checkout__input">
+        <td
+          v-if="validChoices.length > 1"
+          class="myparcel-checkout__input">
           <input
             v-if="option.type === 'checkbox'"
             :id="`myparcel-checkout--${option.name}--${choice.name}`"
@@ -30,7 +32,7 @@
             :value="choice.name">
         </td>
 
-        <td :colspan="!!choice.price ? 1 : 2">
+        <td :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
           <component
             :is="option.component"
             v-if="option.hasOwnProperty('component')"
@@ -126,7 +128,7 @@ export default {
    * Vue computed properties
    */
   computed: {
-    configBus: () => configBus,
+    Config: () => configBus,
     strings: () => configBus.textToTranslate,
     config: () => configBus.config,
 

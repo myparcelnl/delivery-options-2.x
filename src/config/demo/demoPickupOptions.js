@@ -1,41 +1,18 @@
-/* eslint-disable no-magic-numbers */
 export default {
   data: {
-    delivery: [
+    pickups: [
       {
         date: '2019-06-19',
         time: [
           {
-            start: '08:00:00',
-            end: '12:00:00',
-            price: { currency: 'EUR', amount: 1000 },
-            price_comment: 'morning',
-            comment: '',
-            type: 1,
-          },
-          {
-            start: '14:00:00',
-            end: '16:30:00',
-            price: { currency: 'EUR', amount: 0 },
-            price_comment: 'standard',
-            comment: '',
-            type: 2,
-          },
-          {
-            start: '18:00:00',
-            end: '22:00:00',
-            price: { currency: 'EUR', amount: 125 },
-            price_comment: 'avond',
-            comment: '',
-            type: 3,
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
           },
         ],
-      },
-    ],
-    pickup: [
-      {
-        date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
         location: 'Ramada GSM',
         street: 'Buikslotermeerplein',
         number: '123',
@@ -64,7 +41,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Gamma',
         street: 'Klimopweg',
         number: '65',
@@ -93,7 +79,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'KARWEI Amsterdam-Noord',
         street: 'Klaprozenweg',
         number: '31',
@@ -122,7 +117,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Primera Mosveld',
         street: 'Mosveld',
         number: '103',
@@ -151,7 +155,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Cigo van der Pek',
         street: 'Van der Pekstraat',
         number: '137',
@@ -180,7 +193,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Plus De Bongerd',
         street: 'Boomgaardlaan',
         number: '100',
@@ -210,8 +232,22 @@ export default {
       {
         date: '2019-06-19',
         time: [
-          { start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } },
-          { start: '08:30:00', type: 5, price: { amount: 145, currency: 'EUR' } },
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+          {
+            start: '08:30:00',
+            type: 5,
+            price: {
+              amount: 145,
+              currency: 'EUR',
+            },
+          },
         ],
         location: 'Nicecopymail',
         street: 'Asterweg',
@@ -241,7 +277,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Techador',
         street: 'Sperwerlaan',
         number: '12',
@@ -270,7 +315,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Jumbo Foodmarkt Amsterdam',
         street: 'Gedempt Hamerkanaal',
         number: '223',
@@ -299,7 +353,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Service Point Amsterdam CS',
         street: 'De Ruijterkade',
         number: '26',
@@ -328,7 +391,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Techador Menora',
         street: 'Nieuwe Maanstraat',
         number: '7',
@@ -357,7 +429,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Cigo Landsmeer',
         street: 'Nieuwe Gouw',
         number: '38',
@@ -386,7 +467,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Unique Gifts & More',
         street: 'Haarlemmerdijk',
         number: '56',
@@ -415,7 +505,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Primera',
         street: 'Haarlemmerdijk',
         number: '168',
@@ -444,7 +543,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Primera L & A',
         street: 'Nova Zemblastraat',
         number: '565',
@@ -473,7 +581,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Spar',
         street: 'Rapenburg',
         number: '91',
@@ -503,8 +620,22 @@ export default {
       {
         date: '2019-06-19',
         time: [
-          { start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } },
-          { start: '08:30:00', type: 5, price: { amount: 145, currency: 'EUR' } },
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+          {
+            start: '08:30:00',
+            type: 5,
+            price: {
+              amount: 145,
+              currency: 'EUR',
+            },
+          },
         ],
         location: 'Vivant de Jordaan',
         street: 'Westerstraat',
@@ -534,7 +665,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Attent Czaar Peter Supermarkt',
         street: 'Czaar Peterstraat',
         number: '33',
@@ -563,7 +703,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Tabakshop Rex',
         street: 'Dapperstraat',
         number: '9',
@@ -592,7 +741,16 @@ export default {
       },
       {
         date: '2019-06-19',
-        time: [{ start: '16:00:00', type: 4, price: { amount: 0, currency: 'EUR' } }],
+        time: [
+          {
+            start: '16:00:00',
+            type: 4,
+            price: {
+              amount: 0,
+              currency: 'EUR',
+            },
+          },
+        ],
         location: 'Primera',
         street: 'Van Limburg Stirumplein',
         number: '1',
