@@ -186,7 +186,7 @@ export default {
         if (type === 'select') {
           this.selected = configBus.values[name];
         } else {
-          this.selected = choices.find((choice) => choice.name === configBus.values[name]).name;
+          this.selected = (choices.find((choice) => choice.name === configBus.values[name]) || choices[0]).name;
         }
 
       } else if (this.hasChoices) {
@@ -197,32 +197,6 @@ export default {
           this.selected = (choices.find((choice) => choice.selected === true) || choices[0]).name;
         }
       }
-
-      // if (isSet) {
-      //   if (this.option.type === 'checkbox') {
-      //     // Dedupe
-      //     this.selected = [...new Set(configBus.values[this.option.name])];
-      //   } else {
-      //     const choice = this.option.choices.find((choice) => choice.name === configBus.values[this.option.name]);
-      //
-      //     if (!choice) {
-      //       delete configBus.values[this.option.name];
-      //       this.setSelected();
-      //     }
-      //
-      //     this.selected = choice.name;
-      //   }
-      // } else if (this.option.type === 'checkbox') {
-      //   // Set empty array for checkbox inputs
-      //   this.selected = [];
-      // } else if (this.hasChoices) {
-      //   // Set pre-selected value or fall back to first
-      //   const selected = this.option.choices.find((choice) => {
-      //     return choice.selected === true;
-      //   });
-      //
-      //   this.selected = (selected || this.option.choices[0]).name;
-      // }
     },
   },
 };

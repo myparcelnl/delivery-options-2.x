@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import defaultConfig from './defaultConfig';
 import demoConfig from './demo/demoConfig';
-import { formConfig } from './formConfig';
+import { CARRIER_POSTNL, formConfig } from './formConfig';
 
 const mock = false;
 
@@ -25,9 +25,9 @@ if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
 const getConfig = () => {
   const data = typeof window.MyParcelConfig === 'string' ? JSON.parse(window.MyParcelConfig) : window.MyParcelConfig;
 
-  data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
-    return formConfig.carriers[carrier];
-  });
+  // data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
+  //   return formConfig.carriers[carrier];
+  // });
 
   // Merge the config data with the default config
   return { ...defaultConfig, ...data };
@@ -38,13 +38,6 @@ const getConfig = () => {
  */
 export const configBus = new Vue({
   data: {
-
-    /**
-       * The API URL to use.
-       * @type {String}
-       */
-    apiURL: 'http://api.dev.myparcel.nl',
-
     values: {},
 
     mock,
@@ -56,17 +49,35 @@ export const configBus = new Vue({
      */
     showCheckout: true,
 
+    carrierData: [],
+
     /**
      * The config data
      */
     ...getConfig(),
   },
+
   computed: {
     isMultiCarrier() {
-      return this.config.carrierData.length > 1;
+      return this.carrierData.length > 1;
     },
   },
+
   methods: {
+    /**
+     * Get carrier by id or name.
+     *
+     * @param {Number|String} search - Id or name of the carrier.
+     *
+     * @returns {{id: Number, name: String, human: String, meta: Object}|undefined} - Carrier object.
+     */
+    getCarrier(search) {
+      return this.carrierData.find((carrier) => {
+        return typeof search === 'number'
+          ? carrier.id === search
+          : carrier.name === search;
+      });
+    },
 
     /**
      * Parameters for the delivery options request.
@@ -83,7 +94,7 @@ export const configBus = new Vue({
      *  cutoff_time: string
      *  }}
      */
-    getRequestParameters(carrier) {
+    getRequestParameters(carrier = CARRIER_POSTNL) {
       return {
         cc: this.address.cc,
         postal_code: this.address.postalCode,
@@ -93,7 +104,7 @@ export const configBus = new Vue({
         dropoff_days: this.config.dropOffDays,
         dropoff_delay: this.config.dropoffDelay,
         monday_delivery: this.config.allowMondayDelivery,
-        carrier: carrier || 1,
+        carrier,
       };
     },
 

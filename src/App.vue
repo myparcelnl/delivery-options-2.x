@@ -2,9 +2,11 @@
   <div
     v-if="Config.showCheckout"
     class="myparcel-checkout">
-    <loader v-if="loading" />
+    <loader
+      v-if="loading"
+      :carrier="carrier" />
     <div
-      v-else-if="!hasErrors && (hasDeliveryOptions || hasPickupOptions)"
+      v-else-if="!hasErrors && (hasDeliveryOptions || hasPickupLocations)"
       class="myparcel-checkout__delivery-options">
       <recursive-form
         v-for="option in form.options"
@@ -32,6 +34,7 @@
 
 <script>
 import Loader from './components/Loader';
+import { appConfig } from './config/appConfig';
 import { configBus } from './config/configBus';
 import debounce from 'debounce';
 import { CARRIER_POSTNL } from './config/formConfig';
@@ -39,7 +42,7 @@ import { fetchCarrierData } from './data/carriers/fetchCarriers';
 import { fetchDeliveryOptions } from './data/delivery/fetchDeliveryOptions';
 import { fetchPickupOptions } from './data/pickup/fetchPickupLocations';
 import { getDeliveryOptions } from './data/delivery/getDeliveryOptions';
-import { getPickupOptions } from './data/pickup/getPickupOptions';
+import { getPickupLocations } from './data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
@@ -67,12 +70,7 @@ export default {
        */
       form: {},
 
-      /**
-       * Carriers array from the API
-       *
-       * @type {Array}
-       */
-      carriers: [],
+      carrier: null,
 
       /**
        * Delivery options array from the API.
@@ -107,7 +105,7 @@ export default {
       return Object.keys(this.errors).length;
     },
 
-    hasPickupOptions() {
+    hasPickupLocations() {
       return Object.keys(this.pickupLocations).length;
     },
 
@@ -132,21 +130,6 @@ export default {
 
   methods: {
     /**
-     * Get carrier by id or name.
-     *
-     * @param {Number|String} search - Id or name of the carrier.
-     *
-     * @returns {{id: Number, name: String, human: String, meta: Object}|undefined} - Carrier object.
-     */
-    getCarrier(search) {
-      return this.carriers.find((carrier) => {
-        return typeof search === 'number'
-          ? carrier.id === search
-          : carrier.name === search;
-      });
-    },
-
-    /**
      * FetchCarriers.
      *
      * @param {Number|String} carrier - Carrier id or name.
@@ -160,7 +143,8 @@ export default {
       } = await fetchCarrierData(carrier);
 
       this.addErrors('carriers', carriersErrors);
-      this.carriers = [...this.carriers, ...carriers];
+      configBus.carrierData = [...new Set([...configBus.carrierData, ...carriers]).values()];
+      this.carrier = configBus.carrierData;
     },
 
     /**
@@ -179,18 +163,29 @@ export default {
     },
 
     /**
+     * TODO: awaiting https://jira.dmp.zone/browse/MY-13194.
      * FetchPickupLocations.
      *
      * @returns {Promise}
      */
     async fetchPickupLocations() {
-      const {
-        response: pickupOptions,
-        errors: pickupLocationsErrors,
-      } = await fetchPickupOptions();
+      const url = new URL(`${appConfig.apiUrl}/deliveryoptions/pickup`);
+      const requestParams = configBus.getRequestParameters();
 
-      this.addErrors('pickupLocations', pickupLocationsErrors);
-      this.pickupLocations = pickupOptions;
+      Object.keys(requestParams).forEach((param) => {
+        url.searchParams.append(param, requestParams[param]);
+      });
+
+      const pickupOptions = await (await fetch(url.href)).json();
+
+      // const {
+      //   response: pickupOptions,
+      //   errors: pickupLocationsErrors,
+      // } = await fetchPickupOptions();
+
+      // this.addErrors('pickupLocations', pickupLocationsErrors);
+
+      this.pickupLocations = pickupOptions.data.base;
     },
 
     /**
@@ -200,22 +195,25 @@ export default {
      */
     async getCheckout() {
       this.reset();
+      await this.fetchCarrier();
 
       configBus.showCheckout = configBus.showCheckout || true;
       configBus.setAddress();
 
-      if (configBus.config.allowDeliveryOptions) {
-        // Get carrier
-        await this.fetchCarrier();
+      const requests = [];
 
-        // Get delivery options
-        await this.fetchDeliveryOptions();
+      // Get delivery options if enabled
+      if (configBus.config.allowDeliveryOptions) {
+        requests.push(this.fetchDeliveryOptions());
       }
 
-      // TODO: awaiting https://jira.dmp.zone/browse/MY-13194
-      // if (configBus.config.allowPickupPoints) {
-      //   await this.fetchPickupLocations();
-      // }
+      // Get pickup locations if enabled
+      if (configBus.config.allowPickupPoints) {
+        requests.push(this.fetchPickupLocations());
+      }
+
+      // Do all requests asynchronously
+      await Promise.all(requests);
 
       if (!this.hasErrors) {
         const choices = [];
@@ -224,8 +222,8 @@ export default {
           choices.push(getDeliveryOptions(this.deliveryOptions));
         }
 
-        if (this.hasPickupOptions) {
-          choices.push(getPickupOptions(this.pickupLocations));
+        if (this.hasPickupLocations) {
+          choices.push(getPickupLocations(this.pickupLocations));
         }
 
         if (choices.length) {
@@ -247,6 +245,9 @@ export default {
       this.loading = false;
     },
 
+    /**
+     * Hide the checkout completely.
+     */
     hideCheckout() {
       configBus.showCheckout = false;
     },
@@ -267,7 +268,6 @@ export default {
      * @param {Object} data - Data object. Can only contain properties `name` and `value`.
      */
     updateExternalData(data) {
-      console.log('updateExternalData', data);
       configBus.values[data.name] = data.value;
       this.externalData = JSON.stringify(configBus.values);
     },

@@ -5,7 +5,7 @@
       @click="selected ? showTooltip = !showTooltip : null">
       <span class="myparcel-checkout__d--block">
         <img
-          v-if="config.isMultiCarrier"
+          v-if="isMultiCarrier"
           class="myparcel-checkout__choice-image"
           :src="carrierData.image"
           :alt="strings[carrierData.label]">
@@ -71,7 +71,7 @@ export default {
     config: () => configBus.config,
     strings: () => configBus.textToTranslate,
     carrierData() {
-      return formConfig.carriers[this.data.carrier];
+      return configBus.getCarrier(this.data.carrier);
     },
     price() {
       return this.data.time.map((time) => {

@@ -2,31 +2,36 @@
   <div
     class="myparcel-checkout__loader"
     :class="{
-      [`myparcel-checkout__loader--logo myparcel-checkout__loader--${carrier.name}`]: !!carrier
+      [`myparcel-checkout__loader--logo myparcel-checkout__loader--${onlyCarrier.name}`]: !!onlyCarrier
     }">
-    <img
-      v-if="getCarrierLogoURL(carrier)"
-      :src="getCarrierLogoURL(carrier)"
-      :alt="carrier.name">
+    <transition name="fade">
+      <img
+        v-if="carrierLogo"
+        :src="carrierLogo"
+        :alt="onlyCarrier.name">
+    </transition>
     <span />
   </div>
 </template>
 
 <script>
-import { configBus } from '../config/configBus';
-import { formConfig } from '../config/formConfig';
+import { appConfig } from '../config/appConfig';
 
 export default {
   name: 'Loader',
-
-  computed: {
-    carrier() {
-      return configBus.config.carriers.length === 1 ? formConfig.carriers[configBus.config.carriers[0]] : false;
+  props: {
+    carrier: {
+      type: Array,
+      default: null,
     },
   },
-  methods: {
-    getCarrierLogoURL(carrier) {
-      return carrier ? carrier.image : false;
+
+  computed: {
+    onlyCarrier() {
+      return this.carrier ? this.carrier[0] : false;
+    },
+    carrierLogo() {
+      return this.onlyCarrier ? appConfig.assetsUrl + this.onlyCarrier.meta.logo_svg : null;
     },
   },
 };

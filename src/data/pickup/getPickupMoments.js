@@ -4,15 +4,16 @@ import { configBus } from '../../config/configBus';
 /**
  * Get pickup moments.
  *
+ * @param {Array} pickupLocations - Pickup locations array.
  * @param {Object} key - Key.
  *
  * @returns {Object}
  */
-export function getPickupMoments(key) {
+export function getPickupMoments(pickupLocations, key) {
   const moments = [];
 
-  this.pickupLocations[key].time.forEach((time) => {
-    const pickupText = `${this.strings.pickUpFrom} ${time.start}`;
+  pickupLocations[key].time.forEach((time) => {
+    const pickupText = `${configBus.textToTranslate.pickUpFrom} ${time.start}`;
 
     if (DELIVERY_PICKUP_EXPRESS === time.type && !configBus.config.allowPickupExpress) {
       return;

@@ -14,18 +14,15 @@
   }
 
   span {
+    width: 75px;
+    height: 75px;
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 50px;
-    border-top: 3px solid $primary;
+    transition: border-top-color .3s ease;
+    border: 4px solid transparent;
+    border-top-color: $primary;
     border-radius: 100%;
-    animation: spin 1.2s linear infinite;
-  }
-
-  &--logo span {
-    width: 90px;
-    height: 90px;
+    animation: spin .5s linear infinite;
   }
 
   @each $carrier in map_keys($carriers) {

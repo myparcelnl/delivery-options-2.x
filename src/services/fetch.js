@@ -1,5 +1,5 @@
+import { appConfig } from '../config/appConfig';
 import { configBus } from '../config/configBus';
-import demoDeliveryOptions from '../config/demo/demoDeliveryOptions';
 
 export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';
@@ -20,7 +20,7 @@ export const METHOD_SEARCH = 'search';
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
 export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
-  const endpoint = new Endpoint(null, new URL(configBus.apiURL));
+  const endpoint = new Endpoint(null, new URL(appConfig.apiUrl));
   let response = {};
   let errors = {};
 

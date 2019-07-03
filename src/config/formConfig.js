@@ -41,23 +41,23 @@ export const formConfig = {
    *
    * @see https://myparcelnl.github.io/api/#carrier
    */
-  carriers: {
-    [CARRIER_POSTNL]: {
-      name: 'postnl',
-      label: 'carrierPostnlTitle',
-      image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/postnl.svg',
-    },
-    [CARRIER_BPOST]: {
-      name: 'bpost',
-      label: 'carrierBpostTitle',
-      image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/bpost.svg',
-    },
-    [CARRIER_DPD]: {
-      name: 'dpd',
-      label: 'carrierDpdTitle',
-      image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/dpd.svg',
-    },
-  },
+  // carriers: {
+  //   [CARRIER_POSTNL]: {
+  //     name: 'postnl',
+  //     label: 'carrierPostnlTitle',
+  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/postnl.svg',
+  //   },
+  //   [CARRIER_BPOST]: {
+  //     name: 'bpost',
+  //     label: 'carrierBpostTitle',
+  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/bpost.svg',
+  //   },
+  //   [CARRIER_DPD]: {
+  //     name: 'dpd',
+  //     label: 'carrierDpdTitle',
+  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/dpd.svg',
+  //   },
+  // },
 
   /**
    * Delivery moments.

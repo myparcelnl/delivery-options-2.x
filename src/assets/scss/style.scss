@@ -2,6 +2,7 @@
 @import "keyframes";
 @import "loader";
 @import "tooltip";
+@import "transitions/index";
 
 .myparcel-checkout {
   position: relative;
@@ -12,11 +13,6 @@
 
   &__d--block {
     display: block;
-  }
-
-  &__overflow-wrapper {
-    //max-height: 400px;
-    //overflow: scroll;
   }
 
   &__image-large {

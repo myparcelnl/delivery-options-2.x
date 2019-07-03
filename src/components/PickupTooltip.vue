@@ -73,7 +73,7 @@ export default {
     strings: () => configBus.textToTranslate,
 
     carrierData() {
-      return formConfig.carriers[this.data.carrier];
+      return configBus.carrierData;
     },
 
     /**
