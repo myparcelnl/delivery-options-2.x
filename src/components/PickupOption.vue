@@ -5,8 +5,8 @@
       @click="selected ? showTooltip = !showTooltip : null">
       <span class="myparcel-checkout__d--block">
         <img
-          v-if="isMultiCarrier"
-          class="myparcel-checkout__choice-image"
+          v-if="configBus.isMultiCarrier"
+          class="myparcel-checkout__image myparcel-checkout__image--sm"
           :src="carrierData.image"
           :alt="strings[carrierData.label]">
 
@@ -14,11 +14,10 @@
           v-if="selected"
           icon="angle-down"
           class="myparcel-checkout__float-right" />
-        {{ data.label }}
+        <span v-text="data.label" />
       </span>
 
       <span class="myparcel-checkout__d--block">
-        <!--        <span v-text="priceText" /> – -->
         <span v-text="distance" /> – <span v-text="`Vanaf ${data.start_time}`" />
       </span>
     </label>
@@ -41,7 +40,7 @@
 </template>
 
 <script>
-import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD, formConfig } from '../config/formConfig';
+import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD } from '../config/formConfig';
 import PickupTooltip from './PickupTooltip';
 import { configBus } from '../config/configBus';
 
@@ -68,6 +67,7 @@ export default {
     };
   },
   computed: {
+    configBus: () => configBus,
     config: () => configBus.config,
     strings: () => configBus.textToTranslate,
     carrierData() {

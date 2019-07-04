@@ -11,10 +11,10 @@
         :class="{
           [`myparcel-checkout__${option.name}`]: true,
           [`myparcel-checkout__${option.name}--${choice.name}`]: true,
-          'myparcel-checkout__choice-image': choice.hasOwnProperty('image')
+          'myparcel-checkout__choice--has-image': choice.hasOwnProperty('image')
         }">
         <td
-          v-if="validChoices.length > 1"
+          v-if="validChoices.length > 1 && option.type !== 'plain'"
           class="myparcel-checkout__input">
           <input
             v-if="option.type === 'checkbox'"
@@ -47,6 +47,7 @@
                 v-if="choice.hasOwnProperty('image')"
                 :src="choice.image"
                 :alt="choice.name"
+                class="myparcel-checkout__image myparcel-checkout__image--md"
                 :title="strings[choice.label]">
               <span
                 v-else
@@ -128,7 +129,6 @@ export default {
    * Vue computed properties
    */
   computed: {
-    Config: () => configBus,
     strings: () => configBus.textToTranslate,
     config: () => configBus.config,
 
@@ -136,16 +136,64 @@ export default {
       return this.option.hasOwnProperty('choices') && !!this.option.choices && !!this.option.choices.length;
     },
 
-    chosenOptions() {
-      if (!this.hasChoices) {
-        return null;
-      }
-
-      const choice = this.option.choices.find((choice) => choice.name === this.selected);
-      return choice.hasOwnProperty('options') ? choice.options : null;
-    },
     validChoices() {
+      console.log(this.option);
       return this.option.type === 'select' ? false : this.option.choices;
+    },
+  },
+
+  /**
+   * @see https://github.com/foxbenjaminfox/vue-async-computed
+   */
+  asyncComputed: {
+    chosenOptions: {
+      /**
+       * Async computed property getter. Only needed because we also specify a default value.
+       *
+       * @returns {Promise<Array>}
+       */
+      // eslint-disable-next-line require-await
+      async get() {
+        if (!this.hasChoices) {
+          return null;
+        }
+
+        const choice = this.option.choices.find((choice) => choice.name === this.selected);
+
+        if (!!choice && choice.hasOwnProperty('options')) {
+          if (typeof choice.options === 'function') {
+            return choice.options();
+          }
+          return choice.options;
+        }
+
+        return null;
+      },
+
+      /**
+       * Value to show before the get function is resolved. Only shows if the selected choice is a function (and causes
+       * an infinite loop otherwise).
+       *
+       * @returns {Array}
+       */
+      default() {
+        if (typeof this.option.choices.find((choice) => choice.name === this.selected) === 'function') {
+          return [
+            {
+              name: 'loading',
+              type: 'radio',
+              choices: [
+                {
+                  name: 'loadingChoice',
+                  type: 'plain',
+                  plainLabel: 'Loading...',
+                  image: 'https://loading.io/spinners/dna/lg.dna-spin-spiral-preloader.gif',
+                },
+              ],
+            },
+          ];
+        }
+      },
     },
   },
 

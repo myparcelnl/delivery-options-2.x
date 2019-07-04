@@ -1,7 +1,7 @@
+import { CARRIER_POSTNL, formConfig } from './formConfig';
 import Vue from 'vue';
 import defaultConfig from './defaultConfig';
 import demoConfig from './demo/demoConfig';
-import { CARRIER_POSTNL, formConfig } from './formConfig';
 
 const mock = false;
 
@@ -18,13 +18,16 @@ if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
 }
 
 /**
- * Get data from the window config object.
+ * Get data from the window config object and convert some variables.
  *
- * @returns {{txtWeekDays, address, textToTranslate, config}}
+ * @returns {{txtWeekDays: Object, address: Object, textToTranslate: Object, config: Object}}
  */
 const getConfig = () => {
   const data = typeof window.MyParcelConfig === 'string' ? JSON.parse(window.MyParcelConfig) : window.MyParcelConfig;
 
+  if (typeof data.config.carriers === 'string') {
+    data.config.carriers = data.config.carriers.split(',');
+  }
   // data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
   //   return formConfig.carriers[carrier];
   // });
@@ -50,6 +53,8 @@ export const configBus = new Vue({
     showCheckout: true,
 
     carrierData: [],
+
+    currentCarrier: null,
 
     /**
      * The config data
@@ -94,7 +99,7 @@ export const configBus = new Vue({
      *  cutoff_time: string
      *  }}
      */
-    getRequestParameters(carrier = CARRIER_POSTNL) {
+    getRequestParameters(carrier = this.currentCarrier) {
       return {
         cc: this.address.cc,
         postal_code: this.address.postalCode,
@@ -131,7 +136,7 @@ export const configBus = new Vue({
         {
           style: 'currency',
           currency: this.config.currency,
-        }
+        },
       );
 
       return formatter.format(Math.abs(price));

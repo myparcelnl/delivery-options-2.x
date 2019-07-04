@@ -7,7 +7,7 @@ export default {
   },
   config: {
     // CUSTOM!
-    carriers: '1',
+    carriers: 'postnl,bpost,dpd',
     currency: 'EUR',
     // END OF CUSTOM
     apiBaseUrl: 'https://api.myparcel.nl/',

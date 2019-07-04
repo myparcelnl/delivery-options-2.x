@@ -5,11 +5,11 @@ import { getDeliveryPossibility } from './getDeliveryPossibility';
  * Get delivery moments.
  *
  * @param {Object} deliveryOptions - Delivery options object.
- * @param {Object} carrier - Carrier.
  *
  * @returns {Object}
  */
-export function getDeliveryMoments(deliveryOptions, carrier) {
+export function getDeliveryMoments(deliveryOptions) {
+  console.log(deliveryOptions);
   const index = configBus.values.deliveryMoment || 0;
 
   const selectedOption = deliveryOptions.find((option) => option.date === index) || deliveryOptions[0];

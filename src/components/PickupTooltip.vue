@@ -29,7 +29,7 @@
         </td>
         <td>
           <img
-            class="myparcel-checkout__image-large myparcel-checkout__float-right"
+            class="myparcel-checkout__image myparcel-checkout__image--lg myparcel-checkout__float-right"
             :src="carrierData.image"
             alt="">
         </td>
@@ -56,7 +56,7 @@
 </template>
 <script>
 import { configBus } from '../config/configBus';
-import { formConfig } from '../config/formConfig';
+import { CARRIER_POSTNL } from '../config/formConfig';
 
 export default {
   name: 'PickupTooltip',
@@ -65,7 +65,10 @@ export default {
       type: Object,
       default: null,
     },
-    show: { type: Boolean, default: false },
+    show: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -73,7 +76,7 @@ export default {
     strings: () => configBus.textToTranslate,
 
     carrierData() {
-      return configBus.carrierData;
+      return configBus.getCarrier(this.data.carrier || CARRIER_POSTNL);
     },
 
     /**

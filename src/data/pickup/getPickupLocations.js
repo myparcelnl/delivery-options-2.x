@@ -1,5 +1,4 @@
 import { configBus } from '../../config/configBus';
-import { formConfig } from '../../config/formConfig';
 import { getPickupMoments } from './getPickupMoments';
 
 /**
@@ -12,15 +11,17 @@ import { getPickupMoments } from './getPickupMoments';
 export function getPickupLocations(pickupLocations) {
   console.log(pickupLocations);
   const pickupChoices = pickupLocations.map((option, key) => {
+    const random = Math.floor(Math.random() * configBus.carrierData.length);
+
     const pickup = {
       ...option,
       name: key,
       label: option.location,
       // TODO: Random carrier right now
-      carrier: Math.round((Math.random() * (configBus.config.carriers.split(',').length - 1)) + 1),
+      carrier: configBus.carrierData[random].name,
     };
 
-    pickup.image = formConfig.carriers[pickup.carrier].image;
+    pickup.image = configBus.getCarrier(pickup.carrier).image;
     pickup.options = [
       {
         name: 'pickupLocationTime',

@@ -1,4 +1,4 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetch';
+import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
 import { Pickup } from '../../../myparcel-js-sdk/src/endpoint/pickup';
 import { configBus } from '../../config/configBus';
 import demoPickupOptions from '../../config/demo/demoPickupOptions';

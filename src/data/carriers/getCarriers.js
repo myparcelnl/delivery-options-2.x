@@ -1,4 +1,4 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetch';
+import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
 import { CARRIER_POSTNL } from '../../config/formConfig';
 import { Carriers } from '../../../myparcel-js-sdk/src/endpoint/carriers';
 

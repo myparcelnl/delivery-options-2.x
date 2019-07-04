@@ -1,5 +1,6 @@
 import '@/assets/scss/style.scss';
 import App from './App.vue';
+import AsyncComputed from 'vue-async-computed';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import RecursiveForm from './components/RecursiveForm';
 import Vue from 'vue';
@@ -8,6 +9,8 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
 library.add(faAngleDown, faTimes);
+
+Vue.use(AsyncComputed);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('recursive-form', RecursiveForm);

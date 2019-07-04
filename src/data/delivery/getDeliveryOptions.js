@@ -1,4 +1,6 @@
 import { configBus } from '../../config/configBus';
+import { fetchCarrierData } from '../carriers/fetchCarriers';
+import { fetchDeliveryOptions } from './fetchDeliveryOptions';
 import { deliveryAdditionalOptions } from './getDeliveryAdditionalOptions';
 import { getDeliveryDates } from './getDeliveryDates';
 import { getDeliveryMoments } from './getDeliveryMoments';
@@ -10,36 +12,12 @@ import { getDeliveryMoments } from './getDeliveryMoments';
  *
  * @returns {Object}
  */
-export function getDeliveryOptions(deliveryOptions) {
+export function getDeliveryOptions(deliveryOptions = null) {
   const deliver = {
     name: 'deliver',
     label: 'deliveryTitle',
   };
 
-  const options = (carrier = configBus.carriers) => {
-    console.log('carrier', configBus.values);
-    return [
-      {
-        name: 'deliveryDate',
-        type: 'select',
-        choices: getDeliveryDates(deliveryOptions),
-      },
-      {
-        name: 'deliveryMoment',
-        type: 'radio',
-        choices: getDeliveryMoments(deliveryOptions, carrier),
-      },
-      {
-        name: 'additionalOptions',
-        type: 'checkbox',
-        choices: deliveryAdditionalOptions(),
-      },
-    ];
-  };
-
-  /**
-       * If multi carrier, return another level of settings
-       */
   if (configBus.isMultiCarrier) {
     deliver.type = 'radio';
     deliver.options = [
@@ -47,15 +25,42 @@ export function getDeliveryOptions(deliveryOptions) {
         type: 'radio',
         name: 'deliveryCarrier',
         label: 'carrier',
-        choices: this.config.carrierData.map((carrier) => ({
-          ...carrier,
-          options: options(carrier),
-        })),
+        choices: configBus.carrierData.map((carrier) => {
+          return {
+            ...carrier,
+            options: () => options(carrier.name),
+          };
+        }),
       },
     ];
   } else {
     deliver.options = options();
   }
-
   return deliver;
+}
+
+/**
+ * If multi carrier, return another level of settings.
+ */
+async function options(carrier = configBus.currentCarrier) {
+  console.log('fetchDeliveryOptions for', carrier);
+  const deliveryOptions = (await fetchDeliveryOptions(carrier)).response;
+
+  return [
+    {
+      name: 'deliveryDate',
+      type: 'select',
+      choices: getDeliveryDates(deliveryOptions),
+    },
+    {
+      name: 'deliveryMoment',
+      type: 'radio',
+      choices: getDeliveryMoments(deliveryOptions),
+    },
+    {
+      name: 'additionalOptions',
+      type: 'checkbox',
+      choices: deliveryAdditionalOptions(deliveryOptions),
+    },
+  ];
 }

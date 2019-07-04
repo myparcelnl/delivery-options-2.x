@@ -8,6 +8,7 @@
       <img
         v-if="carrierLogo"
         :src="carrierLogo"
+        class="myparcel-checkout__image myparcel-checkout__image--lg"
         :alt="onlyCarrier.name">
     </transition>
     <span />
@@ -15,12 +16,13 @@
 </template>
 
 <script>
-import { appConfig } from '../config/appConfig';
+
+import { configBus } from '../config/configBus';
 
 export default {
   name: 'Loader',
   props: {
-    carrier: {
+    carriers: {
       type: Array,
       default: null,
     },
@@ -28,10 +30,10 @@ export default {
 
   computed: {
     onlyCarrier() {
-      return this.carrier ? this.carrier[0] : false;
+      return this.carriers.length === 1 ? configBus.currentCarrier : false;
     },
     carrierLogo() {
-      return this.onlyCarrier ? appConfig.assetsUrl + this.onlyCarrier.meta.logo_svg : null;
+      return this.onlyCarrier ? this.onlyCarrier.image : null;
     },
   },
 };

@@ -1,12 +1,14 @@
 <template>
   <div
-    v-if="Config.showCheckout"
+    v-if="configBus.showCheckout"
     class="myparcel-checkout">
     <loader
       v-if="loading"
-      :carrier="carrier" />
+      :carriers="carriers" />
+
+    <!--hasDeliveryOptions || hasPickupLocations-->
     <div
-      v-else-if="!hasErrors && (hasDeliveryOptions || hasPickupLocations)"
+      v-else-if="!hasErrors"
       class="myparcel-checkout__delivery-options">
       <recursive-form
         v-for="option in form.options"
@@ -24,6 +26,16 @@
       <div class="alert alert-danger mt-2">
         Check de volgende errors:
         <ul>
+          <template v-for="(errorData, type) in errors">
+            <li
+              v-for="error in errorData.errors"
+              :key="type + '_' + error.code"
+              v-text="error.message" />
+          </template>
+        </ul>
+        <hr>
+        Of:
+        <ul>
           <li v-text="strings.addressNotFound" />
           <li v-text="strings.wrongHouseNumberPostcode" />
         </ul>
@@ -37,10 +49,8 @@ import Loader from './components/Loader';
 import { appConfig } from './config/appConfig';
 import { configBus } from './config/configBus';
 import debounce from 'debounce';
-import { CARRIER_POSTNL } from './config/formConfig';
 import { fetchCarrierData } from './data/carriers/fetchCarriers';
 import { fetchDeliveryOptions } from './data/delivery/fetchDeliveryOptions';
-import { fetchPickupOptions } from './data/pickup/fetchPickupLocations';
 import { getDeliveryOptions } from './data/delivery/getDeliveryOptions';
 import { getPickupLocations } from './data/pickup/getPickupLocations';
 
@@ -70,7 +80,12 @@ export default {
        */
       form: {},
 
-      carrier: null,
+      /**
+       * Array of carriers. Synchronized with configBus.carriers.
+       *
+       * @type {Array}
+       */
+      carriers: [],
 
       /**
        * Delivery options array from the API.
@@ -96,7 +111,7 @@ export default {
   },
 
   computed: {
-    Config: () => configBus,
+    configBus: () => configBus,
     config: () => configBus.config,
     strings: () => configBus.textToTranslate,
     showCheckout: () => configBus.showCheckout,
@@ -111,10 +126,6 @@ export default {
 
     hasDeliveryOptions() {
       return Object.keys(this.deliveryOptions).length;
-    },
-
-    pickupPoints() {
-      return this.pickupLocations ? this.pickupLocations.map((option) => option.date) : null;
     },
   },
 
@@ -132,31 +143,48 @@ export default {
     /**
      * FetchCarriers.
      *
-     * @param {Number|String} carrier - Carrier id or name.
-     *
      * @returns {Promise}
      */
-    async fetchCarrier(carrier = configBus.config.carriers.split(',')[0]) {
-      const {
-        response: carriers,
-        errors: carriersErrors,
-      } = await fetchCarrierData(carrier);
+    async fetchCarriers() {
+      const carriersToFetch = configBus.config.carriers;
+      const requests = [];
 
-      this.addErrors('carriers', carriersErrors);
-      configBus.carrierData = [...new Set([...configBus.carrierData, ...carriers]).values()];
-      this.carrier = configBus.carrierData;
+      carriersToFetch.forEach((carrier) => {
+        requests.push(fetchCarrierData(carrier));
+      });
+
+      let errors = [], responses = [];
+      const carriers = (await Promise.all(requests)).reduce((acc, response) => {
+        console.log(response);
+        errors = [...errors, ...response.errors];
+        responses = [...responses, ...response.response];
+
+        return { ...acc, errors, responses };
+      }, {});
+
+      this.addErrors('carriers', carriers.errors);
+
+      const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
+      configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
+
+      configBus.currentCarrier = configBus.carrierData[0].name;
+
+      console.log('configBus.carrierData', configBus.carrierData);
+      this.carriers = configBus.carrierData;
     },
 
     /**
      * FetchDeliveryOptions.
      *
+     * @param {string|number} carrier - Carrier name or id.
+     *
      * @returns {Promise}
      */
-    async fetchDeliveryOptions() {
+    async fetchDeliveryOptions(carrier = configBus.currentCarrier) {
       const {
         response: deliveryOptions,
         errors: deliveryOptionsErrors,
-      } = await fetchDeliveryOptions();
+      } = await fetchDeliveryOptions(carrier);
 
       this.addErrors('deliveryOptions', deliveryOptionsErrors);
       this.deliveryOptions = deliveryOptions;
@@ -195,7 +223,7 @@ export default {
      */
     async getCheckout() {
       this.reset();
-      await this.fetchCarrier();
+      await this.fetchCarriers();
 
       configBus.showCheckout = configBus.showCheckout || true;
       configBus.setAddress();
@@ -204,12 +232,12 @@ export default {
 
       // Get delivery options if enabled
       if (configBus.config.allowDeliveryOptions) {
-        requests.push(this.fetchDeliveryOptions());
+        // requests.push(this.fetchDeliveryOptions());
       }
 
       // Get pickup locations if enabled
       if (configBus.config.allowPickupPoints) {
-        requests.push(this.fetchPickupLocations());
+        // requests.push(this.fetchPickupLocations());
       }
 
       // Do all requests asynchronously
@@ -218,11 +246,11 @@ export default {
       if (!this.hasErrors) {
         const choices = [];
 
-        if (this.hasDeliveryOptions) {
+        if (configBus.config.allowDeliveryOptions) {
           choices.push(getDeliveryOptions(this.deliveryOptions));
         }
 
-        if (this.hasPickupLocations) {
+        if (configBus.config.allowPickupPoints) {
           choices.push(getPickupLocations(this.pickupLocations));
         }
 
@@ -268,6 +296,12 @@ export default {
      * @param {Object} data - Data object. Can only contain properties `name` and `value`.
      */
     updateExternalData(data) {
+      if (data.name === 'deliveryCarrier' && data.value !== configBus.currentCarrier) {
+        configBus.currentCarrier = data.value;
+        console.log('fetching carrier', data.value);
+        this.fetchDeliveryOptions();
+      }
+
       configBus.values[data.name] = data.value;
       this.externalData = JSON.stringify(configBus.values);
     },
@@ -290,6 +324,8 @@ export default {
      * @param {Object} errors - Errors to add.
      */
     addErrors(key, errors) {
+      console.log(errors);
+      console.log(this.errors);
       this.errors = Object.keys(errors).length
         ? { ...this.errors, [key]: errors }
         : this.errors;

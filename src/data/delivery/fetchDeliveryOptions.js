@@ -1,4 +1,5 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetch';
+import { ERROR_NO_ADDRESS, appConfig } from '../../config/appConfig';
+import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
 import { Delivery } from '../../../myparcel-js-sdk/src/endpoint/delivery';
 import { configBus } from '../../config/configBus';
 import demoDeliveryOptions from '../../config/demo/demoDeliveryOptions';
@@ -6,22 +7,21 @@ import demoDeliveryOptions from '../../config/demo/demoDeliveryOptions';
 /**
  * Fetch delivery options.
  *
- * @param {boolean} mock - To mock or not.
+ * @param {string|number} carrier - Carrier name or id.
  *
  * @returns {Promise}
  */
-export function fetchDeliveryOptions(mock = false) {
+export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
   const { cc, number, postalCode } = configBus.address;
 
   if (!cc || !postalCode || !number) {
-    return new Promise((resolve) => resolve({ errors: true, response: {} }));
+    return new Promise((resolve) => resolve({ errors: ERROR_NO_ADDRESS, response: {} }));
   }
 
   return fetchFromEndpoint(Delivery, {
     method: METHOD_SEARCH,
-    params: configBus.getRequestParameters(),
+    params: configBus.getRequestParameters(carrier),
     mockData: demoDeliveryOptions,
-    mock,
   });
 
   // const deliveryOptionsEndpoint = new Delivery(null, new URL(configBus.apiURL));
