@@ -5,7 +5,7 @@
       @click="selected ? showTooltip = !showTooltip : null">
       <span class="myparcel-checkout__d--block">
         <img
-          v-if="configBus.isMultiCarrier"
+          v-if="$configBus.isMultiCarrier"
           class="myparcel-checkout__image myparcel-checkout__image--sm"
           :src="data.image"
           :alt="strings[data.label]">
@@ -42,7 +42,6 @@
 <script>
 import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD } from '@/config/formConfig';
 import PickupTooltip from './PickupTooltip';
-import { configBus } from '@/config/configBus';
 
 export default {
   name: 'PickupOption',
@@ -67,14 +66,13 @@ export default {
     };
   },
   computed: {
-    configBus: () => configBus,
-    config: () => configBus.config,
-    strings: () => configBus.textToTranslate,
+    config: () => this.$configBus.config,
+    strings: () => this.$configBus.textToTranslate,
     pickupData() {
       return this.data.pickupData;
     },
     carrierData() {
-      return configBus.getCarrier(this.data.carrier);
+      return this.$configBus.getCarrier(this.data.carrier);
     },
     price() {
       return this.pickupData.time.map((time) => {
@@ -82,10 +80,10 @@ export default {
 
         switch (time.type) {
           case DELIVERY_PICKUP_STANDARD:
-            price = configBus.config.pricePickup;
+            price = this.config.pricePickup;
             break;
           case DELIVERY_PICKUP_EXPRESS:
-            price = configBus.config.pricePickupExpress;
+            price = this.config.pricePickupExpress;
             break;
         }
 
@@ -97,7 +95,7 @@ export default {
     },
     priceText() {
       const minPrice = this.price.concat().sort((price1, price2) => price1.price > price2.price ? 1 : -1)[0].price;
-      const formattedPrice = configBus.formatPrice(minPrice);
+      const formattedPrice = this.$configBus.formatPrice(minPrice);
 
       if (minPrice === 0) {
         return 'Gratis';

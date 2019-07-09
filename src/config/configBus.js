@@ -72,6 +72,7 @@ export const configBus = new Vue({
 
   computed: {
     hasErrors() {
+      console.log(this.errors, Object.keys(this.errors).length);
       return Object.keys(this.errors).length;
     },
     isMultiCarrier() {
@@ -81,15 +82,32 @@ export const configBus = new Vue({
 
   methods: {
     /**
+     * Format a given date string to "hh:mm".
+     *
+     * @param {string} date - Date string to format.
+     *
+     * @returns {string}
+     */
+    formatTime(date) {
+      return new Date(date).toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' });
+    },
+
+    /**
      * Add errors to `this.errors` under a given key, if there are any.
      *
      * @param {string} key - Key to add to errors object.
      * @param {Object} errors - Errors to add.
      */
     addErrors(key, errors) {
-      this.errors = Object.keys(errors).length
-        ? { ...this.errors, [key]: errors }
-        : this.errors;
+      if (!errors.length) {
+        return;
+      }
+
+      if (this.errors.hasOwnProperty(key)) {
+        this.errors[key] = [...this.errors[key], ...errors];
+      } else {
+        this.errors[key] = errors;
+      }
     },
 
     /**

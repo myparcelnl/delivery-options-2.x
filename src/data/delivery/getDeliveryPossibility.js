@@ -11,16 +11,25 @@ import { formConfig } from '../../config/formConfig';
 export function getDeliveryPossibility(time) {
   const option = formConfig.delivery[time.type];
 
-  // Return if the current delivery type is turned off in the config.
+  // Only if the current delivery type is enabled in the config.
   if (configBus.isEnabled(option)) {
 
     // If the current label isn't in the config or is an empty string show the delivery time as the title
     if (!option.hasOwnProperty('label')
-          || !configBus.textToTranslate.hasOwnProperty(option.label)
-          || !configBus.textToTranslate[option.label]) {
+      || !configBus.textToTranslate.hasOwnProperty(option.label)
+      || !configBus.textToTranslate[option.label]) {
+
       // Remove the regular label and add a custom one
       delete option.label;
-      option.plainLabel = `${time.start} – ${time.end}`;
+
+      const moments = {};
+
+      ['start', 'end'].forEach((timeType) => {
+        const newTime = time.delivery_time_frames.find(({ type }) => type === timeType);
+        moments[timeType] = configBus.formatTime(newTime.date_time.date);
+      });
+
+      option.plainLabel = `${moments.start} – ${moments.end}`;
     }
 
     return option;

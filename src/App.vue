@@ -1,15 +1,14 @@
 <template>
   <div>
     <div
-      v-if="configBus.showCheckout"
+      v-if="$configBus.showCheckout"
       class="myparcel-checkout">
       <loader
         v-if="loading"
         :carriers="carriers" />
 
-      <!--hasDeliveryOptions || hasPickupLocations-->
       <div
-        v-else-if="!configBus.hasErrors"
+        v-else-if="!$configBus.hasErrors"
         class="myparcel-checkout__delivery-options">
         <recursive-form
           v-for="option in form.options"
@@ -23,7 +22,7 @@
         <div class="alert alert-danger mt-2">
           Check de volgende errors:
           <ul>
-            <template v-for="(errorData, type) in errors">
+            <template v-for="(errorData, type) in $configBus.errors">
               <li
                 v-for="error in errorData.errors"
                 :key="type + '_' + error.code"
@@ -49,7 +48,6 @@
 <script>
 import Loader from '@/components/Loader';
 import { appConfig } from '@/config/appConfig';
-import { configBus } from '@/config/configBus';
 import debounce from 'debounce';
 import { fetchCarrierData } from '@/data/carriers/fetchCarriers';
 import { fetchDeliveryOptions } from '@/data/delivery/fetchDeliveryOptions';
@@ -113,10 +111,12 @@ export default {
   },
 
   computed: {
-    configBus: () => configBus,
-    config: () => configBus.config,
-    strings: () => configBus.textToTranslate,
-    showCheckout: () => configBus.showCheckout,
+    config() {
+      return this.$configBus.config;
+    },
+    strings() {
+      return this.$configBus.textToTranslate;
+    },
 
     hasPickupLocations() {
       return Object.keys(this.pickupLocations).length;
@@ -131,10 +131,10 @@ export default {
     this.getCheckout();
 
     // Add the new data to the values object
-    configBus.$on('update', this.updateExternalData);
+    this.$configBus.$on('update', this.updateExternalData);
 
     // Debounce trigger updating the checkout
-    configBus.$on('update', debounce(this.updateExternal, 300));
+    this.$configBus.$on('update', debounce(this.updateExternal, 300));
   },
 
   methods: {
@@ -144,7 +144,7 @@ export default {
      * @returns {Promise}
      */
     async fetchCarriers() {
-      const carriersToFetch = configBus.config.carriers;
+      const carriersToFetch = this.config.carriers;
       const requests = [];
 
       carriersToFetch.forEach((carrier) => {
@@ -159,14 +159,14 @@ export default {
         return { ...acc, errors, responses };
       }, {});
 
-      configBus.addErrors('carriers', carriers.errors);
+      this.$configBus.addErrors('carriers', carriers.errors);
 
       const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
-      configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
+      this.$configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
 
-      configBus.currentCarrier = configBus.carrierData[0].name;
+      this.$configBus.currentCarrier = this.$configBus.carrierData[0].name;
 
-      this.carriers = configBus.carrierData;
+      this.carriers = this.$configBus.carrierData;
     },
 
     /**
@@ -176,14 +176,15 @@ export default {
      *
      * @returns {Promise}
      */
-    async fetchDeliveryOptions(carrier = configBus.currentCarrier) {
-      const {
-        response: deliveryOptions,
-        errors: deliveryOptionsErrors,
-      } = await fetchDeliveryOptions(carrier);
-
-      configBus.addErrors('deliveryOptions', deliveryOptionsErrors);
-      this.deliveryOptions = deliveryOptions;
+    async fetchDeliveryOptions(carrier = this.$configBus.currentCarrier) {
+      this.deliveryOptions = (await fetchDeliveryOptions(carrier)).response;
+      // const {
+      //   response: deliveryOptions,
+      //   errors: deliveryOptionsErrors,
+      // } = await fetchDeliveryOptions(carrier);
+      //
+      // configBus.addErrors('deliveryOptions', deliveryOptionsErrors);
+      // this.deliveryOptions = deliveryOptions;
     },
 
     /**
@@ -194,7 +195,7 @@ export default {
      */
     async fetchPickupLocations() {
       const url = new URL(`${appConfig.apiUrl}/deliveryoptions/pickup`);
-      const requestParams = configBus.getRequestParameters();
+      const requestParams = this.$configBus.getRequestParameters();
 
       Object.keys(requestParams).forEach((param) => {
         url.searchParams.append(param, requestParams[param]);
@@ -222,8 +223,8 @@ export default {
       this.reset();
       await this.fetchCarriers();
 
-      configBus.showCheckout = configBus.showCheckout || true;
-      configBus.setAddress();
+      this.$configBus.showCheckout = this.$configBus.showCheckout || true;
+      this.$configBus.setAddress();
 
       // const requests = [];
       //
@@ -241,11 +242,11 @@ export default {
       // await Promise.all(requests);
 
       if (!this.hasErrors) {
-        if (configBus.config.allowDeliveryOptions) {
+        if (this.config.allowDeliveryOptions) {
           choices.push(getDeliveryOptions());
         }
 
-        if (configBus.config.allowPickupPoints) {
+        if (this.config.allowPickupPoints) {
           choices.push(getPickupLocations());
         }
 
@@ -272,7 +273,7 @@ export default {
      * Hide the checkout completely.
      */
     hideCheckout() {
-      configBus.showCheckout = false;
+      this.$configBus.showCheckout = false;
     },
 
     /**
@@ -291,21 +292,26 @@ export default {
      * @param {Object} data - Data object. Can only contain properties `name` and `value`.
      */
     updateExternalData(data) {
-      if (data.name === 'deliveryCarrier' && data.value !== configBus.currentCarrier) {
-        configBus.currentCarrier = data.value;
+      // ignore loading
+      if (data.name === 'loading') {
+        return;
+      }
+
+      if (data.name === 'deliveryCarrier' && data.value !== this.$configBus.currentCarrier) {
+        this.$configBus.currentCarrier = data.value;
         this.fetchDeliveryOptions();
       }
 
-      configBus.values[data.name] = data.value;
-      this.externalData = JSON.stringify(configBus.values);
+      this.$configBus.values[data.name] = data.value;
+      this.externalData = JSON.stringify(this.$configBus.values);
     },
 
     /**
      * Reset all data.
      */
     reset() {
-      configBus.values = {};
-      configBus.errors = {};
+      this.$configBus.values = {};
+      this.$configBus.errors = {};
       this.loading = true;
       this.deliveryOptions = [];
       this.pickupLocations = [];

@@ -13,7 +13,6 @@
 <script>
 import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD, formConfig } from '@/config/formConfig';
 import PickupOption from './PickupOption';
-import { configBus } from '@/config/configBus';
 
 export default {
   name: 'PickupOptions',
@@ -40,21 +39,28 @@ export default {
     };
   },
   computed: {
-    config: () => configBus.config,
-    strings: () => configBus.textToTranslate,
+    config() {
+      return this.$configBus.config;
+    },
+
+    strings() {
+      return this.$configBus.textToTranslate;
+    },
+
     carrierData() {
       return formConfig.carriers[this.data.carrier];
     },
+
     price() {
       return this.data.time.map((time) => {
         let price;
 
         switch (time.type) {
           case DELIVERY_PICKUP_STANDARD:
-            price = configBus.config.pricePickup;
+            price = this.config.pricePickup;
             break;
           case DELIVERY_PICKUP_EXPRESS:
-            price = configBus.config.pricePickupExpress;
+            price = this.config.pricePickupExpress;
             break;
         }
 
@@ -66,7 +72,7 @@ export default {
     },
     priceText() {
       const minPrice = this.price.concat().sort((price1, price2) => price1.price > price2.price ? 1 : -1)[0].price;
-      const formattedPrice = configBus.formatPrice(minPrice);
+      const formattedPrice = this.$configBus.formatPrice(minPrice);
 
       if (minPrice === 0) {
         return 'Gratis';

@@ -17,9 +17,9 @@ export function getDeliveryOptions() {
     // If multi carrier, return another level of settings and their options based on carrier.
     options: configBus.isMultiCarrier
       ? [{
-        type: 'radio',
         name: 'deliveryCarrier',
         label: 'carrier',
+        type: 'radio',
         choices: configBus.carrierData.map((carrier) => ({
           ...carrier,
           options: () => options(carrier.name),

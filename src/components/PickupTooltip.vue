@@ -55,8 +55,7 @@
   </div>
 </template>
 <script>
-import { configBus } from '../config/configBus';
-import { CARRIER_POSTNL } from '../config/formConfig';
+import { CARRIER_POSTNL } from '@/config/formConfig';
 
 export default {
   name: 'PickupTooltip',
@@ -72,11 +71,16 @@ export default {
   },
 
   computed: {
-    config: () => configBus.config,
-    strings: () => configBus.textToTranslate,
+    config() {
+      return this.$configBus.config;
+    },
+
+    strings() {
+      return this.$configBus.textToTranslate;
+    },
 
     carrierData() {
-      return configBus.getCarrier(this.data.carrier || CARRIER_POSTNL);
+      return this.$configBus.getCarrier(this.data.carrier || CARRIER_POSTNL);
     },
 
     /**

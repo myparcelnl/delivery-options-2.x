@@ -10,9 +10,10 @@ import demoPickupOptions from '@/config/demo/demoPickupOptions';
  */
 export function fetchPickupLocations() {
   return new Promise((resolve) => {
+    console.log('fetching demo pickup locations');
     setTimeout(() => {
       resolve({ response: demoPickupOptions.data.pickups, errors: [] });
-    }, 500);
+    }, 100000000);
   });
 
   const { cc, number, postalCode } = configBus.address;

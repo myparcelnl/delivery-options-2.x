@@ -103,7 +103,6 @@
 <script>
 import { loaderOption } from '@/config/loaderOption';
 import PickupOption from './PickupOption';
-import { configBus } from '@/config/configBus';
 
 export default {
   name: 'RecursiveForm',
@@ -130,8 +129,12 @@ export default {
    * Vue computed properties
    */
   computed: {
-    strings: () => configBus.textToTranslate,
-    config: () => configBus.config,
+    strings() {
+      return this.$configBus.textToTranslate;
+    },
+    config() {
+      return this.$configBus.config;
+    },
 
     hasChoices() {
       return this.option.hasOwnProperty('choices') && !!this.option.choices && !!this.option.choices.length;
@@ -196,7 +199,7 @@ export default {
 
   watch: {
     selected() {
-      configBus.$emit('update',
+      this.$configBus.$emit('update',
         {
           name: this.option.name,
           value: this.selected,
@@ -215,8 +218,10 @@ export default {
    * Vue methods
    */
   methods: {
-    // update: (event) => configBus.$emit('update', event),
-    formatPrice: (price) => configBus.formatPrice(price),
+    // update: (event) => this.$configBus.$emit('update', event),
+    formatPrice(price) {
+      return this.$configBus.formatPrice(price);
+    },
 
     /**
      * Set default chosen value to either the previously set value for the current option, the option that has a
@@ -224,18 +229,18 @@ export default {
      */
     setSelected() {
       const { choices, type, name } = this.option;
-      const isSet = configBus.values.hasOwnProperty(name);
+      const isSet = this.$configBus.values.hasOwnProperty(name);
 
       if (type === 'checkbox') {
         // If there's a value set dedupe the array of values, otherwise set empty array.
-        this.selected = isSet ? [...new Set(configBus.values[name])] : [];
+        this.selected = isSet ? [...new Set(this.$configBus.values[name])] : [];
 
       } else if (isSet) {
         // If value is already set and the current option is selected.
         if (type === 'select') {
-          this.selected = configBus.values[name];
+          this.selected = this.$configBus.values[name];
         } else {
-          this.selected = (choices.find((choice) => choice.name === configBus.values[name]) || choices[0]).name;
+          this.selected = (choices.find((choice) => choice.name === this.$configBus.values[name]) || choices[0]).name;
         }
 
       } else if (this.hasChoices) {

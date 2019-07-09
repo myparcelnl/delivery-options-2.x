@@ -23,7 +23,7 @@ export default {
   props: {
     carriers: {
       type: Array,
-      default: null,
+      default: () => [],
     },
   },
 
