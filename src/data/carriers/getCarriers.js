@@ -1,11 +1,11 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
-import { CARRIER_POSTNL } from '../../config/formConfig';
-import { Carriers } from '../../../myparcel-js-sdk/src/endpoint/carriers';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { CARRIER_POSTNL } from '@/config/formConfig';
+import { Carriers } from 'Sdk/src/endpoint/carriers';
 
 /**
  * Fetch carrier data.
  *
- * @param {number} carrier - Carrier ID.
+ * @param {String|Number} carrier - Carrier name or id.
  *
  * @returns {Promise<Object>}
  */

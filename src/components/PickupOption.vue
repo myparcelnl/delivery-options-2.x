@@ -7,8 +7,8 @@
         <img
           v-if="configBus.isMultiCarrier"
           class="myparcel-checkout__image myparcel-checkout__image--sm"
-          :src="carrierData.image"
-          :alt="strings[carrierData.label]">
+          :src="data.image"
+          :alt="strings[data.label]">
 
         <font-awesome-icon
           v-if="selected"
@@ -18,12 +18,12 @@
       </span>
 
       <span class="myparcel-checkout__d--block">
-        <span v-text="distance" /> – <span v-text="`Vanaf ${data.start_time}`" />
+        <span v-text="distance" /> – <span v-text="`Vanaf ${pickupData.start_time}`" />
       </span>
     </label>
 
     <PickupTooltip
-      :data="data"
+      :data="pickupData"
       :show="selected && showTooltip"
       @close="showTooltip = false" />
 
@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD } from '../config/formConfig';
+import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD } from '@/config/formConfig';
 import PickupTooltip from './PickupTooltip';
-import { configBus } from '../config/configBus';
+import { configBus } from '@/config/configBus';
 
 export default {
   name: 'PickupOption',
@@ -70,11 +70,14 @@ export default {
     configBus: () => configBus,
     config: () => configBus.config,
     strings: () => configBus.textToTranslate,
+    pickupData() {
+      return this.data.pickupData;
+    },
     carrierData() {
       return configBus.getCarrier(this.data.carrier);
     },
     price() {
-      return this.data.time.map((time) => {
+      return this.pickupData.time.map((time) => {
         let price;
 
         switch (time.type) {
@@ -105,7 +108,7 @@ export default {
       return `Vanaf ${formattedPrice}`;
     },
     distance() {
-      let { distance } = this.data;
+      let { distance } = this.pickupData;
 
       let unit = 'm';
       if (distance >= 1000) {

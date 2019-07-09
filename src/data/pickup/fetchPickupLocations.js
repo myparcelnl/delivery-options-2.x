@@ -1,14 +1,20 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
-import { Pickup } from '../../../myparcel-js-sdk/src/endpoint/pickup';
-import { configBus } from '../../config/configBus';
-import demoPickupOptions from '../../config/demo/demoPickupOptions';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { Pickup } from 'Sdk/src/endpoint/pickup';
+import { configBus } from '@/config/configBus';
+import demoPickupOptions from '@/config/demo/demoPickupOptions';
 
 /**
  * Fetch pickup options.
  *
  * @returns {Promise}
  */
-export function fetchPickupOptions() {
+export function fetchPickupLocations() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ response: demoPickupOptions.data.pickups, errors: [] });
+    }, 500);
+  });
+
   const { cc, number, postalCode } = configBus.address;
 
   if (!cc || !postalCode || !number) {

@@ -7,5 +7,5 @@ export const appConfig = {
    */
   url: 'http://dev.myparcel.nl',
   apiUrl: 'http://api.dev.myparcel.nl',
-  assetsUrl: 'http://assets.dev.myparcel.nl',
+  assetsUrl: 'https://assets.myparcel.nl',
 };

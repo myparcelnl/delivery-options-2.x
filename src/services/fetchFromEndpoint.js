@@ -1,5 +1,5 @@
-import { appConfig } from '../config/appConfig';
-import { configBus } from '../config/configBus';
+import { appConfig } from '@/config/appConfig';
+import { configBus } from '@/config/configBus';
 
 export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';
@@ -44,10 +44,19 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
   } else {
     try {
       response = await endpoint[options.method](options.params);
-      console.log('response', endpoint.endpoint, response);
     } catch (e) {
       errors = e;
     }
+  }
+
+  if (!Object.keys(response).length) {
+    response = [];
+  }
+
+  if (Object.keys(errors).length) {
+    configBus.addErrors(endpoint.endpoint, errors);
+  } else {
+    errors = [];
   }
 
   return { errors, response };

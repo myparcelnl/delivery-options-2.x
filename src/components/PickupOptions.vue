@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD, formConfig } from '../config/formConfig';
+import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD, formConfig } from '@/config/formConfig';
 import PickupOption from './PickupOption';
-import { configBus } from '../config/configBus';
+import { configBus } from '@/config/configBus';
 
 export default {
   name: 'PickupOptions',

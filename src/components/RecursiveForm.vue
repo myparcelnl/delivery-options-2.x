@@ -101,8 +101,9 @@
 </template>
 
 <script>
+import { loaderOption } from '@/config/loaderOption';
 import PickupOption from './PickupOption';
-import { configBus } from '../config/configBus';
+import { configBus } from '@/config/configBus';
 
 export default {
   name: 'RecursiveForm',
@@ -137,7 +138,6 @@ export default {
     },
 
     validChoices() {
-      console.log(this.option);
       return this.option.type === 'select' ? false : this.option.choices;
     },
   },
@@ -171,27 +171,24 @@ export default {
       },
 
       /**
-       * Value to show before the get function is resolved. Only shows if the selected choice is a function (and causes
-       * an infinite loop otherwise).
+       * Value to show before the get function is resolved. Only shows if the selected choice is a function (causes an
+       * infinite loop otherwise).
        *
        * @returns {Array}
        */
       default() {
-        if (typeof this.option.choices.find((choice) => choice.name === this.selected) === 'function') {
-          return [
-            {
-              name: 'loading',
-              type: 'radio',
-              choices: [
-                {
-                  name: 'loadingChoice',
-                  type: 'plain',
-                  plainLabel: 'Loading...',
-                  image: 'https://loading.io/spinners/dna/lg.dna-spin-spiral-preloader.gif',
-                },
-              ],
-            },
-          ];
+        if (!this.hasChoices) {
+          return null;
+        }
+
+        if (!this.selected) {
+          this.setSelected();
+        }
+
+        const choice = this.option.choices.find((choice) => choice.name === this.selected);
+
+        if (!!choice && choice.hasOwnProperty('options') && typeof choice.options === 'function') {
+          return loaderOption;
         }
       },
     },
@@ -199,7 +196,11 @@ export default {
 
   watch: {
     selected() {
-      configBus.$emit('update', { name: this.option.name, value: this.selected });
+      configBus.$emit('update',
+        {
+          name: this.option.name,
+          value: this.selected,
+        });
     },
   },
 

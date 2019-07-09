@@ -16,8 +16,7 @@
 </template>
 
 <script>
-
-import { configBus } from '../config/configBus';
+import { configBus } from '@/config/configBus';
 
 export default {
   name: 'Loader',

@@ -1,58 +1,60 @@
 <template>
-  <div
-    v-if="configBus.showCheckout"
-    class="myparcel-checkout">
-    <loader
-      v-if="loading"
-      :carriers="carriers" />
-
-    <!--hasDeliveryOptions || hasPickupLocations-->
+  <div>
     <div
-      v-else-if="!hasErrors"
-      class="myparcel-checkout__delivery-options">
-      <recursive-form
-        v-for="option in form.options"
-        :key="option.name"
-        :option="option" />
-      <input
-        id="mypa-input"
-        :value="externalData"
-        hidden>
-    </div>
+      v-if="configBus.showCheckout"
+      class="myparcel-checkout">
+      <loader
+        v-if="loading"
+        :carriers="carriers" />
 
-    <div
-      v-else
-      class="myparcel-checkout__errors">
-      <div class="alert alert-danger mt-2">
-        Check de volgende errors:
-        <ul>
-          <template v-for="(errorData, type) in errors">
-            <li
-              v-for="error in errorData.errors"
-              :key="type + '_' + error.code"
-              v-text="error.message" />
-          </template>
-        </ul>
-        <hr>
-        Of:
-        <ul>
-          <li v-text="strings.addressNotFound" />
-          <li v-text="strings.wrongHouseNumberPostcode" />
-        </ul>
+      <!--hasDeliveryOptions || hasPickupLocations-->
+      <div
+        v-else-if="!configBus.hasErrors"
+        class="myparcel-checkout__delivery-options">
+        <recursive-form
+          v-for="option in form.options"
+          :key="option.name"
+          :option="option" />
+      </div>
+
+      <div
+        v-else
+        class="myparcel-checkout__errors">
+        <div class="alert alert-danger mt-2">
+          Check de volgende errors:
+          <ul>
+            <template v-for="(errorData, type) in errors">
+              <li
+                v-for="error in errorData.errors"
+                :key="type + '_' + error.code"
+                v-text="error.message" />
+            </template>
+          </ul>
+          <hr>
+          Of:
+          <ul>
+            <li v-text="strings.addressNotFound" />
+            <li v-text="strings.wrongHouseNumberPostcode" />
+          </ul>
+        </div>
       </div>
     </div>
+    <input
+      id="mypa-input"
+      :value="externalData"
+      hidden>
   </div>
 </template>
 
 <script>
-import Loader from './components/Loader';
-import { appConfig } from './config/appConfig';
-import { configBus } from './config/configBus';
+import Loader from '@/components/Loader';
+import { appConfig } from '@/config/appConfig';
+import { configBus } from '@/config/configBus';
 import debounce from 'debounce';
-import { fetchCarrierData } from './data/carriers/fetchCarriers';
-import { fetchDeliveryOptions } from './data/delivery/fetchDeliveryOptions';
-import { getDeliveryOptions } from './data/delivery/getDeliveryOptions';
-import { getPickupLocations } from './data/pickup/getPickupLocations';
+import { fetchCarrierData } from '@/data/carriers/fetchCarriers';
+import { fetchDeliveryOptions } from '@/data/delivery/fetchDeliveryOptions';
+import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
+import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
@@ -116,10 +118,6 @@ export default {
     strings: () => configBus.textToTranslate,
     showCheckout: () => configBus.showCheckout,
 
-    hasErrors() {
-      return Object.keys(this.errors).length;
-    },
-
     hasPickupLocations() {
       return Object.keys(this.pickupLocations).length;
     },
@@ -155,28 +153,26 @@ export default {
 
       let errors = [], responses = [];
       const carriers = (await Promise.all(requests)).reduce((acc, response) => {
-        console.log(response);
         errors = [...errors, ...response.errors];
         responses = [...responses, ...response.response];
 
         return { ...acc, errors, responses };
       }, {});
 
-      this.addErrors('carriers', carriers.errors);
+      configBus.addErrors('carriers', carriers.errors);
 
       const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
       configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
 
       configBus.currentCarrier = configBus.carrierData[0].name;
 
-      console.log('configBus.carrierData', configBus.carrierData);
       this.carriers = configBus.carrierData;
     },
 
     /**
      * FetchDeliveryOptions.
      *
-     * @param {string|number} carrier - Carrier name or id.
+     * @param {String|Number} carrier - Carrier name or id.
      *
      * @returns {Promise}
      */
@@ -186,7 +182,7 @@ export default {
         errors: deliveryOptionsErrors,
       } = await fetchDeliveryOptions(carrier);
 
-      this.addErrors('deliveryOptions', deliveryOptionsErrors);
+      configBus.addErrors('deliveryOptions', deliveryOptionsErrors);
       this.deliveryOptions = deliveryOptions;
     },
 
@@ -211,7 +207,7 @@ export default {
       //   errors: pickupLocationsErrors,
       // } = await fetchPickupOptions();
 
-      // this.addErrors('pickupLocations', pickupLocationsErrors);
+      // configBus.addErrors('pickupLocations', pickupLocationsErrors);
 
       this.pickupLocations = pickupOptions.data.base;
     },
@@ -222,36 +218,35 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
+      const choices = [];
       this.reset();
       await this.fetchCarriers();
 
       configBus.showCheckout = configBus.showCheckout || true;
       configBus.setAddress();
 
-      const requests = [];
-
-      // Get delivery options if enabled
-      if (configBus.config.allowDeliveryOptions) {
-        // requests.push(this.fetchDeliveryOptions());
-      }
-
-      // Get pickup locations if enabled
-      if (configBus.config.allowPickupPoints) {
-        // requests.push(this.fetchPickupLocations());
-      }
-
-      // Do all requests asynchronously
-      await Promise.all(requests);
+      // const requests = [];
+      //
+      // // Get delivery options if enabled
+      // if (configBus.config.allowDeliveryOptions) {
+      //   // requests.push(this.fetchDeliveryOptions());
+      // }
+      //
+      // // Get pickup locations if enabled
+      // if (configBus.config.allowPickupPoints) {
+      //   // requests.push(this.fetchPickupLocations());
+      // }
+      //
+      // // Do all requests asynchronously
+      // await Promise.all(requests);
 
       if (!this.hasErrors) {
-        const choices = [];
-
         if (configBus.config.allowDeliveryOptions) {
-          choices.push(getDeliveryOptions(this.deliveryOptions));
+          choices.push(getDeliveryOptions());
         }
 
         if (configBus.config.allowPickupPoints) {
-          choices.push(getPickupLocations(this.pickupLocations));
+          choices.push(getPickupLocations());
         }
 
         if (choices.length) {
@@ -298,7 +293,6 @@ export default {
     updateExternalData(data) {
       if (data.name === 'deliveryCarrier' && data.value !== configBus.currentCarrier) {
         configBus.currentCarrier = data.value;
-        console.log('fetching carrier', data.value);
         this.fetchDeliveryOptions();
       }
 
@@ -311,24 +305,10 @@ export default {
      */
     reset() {
       configBus.values = {};
+      configBus.errors = {};
       this.loading = true;
-      this.errors = {};
       this.deliveryOptions = [];
       this.pickupLocations = [];
-    },
-
-    /**
-     * Add errors to `this.errors` under a given key, if there are any.
-     *
-     * @param {string} key - Key to add to errors object.
-     * @param {Object} errors - Errors to add.
-     */
-    addErrors(key, errors) {
-      console.log(errors);
-      console.log(this.errors);
-      this.errors = Object.keys(errors).length
-        ? { ...this.errors, [key]: errors }
-        : this.errors;
     },
   },
 };

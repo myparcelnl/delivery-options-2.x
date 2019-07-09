@@ -1,7 +1,8 @@
-import { CARRIER_POSTNL, formConfig } from './formConfig';
 import Vue from 'vue';
+import _merge from 'lodash.merge';
 import defaultConfig from './defaultConfig';
 import demoConfig from './demo/demoConfig';
+import { formConfig } from './formConfig';
 
 const mock = false;
 
@@ -23,17 +24,22 @@ if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
  * @returns {{txtWeekDays: Object, address: Object, textToTranslate: Object, config: Object}}
  */
 const getConfig = () => {
-  const data = typeof window.MyParcelConfig === 'string' ? JSON.parse(window.MyParcelConfig) : window.MyParcelConfig;
+  const windowObject = typeof window.MyParcelConfig === 'string'
+    ? JSON.parse(window.MyParcelConfig)
+    : window.MyParcelConfig;
+
+  const data = _merge(defaultConfig, windowObject);
 
   if (typeof data.config.carriers === 'string') {
     data.config.carriers = data.config.carriers.split(',');
   }
+
   // data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
   //   return formConfig.carriers[carrier];
   // });
 
   // Merge the config data with the default config
-  return { ...defaultConfig, ...data };
+  return data;
 };
 
 /**
@@ -41,6 +47,8 @@ const getConfig = () => {
  */
 export const configBus = new Vue({
   data: {
+    errors: {},
+
     values: {},
 
     mock,
@@ -63,12 +71,27 @@ export const configBus = new Vue({
   },
 
   computed: {
+    hasErrors() {
+      return Object.keys(this.errors).length;
+    },
     isMultiCarrier() {
       return this.carrierData.length > 1;
     },
   },
 
   methods: {
+    /**
+     * Add errors to `this.errors` under a given key, if there are any.
+     *
+     * @param {string} key - Key to add to errors object.
+     * @param {Object} errors - Errors to add.
+     */
+    addErrors(key, errors) {
+      this.errors = Object.keys(errors).length
+        ? { ...this.errors, [key]: errors }
+        : this.errors;
+    },
+
     /**
      * Get carrier by id or name.
      *

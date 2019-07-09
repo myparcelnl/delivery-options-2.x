@@ -1,66 +1,61 @@
-import { configBus } from '../../config/configBus';
-import { fetchCarrierData } from '../carriers/fetchCarriers';
-import { fetchDeliveryOptions } from './fetchDeliveryOptions';
+import { configBus } from '@/config/configBus';
 import { deliveryAdditionalOptions } from './getDeliveryAdditionalOptions';
+import { fetchDeliveryOptions } from './fetchDeliveryOptions';
 import { getDeliveryDates } from './getDeliveryDates';
 import { getDeliveryMoments } from './getDeliveryMoments';
 
 /**
  * Get deliver options for carriers in the config.
  *
- * @param {Object} deliveryOptions - Delivery options object.
- *
  * @returns {Object}
  */
-export function getDeliveryOptions(deliveryOptions = null) {
-  const deliver = {
+export function getDeliveryOptions() {
+  return {
     name: 'deliver',
     label: 'deliveryTitle',
-  };
-
-  if (configBus.isMultiCarrier) {
-    deliver.type = 'radio';
-    deliver.options = [
-      {
+    type: 'radio',
+    // If multi carrier, return another level of settings and their options based on carrier.
+    options: configBus.isMultiCarrier
+      ? [{
         type: 'radio',
         name: 'deliveryCarrier',
         label: 'carrier',
-        choices: configBus.carrierData.map((carrier) => {
-          return {
-            ...carrier,
-            options: () => options(carrier.name),
-          };
-        }),
-      },
-    ];
-  } else {
-    deliver.options = options();
-  }
-  return deliver;
+        choices: configBus.carrierData.map((carrier) => ({
+          ...carrier,
+          options: () => options(carrier.name),
+        })),
+      }]
+      : options(),
+  };
 }
 
 /**
  * If multi carrier, return another level of settings.
+ *
+ * @param {String|Number} carrier - Carrier name or id.
+ *
+ * @returns {Promise<Object[]>}
  */
 async function options(carrier = configBus.currentCarrier) {
-  console.log('fetchDeliveryOptions for', carrier);
-  const deliveryOptions = (await fetchDeliveryOptions(carrier)).response;
+  const { response } = await fetchDeliveryOptions(carrier);
 
-  return [
-    {
-      name: 'deliveryDate',
-      type: 'select',
-      choices: getDeliveryDates(deliveryOptions),
-    },
-    {
-      name: 'deliveryMoment',
-      type: 'radio',
-      choices: getDeliveryMoments(deliveryOptions),
-    },
-    {
-      name: 'additionalOptions',
-      type: 'checkbox',
-      choices: deliveryAdditionalOptions(deliveryOptions),
-    },
-  ];
+  if (response.length) {
+    return [
+      {
+        name: 'deliveryDate',
+        type: 'select',
+        choices: getDeliveryDates(response),
+      },
+      {
+        name: 'deliveryMoment',
+        type: 'radio',
+        choices: getDeliveryMoments(response),
+      },
+      {
+        name: 'additionalOptions',
+        type: 'checkbox',
+        choices: deliveryAdditionalOptions(response),
+      },
+    ];
+  }
 }

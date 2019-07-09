@@ -1,3 +1,5 @@
+import { appConfig } from '@/config/appConfig';
+
 export default {
   data: {
     carriers: [
@@ -5,19 +7,19 @@ export default {
         id: 1,
         name: 'postnl',
         label: 'PostNL',
-        image: 'http://assets.dev.myparcel.nl//skin/general-images/carrier-logos/svg/postnl.svg',
+        image: `${appConfig.assetsUrl}/skin/general-images/carrier-logos/svg/postnl.svg`,
       },
       {
         id: 2,
         name: 'bpost',
         label: 'bpost',
-        image: 'http://assets.dev.myparcel.nl//skin/general-images/carrier-logos/svg/bpost.svg',
+        image: `${appConfig.assetsUrl}/skin/general-images/carrier-logos/svg/bpost.svg`,
       },
       {
         id: 4,
         name: 'dpd',
         label: 'DPD',
-        image: 'http://assets.dev.myparcel.nl//skin/general-images/carrier-logos/svg/dpd.svg',
+        image: `${appConfig.assetsUrl}/skin/general-images/carrier-logos/svg/dpd.svg`,
       },
     ],
   },

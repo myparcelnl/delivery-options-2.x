@@ -9,7 +9,6 @@ import { getDeliveryPossibility } from './getDeliveryPossibility';
  * @returns {Object}
  */
 export function getDeliveryMoments(deliveryOptions) {
-  console.log(deliveryOptions);
   const index = configBus.values.deliveryMoment || 0;
 
   const selectedOption = deliveryOptions.find((option) => option.date === index) || deliveryOptions[0];

@@ -1,21 +1,23 @@
-import { ERROR_NO_ADDRESS, appConfig } from '../../config/appConfig';
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
-import { Delivery } from '../../../myparcel-js-sdk/src/endpoint/delivery';
-import { configBus } from '../../config/configBus';
-import demoDeliveryOptions from '../../config/demo/demoDeliveryOptions';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { Delivery } from 'Sdk/src/endpoint/delivery';
+import { ERROR_NO_ADDRESS } from '@/config/appConfig';
+import { configBus } from '@/config/configBus';
+import demoDeliveryOptions from '@/config/demo/demoDeliveryOptions';
 
 /**
  * Fetch delivery options.
  *
- * @param {string|number} carrier - Carrier name or id.
+ * @param {String|Number} carrier - Carrier name or id.
  *
  * @returns {Promise}
  */
 export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
   const { cc, number, postalCode } = configBus.address;
 
+  // If the address is not filled in just throw an error immediately.
   if (!cc || !postalCode || !number) {
-    return new Promise((resolve) => resolve({ errors: ERROR_NO_ADDRESS, response: {} }));
+    configBus.addErrors((new Delivery(null)).endpoint, [ERROR_NO_ADDRESS]);
+    return new Promise((resolve) => resolve({ errors: ERROR_NO_ADDRESS, response: [] }));
   }
 
   return fetchFromEndpoint(Delivery, {
@@ -23,30 +25,4 @@ export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
     params: configBus.getRequestParameters(carrier),
     mockData: demoDeliveryOptions,
   });
-
-  // const deliveryOptionsEndpoint = new Delivery(null, new URL(configBus.apiURL));
-
-  // try {
-  //   let response;
-  //
-  //   if (configBus.mock) {
-  //     response = await new Promise((resolve) => {
-  //       setTimeout(() => {
-  //         resolve(demoDeliveryOptions);
-  //       }, configBus.mockDelay || 0);
-  //     });
-  //   } else {
-  //     const carrier = 1;
-  //     response = await deliveryOptionsEndpoint.search(configBus.getRequestParameters(carrier));
-  //   }
-  //
-  //   if (response.hasOwnProperty('errors')) {
-  //     this.errors.delivery = response.errors;
-  //   } else {
-  //     this.deliveryOptions = response.length ? response : null;
-  //   }
-  // } catch (e) {
-  //   this.errors.delivery = e;
-  //   console.error(e);
-  // }
 }

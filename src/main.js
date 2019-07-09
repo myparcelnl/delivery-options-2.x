@@ -1,8 +1,8 @@
 import '@/assets/scss/style.scss';
-import App from './App.vue';
+import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import RecursiveForm from './components/RecursiveForm';
+import RecursiveForm from '@/components/RecursiveForm';
 import Vue from 'vue';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';

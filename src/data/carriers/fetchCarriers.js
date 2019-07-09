@@ -1,14 +1,14 @@
-import { Carriers } from '../../../myparcel-js-sdk/src/endpoint/carriers';
-import { appConfig } from '../../config/appConfig';
-import demoCarriers from '../../config/demo/demoCarriers';
-import { CARRIER_POSTNL } from '../../config/formConfig';
-import { METHOD_SEARCH, fetchFromEndpoint } from '../../services/fetchFromEndpoint';
-import { mockEndpoint } from '../../services/mockEndpoint';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { CARRIER_POSTNL } from '@/config/formConfig';
+import { Carriers } from 'Sdk/src/endpoint/carriers';
+import { appConfig } from '@/config/appConfig';
+import demoCarriers from '@/config/demo/demoCarriers';
+import { mockEndpoint } from '@/services/mockEndpoint';
 
 /**
  * Fetch carrier data.
  *
- * @param {number} carrier - Carrier ID.
+ * @param {String|Number} carrier - Carrier name or id.
  *
  * @returns {Promise<Object>}
  */

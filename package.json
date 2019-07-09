@@ -16,7 +16,10 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "core-js": "^2.6.9",
     "debounce": "^1.2.0",
-    "vue": "^2.6.10"
+    "lodash.clone": "^4.5.0",
+    "lodash.merge": "^4.6.1",
+    "vue": "^2.6.10",
+    "vue-async-computed": "^3.7.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

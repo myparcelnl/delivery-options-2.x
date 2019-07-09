@@ -10,8 +10,6 @@ import { formConfig } from '../../config/formConfig';
 export function deliveryAdditionalOptions(deliveryOptions) {
   const options = [];
 
-  console.log('deliveryAdditionalOptions', deliveryOptions);
-
   if (configBus.config.allowOnlyRecipient) {
     options.push(formConfig.deliveryAdditionalOptions.onlyRecipient);
   }

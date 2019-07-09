@@ -1,29 +1,30 @@
-import { DELIVERY_PICKUP_EXPRESS, formConfig } from '../../config/formConfig';
-import { configBus } from '../../config/configBus';
+import { DELIVERY_PICKUP_EXPRESS, formConfig } from '@/config/formConfig';
+import { configBus } from '@/config/configBus';
 
 /**
  * Get pickup moments.
  *
- * @param {Array} pickupLocations - Pickup locations array.
- * @param {Object} key - Key.
+ * @param {Array} pickupLocation - Pickup location to render.
  *
  * @returns {Object}
  */
-export function getPickupMoments(pickupLocations, key) {
-  const moments = [];
+export function getPickupMoments(pickupLocation) {
+  return [
+    {
+      name: 'pickupLocationTime',
+      type: 'radio',
+      choices: pickupLocation.time.map((time) => {
+        const pickupText = `${configBus.textToTranslate.pickUpFrom} ${time.start}`;
 
-  pickupLocations[key].time.forEach((time) => {
-    const pickupText = `${configBus.textToTranslate.pickUpFrom} ${time.start}`;
+        if (DELIVERY_PICKUP_EXPRESS === time.type && !configBus.config.allowPickupExpress) {
+          return;
+        }
 
-    if (DELIVERY_PICKUP_EXPRESS === time.type && !configBus.config.allowPickupExpress) {
-      return;
-    }
-
-    moments.push({
-      ...formConfig.pickup[time.type],
-      plainLabel: pickupText,
-    });
-  });
-
-  return moments;
+        return {
+          ...formConfig.pickup[time.type],
+          plainLabel: pickupText,
+        };
+      }),
+    },
+  ];
 }
