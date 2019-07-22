@@ -1,74 +1,75 @@
-export default {
-  address: {
-    cc: 'NL',
-    postalCode: '1025 WK',
-    number: '576',
-    city: 'Amsterdam',
-  },
+import { addressByPlatform, configByPlatform, getPlatformMap, stringsByPlatform } from '@/config/platformConfig';
+
+/**
+ * Base checkout configuration.
+ *
+ * @type {Object}
+ */
+const baseConfig = {
   config: {
-    // CUSTOM!
-    carriers: 'postnl,bpost,dpd',
-    currency: 'EUR',
-    // END OF CUSTOM
-    apiBaseUrl: 'https://api.myparcel.nl/',
-    carrier: '1',
-    priceMorningDelivery: 8.99,
-    priceNormalDelivery: 6.95,
-    priceEveningDelivery: 7.99,
-    priceSignature: -0.35,
-    priceOnlyRecipient: 0.23,
-    pricePickup: -1,
-    pricePickupExpress: 3.95,
-    // CUSTOM
     allowDeliveryOptions: 1,
-    // END OF CUSTOM
-    allowMondayDelivery: 1,
-    allowMorningDelivery: 1,
-    allowEveningDelivery: 1,
-    allowSignature: 1,
-    allowOnlyRecipient: 1,
     allowPickupPoints: 1,
-    allowPickupExpress: 1,
-    dropOffDays: '1;2;3;4',
-    saturdayCutoffTime: '16:00',
+    allowSignature: 1,
+    currency: 'EUR',
     cutoffTime: '17:00',
     deliverydaysWindow: 1,
-    dropoffDelay: '1',
+    dropOffDays: '1;2;3;4',
+    dropoffDelay: 1,
+    priceEveningDelivery: 7.99,
+    priceMorningDelivery: 8.99,
+    priceOnlyRecipient: 0.23,
+    pricePickup: -1,
+    priceSignature: -0.35,
+    priceStandardDelivery: 5.85,
   },
-  textToTranslate: {
-    // CUSTOM!
-    carrierPostnlTitle: 'PostNL',
-    carrierDpdTitle: 'DPD',
-    carrierBpostTitle: 'bpost',
-    // END OF CUSTOM
-    deliveryTitle: 'Delivered at home or at work',
-    deliveryMorningTitle: 'Morning delivery',
-    deliveryStandardTitle: 'Standard delivery',
-    deliveryEveningTitle: 'Evening delivery',
-    signatureTitle: 'Signature on delivery',
-    onlyRecipientTitle: 'Home address only',
-    saturdayDeliveryTitle: 'saturday_delivery_title',
-    pickupTitle: 'PostNL Pickup',
-    headerDeliveryOptions: 'Delivery options',
-    BEdeliveryTitle: 'Delivery',
-    BEdeliveryStandardTitle: 'Standard delivery',
-    addressNotFound: 'Address details are not entered',
-    pickUpFrom: 'Pick up from',
-    openingHours: 'Opening hours',
-    closed: 'Closed',
+
+  strings: {
+    // Address strings
+    city: 'Plaats',
     postcode: 'Postcode',
-    houseNumber: 'House number',
-    city: 'City',
-    retry: 'Retry',
-    wrongHouseNumberPostcode: 'House number/postcode combination unknown',
-    quickDelivery: 'Deliver as quickly as possible',
+    houseNumber: 'Huisnummer',
+    addressNotFound: 'Adresgegevens niet ingevuld',
+
+    // Other strings
+    retry: 'Opnieuw proberen',
     again: 'Again',
-    sunday: 'Sunday',
+    closed: 'Gesloten',
+
+    // Titles of options
+    deliveryStandardTitle: '',
+    deliveryTitle: 'Bezorgen op',
+    // headerDeliveryOptions: 'Delivery options', // unused
+    pickUpFrom: 'Afhalen vanaf',
+    pickupTitle: 'Afhalen op locatie',
+    signatureTitle: 'Handtekening',
+    // quickDelivery: 'Deliver as quickly as possible', // unused
+
+    // Opening hours and weekdays
+    openingHours: 'Openingstijden',
     monday: 'Monday',
     tuesday: 'Tuesday',
     wednesday: 'Wednesday',
     thursday: 'Thursday',
     friday: 'Friday',
     saturday: 'Saturday',
+    sunday: 'Sunday',
   },
+};
+
+/**
+ * Get the default config for given platform. Gets the base config, sets platform and appends platform specific
+ * variables, if any.
+ *
+ * @param {string} platform - Platform name.
+ *
+ * @returns {Object}
+ */
+export const defaultConfig = (platform) => {
+  baseConfig.config.platform = platform;
+  baseConfig.config = { ...baseConfig.config, ...getPlatformMap(configByPlatform, platform) };
+  baseConfig.address = { ...baseConfig.address, ...getPlatformMap(addressByPlatform, platform) };
+  baseConfig.strings = { ...baseConfig.strings, ...getPlatformMap(stringsByPlatform, platform) };
+
+  console.log(baseConfig);
+  return baseConfig;
 };

@@ -17,7 +17,7 @@ export async function getPickupChoices() {
       label: option.location,
       carrier: option.carrier || 'postnl',
       image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier || 'postnl').image : null,
-      options: getPickupMoments(option),
+      options: () => getPickupMoments(option),
     }));
 
     return [

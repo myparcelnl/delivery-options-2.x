@@ -1,13 +1,22 @@
-export const CARRIER_POSTNL = 1;
-export const CARRIER_BPOST = 2;
-export const CARRIER_DPD = 3;
+export const DELIVERY = 'delivery';
+
+export const DELIVERY_DATE = 'deliveryDate';
+
+export const DELIVERY_MOMENT = 'deliveryMoment';
 
 export const DELIVERY_MORNING = 'morning';
 export const DELIVERY_STANDARD = 'standard';
 export const DELIVERY_EVENING = 'evening';
 
-export const DELIVERY_PICKUP_STANDARD = 4;
-export const DELIVERY_PICKUP_EXPRESS = 5;
+export const ADDITIONAL_OPTIONS = 'additionalOptions';
+
+export const SIGNATURE = 'signature';
+export const ONLY_RECIPIENT = 'only_recipient';
+
+export const PICKUP = 'pickup';
+
+export const PICKUP_STANDARD = 4;
+export const PICKUP_EXPRESS = 5;
 
 /**
  * Base form config.
@@ -16,86 +25,85 @@ export const DELIVERY_PICKUP_EXPRESS = 5;
  */
 export const formConfig = {
 
+  structure: {
+    [DELIVERY]: {
+      DELIVERY_DATE: 'deliveryDate',
+      DELIVERY_MOMENT: 'deliveryMoment',
+      ADDITIONAL_OPTIONS: 'additionalOptions',
+    },
+  },
+
   /**
    * Additional options.
    *
    * @see https://myparcelnl.github.io/api/#7_C
    */
-  deliveryAdditionalOptions: {
-    signature: {
-      enabled: 'allowSignature',
-      name: 'signature',
-      label: 'signatureTitle',
-      price: 'priceSignature',
-    },
-    onlyRecipient: {
-      enabled: 'allowOnlyRecipient',
-      name: 'onlyRecipient',
-      label: 'onlyRecipientTitle',
-      price: 'priceOnlyRecipient',
+  [ADDITIONAL_OPTIONS]: {
+    name: ADDITIONAL_OPTIONS,
+    options: {
+      [SIGNATURE]: {
+        enabled: 'allowSignature',
+        label: 'signatureTitle',
+        name: 'signature',
+        price: 'priceSignature',
+      },
+      [ONLY_RECIPIENT]: {
+        enabled: 'allowOnlyRecipient',
+        label: 'onlyRecipientTitle',
+        name: 'only_recipient',
+        price: 'priceOnlyRecipient',
+      },
     },
   },
-
-  /**
-   * Map carrier ids to names and labels.
-   *
-   * @see https://myparcelnl.github.io/api/#carrier
-   */
-  // carriers: {
-  //   [CARRIER_POSTNL]: {
-  //     name: 'postnl',
-  //     label: 'carrierPostnlTitle',
-  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/postnl.svg',
-  //   },
-  //   [CARRIER_BPOST]: {
-  //     name: 'bpost',
-  //     label: 'carrierBpostTitle',
-  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/bpost.svg',
-  //   },
-  //   [CARRIER_DPD]: {
-  //     name: 'dpd',
-  //     label: 'carrierDpdTitle',
-  //     image: 'https://assets.myparcel.nl/skin/general-images/carrier-logos/svg/dpd.svg',
-  //   },
-  // },
 
   /**
    * Delivery moments.
    *
    * @see https://myparcelnl.github.io/api/#8
    */
-  delivery: {
-    [DELIVERY_MORNING]: {
-      enabled: 'allowMorningDelivery',
-      name: 'morning',
-      label: 'deliveryMorningTitle',
-      price: 'priceMorningDelivery',
-    },
-    [DELIVERY_STANDARD]: {
-      name: 'normal',
-      label: 'deliveryStandardTitle',
-      price: 'priceNormalDelivery',
-      selected: true,
-    },
-    [DELIVERY_EVENING]: {
-      enabled: 'allowEveningDelivery',
-      name: 'evening',
-      label: 'deliveryEveningTitle',
-      price: 'priceEveningDelivery',
+  [DELIVERY]: {
+    enabled: 'allowDelivery',
+    name: 'delivery',
+    options: {
+      [DELIVERY_MORNING]: {
+        enabled: 'allowMorningDelivery',
+        label: 'deliveryMorningTitle',
+        name: 'morning',
+        price: 'priceMorningDelivery',
+      },
+      [DELIVERY_STANDARD]: {
+        label: 'deliveryStandardTitle',
+        name: 'standard',
+        price: 'priceNormalDelivery',
+        selected: true,
+      },
+      [DELIVERY_EVENING]: {
+        enabled: 'allowEveningDelivery',
+        label: 'deliveryEveningTitle',
+        name: 'evening',
+        price: 'priceEveningDelivery',
+      },
     },
   },
 
-  pickup: {
-    [DELIVERY_PICKUP_STANDARD]: {
-      enabled: 'allowPickupPoints',
-      name: 'pickupNormal',
-      price: 'pricePickup',
-      selected: true,
-    },
-    [DELIVERY_PICKUP_EXPRESS]: {
-      enabled: 'allowPickupExpress',
-      name: 'pickupExpress',
-      price: 'pricePickupExpress',
+  /**
+   * Pickup settings
+   */
+  [PICKUP]: {
+    enabled: 'allowPickup',
+    name: 'pickup',
+    options: {
+      [PICKUP_EXPRESS]: {
+        enabled: 'allowPickupExpress',
+        name: 'pickupExpress',
+        price: 'pricePickupExpress',
+      },
+      [PICKUP_STANDARD]: {
+        enabled: 'allowPickupPoints',
+        name: 'pickupNormal',
+        price: 'pricePickup',
+        selected: true,
+      },
     },
   },
 };

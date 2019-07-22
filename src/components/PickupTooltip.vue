@@ -55,7 +55,6 @@
   </div>
 </template>
 <script>
-import { CARRIER_POSTNL } from '@/config/formConfig';
 
 export default {
   name: 'PickupTooltip',
@@ -76,17 +75,17 @@ export default {
     },
 
     strings() {
-      return this.$configBus.textToTranslate;
+      return this.$configBus.strings;
     },
 
     carrierData() {
-      return this.$configBus.getCarrier(this.data.carrier || CARRIER_POSTNL);
+      return this.$configBus.getCarrier(this.data.carrier || 1);
     },
 
     /**
      * Return opening hours with "closed" string from config where needed.
      *
-     * @returns {Object}
+     * @returns {{}}
      */
     openingHours() {
       const openingHours = this.data.opening_hours;

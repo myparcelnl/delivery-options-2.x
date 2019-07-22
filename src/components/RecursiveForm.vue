@@ -5,31 +5,36 @@
       [`myparcel-checkout__overflow-wrapper`]: option.overflow
     }">
     <table>
+      <!--      [`myparcel-checkout__${option.name}`]: true,-->
+      <!--          [`myparcel-checkout__${option.name}&#45;&#45;${choice.name}`]: true,-->
       <tr
         v-for="choice in validChoices"
         :key="option.name + '_' + choice.name"
         :class="{
-          [`myparcel-checkout__${option.name}`]: true,
-          [`myparcel-checkout__${option.name}--${choice.name}`]: true,
-          'myparcel-checkout__choice--has-image': choice.hasOwnProperty('image')
+          'myparcel-checkout__choice--has-image': choice.hasOwnProperty('image'),
+          'myparcel-checkout__choice--disabled': choice.disabled
         }">
         <td
           v-if="validChoices.length > 1 && option.type !== 'plain'"
           class="myparcel-checkout__input">
-          <input
-            v-if="option.type === 'checkbox'"
-            :id="`myparcel-checkout--${option.name}--${choice.name}`"
-            v-model="selected"
-            type="checkbox"
-            :name="option.name"
-            :value="choice.name">
+          <div>
+            <input
+              v-if="option.type === 'checkbox'"
+              :id="`myparcel-checkout--${option.name}--${choice.name}`"
+              v-model="selected"
+              type="checkbox"
+              :name="option.name"
+              :disabled="choice.disabled ? 'disabled' : false"
+              :value="choice.name">
 
-          <input
-            v-else
-            :id="`myparcel-checkout--${option.name}--${choice.name}`"
-            v-model="selected"
-            :type="option.type"
-            :value="choice.name">
+            <input
+              v-else
+              :id="`myparcel-checkout--${option.name}--${choice.name}`"
+              v-model="selected"
+              :type="option.type"
+              :disabled="choice.disabled ? 'disabled' : false"
+              :value="choice.name">
+          </div>
         </td>
 
         <td :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
@@ -67,13 +72,16 @@
               </span>
             </label>
 
-            <template v-if="selected === choice.name && chosenOptions">
+            <Loader v-if="loading === choice.name" />
+
+            <template
+              v-else-if="selected === choice.name && chosenOptions">
               <recursive-form
                 v-for="subOption in chosenOptions"
                 :key="choice.name + '_' + subOption.name"
                 :option="subOption"
                 :class="`myparcel-checkout__${option.name}--${choice.name}__options`"
-                @update="$emit('update', $event)" />
+                :loading="loading" />
             </template>
           </template>
         </td>
@@ -101,12 +109,16 @@
 </template>
 
 <script>
-import { loaderOption } from '@/config/loaderOption';
+import Loader from '@/components/Loader';
 import PickupOption from './PickupOption';
+import { formConfig } from '@/config/formConfig';
 
 export default {
   name: 'RecursiveForm',
-  components: { PickupOption },
+  components: {
+    Loader,
+    PickupOption,
+  },
   props: {
     option: {
       type: Object,
@@ -116,6 +128,11 @@ export default {
 
   data() {
     return {
+      /**
+       * Loading state.
+       */
+      loading: false,
+
       /**
        * Currently selected value.
        *
@@ -130,7 +147,7 @@ export default {
    */
   computed: {
     strings() {
-      return this.$configBus.textToTranslate;
+      return this.$configBus.strings;
     },
     config() {
       return this.$configBus.config;
@@ -143,82 +160,160 @@ export default {
     validChoices() {
       return this.option.type === 'select' ? false : this.option.choices;
     },
+
+    hasDependency() {
+      return this.option.hasOwnProperty('dependency');
+    },
+
+    selectedChoice() {
+      return this.option.choices.find((choice) => choice.name === this.selected);
+    },
   },
 
   /**
    * @see https://github.com/foxbenjaminfox/vue-async-computed
    */
   asyncComputed: {
-    chosenOptions: {
-      /**
-       * Async computed property getter. Only needed because we also specify a default value.
-       *
-       * @returns {Promise<Array>}
-       */
-      // eslint-disable-next-line require-await
-      async get() {
-        if (!this.hasChoices) {
-          return null;
-        }
-
-        const choice = this.option.choices.find((choice) => choice.name === this.selected);
-
-        if (!!choice && choice.hasOwnProperty('options')) {
-          if (typeof choice.options === 'function') {
-            return choice.options();
-          }
-          return choice.options;
-        }
-
+    /**
+     * Async computed property getter. Only needed because we also specify a default value.
+     *
+     * @returns {Promise<Array>}
+     */
+    async chosenOptions() {
+      if (!this.hasChoices) {
         return null;
-      },
+      }
 
-      /**
-       * Value to show before the get function is resolved. Only shows if the selected choice is a function (causes an
-       * infinite loop otherwise).
-       *
-       * @returns {Array}
-       */
-      default() {
-        if (!this.hasChoices) {
-          return null;
+      const choice = this.selectedChoice;
+
+      if (!!choice && choice.hasOwnProperty('options')) {
+        if (typeof choice.options === 'function') {
+          this.loading = this.selected;
+
+          console.log('wait for it...');
+          const options = await choice.options();
+
+          console.dab();
+          console.log(options);
+          this.loading = false;
+          return options;
         }
+        return choice.options;
+      }
 
-        if (!this.selected) {
-          this.setSelected();
-        }
-
-        const choice = this.option.choices.find((choice) => choice.name === this.selected);
-
-        if (!!choice && choice.hasOwnProperty('options') && typeof choice.options === 'function') {
-          return loaderOption;
-        }
-      },
+      return null;
     },
   },
 
   watch: {
-    selected() {
-      this.$configBus.$emit('update',
-        {
-          name: this.option.name,
-          value: this.selected,
-        });
+    selected(value) {
+      this.$configBus.$emit('update', {
+        name: this.option.name,
+        value,
+      });
     },
   },
 
-  /**
-   * Vue created hook.
-   */
   created() {
-    this.setSelected();
+    if (this.hasDependency) {
+      this.$configBus.$on('afterUpdate', this.updateDependency);
+    } else {
+      this.setSelected();
+    }
   },
 
-  /**
-   * Vue methods
-   */
+  beforeDestroy() {
+    if (this.hasDependency) {
+      this.$configBus.$off('afterUpdate', this.updateDependency);
+    }
+  },
+
   methods: {
-    // update: (event) => this.$configBus.$emit('update', event),
+    /**
+     * Recursively search for dependencies.
+     *
+     * @param {Object} dependencies - Haystack.
+     * @param {Array|String} dependencyNames - Dependency name(s).
+     *
+     * @returns {*}
+     */
+    getDep(dependencies, dependencyNames) {
+      // Create a new array to avoid overwriting dependencyNames.
+      const needles = typeof dependencyNames === 'string' ? [dependencyNames] : [...dependencyNames];
+      const { values } = this.$configBus;
+      let result;
+
+      needles.forEach((needle, index) => {
+        if (dependencies.hasOwnProperty(needle)) {
+          result = dependencies[needle][values[needle]];
+          needles.splice(index, 1);
+
+          if (needles.length > 0) {
+            result = this.getDep(dependencies[needle][values[needle]], needles);
+          }
+        }
+      });
+
+      return result;
+    },
+
+    /**
+     * Update dependencies. Creates new choices array for the current option based on dependencies, their options and
+     * the config.
+     *
+     * @param {{string}} name - Name of the field that has changed.
+     */
+    updateDependency({ name }) {
+      const { dependencies } = this.$configBus;
+      const { dependency } = { ...this.option };
+      let dependencyName = dependency.name;
+
+      // If dependency.name is an array, dependencyName is the last item.
+      if (typeof dependency.name !== 'string') {
+        dependencyName = dependency.name[dependency.name.length - 1];
+      }
+
+      // Return if the field that changed is not a dependency of this.option
+      if (dependencyName !== name) {
+        return;
+      }
+
+      const deps = this.getDep(dependencies, dependency.name);
+
+      if (!!deps) {
+        this.option.choices = Object.keys(deps[this.option.name]).reduce((choices, option) => {
+          const choiceOption = dependency.hasOwnProperty('parent')
+            ? formConfig[dependency.parent].options[option]
+            : formConfig[option];
+
+          // If choice does not exist in the config, ignore it.
+          if (!choiceOption) {
+            return choices;
+          }
+
+          let choice = {
+            ...choiceOption,
+            name: option,
+          };
+
+          // Apply transform function to the new choice, if present.
+          if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
+            choice = dependency.transform(choice, deps[this.option.name][choice.name]);
+          }
+
+          // Only add the setting if it's enabled in the config
+          if (this.$configBus.isEnabled(choice)) {
+            choices.push(choice);
+          }
+
+          return choices;
+        }, []);
+      }
+
+      // Select one of the newly added choices.
+      this.setSelected();
+    },
+
     formatPrice(price) {
       return this.$configBus.formatPrice(price);
     },
@@ -228,29 +323,7 @@ export default {
      * 'selected' attribute or the first option.
      */
     setSelected() {
-      const { choices, type, name } = this.option;
-      const isSet = this.$configBus.values.hasOwnProperty(name);
-
-      if (type === 'checkbox') {
-        // If there's a value set dedupe the array of values, otherwise set empty array.
-        this.selected = isSet ? [...new Set(this.$configBus.values[name])] : [];
-
-      } else if (isSet) {
-        // If value is already set and the current option is selected.
-        if (type === 'select') {
-          this.selected = this.$configBus.values[name];
-        } else {
-          this.selected = (choices.find((choice) => choice.name === this.$configBus.values[name]) || choices[0]).name;
-        }
-
-      } else if (this.hasChoices) {
-        // Set pre-selected value or fall back to first
-        if (type === 'select') {
-          this.selected = choices[0];
-        } else {
-          this.selected = (choices.find((choice) => choice.selected === true) || choices[0]).name;
-        }
-      }
+      this.selected = this.$configBus.getSelected(this.option);
     },
   },
 };

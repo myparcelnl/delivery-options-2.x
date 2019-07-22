@@ -1,22 +1,18 @@
-import { configBus } from '../../config/configBus';
-import { formConfig } from '../../config/formConfig';
-
 /**
  *
+ * @param {Object} choice - Option to transform.
  * @param {Object} deliveryOptions - Delivery options object.
  *
- * @returns {Array}
+ * @returns {Object}
  */
-export function deliveryAdditionalOptions(deliveryOptions) {
-  const options = [];
+export function deliveryAdditionalOptions(choice, deliveryOptions) {
+  choice.disabled = deliveryOptions.enum.length === 1;
 
-  if (configBus.config.allowOnlyRecipient) {
-    options.push(formConfig.deliveryAdditionalOptions.onlyRecipient);
+  // If there is only one allowed value disable the option and set the selected property accordingly
+  if (choice.disabled) {
+    choice.selected = deliveryOptions.enum[0];
   }
 
-  if (configBus.config.allowSignature) {
-    options.push(formConfig.deliveryAdditionalOptions.signature);
-  }
-
-  return options;
+  console.color('Transformed choice:', 'disabled', choice.disabled, 'selected', choice.selected, choice);
+  return choice;
 }

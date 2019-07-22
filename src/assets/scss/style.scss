@@ -6,10 +6,10 @@
 
 .myparcel-checkout {
   position: relative;
-  border: 1px solid #ddd;
-  box-shadow: 4px 4px 10px #22222225;
-  border-radius: 3px;
-  padding: 15px;
+  //border: 1px solid #ddd;
+  //box-shadow: 4px 4px 10px #22222225;
+  //border-radius: 3px;
+  //padding: 15px;
 
   &__d--block {
     display: block;
@@ -40,6 +40,10 @@
   }
 
   &__choice {
+    &--disabled label {
+      opacity: .5;
+    }
+
     &--has-image > td:first-child {
       padding-top: $choice-image-size / 4;
     }
@@ -49,12 +53,18 @@
     margin: 0;
     width: 100%;
 
+    tr, td {
+      background-color: transparent;
+      border: 0;
+    }
+
     td {
       padding: 0;
       vertical-align: top;
 
       label {
         display: block;
+        text-align: left;
       }
 
       &.myparcel-checkout__input {

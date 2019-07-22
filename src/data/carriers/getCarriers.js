@@ -1,5 +1,4 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { CARRIER_POSTNL } from '@/config/formConfig';
 import { Carriers } from 'Sdk/src/endpoint/carriers';
 
 /**
@@ -9,7 +8,7 @@ import { Carriers } from 'Sdk/src/endpoint/carriers';
  *
  * @returns {Promise<Object>}
  */
-export function fetchCarrierData(carrier = CARRIER_POSTNL) {
+export function fetchCarrierData(carrier = 1) {
   return fetchFromEndpoint(Carriers, {
     method: METHOD_SEARCH,
     params: {

@@ -1,35 +1,26 @@
-import { configBus } from '../../config/configBus';
-import { formConfig } from '../../config/formConfig';
+import { configBus } from '@/config/configBus';
 
 /**
  * Get delivery option.
  *
- * @param {Object} time - Time object from delivery_options.
+ * @param {Object} option - Option to transform.
+ * @param {Object} deps - Dependencies related to current option.
  *
  * @returns {Object}
  */
-export function getDeliveryPossibility(time) {
-  const option = formConfig.delivery[time.type];
-
+export function getDeliveryPossibility(option, deps) {
   // Only if the current delivery type is enabled in the config.
   if (configBus.isEnabled(option)) {
 
     // If the current label isn't in the config or is an empty string show the delivery time as the title
     if (!option.hasOwnProperty('label')
-      || !configBus.textToTranslate.hasOwnProperty(option.label)
-      || !configBus.textToTranslate[option.label]) {
+      || !configBus.strings.hasOwnProperty(option.label)
+      || !configBus.strings[option.label]) {
 
-      // Remove the regular label and add a custom one
+      // Remove the regular label and add plainLabel
       delete option.label;
 
-      const moments = {};
-
-      ['start', 'end'].forEach((timeType) => {
-        const newTime = time.delivery_time_frames.find(({ type }) => type === timeType);
-        moments[timeType] = configBus.formatTime(newTime.date_time.date);
-      });
-
-      option.plainLabel = `${moments.start} – ${moments.end}`;
+      option.plainLabel = `${deps.moments.start} – ${deps.moments.end}`;
     }
 
     return option;

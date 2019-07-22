@@ -1,8 +1,7 @@
+import { FLESPAKKET, MYPARCEL } from '@/config/platformConfig';
 import Vue from 'vue';
 import _merge from 'lodash.merge';
-import defaultConfig from './defaultConfig';
-import demoConfig from './demo/demoConfig';
-import { formConfig } from './formConfig';
+import { defaultConfig } from './defaultConfig';
 
 const mock = false;
 
@@ -12,7 +11,7 @@ const mock = false;
  */
 if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
   if (process.env.NODE_ENV === 'development') {
-    window.MyParcelConfig = JSON.stringify(demoConfig);
+    window.MyParcelConfig = JSON.stringify(defaultConfig('myparcel'));
   } else {
     throw 'No config found! (window.MyParcelConfig is required.)';
   }
@@ -21,14 +20,15 @@ if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
 /**
  * Get data from the window config object and convert some variables.
  *
- * @returns {{txtWeekDays: Object, address: Object, textToTranslate: Object, config: Object}}
+ * @returns {{txtWeekDays: Object, address: Object, strings: Object, config: Object}}
  */
 const getConfig = () => {
   const windowObject = typeof window.MyParcelConfig === 'string'
     ? JSON.parse(window.MyParcelConfig)
     : window.MyParcelConfig;
 
-  const data = _merge(defaultConfig, windowObject);
+  console.log(windowObject);
+  const data = _merge(defaultConfig(null || MYPARCEL), windowObject); // windowObject.platform
 
   if (typeof data.config.carriers === 'string') {
     data.config.carriers = data.config.carriers.split(',');
@@ -47,13 +47,23 @@ const getConfig = () => {
  */
 export const configBus = new Vue({
   data: {
+    /**
+     * Dependency object
+     */
+    dependencies: {},
+
+    /**
+     * Object containing any errors causing the checkout not to show.
+     *
+     * @type {Object}
+     */
     errors: {},
 
     values: {},
 
     mock,
 
-    mockDelay: 200,
+    mockDelay: 0,
 
     /**
      * Whether to show the checkout at all or not.
@@ -65,6 +75,20 @@ export const configBus = new Vue({
     currentCarrier: null,
 
     /**
+     * Delivery options array from the API.
+     *
+     * @type {Array}
+     */
+    deliveryOptions: [],
+
+    /**
+     * Pickup options array from the API.
+     *
+     * @type {Array}
+     */
+    pickupLocations: [],
+
+    /**
      * The config data
      */
     ...getConfig(),
@@ -72,31 +96,93 @@ export const configBus = new Vue({
 
   computed: {
     hasErrors() {
-      console.log(this.errors, Object.keys(this.errors).length);
-      return Object.keys(this.errors).length;
+      return Object.keys(this.errors).length > 0;
     },
+
     isMultiCarrier() {
       return this.carrierData.length > 1;
+    },
+
+    platform() {
+      return this.config.platform;
     },
   },
 
   methods: {
     /**
+     * Get the name of the selected choice for given option. The chosen value is either the previously set value for the
+     * current option, the option that has 'selected: true' or the first option.
+     *
+     * @param {Object} option - Option object.
+     *
+     * @param {Array} option.choices - Object choices.
+     * @param {String} option.type - Object type.
+     * @param {String} option.name - Object name.
+     *
+     * @returns {String}
+     */
+    getSelected(option) {
+      const { choices, type, name } = option;
+      const [firstChoice] = choices;
+      const isSet = this.values.hasOwnProperty(name);
+      const setValue = this.values[name];
+      const hasChoices = !!choices && choices.length > 0;
+
+      let selected;
+
+      if (type === 'checkbox') {
+        // setValue is always an array for type checkbox
+        const copiedSetValue = [...setValue || []];
+
+        // If there's a value set dedupe the array of values, otherwise set empty array.
+        const selectedChoices = choices.reduce((acc, choice) => {
+          if (choice.selected === true) {
+            acc.push(choice.name);
+          }
+
+          if (choice.disabled === true && copiedSetValue.includes(choice.name)) {
+            copiedSetValue.splice(copiedSetValue.findIndex((name) => name === choice.name), 1);
+          }
+
+          return acc;
+        }, []);
+
+        selected = isSet ? [...new Set([...copiedSetValue, ...selectedChoices])] : selectedChoices;
+      } else if (type === 'select') {
+        if (isSet) {
+          selected = setValue;
+        } else if (hasChoices) {
+          selected = firstChoice;
+        }
+      } else if (isSet && !!setValue) {
+        // If this option is in configBus.values, select it.
+        selected = (choices.find((choice) => choice.name === setValue) || firstChoice).name;
+      } else if (hasChoices) {
+        // If nothing was selected, choose the option with a selected attribute or just get the first option.
+        selected = (choices.find((choice) => choice.selected === true) || firstChoice).name;
+      }
+
+      return selected;
+    },
+
+    /**
      * Format a given date string to "hh:mm".
      *
-     * @param {string} date - Date string to format.
+     * @param {Date|string} date - Date string to format.
+     * @param {Object} options - Options for formatting.
      *
      * @returns {string}
      */
-    formatTime(date) {
-      return new Date(date).toLocaleTimeString('default', { hour: '2-digit', minute: '2-digit' });
+    formatTime(date = new Date(), options = { hour: '2-digit', minute: '2-digit' }) {
+      const dateClass = date instanceof Date ? date : new Date(date);
+      return dateClass.toLocaleTimeString('default', options);
     },
 
     /**
      * Add errors to `this.errors` under a given key, if there are any.
      *
      * @param {string} key - Key to add to errors object.
-     * @param {Object} errors - Errors to add.
+     * @param {Array} errors - Errors to add.
      */
     addErrors(key, errors) {
       if (!errors.length) {
@@ -108,6 +194,8 @@ export const configBus = new Vue({
       } else {
         this.errors[key] = errors;
       }
+
+      this.$emit('error', { [key]: errors });
     },
 
     /**
@@ -128,30 +216,42 @@ export const configBus = new Vue({
     /**
      * Parameters for the delivery options request.
      *
-     * @returns {{
-     *  cc: *,
-     *  number: *,
-     *  monday_delivery: number,
-     *  dropoff_delay: string,
-     *  deliverydays_window: number,
-     *  carriers: (formConfig.carriers|{}|string),
-     *  postal_code: (string|string),
-     *  dropoff_days: string,
-     *  cutoff_time: string
-     *  }}
+     * @param {string} carrier - Carrier to use.
+     *
+     * @returns {Object}
      */
     getRequestParameters(carrier = this.currentCarrier) {
-      return {
+      const parametersNL = {
+        monday_delivery: this.config.allowMondayDelivery,
+      };
+
+      const parametersByPlatform = {
+        [MYPARCEL]: parametersNL,
+        [FLESPAKKET]: parametersNL,
+      };
+
+      let parameters = {
         cc: this.address.cc,
         postal_code: this.address.postalCode,
         number: this.address.number,
+        platform: this.platform,
+        carrier,
+
         cutoff_time: this.config.cutoffTime,
         deliverydays_window: this.config.deliverydaysWindow,
         dropoff_days: this.config.dropOffDays,
         dropoff_delay: this.config.dropoffDelay,
-        monday_delivery: this.config.allowMondayDelivery,
-        carrier,
+
+        // delivery_time: 'time',
+        // delivery_date: 'date',
+        // exclude_delivery_type: 'delivery_type',
+        // latitude: 'coordinates',
+        // longitude: 'coordinates',
       };
+
+      parameters = { ...parameters, ...parametersByPlatform[this.config.platform] };
+
+      return parameters;
     },
 
     /**
@@ -192,7 +292,7 @@ export const configBus = new Vue({
      * @returns {boolean}
      */
     isEnabled(option) {
-      if (!this.config.hasOwnProperty(option.enabled)) {
+      if (!option.hasOwnProperty('enabled') || !this.config.hasOwnProperty(option.enabled)) {
         return true;
       }
 

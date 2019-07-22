@@ -20,7 +20,9 @@ export const METHOD_SEARCH = 'search';
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
 export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
-  const endpoint = new Endpoint(null, new URL(appConfig.apiUrl));
+  const endpoint = new Endpoint();
+  endpoint.config.url = new URL(configBus.config.apiBaseUrl);
+
   let response = {};
   let errors = {};
 
@@ -30,34 +32,30 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
     params: {
       ...param,
     },
-    mockData: {},
+    mockData: null,
     mock: false,
     ...options,
   };
 
   if ((configBus.mock || options.mock) && options.mockData) {
     response = await new Promise((resolve) => {
+
       setTimeout(() => {
-        resolve(options.mockData);
+        resolve(options.mockData.data[endpoint.namespace]);
       }, configBus.mockDelay || 0);
     });
+
   } else {
     try {
       response = await endpoint[options.method](options.params);
     } catch (e) {
       errors = e;
+      configBus.addErrors(endpoint.endpoint, [e]);
     }
   }
 
-  if (!Object.keys(response).length) {
-    response = [];
-  }
-
-  if (Object.keys(errors).length) {
-    configBus.addErrors(endpoint.endpoint, errors);
-  } else {
-    errors = [];
-  }
-
-  return { errors, response };
+  return {
+    response: Array.isArray(response) ? response : [],
+    errors: Array.isArray(errors) ? errors : [],
+  };
 }

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD } from '@/config/formConfig';
+import { PICKUP_EXPRESS, PICKUP_STANDARD } from '@/config/formConfig';
 import PickupTooltip from './PickupTooltip';
 
 export default {
@@ -66,8 +66,12 @@ export default {
     };
   },
   computed: {
-    config: () => this.$configBus.config,
-    strings: () => this.$configBus.textToTranslate,
+    config() {
+      return this.$configBus.config;
+    },
+    strings() {
+      return this.$configBus.strings;
+    },
     pickupData() {
       return this.data.pickupData;
     },
@@ -79,10 +83,10 @@ export default {
         let price;
 
         switch (time.type) {
-          case DELIVERY_PICKUP_STANDARD:
+          case PICKUP_STANDARD:
             price = this.config.pricePickup;
             break;
-          case DELIVERY_PICKUP_EXPRESS:
+          case PICKUP_EXPRESS:
             price = this.config.pricePickupExpress;
             break;
         }

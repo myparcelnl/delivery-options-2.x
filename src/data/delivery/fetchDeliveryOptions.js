@@ -16,8 +16,10 @@ export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
 
   // If the address is not filled in just throw an error immediately.
   if (!cc || !postalCode || !number) {
-    configBus.addErrors((new Delivery(null)).endpoint, [ERROR_NO_ADDRESS]);
-    return new Promise((resolve) => resolve({ errors: ERROR_NO_ADDRESS, response: [] }));
+    return new Promise((resolve) => {
+      configBus.$emit('error', {address: ERROR_NO_ADDRESS});
+      resolve({ response: [] });
+    });
   }
 
   return fetchFromEndpoint(Delivery, {

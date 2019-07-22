@@ -9,6 +9,8 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
+export const isDev = process.env.NODE_ENV === 'development';
+
 library.add(faAngleDown, faTimes);
 
 Vue.use(AsyncComputed);
@@ -16,7 +18,6 @@ Vue.use(AsyncComputed);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('recursive-form', RecursiveForm);
 
-Vue.prototype.$platform = 'myparcel';
 Vue.prototype.$configBus = configBus;
 
 Vue.config.productionTip = false;

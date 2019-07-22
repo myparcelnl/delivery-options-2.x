@@ -8,7 +8,7 @@
         :carriers="carriers" />
 
       <div
-        v-else-if="!$configBus.hasErrors"
+        v-else-if="!hasErrors"
         class="myparcel-checkout__delivery-options">
         <recursive-form
           v-for="option in form.options"
@@ -22,7 +22,7 @@
         <div class="alert alert-danger mt-2">
           Check de volgende errors:
           <ul>
-            <template v-for="(errorData, type) in $configBus.errors">
+            <template v-for="(errorData, type) in errors">
               <li
                 v-for="error in errorData.errors"
                 :key="type + '_' + error.code"
@@ -46,17 +46,16 @@
 </template>
 
 <script>
+import { DELIVERY, PICKUP } from '@/config/formConfig';
 import Loader from '@/components/Loader';
-import { appConfig } from '@/config/appConfig';
 import debounce from 'debounce';
 import { fetchCarrierData } from '@/data/carriers/fetchCarriers';
-import { fetchDeliveryOptions } from '@/data/delivery/fetchDeliveryOptions';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
 import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
-  components: { Loader },
+  components: {Loader},
 
   data() {
     return {
@@ -65,13 +64,6 @@ export default {
        * @type {Boolean}
        */
       loading: true,
-
-      /**
-       * Whether there are errors causing the checkout not to show or not.
-       *
-       * @type {Object}
-       */
-      errors: {},
 
       /**
        * The form object which will be filled with all checkout fields and options.
@@ -88,20 +80,6 @@ export default {
       carriers: [],
 
       /**
-       * Delivery options array from the API.
-       *
-       * @type {Array}
-       */
-      deliveryOptions: [],
-
-      /**
-       * Pickup options array from the API.
-       *
-       * @type {Array}
-       */
-      pickupLocations: [],
-
-      /**
        * The object that will be converted to a JSON string and put in `#mypa-input`.
        *
        * @type {String}
@@ -111,19 +89,19 @@ export default {
   },
 
   computed: {
+    // Explicitly declared to make it reactive
+    hasErrors() {
+      return this.$configBus.hasErrors;
+    },
+    errors() {
+      return this.$configBus.errors;
+    },
+
     config() {
       return this.$configBus.config;
     },
     strings() {
-      return this.$configBus.textToTranslate;
-    },
-
-    hasPickupLocations() {
-      return Object.keys(this.pickupLocations).length;
-    },
-
-    hasDeliveryOptions() {
-      return Object.keys(this.deliveryOptions).length;
+      return this.$configBus.strings;
     },
   },
 
@@ -135,6 +113,12 @@ export default {
 
     // Debounce trigger updating the checkout
     this.$configBus.$on('update', debounce(this.updateExternal, 300));
+
+    this.$configBus.$on('error', (e) => {
+      console.color('error', e);
+      this.reset();
+      this.hideCheckout();
+    });
   },
 
   methods: {
@@ -164,53 +148,9 @@ export default {
       const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
       this.$configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
 
-      this.$configBus.currentCarrier = this.$configBus.carrierData[0].name;
+      this.$configBus.currentCarrier = this.$configBus.carrierData.length ? this.$configBus.carrierData[0].name : null;
 
       this.carriers = this.$configBus.carrierData;
-    },
-
-    /**
-     * FetchDeliveryOptions.
-     *
-     * @param {String|Number} carrier - Carrier name or id.
-     *
-     * @returns {Promise}
-     */
-    async fetchDeliveryOptions(carrier = this.$configBus.currentCarrier) {
-      this.deliveryOptions = (await fetchDeliveryOptions(carrier)).response;
-      // const {
-      //   response: deliveryOptions,
-      //   errors: deliveryOptionsErrors,
-      // } = await fetchDeliveryOptions(carrier);
-      //
-      // configBus.addErrors('deliveryOptions', deliveryOptionsErrors);
-      // this.deliveryOptions = deliveryOptions;
-    },
-
-    /**
-     * TODO: awaiting https://jira.dmp.zone/browse/MY-13194.
-     * FetchPickupLocations.
-     *
-     * @returns {Promise}
-     */
-    async fetchPickupLocations() {
-      const url = new URL(`${appConfig.apiUrl}/deliveryoptions/pickup`);
-      const requestParams = this.$configBus.getRequestParameters();
-
-      Object.keys(requestParams).forEach((param) => {
-        url.searchParams.append(param, requestParams[param]);
-      });
-
-      const pickupOptions = await (await fetch(url.href)).json();
-
-      // const {
-      //   response: pickupOptions,
-      //   errors: pickupLocationsErrors,
-      // } = await fetchPickupOptions();
-
-      // configBus.addErrors('pickupLocations', pickupLocationsErrors);
-
-      this.pickupLocations = pickupOptions.data.base;
     },
 
     /**
@@ -226,27 +166,12 @@ export default {
       this.$configBus.showCheckout = this.$configBus.showCheckout || true;
       this.$configBus.setAddress();
 
-      // const requests = [];
-      //
-      // // Get delivery options if enabled
-      // if (configBus.config.allowDeliveryOptions) {
-      //   // requests.push(this.fetchDeliveryOptions());
-      // }
-      //
-      // // Get pickup locations if enabled
-      // if (configBus.config.allowPickupPoints) {
-      //   // requests.push(this.fetchPickupLocations());
-      // }
-      //
-      // // Do all requests asynchronously
-      // await Promise.all(requests);
-
       if (!this.hasErrors) {
-        if (this.config.allowDeliveryOptions) {
+        if (this.$configBus.isEnabled(DELIVERY)) {
           choices.push(getDeliveryOptions());
         }
 
-        if (this.config.allowPickupPoints) {
+        if (this.$configBus.isEnabled(PICKUP)) {
           choices.push(getPickupLocations());
         }
 
@@ -291,19 +216,19 @@ export default {
      *
      * @param {Object} data - Data object. Can only contain properties `name` and `value`.
      */
-    updateExternalData(data) {
-      // ignore loading
-      if (data.name === 'loading') {
-        return;
+    updateExternalData({ name, value }) {
+      if (name === 'deliveryCarrier' && value !== this.$configBus.currentCarrier) {
+        this.$configBus.currentCarrier = value;
       }
 
-      if (data.name === 'deliveryCarrier' && data.value !== this.$configBus.currentCarrier) {
-        this.$configBus.currentCarrier = data.value;
-        this.fetchDeliveryOptions();
-      }
-
-      this.$configBus.values[data.name] = data.value;
+      this.$configBus.values[name] = value;
       this.externalData = JSON.stringify(this.$configBus.values);
+
+      // Using $nextTick to emit event after this function is done.
+      // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
+      this.$nextTick(() => {
+        this.$configBus.$emit('afterUpdate', { name, value });
+      });
     },
 
     /**

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { DELIVERY_PICKUP_EXPRESS, DELIVERY_PICKUP_STANDARD, formConfig } from '@/config/formConfig';
+import { PICKUP_EXPRESS, PICKUP_STANDARD, formConfig } from '@/config/formConfig';
 import PickupOption from './PickupOption';
 
 export default {
@@ -44,7 +44,7 @@ export default {
     },
 
     strings() {
-      return this.$configBus.textToTranslate;
+      return this.$configBus.strings;
     },
 
     carrierData() {
@@ -56,11 +56,11 @@ export default {
         let price;
 
         switch (time.type) {
-          case DELIVERY_PICKUP_STANDARD:
-            price = this.config.pricePickup;
-            break;
-          case DELIVERY_PICKUP_EXPRESS:
+          case PICKUP_EXPRESS:
             price = this.config.pricePickupExpress;
+            break;
+          case PICKUP_STANDARD:
+            price = this.config.pricePickup;
             break;
         }
 

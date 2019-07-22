@@ -1,4 +1,4 @@
-import { DELIVERY_PICKUP_EXPRESS, formConfig } from '@/config/formConfig';
+import { PICKUP_EXPRESS, formConfig, PICKUP } from '@/config/formConfig';
 import { configBus } from '@/config/configBus';
 
 /**
@@ -14,14 +14,14 @@ export function getPickupMoments(pickupLocation) {
       name: 'pickupLocationTime',
       type: 'radio',
       choices: pickupLocation.time.map((time) => {
-        const pickupText = `${configBus.textToTranslate.pickUpFrom} ${time.start}`;
+        const pickupText = `${configBus.strings.pickUpFrom} ${time.start}`;
 
-        if (DELIVERY_PICKUP_EXPRESS === time.type && !configBus.config.allowPickupExpress) {
+        if (PICKUP_EXPRESS === time.type && !configBus.config.allowPickupExpress) {
           return;
         }
 
         return {
-          ...formConfig.pickup[time.type],
+          ...formConfig[PICKUP].options[time.type],
           plainLabel: pickupText,
         };
       }),

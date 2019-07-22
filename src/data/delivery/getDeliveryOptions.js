@@ -1,8 +1,8 @@
+import { ADDITIONAL_OPTIONS, DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/formConfig';
 import { configBus } from '@/config/configBus';
 import { deliveryAdditionalOptions } from './getDeliveryAdditionalOptions';
 import { fetchDeliveryOptions } from './fetchDeliveryOptions';
-import { getDeliveryDates } from './getDeliveryDates';
-import { getDeliveryMoments } from './getDeliveryMoments';
+import { getDeliveryPossibility } from '@/data/delivery/getDeliveryPossibility';
 
 /**
  * Get deliver options for carriers in the config.
@@ -25,7 +25,7 @@ export function getDeliveryOptions() {
           options: () => options(carrier.name),
         })),
       }]
-      : options(),
+      : options,
   };
 }
 
@@ -37,25 +37,70 @@ export function getDeliveryOptions() {
  * @returns {Promise<Object[]>}
  */
 async function options(carrier = configBus.currentCarrier) {
-  const { response } = await fetchDeliveryOptions(carrier);
+  const { response: deliveryOptions } = await fetchDeliveryOptions(carrier);
 
-  if (response.length) {
+  console.log('deliveryOptions', deliveryOptions);
+  if (deliveryOptions.length) {
+    configBus.deliveryOptions = deliveryOptions;
+    createDeliveryDependencies(deliveryOptions);
+
     return [
       {
-        name: 'deliveryDate',
+        name: DELIVERY_DATE,
         type: 'select',
-        choices: getDeliveryDates(response),
+        choices: deliveryOptions ? deliveryOptions.map((option) => option.date) : [],
       },
       {
-        name: 'deliveryMoment',
+        name: DELIVERY_MOMENT,
         type: 'radio',
-        choices: getDeliveryMoments(response),
+        dependency: {
+          name: DELIVERY_DATE,
+          parent: DELIVERY,
+          transform: getDeliveryPossibility,
+        },
+        choices: [],
       },
       {
-        name: 'additionalOptions',
+        name: ADDITIONAL_OPTIONS,
         type: 'checkbox',
-        choices: deliveryAdditionalOptions(response),
+        dependency: {
+          name: [DELIVERY_DATE, DELIVERY_MOMENT],
+          parent: ADDITIONAL_OPTIONS,
+          transform: deliveryAdditionalOptions,
+        },
+        choices: [],
       },
     ];
   }
 }
+
+/**
+ * Create the dependencies object for delivery options.
+ *
+ * @param {Object} deliveryOptions - Delivery options object.
+ */
+const createDeliveryDependencies = (deliveryOptions) => {
+  configBus.dependencies[DELIVERY_DATE] = deliveryOptions.reduce((acc, option) => ({
+    ...acc,
+    [option.date]: {
+
+      [DELIVERY_MOMENT]: option.delivery_possibilities.reduce((acc, possibility) => ({
+        ...acc,
+        [possibility.type]: {
+
+          moments: possibility.delivery_time_frames.reduce((acc, timeFrame) => ({
+            ...acc,
+            [timeFrame.type]: configBus.formatTime(timeFrame.date_time.date),
+          }), {}),
+
+          [ADDITIONAL_OPTIONS]: {
+            ...possibility.shipment_options.reduce((acc, shipmentOption) => ({
+              ...acc,
+              [shipmentOption.name]: shipmentOption.schema,
+            }), {}),
+          },
+        },
+      }), {}),
+    },
+  }), {});
+};
