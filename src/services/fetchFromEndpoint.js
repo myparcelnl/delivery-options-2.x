@@ -1,4 +1,3 @@
-import { appConfig } from '@/config/appConfig';
 import { configBus } from '@/config/configBus';
 
 export const METHOD_GET = 'get';
@@ -32,26 +31,14 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
     params: {
       ...param,
     },
-    mockData: null,
-    mock: false,
     ...options,
   };
 
-  if ((configBus.mock || options.mock) && options.mockData) {
-    response = await new Promise((resolve) => {
-
-      setTimeout(() => {
-        resolve(options.mockData.data[endpoint.namespace]);
-      }, configBus.mockDelay || 0);
-    });
-
-  } else {
-    try {
-      response = await endpoint[options.method](options.params);
-    } catch (e) {
-      errors = e;
-      configBus.addErrors(endpoint.endpoint, [e]);
-    }
+  try {
+    response = await endpoint[options.method](options.params);
+  } catch (e) {
+    errors = e;
+    configBus.addErrors(endpoint.endpoint, [e]);
   }
 
   return {

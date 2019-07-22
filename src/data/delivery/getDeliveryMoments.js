@@ -15,7 +15,7 @@ export function getDeliveryMoments(deliveryOptions) {
   const selectedOption = index ? deliveryOptions.find((option) => option.date === index) : deliveryOptions[0];
 
   // Return the delivery possibilities that are present and enabled in the config.
-  return selectedOption.delivery_possibilities.map((time) => {
+  return selectedOption.possibilities.map((time) => {
     const deliveryPossibility = getDeliveryPossibility(time);
 
     if (!!deliveryPossibility) {

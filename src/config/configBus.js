@@ -238,9 +238,9 @@ export const configBus = new Vue({
         carrier,
 
         cutoff_time: this.config.cutoffTime,
-        deliverydays_window: this.config.deliverydaysWindow,
+        deliverydays_window: this.config.deliveryDaysWindow,
         dropoff_days: this.config.dropOffDays,
-        dropoff_delay: this.config.dropoffDelay,
+        dropoff_delay: this.config.dropOffDelay,
 
         // delivery_time: 'time',
         // delivery_date: 'date',

@@ -84,7 +84,7 @@ const createDeliveryDependencies = (deliveryOptions) => {
     ...acc,
     [option.date]: {
 
-      [DELIVERY_MOMENT]: option.delivery_possibilities.reduce((acc, possibility) => ({
+      [DELIVERY_MOMENT]: option.possibilities.reduce((acc, possibility) => ({
         ...acc,
         [possibility.type]: {
 

@@ -13,7 +13,7 @@ export default {
     deliveries: [
       {
         date: getDate(1),
-        delivery_possibilities: [
+        possibilities: [
           {
             type: 'morning',
             shipment_options: [
@@ -172,7 +172,7 @@ export default {
       },
       {
         date: getDate(2),
-        delivery_possibilities: [
+        possibilities: [
           {
             type: 'standard',
             shipment_options: [
@@ -293,7 +293,7 @@ export default {
       },
       {
         date: getDate(3),
-        delivery_possibilities: [
+        possibilities: [
           {
             type: 'morning',
             shipment_options: [],

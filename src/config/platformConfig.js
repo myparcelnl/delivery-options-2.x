@@ -17,33 +17,24 @@ export const addressBE = {
 };
 
 export const configBE = {
-  apiBaseUrl: 'https://api.dev.sendmyparcel.be/',
+  apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.sendmyparcel.be' : 'https://api.sendmyparcel.be',
   carriers: 'bpost,dpd',
   allowSaturdayDelivery: 1,
 };
 
 export const configNL = {
-  apiBaseUrl: 'https://api.dev.myparcel.nl/',
+  apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.myparcel.nl' : 'https://api.myparcel.nl',
   carriers: 'postnl',
-  allowMondayDelivery: 1,
-  allowEveningDelivery: 1,
-  allowMorningDelivery: 1,
-  allowOnlyRecipient: 1,
-  allowPickupExpress: 1,
-  pricePickupExpress: 3.95,
   saturdayCutoffTime: '16:00',
+  allowMondayDelivery: 1,
 };
 
 export const stringsBE = {
-  onlyRecipientTitle: 'Home address only',
   wrongPostalCodeCity: 'Combinatie postcode/plaats onbekend',
   saturdayDeliveryTitle: 'saturday_delivery_title',
 };
 
 export const stringsNL = {
-  onlyRecipientTitle: 'Home address only',
-  deliveryEveningTitle: 'Evening delivery',
-  deliveryMorningTitle: 'Morning delivery',
   wrongHouseNumberPostcode: 'House number/postcode combination unknown',
   BEdeliveryStandardTitle: 'Standard delivery',
   BEdeliveryTitle: 'Delivery',

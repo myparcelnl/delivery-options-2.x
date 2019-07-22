@@ -9,18 +9,27 @@ const baseConfig = {
   config: {
     allowDeliveryOptions: 1,
     allowPickupPoints: 1,
-    allowSignature: 1,
     currency: 'EUR',
     cutoffTime: '17:00',
-    deliverydaysWindow: 1,
+    deliveryDaysWindow: 1,
     dropOffDays: '1;2;3;4',
-    dropoffDelay: 1,
-    priceEveningDelivery: 7.99,
-    priceMorningDelivery: 8.99,
-    priceOnlyRecipient: 0.23,
-    pricePickup: -1,
-    priceSignature: -0.35,
-    priceStandardDelivery: 5.85,
+    dropOffDelay: 1,
+
+    allowEveningDelivery: 1,
+    allowMorningDelivery: 1,
+    allowOnlyRecipient: 1,
+    allowPickupExpress: 1,
+    pricePickupExpress: 3.95,
+    allowSignature: 1,
+
+    priceEveningDelivery: 0,
+    priceMorningDelivery: 0,
+    priceOnlyRecipient: 0,
+    pricePickup: 0,
+    priceSignature: 0,
+    priceStandardDelivery: 0,
+
+    carrierSettings: {},
   },
 
   strings: {
@@ -36,12 +45,16 @@ const baseConfig = {
     closed: 'Gesloten',
 
     // Titles of options
+    deliveryEveningTitle: 'Evening delivery',
+    deliveryMorningTitle: 'Morning delivery',
     deliveryStandardTitle: '',
     deliveryTitle: 'Bezorgen op',
-    // headerDeliveryOptions: 'Delivery options', // unused
+    onlyRecipientTitle: 'Home address only',
     pickUpFrom: 'Afhalen vanaf',
     pickupTitle: 'Afhalen op locatie',
     signatureTitle: 'Handtekening',
+
+    // headerDeliveryOptions: 'Delivery options', // unused
     // quickDelivery: 'Deliver as quickly as possible', // unused
 
     // Opening hours and weekdays
