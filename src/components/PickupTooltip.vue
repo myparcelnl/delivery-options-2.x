@@ -10,27 +10,24 @@
     <table>
       <tr>
         <td colspan="2">
-          <h3 v-text="data.location" />
+          <h3 v-text="data.location.location_name" />
         </td>
       </tr>
       <tr>
         <td>
-          <span v-text="data.street + ' ' + data.number" /><br>
-          <span v-text="data.postal_code + ' ' + data.city" />
+          <span v-text="data.address.street + ' ' + data.address.number" /><br>
+          <span v-text="data.address.postal_code + ' ' + data.address.city" />
 
-          <template v-if="!!data.phone_number">
+          <template v-if="!!data.location.phone_number">
             <br>
-            <span v-text="data.phone_number" />
-            <br>
+            <span v-text="data.location.phone_number" /><br>
           </template>
-
-          <br>
-          <span v-text="strings.pickUpFrom + ' ' + data.start_time.substr(0,5)" />
+          <!-- <span v-text="strings.pickUpFrom + ' ' + $configBus.formatTime(data.possibilities[0].moment.start.date)" />-->
         </td>
         <td>
           <img
             class="myparcel-checkout__image myparcel-checkout__image--lg myparcel-checkout__float-right"
-            :src="carrierData.image"
+            :src="carrierLogo"
             alt="">
         </td>
       </tr>
@@ -54,7 +51,9 @@
     </table>
   </div>
 </template>
+
 <script>
+import { appConfig } from '@/config/appConfig';
 
 export default {
   name: 'PickupTooltip',
@@ -82,21 +81,32 @@ export default {
       return this.$configBus.getCarrier(this.data.carrier || 1);
     },
 
+    carrierLogo() {
+      return appConfig.assetsUrl + this.carrierData.meta.logo_svg;
+    },
+
     /**
-     * Return opening hours with "closed" string from config where needed.
+     * Return opening hours with "closed" string from config where needed and format the time strings.
      *
      * @returns {{}}
      */
     openingHours() {
-      const openingHours = this.data.opening_hours;
-      return Object.keys(this.data.opening_hours).reduce((acc, item) => {
-        if (!openingHours[item].length > 0) {
-          openingHours[item] = [this.strings.closed];
+      const openingHours = this.data.location.opening_hours;
+
+      return Object.keys(openingHours).reduce((acc, item) => {
+        let dateString;
+
+        if (openingHours[item].length) {
+          const time = openingHours[item][0];
+
+          dateString = `${this.$configBus.formatTime(time.start.date)} – ${this.$configBus.formatTime(time.end.date)}`;
+        } else {
+          dateString = this.strings.closed;
         }
 
         return {
           ...acc,
-          [item]: openingHours[item][0],
+          [item]: dateString,
         };
       }, {});
     },

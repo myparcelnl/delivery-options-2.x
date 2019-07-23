@@ -5,8 +5,6 @@
       [`myparcel-checkout__overflow-wrapper`]: option.overflow
     }">
     <table>
-      <!--      [`myparcel-checkout__${option.name}`]: true,-->
-      <!--          [`myparcel-checkout__${option.name}&#45;&#45;${choice.name}`]: true,-->
       <tr
         v-for="choice in validChoices"
         :key="option.name + '_' + choice.name"
@@ -67,12 +65,14 @@
                     : selected === choice.name,
                   'myparcel-checkout__text-green': config[choice.price] < 0
                 }">
-                <span v-text="config[choice.price] >= 0 ? '+ ' : '– '" />
-                {{ formatPrice(choice.price) }}
+                <span v-text="$configBus.getPrice(choice) >= 0 ? '+ ' : '– '" />
+                {{ $configBus.formatPrice(choice.price) }}
               </span>
             </label>
 
-            <Loader v-if="loading === choice.name" />
+            <Loader
+              v-if="loading === choice.name"
+              type="inline" />
 
             <template
               v-else-if="selected === choice.name && chosenOptions">
@@ -111,7 +111,7 @@
 <script>
 import Loader from '@/components/Loader';
 import PickupOption from './PickupOption';
-import { formConfig } from '@/config/formConfig';
+import { PICKUP, formConfig, DELIVERY } from '@/config/formConfig';
 
 export default {
   name: 'RecursiveForm',
@@ -149,6 +149,7 @@ export default {
     strings() {
       return this.$configBus.strings;
     },
+
     config() {
       return this.$configBus.config;
     },
@@ -175,7 +176,7 @@ export default {
    */
   asyncComputed: {
     /**
-     * Async computed property getter. Only needed because we also specify a default value.
+     * Currently chosen options, if options is a function.
      *
      * @returns {Promise<Array>}
      */
@@ -190,11 +191,8 @@ export default {
         if (typeof choice.options === 'function') {
           this.loading = this.selected;
 
-          console.log('wait for it...');
           const options = await choice.options();
 
-          console.dab();
-          console.log(options);
           this.loading = false;
           return options;
         }
@@ -206,6 +204,11 @@ export default {
   },
 
   watch: {
+    /**
+     * Watch the value of selected to emit a change event.
+     *
+     * @param {*} value - New value for current option.
+     */
     selected(value) {
       this.$configBus.$emit('update', {
         name: this.option.name,
@@ -312,10 +315,6 @@ export default {
 
       // Select one of the newly added choices.
       this.setSelected();
-    },
-
-    formatPrice(price) {
-      return this.$configBus.formatPrice(price);
     },
 
     /**

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { DELIVERY, PICKUP } from '@/config/formConfig';
+import { DELIVERY, PICKUP, formConfig } from '@/config/formConfig';
 import Loader from '@/components/Loader';
 import debounce from 'debounce';
 import { fetchCarrierData } from '@/data/carriers/fetchCarriers';
@@ -55,7 +55,7 @@ import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
-  components: {Loader},
+  components: { Loader },
 
   data() {
     return {
@@ -167,11 +167,11 @@ export default {
       this.$configBus.setAddress();
 
       if (!this.hasErrors) {
-        if (this.$configBus.isEnabled(DELIVERY)) {
+        if (this.$configBus.isEnabled(formConfig[DELIVERY])) {
           choices.push(getDeliveryOptions());
         }
 
-        if (this.$configBus.isEnabled(PICKUP)) {
+        if (this.$configBus.isEnabled(formConfig[PICKUP])) {
           choices.push(getPickupLocations());
         }
 

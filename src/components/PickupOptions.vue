@@ -70,18 +70,25 @@ export default {
         };
       });
     },
-    priceText() {
-      const minPrice = this.price.concat().sort((price1, price2) => price1.price > price2.price ? 1 : -1)[0].price;
-      const formattedPrice = this.$configBus.formatPrice(minPrice);
 
-      if (minPrice === 0) {
-        return 'Gratis';
-      } else if (minPrice < 0) {
-        return `${formattedPrice} korting`;
-      }
-
-      return `Vanaf ${formattedPrice}`;
-    },
+    // /**
+    //  * Get the formatted price text.
+    //  *
+    //  * @return {string}
+    //  */
+    // priceText() {
+    //   const minPrice = this.price.concat().sort((price1, price2) => price1.price > price2.price ? 1 : -1)[0].price;
+    //   const formattedPrice = this.$configBus.formatPrice(minPrice);
+    //   console.log('priceText', formattedPrice);
+    //
+    //   if (minPrice === 0) {
+    //     return 'Gratis';
+    //   } else if (minPrice < 0) {
+    //     return `${formattedPrice} korting`;
+    //   }
+    //
+    //   return `Vanaf ${formattedPrice}`;
+    // },
     distance() {
       let { distance } = this.data;
 

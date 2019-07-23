@@ -18,7 +18,7 @@
       </span>
 
       <span class="myparcel-checkout__d--block">
-        <span v-text="distance" /> – <span v-text="`Vanaf ${pickupData.start_time}`" />
+        <span v-text="distance" /> – <span v-text="priceText" />
       </span>
     </label>
 
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { PICKUP_EXPRESS, PICKUP_STANDARD } from '@/config/formConfig';
+import { PICKUP, formConfig } from '@/config/formConfig';
 import PickupTooltip from './PickupTooltip';
 
 export default {
@@ -69,52 +69,63 @@ export default {
     config() {
       return this.$configBus.config;
     },
+
     strings() {
       return this.$configBus.strings;
     },
+
     pickupData() {
       return this.data.pickupData;
     },
+
     carrierData() {
       return this.$configBus.getCarrier(this.data.carrier);
     },
-    price() {
-      return this.pickupData.time.map((time) => {
-        let price;
 
-        switch (time.type) {
-          case PICKUP_STANDARD:
-            price = this.config.pricePickup;
-            break;
-          case PICKUP_EXPRESS:
-            price = this.config.pricePickupExpress;
-            break;
-        }
+    price() {
+      return this.pickupData.possibilities.map((time) => {
+        const type = time.delivery_type_name;
 
         return {
-          type: time.type,
-          price: price || time.price.amount,
+          type,
+          price: this.$configBus.getPrice(formConfig[PICKUP].options[type]),
         };
       });
     },
+
+    /**
+     * Get a formatted string for the minimum price.
+     *
+     * @returns {string}
+     */
     priceText() {
-      const minPrice = this.price.concat().sort((price1, price2) => price1.price > price2.price ? 1 : -1)[0].price;
-      const formattedPrice = this.$configBus.formatPrice(minPrice);
+      const minPrice = this.price.concat().sort((price1, price2) => (price1.price > price2.price ? 1 : -1))[0].price;
 
       if (minPrice === 0) {
-        return 'Gratis';
-      } else if (minPrice < 0) {
-        return `${formattedPrice} korting`;
+        return this.$configBus.strings.free;
       }
 
-      return `Vanaf ${formattedPrice}`;
+      const formattedPrice = this.$configBus.formatPrice(minPrice);
+
+      if (minPrice < 0) {
+        return `${formattedPrice} ${this.$configBus.strings.discount}`;
+      }
+
+      return `${this.$configBus.strings.from} ${formattedPrice}`;
     },
+
+    /**
+     * Format the distance to the pickup location in m or km depending on amount of meters.
+     *
+     * @returns {string}
+     */
     distance() {
-      let { distance } = this.pickupData;
+      let { distance } = this.pickupData.location;
+      const mToKm = 1000;
 
       let unit = 'm';
-      if (distance >= 1000) {
-        distance = (distance / 1000).toFixed(1).toString().replace(/\./, ',');
+      if (distance >= mToKm) {
+        distance = (distance / mToKm).toFixed(1).toString().replace(/\./, ',');
         unit = 'km';
       }
 

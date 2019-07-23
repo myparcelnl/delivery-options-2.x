@@ -10,15 +10,20 @@ import { getPickupMoments } from './getPickupMoments';
 export async function getPickupChoices() {
   const { response } = await fetchPickupLocations();
 
+  console.log(response);
   if (response.length) {
     const pickupChoices = response.map((option, key) => ({
       pickupData: option,
       name: key,
-      label: option.location,
+      label: option.location.location_name,
       carrier: option.carrier || 'postnl',
       image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier || 'postnl').image : null,
-      options: () => getPickupMoments(option),
+      options: getPickupMoments(option),
     }));
+
+    // todo remove
+    // pickupChoices.splice(0, 7);
+    // pickupChoices.splice(3, pickupChoices.length - 3);
 
     return [
       {

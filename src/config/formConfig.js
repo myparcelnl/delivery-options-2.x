@@ -15,8 +15,8 @@ export const ONLY_RECIPIENT = 'only_recipient';
 
 export const PICKUP = 'pickup';
 
-export const PICKUP_STANDARD = 4;
-export const PICKUP_EXPRESS = 5;
+export const PICKUP_STANDARD = 'pickup';
+export const PICKUP_EXPRESS = 'pickup_express';
 
 /**
  * Base form config.
@@ -62,7 +62,7 @@ export const formConfig = {
    * @see https://myparcelnl.github.io/api/#8
    */
   [DELIVERY]: {
-    enabled: 'allowDelivery',
+    enabled: 'allowDeliveryOptions',
     name: 'delivery',
     options: {
       [DELIVERY_MORNING]: {
@@ -74,7 +74,7 @@ export const formConfig = {
       [DELIVERY_STANDARD]: {
         label: 'deliveryStandardTitle',
         name: 'standard',
-        price: 'priceNormalDelivery',
+        price: 'priceStandardDelivery',
         selected: true,
       },
       [DELIVERY_EVENING]: {
@@ -90,7 +90,7 @@ export const formConfig = {
    * Pickup settings
    */
   [PICKUP]: {
-    enabled: 'allowPickup',
+    enabled: 'allowPickupPoints',
     name: 'pickup',
     options: {
       [PICKUP_EXPRESS]: {

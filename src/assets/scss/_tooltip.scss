@@ -2,7 +2,9 @@
 
   &__close {
     position: absolute;
-    right: $tooltip-content-padding;
+    top: 0;
+    right: 0;
+    padding: $tooltip-content-padding;
 
     img {
       width: 1em;

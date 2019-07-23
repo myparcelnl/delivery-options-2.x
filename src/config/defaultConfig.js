@@ -7,9 +7,10 @@ import { addressByPlatform, configByPlatform, getPlatformMap, stringsByPlatform 
  */
 const baseConfig = {
   config: {
-    allowDeliveryOptions: 1,
-    allowPickupPoints: 1,
     currency: 'EUR',
+
+    allowDeliveryOptions: 0,
+    allowPickupPoints: 1,
     cutoffTime: '17:00',
     deliveryDaysWindow: 1,
     dropOffDays: '1;2;3;4',
@@ -19,13 +20,13 @@ const baseConfig = {
     allowMorningDelivery: 1,
     allowOnlyRecipient: 1,
     allowPickupExpress: 1,
-    pricePickupExpress: 3.95,
     allowSignature: 1,
 
     priceEveningDelivery: 0,
     priceMorningDelivery: 0,
     priceOnlyRecipient: 0,
     pricePickup: 0,
+    pricePickupExpress: 0,
     priceSignature: 0,
     priceStandardDelivery: 0,
 
@@ -43,6 +44,9 @@ const baseConfig = {
     retry: 'Opnieuw proberen',
     again: 'Again',
     closed: 'Gesloten',
+    discount: 'korting',
+    from: 'Vanaf',
+    free: 'Gratis',
 
     // Titles of options
     deliveryEveningTitle: 'Evening delivery',
@@ -83,6 +87,5 @@ export const defaultConfig = (platform) => {
   baseConfig.address = { ...baseConfig.address, ...getPlatformMap(addressByPlatform, platform) };
   baseConfig.strings = { ...baseConfig.strings, ...getPlatformMap(stringsByPlatform, platform) };
 
-  console.log(baseConfig);
   return baseConfig;
 };

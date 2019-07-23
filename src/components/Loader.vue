@@ -25,6 +25,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    type: {
+      type: String,
+      default: 'big',
+    },
   },
 
   computed: {

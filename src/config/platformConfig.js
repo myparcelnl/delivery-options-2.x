@@ -4,40 +4,48 @@ export const SENDMYPARCEL = 'sendmyparcel';
 
 export const addressNL = {
   cc: 'NL',
-  postalCode: '1025WK',
-  number: '576',
   city: 'Amsterdam',
+  number: '576',
+  postalCode: '1025WK',
 };
 
 export const addressBE = {
   cc: 'BE',
-  postalCode: '2000',
-  number: '16',
   city: 'Antwerpen',
+  number: '16',
+  postalCode: '2000',
 };
 
 export const configBE = {
+  allowSaturdayDelivery: 1,
   apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.sendmyparcel.be' : 'https://api.sendmyparcel.be',
   carriers: 'bpost,dpd',
-  allowSaturdayDelivery: 1,
+  locale: 'nl-BE',
 };
 
 export const configNL = {
+  allowMondayDelivery: 1,
   apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.myparcel.nl' : 'https://api.myparcel.nl',
   carriers: 'postnl',
+  locale: 'nl-NL',
   saturdayCutoffTime: '16:00',
-  allowMondayDelivery: 1,
+  carrierSettings: {
+    postnl: {
+      priceSignature: .35,
+      pricePickupExpress: -1,
+    },
+  },
 };
 
 export const stringsBE = {
-  wrongPostalCodeCity: 'Combinatie postcode/plaats onbekend',
   saturdayDeliveryTitle: 'saturday_delivery_title',
+  wrongPostalCodeCity: 'Combinatie postcode/plaats onbekend',
 };
 
 export const stringsNL = {
-  wrongHouseNumberPostcode: 'House number/postcode combination unknown',
   BEdeliveryStandardTitle: 'Standard delivery',
   BEdeliveryTitle: 'Delivery',
+  wrongHouseNumberPostcode: 'House number/postcode combination unknown',
 };
 
 export const addressByPlatform = {

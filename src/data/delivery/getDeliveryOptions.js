@@ -39,7 +39,6 @@ export function getDeliveryOptions() {
 async function options(carrier = configBus.currentCarrier) {
   const { response: deliveryOptions } = await fetchDeliveryOptions(carrier);
 
-  console.log('deliveryOptions', deliveryOptions);
   if (deliveryOptions.length) {
     configBus.deliveryOptions = deliveryOptions;
     createDeliveryDependencies(deliveryOptions);

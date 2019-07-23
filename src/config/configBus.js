@@ -1,3 +1,4 @@
+import { formConfig } from '@/config/formConfig';
 import { FLESPAKKET, MYPARCEL } from '@/config/platformConfig';
 import Vue from 'vue';
 import _merge from 'lodash.merge';
@@ -27,7 +28,6 @@ const getConfig = () => {
     ? JSON.parse(window.MyParcelConfig)
     : window.MyParcelConfig;
 
-  console.log(windowObject);
   const data = _merge(defaultConfig(null || MYPARCEL), windowObject); // windowObject.platform
 
   if (typeof data.config.carriers === 'string') {
@@ -106,9 +106,43 @@ export const configBus = new Vue({
     platform() {
       return this.config.platform;
     },
+
+    /**
+     * The settings specific to the current carrier from the config, if any.
+     *
+     * @returns {Object}
+     */
+    currentCarrierSettings() {
+      return this.config.carrierSettings.hasOwnProperty(this.currentCarrier)
+        ? this.config.carrierSettings[this.currentCarrier]
+        : {};
+    },
   },
 
   methods: {
+    /**
+     * Todo: make sure it's overridable af.
+     *
+     * @param {Object} option - Option object.
+     *
+     * @returns {*}
+     */
+    getPrice(option) {
+      let price = 0;
+
+      if (this.currentCarrierSettings.hasOwnProperty(option.price)) {
+        return this.currentCarrierSettings[option.price];
+      }
+
+      if (!option.hasOwnProperty('price') || !this.config.hasOwnProperty(option.price)) {
+        return price;
+      }
+
+      price = this.config[option.price];
+
+      return price;
+    },
+
     /**
      * Get the name of the selected choice for given option. The chosen value is either the previously set value for the
      * current option, the option that has 'selected: true' or the first option.
@@ -269,11 +303,11 @@ export const configBus = new Vue({
      */
     formatPrice(price) {
       if (typeof price === 'string') {
-        price = this.config[price];
+        price = this.getPrice(price);
       }
 
       const formatter = new Intl.NumberFormat(
-        'nl-NL',
+        this.config.locale,
         {
           style: 'currency',
           currency: this.config.currency,
