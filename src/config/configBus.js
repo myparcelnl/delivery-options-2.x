@@ -123,12 +123,16 @@ export const configBus = new Vue({
     /**
      * Todo: make sure it's overridable af.
      *
-     * @param {Object} option - Option object.
+     * @param {Object|string} option - Option object or price config item.
      *
      * @returns {*}
      */
     getPrice(option) {
       let price = 0;
+
+      if (typeof option === 'string') {
+        option = { price: option };
+      }
 
       if (this.currentCarrierSettings.hasOwnProperty(option.price)) {
         return this.currentCarrierSettings[option.price];
@@ -296,8 +300,7 @@ export const configBus = new Vue({
     },
 
     /**
-     *
-     * @param {Number} price - Price.
+     * @param {String|Number} price - Price config item or value.
      *
      * @returns {string}
      */

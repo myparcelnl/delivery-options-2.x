@@ -10,14 +10,14 @@ import { getPickupMoments } from './getPickupMoments';
 export async function getPickupChoices() {
   const { response } = await fetchPickupLocations();
 
-  console.log(response);
   if (response.length) {
     const pickupChoices = response.map((option, key) => ({
       pickupData: option,
       name: key,
       label: option.location.location_name,
-      carrier: option.carrier || 'postnl',
-      image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier || 'postnl').image : null,
+      // todo: multicarrier pickup locations
+      // carrier: option.carrier,
+      // image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier).image : null,
       options: getPickupMoments(option),
     }));
 
@@ -30,6 +30,7 @@ export async function getPickupChoices() {
         name: 'pickupMoment',
         type: 'radio',
         component: 'PickupOption',
+        pagination: 5,
         choices: pickupChoices,
       },
     ];

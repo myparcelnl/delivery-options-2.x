@@ -1,5 +1,5 @@
 <template>
-  <div class="myparcel-checkout__pickup__option">
+  <div>
     <label
       :for="`myparcel-checkout--${parent.name}--${data.name}`"
       @click="selected ? showTooltip = !showTooltip : null">
@@ -33,7 +33,6 @@
         :key="data.name + '_' + subOption.name"
         :option="subOption"
         :name="data.name"
-        :class="`myparcel-checkout__${data.name}--${subOption.name}__options`"
         @update="$emit('update', $event)" />
     </template>
   </div>

@@ -51,10 +51,10 @@
                 :src="choice.image"
                 :alt="choice.name"
                 class="myparcel-checkout__image myparcel-checkout__image--md"
-                :title="strings[choice.label]">
+                :title="$configBus.strings[choice.label]">
               <span
                 v-else
-                v-text="choice.plainLabel || strings[choice.label]" />
+                v-text="choice.plainLabel || $configBus.strings[choice.label]" />
 
               <span
                 v-if="!!choice.price"
@@ -63,7 +63,7 @@
                   'myparcel-checkout__text-bold': option.type === 'checkbox'
                     ? selected.includes(choice.name)
                     : selected === choice.name,
-                  'myparcel-checkout__text-green': config[choice.price] < 0
+                  'myparcel-checkout__text-green': $configBus.getPrice(choice) < 0
                 }">
                 <span v-text="$configBus.getPrice(choice) >= 0 ? '+ ' : '– '" />
                 {{ $configBus.formatPrice(choice.price) }}
@@ -80,10 +80,20 @@
                 v-for="subOption in chosenOptions"
                 :key="choice.name + '_' + subOption.name"
                 :option="subOption"
-                :class="`myparcel-checkout__${option.name}--${choice.name}__options`"
                 :loading="loading" />
             </template>
           </template>
+        </td>
+      </tr>
+      <tr v-if="hasPagination">
+        <td colspan="2">
+          <div class="myparcel-checkout__button">
+            <hr>
+            <a
+              href="#"
+              @click.prevent="mutablePagination = mutablePagination + option.pagination"
+              v-text="$configBus.strings.loadMore" />
+          </div>
         </td>
       </tr>
     </table>
@@ -111,7 +121,7 @@
 <script>
 import Loader from '@/components/Loader';
 import PickupOption from './PickupOption';
-import { PICKUP, formConfig, DELIVERY } from '@/config/formConfig';
+import { formConfig } from '@/config/formConfig';
 
 export default {
   name: 'RecursiveForm',
@@ -119,6 +129,7 @@ export default {
     Loader,
     PickupOption,
   },
+
   props: {
     option: {
       type: Object,
@@ -130,6 +141,8 @@ export default {
     return {
       /**
        * Loading state.
+       *
+       * @type {Boolean}
        */
       loading: false,
 
@@ -139,33 +152,57 @@ export default {
        * @type {Array|String}
        */
       selected: this.option.type === 'checkbox' ? [] : null,
+
+      /**
+       * Mutable copy of the option.pagination attribute. Unused if option has no pagination.
+       *
+       * @type {Number}
+       */
+      mutablePagination: null,
     };
   },
 
-  /**
-   * Vue computed properties
-   */
   computed: {
-    strings() {
-      return this.$configBus.strings;
-    },
-
-    config() {
-      return this.$configBus.config;
-    },
-
+    /**
+     * Whether the current option has choices or not.
+     *
+     * @returns {Boolean}
+     */
     hasChoices() {
       return this.option.hasOwnProperty('choices') && !!this.option.choices && !!this.option.choices.length;
     },
 
-    validChoices() {
-      return this.option.type === 'select' ? false : this.option.choices;
+    /**
+     * Whether the current option has pagination or not.
+     *
+     * @returns {Boolean}
+     */
+    hasPagination() {
+      return this.option.hasOwnProperty('pagination');
     },
 
     hasDependency() {
       return this.option.hasOwnProperty('dependency');
     },
 
+    /**
+     * Get the valid choices for the current option. Paginate if there is a pagination attribute present.
+     *
+     * @returns {Array}
+     */
+    validChoices() {
+      if (this.hasPagination) {
+        return this.option.choices.filter((item, index) => index < this.mutablePagination);
+      }
+
+      return this.option.type === 'select' ? false : this.option.choices;
+    },
+
+    /**
+     * Returns the currently selected choice object.
+     *
+     * @returns {Object}
+     */
     selectedChoice() {
       return this.option.choices.find((choice) => choice.name === this.selected);
     },
@@ -218,6 +255,10 @@ export default {
   },
 
   created() {
+    if (this.hasPagination) {
+      this.mutablePagination = this.option.pagination;
+    }
+
     if (this.hasDependency) {
       this.$configBus.$on('afterUpdate', this.updateDependency);
     } else {

@@ -12,6 +12,12 @@ import { configBus } from '@/config/configBus';
  * @returns {Object}
  */
 export function getPickupMoments(pickupLocation) {
+
+  // Sort moments by pickup time, from early to late.
+  pickupLocation.possibilities.sort((dateA, dateB) => {
+    return new Date(dateA.moment.start.date) - new Date(dateB.moment.start.date);
+  });
+
   return [
     {
       name: 'pickupLocationTime',

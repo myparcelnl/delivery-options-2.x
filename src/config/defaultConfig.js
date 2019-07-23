@@ -41,12 +41,13 @@ const baseConfig = {
     addressNotFound: 'Adresgegevens niet ingevuld',
 
     // Other strings
-    retry: 'Opnieuw proberen',
     again: 'Again',
     closed: 'Gesloten',
     discount: 'korting',
-    from: 'Vanaf',
     free: 'Gratis',
+    from: 'Vanaf',
+    loadMore: 'Laad meer',
+    retry: 'Opnieuw proberen',
 
     // Titles of options
     deliveryEveningTitle: 'Evening delivery',
