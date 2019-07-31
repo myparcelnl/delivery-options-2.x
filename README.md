@@ -1,5 +1,6 @@
 # MyParcel Checkout
 
+[![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout)
 
 - [Installation](#installation)
 - [Requirements](#requirements)
@@ -14,13 +15,12 @@ You can download the zip on the projects [releases](https://github.com/myparcelb
 
 1. Download the package zip.
 2. Unzip the contents of the zip file.
-3. Require the js/myparcel.js and add the css/myparcel.css files to your project. 
+3. Require the js/myparcel.js and add the css/myparcel.css files in your project. 
 4. Get the HTML content of the examples / an example file and place it inside your project.  
 
 
 ### Requirements
-
-The MyParcel checkout works with jQuery  1.x, 2.x en 3.x
+- [Node](https://nodejs.org)
 
 ### Example
 An example of the checkout functionality can be found via our [Sandbox](https://myparcelbe.github.io/checkout/sandbox/) example.
@@ -47,15 +47,6 @@ var data = {
         'Vrijdag',
         'Zaterdag'
     ],
-    translateENtoNL: {
-        'monday': 'maandag',
-        'tuesday': 'dinsdag',
-        'wednesday': 'woensdag',
-        'thursday': 'donderdag',
-        'friday': 'vrijdag',
-        'saturday': 'zaterdag',
-        'sunday': 'zondag'
-    },
     config: {
         "apiBaseUrl": "https://api.sendmyparcel.be/",
         "carrier": "1",
@@ -78,8 +69,8 @@ var data = {
     
         "dropOffDays": "1;2;3;4;5;6",
         "cutoffTime": "15:00",
-        "deliverydaysWindow": "5",
-        "dropoffDelay":"1"
+        "deliveryDaysWindow": "5",
+        "dropOffDelay":"1"
     }
  };
 ```
@@ -90,13 +81,13 @@ To initialize the checkout the init object should be constructed.
 
 ```MyParcel.init(data);```
 
-When there is no title at `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible.
+When there is no title set for `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible.
 
 To get the object with the selected option of the user do the following
 
 ```js
-json = $('#mypa-input').val();
+json = document.querySelector('#mypa-input').value;
 obj = JSON.parse(json);
 ```
 
-When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@sendmyparcel.be
+When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@sendmyparcel.be or Slack us: 

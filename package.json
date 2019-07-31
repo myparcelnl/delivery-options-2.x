@@ -5,7 +5,7 @@
   "types": "index.d.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode development && cp /Users/edie/projects/myparcel/checkout-2/dist/app.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js",
+    "build": "vue-cli-service build --mode development && cp /Users/edie/projects/myparcel/checkout-2/dist/app.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js && cp /Users/edie/projects/myparcel/checkout-2/dist/app.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcelbe/assets/js/myparcel.js",
     "build:sandbox": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
