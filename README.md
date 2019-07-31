@@ -1,23 +1,17 @@
 # MyParcel Checkout
 
 [![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout)
+[![Coverage Status](https://coveralls.io/repos/github/myparcelbe/checkout/badge.svg?branch=master)](https://coveralls.io/github/myparcelbe/checkout?branch=master)
 
 - [Installation](#installation)
 - [Requirements](#requirements)
 - [Example](#example)
 - [Usage](#usage)
 
----
-
-### Installation
-
-You can download the zip on the projects [releases](https://github.com/myparcelbe/checkout/releases) page.
-
-1. Download the package zip.
-2. Unzip the contents of the zip file.
-3. Require the js/myparcel.js and add the css/myparcel.css files in your project. 
-4. Get the HTML content of the examples / an example file and place it inside your project.  
-
+## Installation
+1. Download the latest package from [releases](https://github.com/myparcelbe/checkout/releases).
+2. Include `js/myparcel.js` in your project. 
+3. Place `<div id="myparcel-checkout"></div>` in your HTML.
 
 ### Requirements
 - [Node](https://nodejs.org)
@@ -25,13 +19,11 @@ You can download the zip on the projects [releases](https://github.com/myparcelb
 ### Example
 An example of the checkout functionality can be found via our [Sandbox](https://myparcelbe.github.io/checkout/sandbox/) example.
 
-
 ### Usage
-Make sure that the myparcel.js is loaded before the initialize function.
+You have to provide a configuration file like this as `window.MyParcelConfig`:
 
-Inside the data you have to send the following code:
 ```js
-var data = {
+const data = {
     address: {
         cc: 'BE',
         postalCode: '2000',
@@ -76,10 +68,6 @@ var data = {
 ```
 
 The above values of the array are configurable. As soon as a value changes it will be visible in the checkout.
-
-To initialize the checkout the init object should be constructed.
-
-```MyParcel.init(data);```
 
 When there is no title set for `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible.
 
