@@ -1,0 +1,29 @@
+.shove {
+  &-enter-active,
+  &-leave-active,
+  &-move {
+    transition: .2s ease;
+    transition-property: opacity, transform;
+  }
+
+  &-enter {
+    opacity: 0;
+    transform: translateX(50px) scaleY(.5);
+  }
+
+  &-enter-to {
+    opacity: 1;
+    transform: translateX(0) scaleY(1);
+  }
+
+  &-leave-active {
+    position: absolute;
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+}
+

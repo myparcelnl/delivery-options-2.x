@@ -1,7 +1,22 @@
 .myparcel-checkout__loader {
   position: relative;
-  margin: auto;
-  text-align: center;
+
+  &--big {
+    margin: auto;
+    text-align: center;
+
+    span {
+      width: 75px;
+      height: 75px;
+      position: relative;
+      display: inline-block;
+      transition: border-top-color .3s ease;
+      border: 4px solid transparent;
+      border-top-color: $primary;
+      border-radius: 100%;
+      animation: spin .5s linear infinite;
+    }
+  }
 
   img {
     position: absolute;
@@ -13,21 +28,26 @@
     width: 50px;
   }
 
-  span {
-    width: 75px;
-    height: 75px;
-    position: relative;
-    display: inline-block;
-    transition: border-top-color .3s ease;
-    border: 4px solid transparent;
-    border-top-color: $primary;
-    border-radius: 100%;
-    animation: spin .5s linear infinite;
-  }
+  &--inline {
+    div {
+      height: 1.2em;
+      margin-top: 6px;
+      animation: shimmer 2s infinite linear;
+      background: rgba(0, 0, 0, .05) linear-gradient(to right, transparent 25%, rgba(0, 0, 0, .05) 50%, transparent 75%);
+      background-size: 400% 400%;
 
-  @each $carrier in map_keys($carriers) {
-    &--#{$carrier} span {
-      border-top-color: map_get($carriers, $carrier);
+      @for $i from 2 through 3 {
+        &:nth-child(#{$i}) {
+          transition-delay: unquote($i * .035 + 's');
+          animation-delay: unquote($i * .05 + 's');
+        }
+      }
+
+      &:nth-child(1) { width: 85%; }
+
+      &:nth-child(2) { width: 100%; }
+
+      &:nth-child(3) { width: 75%; }
     }
   }
 }
