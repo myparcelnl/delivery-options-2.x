@@ -1,5 +1,5 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { Pickup } from 'Sdk/src/endpoint/pickup';
+import { Pickup } from 'Sdk/src/endpoint/public/pickup';
 import { configBus } from '@/config/configBus';
 import demoPickupOptions from '@/config/demo/demoPickupOptions';
 
@@ -9,13 +9,6 @@ import demoPickupOptions from '@/config/demo/demoPickupOptions';
  * @returns {Promise}
  */
 export function fetchPickupLocations() {
-  // return new Promise((resolve) => {
-  //   console.log('fetching demo pickup locations');
-  //   setTimeout(() => {
-  //     resolve({ response: demoPickupOptions.data.pickups, errors: [] });
-  //   }, 2500);
-  // });
-
   const { cc, number, postalCode } = configBus.address;
 
   if (!cc || !postalCode || !number) {

@@ -47,7 +47,7 @@ async function options(carrier = configBus.currentCarrier) {
       {
         name: DELIVERY_DATE,
         type: 'select',
-        choices: deliveryOptions ? deliveryOptions.map((option) => option.date) : [],
+        choices: getDeliveryDates(deliveryOptions),
       },
       {
         name: DELIVERY_MOMENT,
