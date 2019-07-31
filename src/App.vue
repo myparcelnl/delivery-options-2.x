@@ -1,11 +1,15 @@
 <template>
   <div>
     <div
-      v-if="$configBus.showCheckout"
+      v-if="!hasNothingToShow && $configBus.showCheckout"
       class="myparcel-checkout">
       <loader
         v-if="loading"
         :carriers="carriers" />
+
+      <div v-else-if="!hasAddress">
+        Please enter an address
+      </div>
 
       <div
         v-else-if="!hasErrors"
@@ -46,6 +50,7 @@
 </template>
 
 <script>
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/settingsConfig';
 import { DELIVERY, PICKUP, formConfig } from '@/config/formConfig';
 import Loader from '@/components/Loader';
 import debounce from 'debounce';
@@ -61,6 +66,7 @@ export default {
     return {
       /**
        * Whether the checkout is loading or not.
+       *
        * @type {Boolean}
        */
       loading: true,
@@ -93,6 +99,7 @@ export default {
     hasErrors() {
       return this.$configBus.hasErrors;
     },
+
     errors() {
       return this.$configBus.errors;
     },
@@ -100,8 +107,22 @@ export default {
     config() {
       return this.$configBus.config;
     },
+
     strings() {
       return this.$configBus.strings;
+    },
+
+    /**
+     * Quick check if the checkout needs to be showed at all.
+     *
+     * @returns {Boolean}
+     */
+    hasNothingToShow() {
+      return !this.config[ALLOW_PICKUP_POINTS] && !this.config[ALLOW_DELIVERY_OPTIONS];
+    },
+
+    hasAddress() {
+      return !!this.$configBus.address.cc && this.$configBus.address.postalCode && this.$configBus.address.number;
     },
   },
 
@@ -115,7 +136,6 @@ export default {
     this.$configBus.$on('update', debounce(this.updateExternal, 300));
 
     this.$configBus.$on('error', (e) => {
-      console.color('error', e);
       this.reset();
       this.hideCheckout();
     });
@@ -154,43 +174,63 @@ export default {
     },
 
     /**
+     * Create the checkout form.
+     */
+    createForm() {
+      if (this.hasNothingToShow) {
+        this.hideCheckout();
+        return;
+      }
+
+      const choices = [];
+
+      if (this.$configBus.isEnabled(formConfig[DELIVERY])) {
+        choices.push(getDeliveryOptions());
+      }
+
+      if (this.$configBus.isEnabled(formConfig[PICKUP])) {
+        choices.push(getPickupLocations());
+      }
+
+      if (!choices.length) {
+        return;
+      }
+
+      this.form = {
+        options: [
+          {
+            name: DELIVERY,
+            type: 'radio',
+            choices,
+          },
+        ],
+      };
+
+    },
+
+    /**
      * Get the checkout.
      *
      * @returns {Promise}
      */
     async getCheckout() {
-      const choices = [];
-      this.reset();
-      await this.fetchCarriers();
-
-      this.$configBus.showCheckout = this.$configBus.showCheckout || true;
       this.$configBus.setAddress();
 
-      if (!this.hasErrors) {
-        if (this.$configBus.isEnabled(formConfig[DELIVERY])) {
-          choices.push(getDeliveryOptions());
-        }
-
-        if (this.$configBus.isEnabled(formConfig[PICKUP])) {
-          choices.push(getPickupLocations());
-        }
-
-        if (choices.length) {
-          this.form = {
-            options: [
-              {
-                name: 'delivery',
-                type: 'radio',
-                choices,
-              },
-            ],
-          };
-        } else {
-          console.log('nothing, hiding checkout');
-          this.hideCheckout();
-        }
+      // Stop multiple getCheckout() calls or don't start loading if there's nothing to load
+      if (this.gettingCheckout || this.hasNothingToShow) {
+        return;
       }
 
+      this.gettingCheckout = true;
+      this.reset();
+
+      await this.fetchCarriers();
+
+      this.$configBus.showCheckout = true;
+
+      this.createForm();
+
+      this.gettingCheckout = false;
       this.loading = false;
     },
 
@@ -214,7 +254,9 @@ export default {
     /**
      * Updates the configBus and the #mypa-input element with the new checkout data.
      *
-     * @param {Object} data - Data object. Can only contain properties `name` and `value`.
+     * @param {Object} <ObjectPattern> - Destructured update event.
+     * @param {String} name - Name of the setting that was updated.
+     * @param {*} value - Setting value.
      */
     updateExternalData({ name, value }) {
       if (name === 'deliveryCarrier' && value !== this.$configBus.currentCarrier) {
@@ -232,14 +274,12 @@ export default {
     },
 
     /**
-     * Reset all data.
+     * Reset checkout data.
      */
     reset() {
       this.$configBus.values = {};
       this.$configBus.errors = {};
       this.loading = true;
-      this.deliveryOptions = [];
-      this.pickupLocations = [];
     },
   },
 };

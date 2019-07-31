@@ -1,3 +1,5 @@
+import { ONLY_RECIPIENT, SIGNATURE } from '@/config/formConfig';
+
 const getDate = (addDays = 0) => {
   const date = new Date();
 
@@ -18,14 +20,14 @@ export default {
             type: 'morning',
             shipment_options: [
               {
-                name: 'only_recipient',
+                name: ONLY_RECIPIENT,
                 schema: {
                   type: 'boolean',
                   enum: [false],
                 },
               },
               {
-                name: 'signature',
+                name: SIGNATURE,
                 schema: {
                   type: 'boolean',
                   enum: [false],
@@ -70,14 +72,14 @@ export default {
                 },
               },
               {
-                name: 'only_recipient',
+                name: ONLY_RECIPIENT,
                 schema: {
                   type: 'boolean',
                   enum: [true, false],
                 },
               },
               {
-                name: 'signature',
+                name: SIGNATURE,
                 schema: {
                   type: 'boolean',
                   enum: [true, false],

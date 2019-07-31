@@ -1,45 +1,94 @@
-import { formConfig } from '@/config/formConfig';
-import { FLESPAKKET, MYPARCEL } from '@/config/platformConfig';
+import {
+  ALLOW_MONDAY_DELIVERY,
+  CURRENCY,
+  CUTOFF_TIME,
+  DELIVERY_DAYS_WINDOW,
+  DROP_OFF_DAYS, DROP_OFF_DELAY,
+} from '@/config/settingsConfig';
+import { DEFAULT_PLATFORM, FLESPAKKET, MYPARCEL, addressRequirements } from '@/config/platformConfig';
 import Vue from 'vue';
-import _merge from 'lodash.merge';
+import _mergeWith from 'lodash.mergewith';
 import { defaultConfig } from './defaultConfig';
 
 const mock = false;
 
-/**
- * @typedef {Object} window.MyParcelConfig
- * @description Global configuration object from the external platform.
- */
+// Allow mocking
 if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
-  if (process.env.NODE_ENV === 'development') {
-    window.MyParcelConfig = JSON.stringify(defaultConfig('myparcel'));
+  if (['development', 'test'].includes(process.env.NODE_ENV)) {
+    window.MyParcelConfig = JSON.stringify(defaultConfig(DEFAULT_PLATFORM));
   } else {
     throw 'No config found! (window.MyParcelConfig is required.)';
   }
 }
 
 /**
- * Get data from the window config object and convert some variables.
+ * Get the window object supplied by the environment we're in. Parse it as JSON if needed.
  *
- * @returns {{txtWeekDays: Object, address: Object, strings: Object, config: Object}}
+ * @returns {MyParcelCheckout.Configuration}
  */
-const getConfig = () => {
-  const windowObject = typeof window.MyParcelConfig === 'string'
+function getWindowObject() {
+  return typeof window.MyParcelConfig === 'string'
     ? JSON.parse(window.MyParcelConfig)
     : window.MyParcelConfig;
+}
 
-  const data = _merge(defaultConfig(null || MYPARCEL), windowObject); // windowObject.platform
+/**
+ * Get the address from the window object.
+ *
+ * @returns {MyParcelCheckout.Address}
+ */
+const getAddress = () => {
+  return getWindowObject().address;
+};
 
+/**
+ * Modifies the config data.
+ *
+ * @param {MyParcelCheckout.Configuration} data - Configuration.
+ *
+ * @returns {MyParcelCheckout.Configuration}
+ */
+const prepareConfig = (data) => {
+  // Allow array of strings, single string and comma separated strings as input for carriers.
   if (typeof data.config.carriers === 'string') {
-    data.config.carriers = data.config.carriers.split(',');
+    if (data.config.carriers.includes(',')) {
+      data.config.carriers = data.config.carriers.split(',');
+    } else {
+      data.config.carriers = [data.config.carriers];
+    }
   }
 
-  // data.config.carrierData = data.config.carriers.split(',').map((carrier) => {
-  //   return formConfig.carriers[carrier];
-  // });
-
-  // Merge the config data with the default config
   return data;
+};
+
+/**
+ * Get data from the window config object and convert some variables.
+ *
+ * @returns {MyParcelCheckout.Configuration}
+ */
+const getConfig = () => {
+  const windowObject = getWindowObject();
+
+  // Get the default config by given platform or fall back to default
+  const defaultConfigObject = defaultConfig(windowObject.config.platform || DEFAULT_PLATFORM);
+
+  /**
+   * Customizer function for lodash mergeWith().
+   *
+   * @param {*} defaultVal  - The default value.
+   * @param {*} newVal - The new value.
+   *
+   * @returns {undefined}
+   */
+  const customizer = (defaultVal, newVal) => {
+    return newVal === null || newVal === '' ? defaultVal : undefined;
+  };
+
+  // Merge the config data with the default config. Uses lodash mergeWith to be able to skip undefined entries.
+  // @see https://lodash.cobm/docs/4.17.15#mergeWith
+  const data = _mergeWith({}, defaultConfigObject, windowObject, customizer);
+
+  return prepareConfig(data);
 };
 
 /**
@@ -48,7 +97,7 @@ const getConfig = () => {
 export const configBus = new Vue({
   data: {
     /**
-     * Dependency object
+     * Dependency object.
      */
     dependencies: {},
 
@@ -70,6 +119,9 @@ export const configBus = new Vue({
      */
     showCheckout: true,
 
+    /**
+     * @type {MyParcelCheckout.CarrierData[]}
+     */
     carrierData: [],
 
     currentCarrier: null,
@@ -89,11 +141,10 @@ export const configBus = new Vue({
     pickupLocations: [],
 
     /**
-     * The config data
+     * The config data.
      */
     ...getConfig(),
   },
-
   computed: {
     hasErrors() {
       return Object.keys(this.errors).length > 0;
@@ -105,6 +156,37 @@ export const configBus = new Vue({
 
     platform() {
       return this.config.platform;
+    },
+
+    /**
+     * False if:
+     *  - CC is undefined
+     *  - Not all properties in addressRequirements for the current CC are present.
+     *
+     * Otherwise returns true.
+     *
+     * @returns {boolean}
+     */
+    hasValidAddress() {
+      if (!this.address.cc) {
+        return false;
+      }
+
+      let requirements;
+      const cc = this.address.cc.toUpperCase();
+      if (addressRequirements.hasOwnProperty(cc)) {
+        requirements = addressRequirements[cc];
+      } else {
+        requirements = addressRequirements.NL;
+      }
+
+      requirements.forEach((requirement) => {
+        if (!!this.address[requirement]) {
+          return false;
+        }
+      });
+
+      return true;
     },
 
     /**
@@ -121,30 +203,29 @@ export const configBus = new Vue({
 
   methods: {
     /**
-     * Todo: make sure it's overridable af.
+     * Get the price from the config if present.
+     * Priority order: price set in current carrier > default value > 0.
      *
      * @param {Object|string} option - Option object or price config item.
      *
-     * @returns {*}
+     * @returns {Number}
      */
     getPrice(option) {
-      let price = 0;
-
       if (typeof option === 'string') {
         option = { price: option };
       }
 
+      // If price is set per carrier return that price
       if (this.currentCarrierSettings.hasOwnProperty(option.price)) {
         return this.currentCarrierSettings[option.price];
       }
 
+      // If price is not set in the config return 0
       if (!option.hasOwnProperty('price') || !this.config.hasOwnProperty(option.price)) {
-        return price;
+        return 0;
       }
 
-      price = this.config[option.price];
-
-      return price;
+      return this.config[option.price];
     },
 
     /**
@@ -190,7 +271,7 @@ export const configBus = new Vue({
         if (isSet) {
           selected = setValue;
         } else if (hasChoices) {
-          selected = firstChoice;
+          selected = firstChoice.name;
         }
       } else if (isSet && !!setValue) {
         // If this option is in configBus.values, select it.
@@ -260,7 +341,7 @@ export const configBus = new Vue({
      */
     getRequestParameters(carrier = this.currentCarrier) {
       const parametersNL = {
-        monday_delivery: this.config.allowMondayDelivery,
+        monday_delivery: this.config[ALLOW_MONDAY_DELIVERY],
       };
 
       const parametersByPlatform = {
@@ -275,16 +356,10 @@ export const configBus = new Vue({
         platform: this.platform,
         carrier,
 
-        cutoff_time: this.config.cutoffTime,
-        deliverydays_window: this.config.deliveryDaysWindow,
-        dropoff_days: this.config.dropOffDays,
-        dropoff_delay: this.config.dropOffDelay,
-
-        // delivery_time: 'time',
-        // delivery_date: 'date',
-        // exclude_delivery_type: 'delivery_type',
-        // latitude: 'coordinates',
-        // longitude: 'coordinates',
+        cutoff_time: this.config[CUTOFF_TIME],
+        deliverydays_window: this.config[DELIVERY_DAYS_WINDOW],
+        dropoff_days: this.config[DROP_OFF_DAYS],
+        dropoff_delay: this.config[DROP_OFF_DELAY],
       };
 
       parameters = { ...parameters, ...parametersByPlatform[this.config.platform] };
@@ -296,7 +371,7 @@ export const configBus = new Vue({
      * Update the address using the config.
      */
     setAddress() {
-      this.address = getConfig().address;
+      this.address = getAddress();
     },
 
     /**
@@ -313,11 +388,27 @@ export const configBus = new Vue({
         this.config.locale,
         {
           style: 'currency',
-          currency: this.config.currency,
+          currency: this.config[CURRENCY],
         },
       );
 
       return formatter.format(Math.abs(price));
+    },
+
+    /**
+     * Format distance for given amount of meters.
+     *
+     * @param {Number|String} distance - Distance in meters.
+     * @returns {string}
+     */
+    formatDistance(distance) {
+      let unit = 'm';
+      if (distance >= 1000) {
+        distance = (distance / 1000).toFixed(1).toString().replace(/\./, ',');
+        unit = 'km';
+      }
+
+      return distance + unit;
     },
 
     /**
@@ -336,22 +427,6 @@ export const configBus = new Vue({
       const enabledInConfig = !!this.config[option.enabled];
 
       return !option.hasOwnProperty('enabled') || (option.hasOwnProperty('enabled') && enabledInConfig);
-    },
-
-    /**
-     * Format distance for given amount of meters.
-     *
-     * @param {Number|String} distance - Distance in meters.
-     * @returns {string}
-     */
-    formatDistance(distance) {
-      let unit = 'm';
-      if (distance >= 1000) {
-        distance = (distance / 1000).toFixed(1).toString().replace(/\./, ',');
-        unit = 'km';
-      }
-
-      return distance + unit;
     },
   },
 });

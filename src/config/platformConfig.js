@@ -1,6 +1,17 @@
+import * as SETTINGS from './settingsConfig';
+
 export const FLESPAKKET = 'flespakket';
 export const MYPARCEL = 'myparcel';
-export const SENDMYPARCEL = 'sendmyparcel';
+export const SENDMYPARCEL = 'belgie';
+
+export const DEFAULT_PLATFORM = MYPARCEL;
+
+const isDev = process.env.NODE_ENV === 'development';
+
+export const addressRequirements = {
+  NL: ['cc', 'postalCode', 'number'],
+  BE: ['cc', 'city', 'number', 'postalCode'],
+};
 
 export const addressNL = {
   cc: 'NL',
@@ -17,35 +28,35 @@ export const addressBE = {
 };
 
 export const configBE = {
-  allowSaturdayDelivery: 1,
-  apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.sendmyparcel.be' : 'https://api.sendmyparcel.be',
-  carriers: 'bpost,dpd',
-  locale: 'nl-BE',
+  [SETTINGS.ALLOW_SATURDAY_DELIVERY]: 1,
+  [SETTINGS.API_BASE_URL]: isDev ? 'http://api.dev.sendmyparcel.be' : 'https://api.sendmyparcel.be',
+  [SETTINGS.CARRIERS]: ['bpost', 'dpd'],
+  [SETTINGS.LOCALE]: 'nl-BE',
 };
 
 export const configNL = {
-  allowMondayDelivery: 1,
-  apiBaseUrl: process.env.NODE_ENV === 'development' ? 'http://api.dev.myparcel.nl' : 'https://api.myparcel.nl',
-  carriers: 'postnl',
-  locale: 'nl-NL',
-  saturdayCutoffTime: '16:00',
+  [SETTINGS.ALLOW_MONDAY_DELIVERY]: 1,
+  [SETTINGS.API_BASE_URL]: isDev ? 'http://api.dev.myparcel.nl' : 'https://api.myparcel.nl',
+  [SETTINGS.CARRIERS]: ['postnl'],
+  [SETTINGS.LOCALE]: 'nl-NL',
+  [SETTINGS.SATURDAY_CUTOFF_TIME]: '16:00',
   carrierSettings: {
     postnl: {
-      priceSignature: .35,
-      pricePickupExpress: -1,
+      [SETTINGS.PRICE_SIGNATURE]: .35,
+      [SETTINGS.PRICE_PICKUP_EXPRESS]: -1,
     },
   },
 };
 
 export const stringsBE = {
-  saturdayDeliveryTitle: 'saturday_delivery_title',
-  wrongPostalCodeCity: 'Combinatie postcode/plaats onbekend',
+  [SETTINGS.SATURDAY_DELIVERY_TITLE]: 'saturday_delivery_title',
+  [SETTINGS.WRONG_POSTAL_CODE_CITY]: 'Combinatie postcode/plaats onbekend',
 };
 
 export const stringsNL = {
-  BEdeliveryStandardTitle: 'Standard delivery',
-  BEdeliveryTitle: 'Delivery',
-  wrongHouseNumberPostcode: 'House number/postcode combination unknown',
+  [SETTINGS.BE_DELIVERY_STANDARD_TITLE]: 'Standard delivery',
+  [SETTINGS.BE_DELIVERY_TITLE]: 'Delivery',
+  [SETTINGS.WRONG_HOUSE_NUMBER_POSTCODE]: 'House number/postcode combination unknown',
 };
 
 export const addressByPlatform = {

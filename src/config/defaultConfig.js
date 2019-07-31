@@ -1,4 +1,11 @@
-import { addressByPlatform, configByPlatform, getPlatformMap, stringsByPlatform } from '@/config/platformConfig';
+import * as SETTINGS from '@/config/settingsConfig';
+import {
+  DEFAULT_PLATFORM,
+  addressByPlatform,
+  configByPlatform,
+  getPlatformMap,
+  stringsByPlatform,
+} from '@/config/platformConfig';
 
 /**
  * Base checkout configuration.
@@ -6,71 +13,68 @@ import { addressByPlatform, configByPlatform, getPlatformMap, stringsByPlatform 
  * @type {Object}
  */
 const baseConfig = {
+  /**
+   * @type {MyParcelCheckout.Config}
+   */
   config: {
-    currency: 'EUR',
+    [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
+    [SETTINGS.CURRENCY]: 'EUR',
 
-    allowDeliveryOptions: 0,
-    allowPickupPoints: 1,
-    cutoffTime: '17:00',
-    deliveryDaysWindow: 1,
-    dropOffDays: '1;2;3;4',
-    dropOffDelay: 1,
+    [SETTINGS.CUTOFF_TIME]: '17:00',
+    [SETTINGS.DELIVERY_DAYS_WINDOW]: 7,
+    [SETTINGS.DROP_OFF_DAYS]: '1;2;3;4',
+    [SETTINGS.DROP_OFF_DELAY]: 0,
 
-    allowEveningDelivery: 1,
-    allowMorningDelivery: 1,
-    allowOnlyRecipient: 1,
-    allowPickupExpress: 1,
-    allowSignature: 1,
+    [SETTINGS.ALLOW_DELIVERY_OPTIONS]: 1,
+    [SETTINGS.ALLOW_EVENING_DELIVERY]: 1,
+    [SETTINGS.ALLOW_MORNING_DELIVERY]: 1,
+    [SETTINGS.ALLOW_ONLY_RECIPIENT]: 1,
+    [SETTINGS.ALLOW_PICKUP_EXPRESS]: 1,
+    [SETTINGS.ALLOW_PICKUP_POINTS]: 1,
+    [SETTINGS.ALLOW_SIGNATURE]: 1,
 
-    priceEveningDelivery: 0,
-    priceMorningDelivery: 0,
-    priceOnlyRecipient: 0,
-    pricePickup: 0,
-    pricePickupExpress: 0,
-    priceSignature: 0,
-    priceStandardDelivery: 0,
+    [SETTINGS.PRICE_EVENING_DELIVERY]: 0,
+    [SETTINGS.PRICE_MORNING_DELIVERY]: 0,
+    [SETTINGS.PRICE_ONLY_RECIPIENT]: 0,
+    [SETTINGS.PRICE_PICKUP]: 0,
+    [SETTINGS.PRICE_PICKUP_EXPRESS]: 0,
+    [SETTINGS.PRICE_SIGNATURE]: 0,
+    [SETTINGS.PRICE_STANDARD_DELIVERY]: 0,
 
-    carrierSettings: {},
+    [SETTINGS.CARRIER_SETTINGS]: {},
   },
 
+  /**
+   * @type {MyParcelCheckout.Strings}
+   */
   strings: {
     // Address strings
-    city: 'Plaats',
-    postcode: 'Postcode',
-    houseNumber: 'Huisnummer',
-    addressNotFound: 'Adresgegevens niet ingevuld',
+    [SETTINGS.CITY]: 'Plaats',
+    [SETTINGS.POSTCODE]: 'Postcode',
+    [SETTINGS.HOUSE_NUMBER]: 'Huisnummer',
+    [SETTINGS.ADDRESS_NOT_FOUND]: 'Adresgegevens niet ingevuld',
 
     // Other strings
-    again: 'Again',
-    closed: 'Gesloten',
-    discount: 'korting',
-    free: 'Gratis',
-    from: 'Vanaf',
-    loadMore: 'Laad meer',
-    retry: 'Opnieuw proberen',
+    // [SETTINGS.AGAIN]: 'Again',
+    [SETTINGS.CLOSED]: 'Gesloten',
+    [SETTINGS.DISCOUNT]: 'korting',
+    [SETTINGS.FREE]: 'Gratis',
+    [SETTINGS.FROM]: 'Vanaf',
+    [SETTINGS.LOAD_MORE]: 'Laad meer',
+    [SETTINGS.RETRY]: 'Opnieuw proberen',
 
     // Titles of options
-    deliveryEveningTitle: 'Evening delivery',
-    deliveryMorningTitle: 'Morning delivery',
-    deliveryStandardTitle: '',
-    deliveryTitle: 'Bezorgen op',
-    onlyRecipientTitle: 'Home address only',
-    pickUpFrom: 'Afhalen vanaf',
-    pickupTitle: 'Afhalen op locatie',
-    signatureTitle: 'Handtekening',
-
-    // headerDeliveryOptions: 'Delivery options', // unused
-    // quickDelivery: 'Deliver as quickly as possible', // unused
+    [SETTINGS.DELIVERY_EVENING_TITLE]: 'Evening delivery',
+    [SETTINGS.DELIVERY_MORNING_TITLE]: 'Morning delivery',
+    [SETTINGS.DELIVERY_STANDARD_TITLE]: '',
+    [SETTINGS.DELIVERY_TITLE]: 'Bezorgen op',
+    [SETTINGS.ONLY_RECIPIENT_TITLE]: 'Home address only',
+    [SETTINGS.PICK_UP_FROM]: 'Afhalen vanaf',
+    [SETTINGS.PICKUP_TITLE]: 'Afhalen op locatie',
+    [SETTINGS.SIGNATURE_TITLE]: 'Handtekening',
 
     // Opening hours and weekdays
-    openingHours: 'Openingstijden',
-    monday: 'Monday',
-    tuesday: 'Tuesday',
-    wednesday: 'Wednesday',
-    thursday: 'Thursday',
-    friday: 'Friday',
-    saturday: 'Saturday',
-    sunday: 'Sunday',
+    [SETTINGS.OPENING_HOURS]: 'Openingstijden',
   },
 };
 
@@ -78,9 +82,9 @@ const baseConfig = {
  * Get the default config for given platform. Gets the base config, sets platform and appends platform specific
  * variables, if any.
  *
- * @param {string} platform - Platform name.
+ * @param {MyParcelCheckout.Platform} platform - Platform name.
  *
- * @returns {Object}
+ * @returns {MyParcelCheckout.Configuration}
  */
 export const defaultConfig = (platform) => {
   baseConfig.config.platform = platform;

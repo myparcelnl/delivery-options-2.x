@@ -1,21 +1,38 @@
+import * as SETTINGS from '@/config/settingsConfig';
+
 export const DELIVERY = 'delivery';
 
+// Delivery > Deliver
+export const DELIVER = 'deliver';
+
+// Delivery > Deliver > Carrier
+export const DELIVERY_CARRIER = 'deliveryCarrier';
+
+// Delivery > Deliver (> Carrier) > Delivery date
 export const DELIVERY_DATE = 'deliveryDate';
 
+// Delivery > Deliver (> Carrier) > Delivery moment
 export const DELIVERY_MOMENT = 'deliveryMoment';
 
+// Delivery > Deliver (> Carrier) > Delivery moment = morning | standard | evening
 export const DELIVERY_MORNING = 'morning';
 export const DELIVERY_STANDARD = 'standard';
 export const DELIVERY_EVENING = 'evening';
 
+// Delivery > Deliver (> Carrier) > Delivery moment > Additional options
 export const ADDITIONAL_OPTIONS = 'additionalOptions';
 
+// Delivery > Deliver (> Carrier) > Delivery moment > Additional options = [signature?, only_recipient?]
 export const SIGNATURE = 'signature';
 export const ONLY_RECIPIENT = 'only_recipient';
 
+// Delivery > Pickup
 export const PICKUP = 'pickup';
 
+// Delivery > Pickup > Pickup standard
 export const PICKUP_STANDARD = 'pickup';
+
+// Delivery > Pickup > Pickup express
 export const PICKUP_EXPRESS = 'pickup_express';
 
 /**
@@ -24,14 +41,6 @@ export const PICKUP_EXPRESS = 'pickup_express';
  * @type {Object}
  */
 export const formConfig = {
-
-  structure: {
-    [DELIVERY]: {
-      DELIVERY_DATE: 'deliveryDate',
-      DELIVERY_MOMENT: 'deliveryMoment',
-      ADDITIONAL_OPTIONS: 'additionalOptions',
-    },
-  },
 
   /**
    * Additional options.
@@ -42,16 +51,16 @@ export const formConfig = {
     name: ADDITIONAL_OPTIONS,
     options: {
       [SIGNATURE]: {
-        enabled: 'allowSignature',
-        label: 'signatureTitle',
-        name: 'signature',
-        price: 'priceSignature',
+        enabled: SETTINGS.ALLOW_SIGNATURE,
+        label: SETTINGS.SIGNATURE_TITLE,
+        name: SIGNATURE,
+        price: SETTINGS.PRICE_SIGNATURE,
       },
       [ONLY_RECIPIENT]: {
-        enabled: 'allowOnlyRecipient',
-        label: 'onlyRecipientTitle',
-        name: 'only_recipient',
-        price: 'priceOnlyRecipient',
+        enabled: SETTINGS.ALLOW_ONLY_RECIPIENT,
+        label: SETTINGS.ONLY_RECIPIENT_TITLE,
+        name: ONLY_RECIPIENT,
+        price: SETTINGS.PRICE_ONLY_RECIPIENT,
       },
     },
   },
@@ -62,46 +71,46 @@ export const formConfig = {
    * @see https://myparcelnl.github.io/api/#8
    */
   [DELIVERY]: {
-    enabled: 'allowDeliveryOptions',
-    name: 'delivery',
+    enabled: SETTINGS.ALLOW_DELIVERY_OPTIONS,
+    name: DELIVERY,
     options: {
       [DELIVERY_MORNING]: {
-        enabled: 'allowMorningDelivery',
-        label: 'deliveryMorningTitle',
-        name: 'morning',
-        price: 'priceMorningDelivery',
+        enabled: SETTINGS.ALLOW_MORNING_DELIVERY,
+        label: SETTINGS.DELIVERY_MORNING_TITLE,
+        name: DELIVERY_MORNING,
+        price: SETTINGS.PRICE_MORNING_DELIVERY,
       },
       [DELIVERY_STANDARD]: {
-        label: 'deliveryStandardTitle',
-        name: 'standard',
-        price: 'priceStandardDelivery',
+        label: SETTINGS.DELIVERY_STANDARD_TITLE,
+        name: DELIVERY_STANDARD,
+        price: SETTINGS.PRICE_STANDARD_DELIVERY,
         selected: true,
       },
       [DELIVERY_EVENING]: {
-        enabled: 'allowEveningDelivery',
-        label: 'deliveryEveningTitle',
-        name: 'evening',
-        price: 'priceEveningDelivery',
+        enabled: SETTINGS.ALLOW_EVENING_DELIVERY,
+        label: SETTINGS.DELIVERY_EVENING_TITLE,
+        name: DELIVERY_EVENING,
+        price: SETTINGS.PRICE_EVENING_DELIVERY,
       },
     },
   },
 
   /**
-   * Pickup settings
+   * Pickup settings.
    */
   [PICKUP]: {
-    enabled: 'allowPickupPoints',
-    name: 'pickup',
+    enabled: SETTINGS.ALLOW_PICKUP_POINTS,
+    name: PICKUP,
     options: {
       [PICKUP_EXPRESS]: {
-        enabled: 'allowPickupExpress',
-        name: 'pickupExpress',
-        price: 'pricePickupExpress',
+        enabled: SETTINGS.ALLOW_PICKUP_EXPRESS,
+        name: PICKUP_EXPRESS,
+        price: SETTINGS.PRICE_PICKUP_EXPRESS,
       },
       [PICKUP_STANDARD]: {
-        enabled: 'allowPickupPoints',
-        name: 'pickupNormal',
-        price: 'pricePickup',
+        enabled: SETTINGS.ALLOW_PICKUP_POINTS,
+        name: PICKUP_STANDARD,
+        price: SETTINGS.PRICE_PICKUP,
         selected: true,
       },
     },

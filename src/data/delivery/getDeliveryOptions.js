@@ -1,7 +1,16 @@
-import { ADDITIONAL_OPTIONS, DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/formConfig';
+import {
+  ADDITIONAL_OPTIONS,
+  DELIVER,
+  DELIVERY,
+  DELIVERY_CARRIER,
+  DELIVERY_DATE,
+  DELIVERY_MOMENT,
+} from '@/config/formConfig';
+import { DELIVERY_TITLE } from '@/config/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { deliveryAdditionalOptions } from './getDeliveryAdditionalOptions';
 import { fetchDeliveryOptions } from './fetchDeliveryOptions';
+import { getDeliveryDates } from '@/data/delivery/getDeliveryDates';
 import { getDeliveryPossibility } from '@/data/delivery/getDeliveryPossibility';
 
 /**
@@ -11,14 +20,13 @@ import { getDeliveryPossibility } from '@/data/delivery/getDeliveryPossibility';
  */
 export function getDeliveryOptions() {
   return {
-    name: 'deliver',
-    label: 'deliveryTitle',
+    name: DELIVER,
+    label: DELIVERY_TITLE,
     type: 'radio',
     // If multi carrier, return another level of settings and their options based on carrier.
     options: configBus.isMultiCarrier
       ? [{
-        name: 'deliveryCarrier',
-        label: 'carrier',
+        name: DELIVERY_CARRIER,
         type: 'radio',
         choices: configBus.carrierData.map((carrier) => ({
           ...carrier,
@@ -81,7 +89,7 @@ async function options(carrier = configBus.currentCarrier) {
 const createDeliveryDependencies = (deliveryOptions) => {
   configBus.dependencies[DELIVERY_DATE] = deliveryOptions.reduce((acc, option) => ({
     ...acc,
-    [option.date]: {
+    [new Date(option.date.date).toLocaleDateString(configBus.config.locale)]: {
 
       [DELIVERY_MOMENT]: option.possibilities.reduce((acc, possibility) => ({
         ...acc,
