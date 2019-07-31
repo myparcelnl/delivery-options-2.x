@@ -22,12 +22,11 @@
             <br>
             <span v-text="data.location.phone_number" /><br>
           </template>
-          <!-- <span v-text="strings.pickUpFrom + ' ' + $configBus.formatTime(data.possibilities[0].moment.start.date)" />-->
         </td>
         <td>
           <img
             class="myparcel-checkout__image myparcel-checkout__image--lg myparcel-checkout__float-right"
-            :src="carrierLogo"
+            :src="carrierData.image"
             alt="">
         </td>
       </tr>
@@ -37,10 +36,10 @@
         </td>
       </tr>
       <tr
-        v-for="day in Object.keys(openingHours)"
+        v-for="(day, index) in Object.keys(openingHours)"
         :key="day">
         <td>
-          <span v-text="strings[day]" />
+          <span v-text="getWeekday[index]" />
         </td>
         <td>
           <span
@@ -53,8 +52,6 @@
 </template>
 
 <script>
-import { appConfig } from '@/config/appConfig';
-
 export default {
   name: 'PickupTooltip',
   props: {
@@ -69,20 +66,12 @@ export default {
   },
 
   computed: {
-    config() {
-      return this.$configBus.config;
-    },
-
     strings() {
       return this.$configBus.strings;
     },
 
     carrierData() {
       return this.$configBus.getCarrier(this.data.carrier || 1);
-    },
-
-    carrierLogo() {
-      return appConfig.assetsUrl + this.carrierData.meta.logo_svg;
     },
 
     /**
@@ -109,6 +98,12 @@ export default {
           [item]: dateString,
         };
       }, {});
+    },
+  },
+
+  methods: {
+    getWeekday(index) {
+      return new Date(0, 0, index).toLocaleTimeString(this.$configBus.locale, { weekday: 'long' });
     },
   },
 };

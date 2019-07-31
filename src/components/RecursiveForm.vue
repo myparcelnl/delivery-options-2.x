@@ -85,7 +85,7 @@
           </template>
         </td>
       </tr>
-      <tr v-if="hasPagination">
+      <tr v-if="hasPagination && mutablePagination < option.choices.length">
         <td colspan="2">
           <div class="myparcel-checkout__button">
             <hr>
@@ -107,11 +107,11 @@
           class="myparcel-checkout__select"
           :name="option.name">
           <option
-            v-for="(selectChoice, key) of option.choices"
-            :key="key"
-            :value="selectChoice"
-            :selected="key === 0 ? 'selected' : null"
-            v-text="selectChoice" />
+            v-for="(selectChoice, index) of option.choices"
+            :key="index + '_' + selectChoice.name"
+            :value="selectChoice.name"
+            :selected="index === 0 ? 'selected' : null"
+            v-text="selectChoice.label" />
         </select>
       </td>
     </tr>

@@ -2,41 +2,33 @@
   <div
     class="myparcel-checkout__loader"
     :class="{
-      [`myparcel-checkout__loader--logo myparcel-checkout__loader--${onlyCarrier.name}`]: !!onlyCarrier
+      'myparcel-checkout__loader--big': 'big' === type,
+      'myparcel-checkout__loader--inline': 'inline' === type
     }">
-    <transition name="fade">
-      <img
-        v-if="carrierLogo"
-        :src="carrierLogo"
-        class="myparcel-checkout__image myparcel-checkout__image--lg"
-        :alt="onlyCarrier.name">
-    </transition>
+    <transition-group
+      v-if="'inline' === type"
+      name="shove"
+      appear>
+      <div
+        v-for="index in 3"
+        :key="`block-${index}`"
+        :class="`myparcel-checkout__loader--inline__${index}`" />
+    </transition-group>
+
+    <transition
+      v-else
+      name="fade" />
     <span />
   </div>
 </template>
 
 <script>
-import { configBus } from '@/config/configBus';
-
 export default {
   name: 'Loader',
   props: {
-    carriers: {
-      type: Array,
-      default: () => [],
-    },
     type: {
       type: String,
       default: 'big',
-    },
-  },
-
-  computed: {
-    onlyCarrier() {
-      return this.carriers.length === 1 ? configBus.currentCarrier : false;
-    },
-    carrierLogo() {
-      return this.onlyCarrier ? this.onlyCarrier.image : null;
     },
   },
 };
