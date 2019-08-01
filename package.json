@@ -1,13 +1,12 @@
 {
   "name": "@myparcel/checkout",
-  "version": "0.1.0",
-  "private": true,
+  "version": "3.0.0",
   "types": "index.d.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode development && cp /Users/edie/projects/myparcel/checkout-be/dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js && cp /Users/edie/projects/myparcel/checkout-be/dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcelbe/assets/js",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -16,8 +15,6 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "core-js": "^2.6.9",
     "debounce": "^1.2.0",
-    "lodash.clone": "^4.5.0",
-    "lodash.merge": "^4.6.2",
     "lodash.mergewith": "^4.6.2",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0"
@@ -32,6 +29,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^23.6.0",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-intl": "^0.1.1",
     "coveralls": "^3.0.5",
     "eslint": "^6.1.0",
@@ -40,6 +38,7 @@
     "eslint-plugin-vue": "^5.2.3",
     "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack-bundle-analyzer": "^3.4.1"
   }
 }

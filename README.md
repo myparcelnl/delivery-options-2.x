@@ -1,5 +1,4 @@
 # MyParcel Checkout
-
 [![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout)
 [![Coverage Status](https://coveralls.io/repos/github/myparcelbe/checkout/badge.svg?branch=master)](https://coveralls.io/github/myparcelbe/checkout?branch=master)
 
@@ -8,13 +7,14 @@
 - [Example](#example)
 - [Usage](#usage)
 
+## Introduction
+This is the MyParcel checkout meant to 
+
 ## Installation
 1. Download the latest package from [releases](https://github.com/myparcelbe/checkout/releases).
-2. Include `js/myparcel.js` in your project. 
+2. Include `dist/myparcel.js` in your project. 
 3. Place `<div id="myparcel-checkout"></div>` in your HTML.
-
-### Requirements
-- [Node](https://nodejs.org)
+4. The checkout will be rendered inside that element!
 
 ### Example
 An example of the checkout functionality can be found via our [Sandbox](https://myparcelbe.github.io/checkout/sandbox/) example.
@@ -78,4 +78,12 @@ json = document.querySelector('#mypa-input').value;
 obj = JSON.parse(json);
 ```
 
+### Contribute
+1. Clone this repository
+2. Run `npm install`
+
+- [Node](https://nodejs.org)
+
+
+### Support
 When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@sendmyparcel.be or Slack us: 
