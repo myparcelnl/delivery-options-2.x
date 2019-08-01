@@ -2,7 +2,6 @@ import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
 import { Delivery } from 'Sdk/src/endpoint/public/delivery';
 import { ERROR_NO_ADDRESS } from '@/config/appConfig';
 import { configBus } from '@/config/configBus';
-import demoDeliveryOptions from '@/config/demo/demoDeliveryOptions';
 
 /**
  * Fetch delivery options.
@@ -23,6 +22,5 @@ export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
   return fetchFromEndpoint(Delivery, {
     method: METHOD_SEARCH,
     params: configBus.getRequestParameters(carrier),
-    mockData: demoDeliveryOptions,
   });
 }

@@ -3,7 +3,7 @@ import { configBus } from '@/config/configBus';
 /**
  *
  * @param {Date} date - Date object.
- * @return {string}
+ * @returns {string}
  */
 export function formatWeekday(date) {
   const intl = new Intl.DateTimeFormat(configBus.config.locale, { weekday: 'long' });

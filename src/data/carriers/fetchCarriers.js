@@ -1,6 +1,5 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
 import { Carriers } from 'Sdk/src/endpoint/public/carriers';
-import demoCarriers from '@/config/demo/demoCarriers';
 import { formatCarrierData } from '@/data/carriers/formatCarrierData';
 
 /**
@@ -13,7 +12,6 @@ import { formatCarrierData } from '@/data/carriers/formatCarrierData';
 export async function fetchCarrierData(carrier) {
   const data = await fetchFromEndpoint(Carriers, {
     method: METHOD_SEARCH,
-    mockData: demoCarriers,
   }, { carrier });
 
   if (Object.keys(data.response).length) {

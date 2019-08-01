@@ -142,7 +142,7 @@ export default {
       /**
        * Loading state.
        *
-       * @type {Boolean}
+       * @type {Boolean|String}
        */
       loading: false,
 

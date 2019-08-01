@@ -98,7 +98,9 @@ export default {
      * @returns {string}
      */
     priceText() {
-      const minPrice = this.price.concat().sort((price1, price2) => (price1.price > price2.price ? 1 : -1))[0].price;
+      const minPrice = this.price.concat().sort((price1, price2) => {
+        return price1.price > price2.price ? 1 : -1;
+      })[0].price;
 
       if (minPrice === 0) {
         return this.$configBus.strings.free;

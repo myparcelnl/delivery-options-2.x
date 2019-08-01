@@ -1,4 +1,3 @@
-import { configBus } from '@/config/configBus';
 import { fetchPickupLocations } from './fetchPickupLocations';
 import { getPickupMoments } from './getPickupMoments';
 
@@ -21,16 +20,14 @@ export async function getPickupChoices() {
       options: getPickupMoments(option),
     }));
 
-    // todo remove
-    // pickupChoices.splice(0, 7);
-    // pickupChoices.splice(3, pickupChoices.length - 3);
+    const defaultPagination = 5;
 
     return [
       {
         name: 'pickupMoment',
         type: 'radio',
         component: 'PickupOption',
-        pagination: 5,
+        pagination: defaultPagination,
         choices: pickupChoices,
       },
     ];

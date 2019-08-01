@@ -1,4 +1,4 @@
-import { PICKUP, PICKUP_EXPRESS, formConfig } from '@/config/formConfig';
+import { PICKUP, formConfig } from '@/config/formConfig';
 import { configBus } from '@/config/configBus';
 
 /**
@@ -14,6 +14,12 @@ import { configBus } from '@/config/configBus';
 export function getPickupMoments(pickupLocation) {
 
   // Sort moments by pickup time, from early to late.
+  /**
+   * @param {Object} dateA
+   * @param {MyParcelCheckout.StartEndDate} dateA.moment
+   * @param {Object} dateB
+   * @param {MyParcelCheckout.StartEndDate} dateB.moment
+   */
   pickupLocation.possibilities.sort((dateA, dateB) => {
     return new Date(dateA.moment.start.date) - new Date(dateB.moment.start.date);
   });

@@ -133,9 +133,10 @@ export default {
     this.$configBus.$on('update', this.updateExternalData);
 
     // Debounce trigger updating the checkout
-    this.$configBus.$on('update', debounce(this.updateExternal, 300));
+    const debounceDelay = 300;
+    this.$configBus.$on('update', debounce(this.updateExternal, debounceDelay));
 
-    this.$configBus.$on('error', (e) => {
+    this.$configBus.$on('error', () => {
       this.reset();
       this.hideCheckout();
     });

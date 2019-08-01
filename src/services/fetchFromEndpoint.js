@@ -2,6 +2,7 @@ import { appConfig } from '@/config/appConfig';
 import { configBus } from '@/config/configBus';
 
 export const METHOD_GET = 'get';
+
 export const METHOD_SEARCH = 'search';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -13,9 +14,6 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * @param {Object} options - Options.
  * @param {String} options.method? - Method.
- * @param {Object} options.params? - Parameters.
- * @param {Object} options.mockData? - Mock data to fall back to.
- * @param {Boolean} options.mock? - To mock or not to mock. That is the question.
  *
  * @param {Object} param - Parameter to add to the url.
  *

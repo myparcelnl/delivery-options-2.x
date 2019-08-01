@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="show"
-    class="myparcel-checkout__tooltip__content">
+    class="myparcel-checkout__tooltip">
     <div
       class="myparcel-checkout__tooltip__close"
       @click="$emit('close')">
