@@ -113,6 +113,17 @@ declare namespace MyParcelCheckout {
       logo_svg: String,
     }
   }
+
+  interface StartEndDate {
+    start: {
+      date: String,
+      timezone: String,
+    },
+    end: {
+      date: String,
+      timezone: String,
+    },
+  }
 }
 
 declare module 'MyParcelCheckout' {
