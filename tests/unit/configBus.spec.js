@@ -1,17 +1,17 @@
+import * as SETTINGS from '@/config/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { defaultConfig } from '@/config/defaultConfig';
-import { fakeConfig } from '../fakeConfig';
 
 Object.defineProperty(window, 'MyParcelConfig', defaultConfig);
 
 const settingCases = [
-  'allowDeliveryOptions',
-  'allowEveningDelivery',
-  'allowMorningDelivery',
-  'allowOnlyRecipient',
-  'allowPickupExpress',
-  'allowPickupPoints',
-  'allowSignature',
+  SETTINGS.ALLOW_DELIVERY_OPTIONS,
+  SETTINGS.ALLOW_EVENING_DELIVERY,
+  SETTINGS.ALLOW_MORNING_DELIVERY,
+  SETTINGS.ALLOW_ONLY_RECIPIENT,
+  SETTINGS.ALLOW_PICKUP_EXPRESS,
+  SETTINGS.ALLOW_PICKUP_POINTS,
+  SETTINGS.ALLOW_SIGNATURE,
 ];
 
 describe('configBus', () => {
