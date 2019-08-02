@@ -81,9 +81,9 @@ obj = JSON.parse(json);
 ### Contribute
 1. Clone this repository
 2. Run `npm install`
-
-- [Node](https://nodejs.org)
-
+3. Make your changes conforming to the existing code style, we recommend enabling ESLint and using our configuration to make this easier.
+4. Test the new code using `npm run serve`
+5. When you're done, create a pull request!
 
 ### Support
 When you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via support@sendmyparcel.be or Slack us: 

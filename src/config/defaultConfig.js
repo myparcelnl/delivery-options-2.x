@@ -10,7 +10,7 @@ import {
 /**
  * Base checkout configuration.
  *
- * @type {Object}
+ * @type {MyParcelCheckout.Configuration}
  */
 const baseConfig = {
   /**
