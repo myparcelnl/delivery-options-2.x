@@ -13,7 +13,7 @@
           'myparcel-checkout__choice--disabled': choice.disabled
         }">
         <td
-          v-if="validChoices.length > 1 && option.type !== 'plain'"
+          v-if="validChoices.length > 1 || option.type === 'checkbox'"
           class="myparcel-checkout__input">
           <div>
             <input
