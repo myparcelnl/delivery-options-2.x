@@ -16,6 +16,11 @@ Vue.use(AsyncComputed);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('recursive-form', RecursiveForm);
 
+/**
+ * Set the configBus as a global property in the entire application.
+ *
+ * @type {Vue}
+ */
 Vue.prototype.$configBus = configBus;
 
 Vue.config.productionTip = false;
@@ -31,8 +36,31 @@ function loadApp() {
 
   const app = window.MyParcel.$children[0];
 
+  /**
+   * Get the checkout.
+   *
+   * @deprecated Since v4.0.0. Use event: `myparcel_update_checkout` instead.
+   *
+   * @type {function}
+   */
   window.MyParcel.callDeliveryOptions = app.getCheckout;
+
+  /**
+   * Hide the checkout.
+   *
+   * @deprecated Since v4.0.0.
+   *
+   * @type {function}
+   */
   window.MyParcel.hideAllDeliveryOptions = app.hideCheckout;
+
+  /**
+   * Show the checkout. Does the same as getCheckout because it's no longer needed.
+   *
+   * @deprecated Since v4.0.0. Use event: `myparcel_update_checkout` instead.
+   *
+   * @type {function}
+   */
   window.MyParcel.showAllDeliveryOptions = app.getCheckout;
 }
 
