@@ -48,11 +48,12 @@
 </template>
 
 <script>
-import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/settingsConfig';
-import { DELIVERY, PICKUP, formConfig } from '@/config/formConfig';
+import * as EVENTS from '@/config/data/eventConfig';
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
+import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
 import Loader from '@/components/Loader';
 import debounce from 'debounce';
-import { fetchCarrierData } from '@/data/carriers/fetchCarriers';
+import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
 import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
@@ -137,37 +138,6 @@ export default {
 
   methods: {
     /**
-     * FetchCarriers.
-     *
-     * @returns {Promise}
-     */
-    async fetchCarriers() {
-      const carriersToFetch = this.config.carriers;
-      const requests = [];
-
-      carriersToFetch.forEach((carrier) => {
-        requests.push(fetchCarrierData(carrier));
-      });
-
-      let errors = [], responses = [];
-      const carriers = (await Promise.all(requests)).reduce((acc, response) => {
-        errors = [...errors, ...response.errors];
-        responses = [...responses, ...response.response];
-
-        return { ...acc, errors, responses };
-      }, {});
-
-      this.$configBus.addErrors('carriers', carriers.errors);
-
-      const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
-      this.$configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
-
-      this.$configBus.currentCarrier = this.$configBus.carrierData.length ? this.$configBus.carrierData[0].name : null;
-
-      this.carriers = this.$configBus.carrierData;
-    },
-
-    /**
      * Create the checkout form.
      */
     createForm() {
@@ -214,12 +184,11 @@ export default {
         return;
       }
 
+      this.$configBus.showCheckout = true;
       this.gettingCheckout = true;
       this.reset();
 
-      await this.fetchCarriers();
-
-      this.$configBus.showCheckout = true;
+      await fetchAllCarriers();
 
       this.createForm();
 
@@ -239,7 +208,7 @@ export default {
      */
     updateExternal() {
       const event = document.createEvent('HTMLEvents');
-      event.initEvent('update_checkout', true, false);
+      event.initEvent(EVENTS.UPDATE_CHECKOUT_OUT, true, false);
 
       document.querySelector('body').dispatchEvent(event);
     },
@@ -252,7 +221,7 @@ export default {
      * @param {*} value - Setting value.
      */
     updateExternalData({ name, value }) {
-      if (name === 'deliveryCarrier' && value !== this.$configBus.currentCarrier) {
+      if (DELIVERY_CARRIER === name && this.$configBus.currentCarrier !== value) {
         this.$configBus.currentCarrier = value;
       }
 
@@ -262,7 +231,7 @@ export default {
       // Using $nextTick to emit event after this function is done.
       // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
       this.$nextTick(() => {
-        this.$configBus.$emit('afterUpdate', { name, value });
+        this.$configBus.$emit(EVENTS.AFTER_UPDATE, { name, value });
       });
     },
 
