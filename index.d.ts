@@ -5,16 +5,16 @@ declare namespace MyParcelCheckout {
   /**
    * Configuration object supplied by the platform.
    */
-  interface Configuration {
-    address: Address,
-    strings: Strings,
-    config: Config,
+  interface CheckoutConfiguration {
+    address: CheckoutAddress,
+    strings: CheckoutStrings,
+    config: CheckoutConfig,
   }
 
   /**
    * Address object from the external platform.
    */
-  interface Address {
+  interface CheckoutAddress {
     cc: String,
     number: String | Number,
     postalCode: String,
@@ -24,7 +24,7 @@ declare namespace MyParcelCheckout {
   /**
    * Strings object from the external platform.
    */
-  interface Strings {
+  interface CheckoutStrings {
     city: String,
     postcode: String,
     houseNumber: String,
@@ -57,9 +57,41 @@ declare namespace MyParcelCheckout {
   }
 
   /**
+   * Response from /pickup_locations
+   */
+  interface PickupLocation {
+    address: {
+      cc: String,
+      city: String
+      number: String,
+      postal_code: String,
+      street: String,
+    },
+    location: {
+      distance: String,
+      latitude: String,
+      location_code: String,
+      location_name: String,
+      longitude: String,
+      phone_number: String,
+      retail_network_id: String,
+      opening_hours: {
+        monday: StartEndDate[],
+        tuesday: StartEndDate[],
+        wednesday: StartEndDate[],
+        thursday: StartEndDate[],
+        friday: StartEndDate[],
+        saturday: StartEndDate[],
+        sunday: StartEndDate[]
+      }
+    },
+    possibilities: DeliveryPossibility[]
+  }
+
+  /**
    * Configuration object from the external platform.
    */
-  interface Config {
+  interface CheckoutConfig {
     apiBaseUrl: String,
     locale: String,
     carriers: String | Array<String>,
@@ -114,18 +146,41 @@ declare namespace MyParcelCheckout {
     }
   }
 
+  interface Timestamp {
+    date: String,
+    timezone: String,
+    timezone_type: Number,
+  }
+
+  /**
+   * A start and end date object.
+   */
   interface StartEndDate {
-    start: {
-      date: String,
-      timezone: String,
-    },
-    end: {
-      date: String,
-      timezone: String,
-    },
+    start: Timestamp,
+    end: Timestamp,
+  }
+
+  interface ShipmentOption {
+    name: 'cooled_delivery' | 'large_format' | 'only_recipient' | 'signature' | 'return',
+    schema: {
+      type: String,
+      enum: Boolean[]
+    }
+  }
+
+  interface DeliveryTimeFrame {
+    type: String,
+    date_time: Timestamp
+  }
+
+  interface DeliveryPossibility {
+    type: 'morning' | 'standard' | 'evening',
+    shipment_options: ShipmentOption[],
+    collect_date: any,
+    delivery_time_frames: DeliveryTimeFrame[],
   }
 }
 
-declare module 'MyParcelCheckout' {
-  export = MyParcelCheckout;
+declare module 'MyParcel' {
+  export = MyParcel;
 }

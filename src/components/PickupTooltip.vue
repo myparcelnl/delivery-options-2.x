@@ -55,6 +55,9 @@
 export default {
   name: 'PickupTooltip',
   props: {
+    /**
+     * @type {MyParcel.PickupLocation}
+     */
     data: {
       type: Object,
       default: null,
