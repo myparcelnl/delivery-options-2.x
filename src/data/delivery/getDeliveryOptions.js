@@ -5,8 +5,8 @@ import {
   DELIVERY_CARRIER,
   DELIVERY_DATE,
   DELIVERY_MOMENT,
-} from '@/config/formConfig';
-import { DELIVERY_TITLE } from '@/config/settingsConfig';
+} from '@/config/data/formConfig';
+import { DELIVERY_TITLE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { deliveryAdditionalOptions } from './getDeliveryAdditionalOptions';
 import { fetchDeliveryOptions } from './fetchDeliveryOptions';

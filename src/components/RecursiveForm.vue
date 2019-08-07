@@ -121,9 +121,10 @@
 </template>
 
 <script>
+import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
 import PickupOption from './PickupOption';
-import { formConfig } from '@/config/formConfig';
+import { formConfig } from '@/config/data/formConfig';
 
 export default {
   name: 'RecursiveForm',
@@ -249,7 +250,7 @@ export default {
      * @param {*} value - New value for current option.
      */
     selected(value) {
-      this.$configBus.$emit('update', {
+      this.$configBus.$emit(EVENTS.UPDATE, {
         name: this.option.name,
         value,
       });
@@ -262,7 +263,7 @@ export default {
     }
 
     if (this.hasDependency) {
-      this.$configBus.$on('afterUpdate', this.updateDependency);
+      this.$configBus.$on(EVENTS.AFTER_UPDATE, this.updateDependency);
     } else {
       this.setSelected();
     }
@@ -270,7 +271,7 @@ export default {
 
   beforeDestroy() {
     if (this.hasDependency) {
-      this.$configBus.$off('afterUpdate', this.updateDependency);
+      this.$configBus.$off(EVENTS.AFTER_UPDATE, this.updateDependency);
     }
   },
 

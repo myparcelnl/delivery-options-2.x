@@ -33,13 +33,14 @@
         :key="data.name + '_' + subOption.name"
         :option="subOption"
         :name="data.name"
-        @update="$emit('update', $event)" />
+        @update="updateConfigBus()" />
     </template>
   </div>
 </template>
 
 <script>
-import { PICKUP, formConfig } from '@/config/formConfig';
+import * as EVENTS from '@/config/data/eventConfig';
+import { PICKUP, formConfig } from '@/config/data/formConfig';
 import PickupTooltip from './PickupTooltip';
 
 export default {
@@ -131,6 +132,11 @@ export default {
       if (!this.selected) {
         this.showTooltip = false;
       }
+    },
+  },
+  methods: {
+    updateConfigBus(event) {
+      this.$configBus.$emit(EVENTS.UPDATE, event);
     },
   },
 };

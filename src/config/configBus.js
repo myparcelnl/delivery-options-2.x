@@ -1,3 +1,4 @@
+import * as EVENTS from '@/config/data/eventConfig';
 import {
   ALLOW_MONDAY_DELIVERY,
   CURRENCY,
@@ -230,20 +231,22 @@ export const configBus = new Vue({
      * Add errors to `this.errors` under a given key, if there are any.
      *
      * @param {string} key - Key to add to errors object.
-     * @param {Array} errors - Errors to add.
+     * @param {Array} responseErrors - Errors to add.
      */
-    addErrors(key, errors) {
-      if (!errors.length) {
+    addErrors(key, responseErrors) {
+      if (!responseErrors.length) {
         return;
       }
 
+      responseErrors = responseErrors[0].errors;
+
       if (this.errors.hasOwnProperty(key)) {
-        this.errors[key] = [...this.errors[key], ...errors];
+        this.errors[key] = [...this.errors[key], ...responseErrors];
       } else {
-        this.errors[key] = errors;
+        this.errors[key] = responseErrors;
       }
 
-      this.$emit('error', { [key]: errors });
+      this.$emit(EVENTS.ERROR, { [key]: responseErrors });
     },
 
     /**

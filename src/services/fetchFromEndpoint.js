@@ -1,4 +1,4 @@
-import { appConfig } from '@/config/appConfig';
+import { appConfig } from '@/config/data/appConfig';
 import { configBus } from '@/config/configBus';
 
 export const METHOD_GET = 'get';

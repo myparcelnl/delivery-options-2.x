@@ -1,6 +1,6 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
 import { Delivery } from 'Sdk/src/endpoint/public/delivery';
-import { ERROR_NO_ADDRESS } from '@/config/appConfig';
+import { ERROR_NO_ADDRESS } from '@/config/data/appConfig';
 import { configBus } from '@/config/configBus';
 
 /**

@@ -1,4 +1,4 @@
-import { PICKUP } from '@/config/formConfig';
+import { PICKUP } from '@/config/data/formConfig';
 import { getPickupChoices } from './getPickupChoices';
 
 /**

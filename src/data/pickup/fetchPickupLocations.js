@@ -1,4 +1,5 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { ERROR_NO_ADDRESS } from '@/config/data/appConfig';
 import { Pickup } from 'Sdk/src/endpoint/public/pickup';
 import { configBus } from '@/config/configBus';
 

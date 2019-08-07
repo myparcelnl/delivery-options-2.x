@@ -105,15 +105,32 @@ export default {
   created() {
     this.getCheckout();
 
+    const debounceDelay = 200;
+
+    // todo remove
+    for (const eventsKey in EVENTS) {
+      document.addEventListener(EVENTS[eventsKey], () => {
+        // eslint-disable-next-line no-console
+        console.log('document event:', EVENTS[eventsKey]);
+      });
+    }
+
+    document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, debounce(() => {
+      this.getCheckout();
+    }, debounceDelay));
+
     // Add the new data to the values object
-    this.$configBus.$on('update', this.updateExternalData);
+    this.$configBus.$on(EVENTS.UPDATE, this.updateExternalData);
 
     // Debounce trigger updating the checkout
-    const debounceDelay = 300;
-    this.$configBus.$on('update', debounce(this.updateExternal, debounceDelay));
+    this.$configBus.$on(EVENTS.UPDATE, debounce(this.updateExternal, debounceDelay));
 
-    this.$configBus.$on('error', () => {
+    this.$configBus.$on(EVENTS.ERROR, (e) => {
       this.reset();
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.warn('error:', e);
+      }
       this.hideCheckout();
     });
   },
