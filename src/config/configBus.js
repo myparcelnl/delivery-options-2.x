@@ -7,19 +7,9 @@ import {
   DROP_OFF_DAYS,
   DROP_OFF_DELAY,
 } from '@/config/data/settingsConfig';
-import { DEFAULT_PLATFORM, FLESPAKKET, MYPARCEL, addressRequirements } from '@/config/data/platformConfig';
-import { getAddress, getConfig, mock } from '@/config/setup';
+import { FLESPAKKET, MYPARCEL, addressRequirements } from '@/config/data/platformConfig';
+import { getAddress, getConfig } from '@/config/setup';
 import Vue from 'vue';
-import { defaultConfig } from './data/defaultConfig';
-
-// Allow mocking
-if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
-  if (['development', 'test'].includes(process.env.NODE_ENV)) {
-    window.MyParcelConfig = JSON.stringify(defaultConfig(DEFAULT_PLATFORM));
-  } else {
-    throw 'No config found! (window.MyParcelConfig is required.)';
-  }
-}
 
 /**
  * Config bus.
@@ -39,10 +29,6 @@ export const configBus = new Vue({
     errors: {},
 
     values: {},
-
-    mock,
-
-    mockDelay: 0,
 
     /**
      * Whether to show the checkout at all or not.
@@ -71,7 +57,7 @@ export const configBus = new Vue({
     pickupLocations: [],
 
     /**
-     * The config data.
+     * The configuration data.
      */
     ...getConfig(),
   },
@@ -331,12 +317,18 @@ export const configBus = new Vue({
      * Format distance for given amount of meters.
      *
      * @param {Number|String} distance - Distance in meters.
+     *
      * @returns {string}
      */
     formatDistance(distance) {
+      const mToKm = 1000;
+
       let unit = 'm';
-      if (distance >= 1000) {
-        distance = (distance / 1000).toFixed(1).toString().replace(/\./, ',');
+      if (distance >= mToKm) {
+        distance = (distance / mToKm)
+          .toFixed(1)
+          .toString()
+          .replace(/\./, ',');
         unit = 'km';
       }
 

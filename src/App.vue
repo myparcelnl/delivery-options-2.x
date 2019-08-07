@@ -1,43 +1,19 @@
 <template>
   <div>
     <div
-      v-if="!hasNothingToShow && $configBus.showCheckout"
+      v-if="$configBus.showCheckout"
       class="myparcel-checkout">
       <loader v-if="loading" />
 
-      <div v-else-if="!$configBus.hasValidAddress">
-        Please enter an address
-      </div>
+      <Errors v-else-if="hasErrors || $configBus.hasErrors" />
 
       <div
-        v-else-if="!hasErrors"
+        v-else
         class="myparcel-checkout__delivery-options">
         <recursive-form
           v-for="option in form.options"
           :key="option.name"
           :option="option" />
-      </div>
-
-      <div
-        v-else
-        class="myparcel-checkout__errors">
-        <div class="alert alert-danger mt-2">
-          Check de volgende errors:
-          <ul>
-            <template v-for="(errorData, type) in $configBus.errors">
-              <li
-                v-for="error in errorData.errors"
-                :key="type + '_' + error.code"
-                v-text="error.message" />
-            </template>
-          </ul>
-          <hr>
-          Of:
-          <ul>
-            <li v-text="$configBus.strings.addressNotFound" />
-            <li v-text="$configBus.strings.wrongHouseNumberPostcode" />
-          </ul>
-        </div>
       </div>
     </div>
     <input
@@ -51,6 +27,7 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
+import Errors from '@/Errors';
 import Loader from '@/components/Loader';
 import debounce from 'debounce';
 import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
@@ -59,10 +36,15 @@ import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
-  components: { Loader },
+  components: { Errors, Loader },
 
   data() {
     return {
+      /**
+       * TODO: Remove. This is a temporary solution to be able to debug the configBus with Vue DevTools.
+       */
+      configBus: this.$configBus,
+
       /**
        * Whether the checkout is loading or not.
        *
@@ -141,22 +123,24 @@ export default {
      * Create the checkout form.
      */
     createForm() {
-      if (this.hasNothingToShow) {
+      if (!this.$configBus.hasValidAddress) {
         this.hideCheckout();
         return;
       }
 
-      const choices = [];
+      const map = {
+        [DELIVERY]: getDeliveryOptions(),
+        [PICKUP]: getPickupLocations(),
+      };
 
-      if (this.$configBus.isEnabled(formConfig[DELIVERY])) {
-        choices.push(getDeliveryOptions());
-      }
-
-      if (this.$configBus.isEnabled(formConfig[PICKUP])) {
-        choices.push(getPickupLocations());
-      }
+      const choices = Object.keys(map).map((setting) => {
+        if (this.$configBus.isEnabled(formConfig[setting])) {
+          return map[setting];
+        }
+      });
 
       if (!choices.length) {
+        this.hideCheckout();
         return;
       }
 
@@ -172,13 +156,14 @@ export default {
     },
 
     /**
-     * Get the checkout.
+     * Show the checkout, getting all necessary data in the process..
      *
      * @returns {Promise}
      */
     async getCheckout() {
       this.$configBus.setAddress();
 
+      console.log(this.$configBus.address);
       // Stop multiple getCheckout() calls or don't start loading if there's nothing to load
       if (this.gettingCheckout || this.hasNothingToShow) {
         return;
@@ -209,8 +194,10 @@ export default {
     updateExternal() {
       const event = document.createEvent('HTMLEvents');
       event.initEvent(EVENTS.UPDATE_CHECKOUT_OUT, true, false);
+      const event2 = new Event(EVENTS.UPDATE_CHECKOUT_OUT);
 
-      document.querySelector('body').dispatchEvent(event);
+      console.log({ event2 });
+      document.querySelector('body').dispatchEvent(event2);
     },
 
     /**

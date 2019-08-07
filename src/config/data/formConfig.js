@@ -43,30 +43,7 @@ export const PICKUP_EXPRESS = 'pickup_express';
 export const formConfig = {
 
   /**
-   * Additional options.
-   *
-   * @see https://myparcelnl.github.io/api/#7_C
-   */
-  [ADDITIONAL_OPTIONS]: {
-    name: ADDITIONAL_OPTIONS,
-    options: {
-      [SIGNATURE]: {
-        enabled: SETTINGS.ALLOW_SIGNATURE,
-        label: SETTINGS.SIGNATURE_TITLE,
-        name: SIGNATURE,
-        price: SETTINGS.PRICE_SIGNATURE,
-      },
-      [ONLY_RECIPIENT]: {
-        enabled: SETTINGS.ALLOW_ONLY_RECIPIENT,
-        label: SETTINGS.ONLY_RECIPIENT_TITLE,
-        name: ONLY_RECIPIENT,
-        price: SETTINGS.PRICE_ONLY_RECIPIENT,
-      },
-    },
-  },
-
-  /**
-   * Delivery moments.
+   * Delivery options.
    *
    * @see https://myparcelnl.github.io/api/#8
    */
@@ -96,7 +73,30 @@ export const formConfig = {
   },
 
   /**
-   * Pickup settings.
+   * Additional options for delivery.
+   *
+   * @see https://myparcelnl.github.io/api/#7_C
+   */
+  [ADDITIONAL_OPTIONS]: {
+    name: ADDITIONAL_OPTIONS,
+    options: {
+      [SIGNATURE]: {
+        enabled: SETTINGS.ALLOW_SIGNATURE,
+        label: SETTINGS.SIGNATURE_TITLE,
+        name: SIGNATURE,
+        price: SETTINGS.PRICE_SIGNATURE,
+      },
+      [ONLY_RECIPIENT]: {
+        enabled: SETTINGS.ALLOW_ONLY_RECIPIENT,
+        label: SETTINGS.ONLY_RECIPIENT_TITLE,
+        name: ONLY_RECIPIENT,
+        price: SETTINGS.PRICE_ONLY_RECIPIENT,
+      },
+    },
+  },
+
+  /**
+   * Pickup locations.
    */
   [PICKUP]: {
     enabled: SETTINGS.ALLOW_PICKUP_POINTS,

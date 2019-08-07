@@ -10,6 +10,15 @@ export const mock = false;
  * @returns {MyParcel.CheckoutConfiguration}
  */
 function getWindowObject() {
+  // Allow mocking for user and tests.
+  if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
+    if (['development', 'test'].includes(process.env.NODE_ENV)) {
+      window.MyParcelConfig = {};
+    } else {
+      throw 'No config found! (window.MyParcelConfig is required.)';
+    }
+  }
+
   return typeof window.MyParcelConfig === 'string'
     ? JSON.parse(window.MyParcelConfig)
     : window.MyParcelConfig;
@@ -52,8 +61,8 @@ const prepareConfig = (data) => {
 export const getConfig = () => {
   const windowObject = getWindowObject();
 
-  // Get the default config by given platform or fall back to default
-  const defaultConfigObject = defaultConfig(windowObject.config.platform || DEFAULT_PLATFORM);
+  // Get the given platform or fall back to default
+  const platform = windowObject.config ? windowObject.config.platform : DEFAULT_PLATFORM;
 
   /**
    * Customizer function for lodash mergeWith().
@@ -69,7 +78,7 @@ export const getConfig = () => {
 
   // Merge the config data with the default config. Uses lodash mergeWith to be able to skip undefined entries.
   // @see https://lodash.cobm/docs/4.17.15#mergeWith
-  const data = _mergeWith({}, defaultConfigObject, windowObject, customizer);
+  const data = _mergeWith({}, defaultConfig(platform), windowObject, customizer);
 
   return prepareConfig(data);
 };

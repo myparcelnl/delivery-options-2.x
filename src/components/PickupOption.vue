@@ -18,7 +18,7 @@
       </span>
 
       <span class="myparcel-checkout__d--block">
-        <span v-text="distance" /> – <span v-text="priceText" />
+        <span v-text="$configBus.formatDistance(pickupData.location.distance)" /> – <span v-text="priceText" />
       </span>
     </label>
 
@@ -106,24 +106,6 @@ export default {
       }
 
       return `${this.$configBus.strings.from} ${formattedPrice}`;
-    },
-
-    /**
-     * Format the distance to the pickup location in m or km depending on amount of meters.
-     *
-     * @returns {string}
-     */
-    distance() {
-      let { distance } = this.pickupData.location;
-      const mToKm = 1000;
-
-      let unit = 'm';
-      if (distance >= mToKm) {
-        distance = (distance / mToKm).toFixed(1).toString().replace(/\./, ',');
-        unit = 'km';
-      }
-
-      return distance + unit;
     },
   },
 

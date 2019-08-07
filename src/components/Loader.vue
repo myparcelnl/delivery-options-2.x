@@ -5,7 +5,6 @@
     <div
       class="myparcel-checkout__loader"
       :class="{
-        'myparcel-checkout__loader--big': 'big' === type,
         'myparcel-checkout__loader--inline': 'inline' === type
       }">
       <transition-group
@@ -21,9 +20,7 @@
           }" />
       </transition-group>
 
-      <transition
-        v-else
-        name="fade" />
+      <span v-else />
     </div>
   </transition>
 </template>
@@ -34,7 +31,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'big',
+      default: null,
     },
   },
 };

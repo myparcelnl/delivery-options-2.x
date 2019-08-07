@@ -32,4 +32,3 @@ export const UPDATE_CHECKOUT_IN = 'myparcel_update_checkout';
  * @type {string}
  */
 export const UPDATE_CHECKOUT_OUT = 'update_checkout';
-

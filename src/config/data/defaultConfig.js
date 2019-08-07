@@ -1,11 +1,9 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
 import {
   DEFAULT_PLATFORM,
-  addressByPlatform,
-  configByPlatform,
-  getPlatformMap,
-  stringsByPlatform,
+  platformConfig,
 } from '@/config/data/platformConfig';
+import _mergeWith from 'lodash.mergewith';
 
 /**
  * Base checkout configuration.
@@ -88,9 +86,6 @@ const baseConfig = {
  */
 export const defaultConfig = (platform) => {
   baseConfig.config.platform = platform;
-  baseConfig.config = { ...baseConfig.config, ...getPlatformMap(configByPlatform, platform) };
-  baseConfig.address = { ...baseConfig.address, ...getPlatformMap(addressByPlatform, platform) };
-  baseConfig.strings = { ...baseConfig.strings, ...getPlatformMap(stringsByPlatform, platform) };
 
-  return baseConfig;
+  return _mergeWith({}, baseConfig, platformConfig(platform), () => {});
 };
