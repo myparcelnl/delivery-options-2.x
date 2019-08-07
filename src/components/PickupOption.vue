@@ -8,7 +8,7 @@
           v-if="$configBus.isMultiCarrier"
           class="myparcel-checkout__image myparcel-checkout__image--sm"
           :src="data.image"
-          :alt="strings[data.label]">
+          :alt="$configBus.strings[data.label]">
 
         <font-awesome-icon
           v-if="selected"
@@ -65,14 +65,6 @@ export default {
     };
   },
   computed: {
-    config() {
-      return this.$configBus.config;
-    },
-
-    strings() {
-      return this.$configBus.strings;
-    },
-
     pickupData() {
       return this.data.pickupData;
     },

@@ -3,11 +3,9 @@
     <div
       v-if="!hasNothingToShow && $configBus.showCheckout"
       class="myparcel-checkout">
-      <loader
-        v-if="loading"
-        :carriers="carriers" />
+      <loader v-if="loading" />
 
-      <div v-else-if="!hasAddress">
+      <div v-else-if="!$configBus.hasValidAddress">
         Please enter an address
       </div>
 
@@ -26,7 +24,7 @@
         <div class="alert alert-danger mt-2">
           Check de volgende errors:
           <ul>
-            <template v-for="(errorData, type) in errors">
+            <template v-for="(errorData, type) in $configBus.errors">
               <li
                 v-for="error in errorData.errors"
                 :key="type + '_' + error.code"
@@ -36,8 +34,8 @@
           <hr>
           Of:
           <ul>
-            <li v-text="strings.addressNotFound" />
-            <li v-text="strings.wrongHouseNumberPostcode" />
+            <li v-text="$configBus.strings.addressNotFound" />
+            <li v-text="$configBus.strings.wrongHouseNumberPostcode" />
           </ul>
         </div>
       </div>
@@ -79,13 +77,6 @@ export default {
       form: {},
 
       /**
-       * Array of carriers. Synchronized with configBus.carriers.
-       *
-       * @type {Array}
-       */
-      carriers: [],
-
-      /**
        * The object that will be converted to a JSON string and put in `#mypa-input`.
        *
        * @type {String}
@@ -100,29 +91,14 @@ export default {
       return this.$configBus.hasErrors;
     },
 
-    errors() {
-      return this.$configBus.errors;
-    },
-
-    config() {
-      return this.$configBus.config;
-    },
-
-    strings() {
-      return this.$configBus.strings;
-    },
-
     /**
      * Quick check if the checkout needs to be showed at all.
      *
      * @returns {Boolean}
      */
     hasNothingToShow() {
-      return !this.config[ALLOW_PICKUP_POINTS] && !this.config[ALLOW_DELIVERY_OPTIONS];
-    },
-
-    hasAddress() {
-      return !!this.$configBus.address.cc && this.$configBus.address.postalCode && this.$configBus.address.number;
+      return (!this.$configBus.config[ALLOW_PICKUP_POINTS] && !this.$configBus.config[ALLOW_DELIVERY_OPTIONS])
+        || !this.$configBus.hasValidAddress;
     },
   },
 
@@ -206,7 +182,6 @@ export default {
           },
         ],
       };
-
     },
 
     /**
