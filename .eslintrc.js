@@ -210,7 +210,7 @@ module.exports = {
     'jsdoc/valid-types': 'warn',
     'jsdoc/no-undefined-types': [
       'warn', {
-        definedTypes: ['MyParcelCheckout'],
+        definedTypes: ['MyParcel'],
       },
     ],
   },

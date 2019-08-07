@@ -120,7 +120,7 @@ export const configBus = new Vue({
     showCheckout: true,
 
     /**
-     * @type {MyParcelCheckout.CarrierData[]}
+     * @type {MyParcel.CarrierData[]}
      */
     carrierData: [],
 

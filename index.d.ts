@@ -1,4 +1,4 @@
-declare namespace MyParcelCheckout {
+declare namespace MyParcel {
   type Carrier = 'postnl' | 'bpost' | 'dpd';
   type Platform = 'myparcel' | 'belgie' | 'flespakket';
 
