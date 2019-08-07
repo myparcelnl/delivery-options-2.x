@@ -36,13 +36,6 @@
       background: rgba(0, 0, 0, .05) linear-gradient(to right, transparent 25%, rgba(0, 0, 0, .05) 50%, transparent 75%);
       background-size: 400% 400%;
 
-      @for $i from 2 through 3 {
-        &:nth-child(#{$i}) {
-          transition-delay: unquote($i * .035 + 's');
-          animation-delay: unquote($i * .05 + 's');
-        }
-      }
-
       &:nth-child(1) { width: 85%; }
 
       &:nth-child(2) { width: 100%; }

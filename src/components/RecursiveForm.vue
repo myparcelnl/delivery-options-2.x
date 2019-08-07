@@ -74,14 +74,16 @@
               v-if="loading === choice.name"
               type="inline" />
 
-            <template
-              v-else-if="selected === choice.name && chosenOptions">
+            <transition-group
+              v-else-if="selected === choice.name && chosenOptions"
+              name="fade"
+              appear>
               <recursive-form
                 v-for="subOption in chosenOptions"
                 :key="choice.name + '_' + subOption.name"
                 :option="subOption"
                 :loading="loading" />
-            </template>
+            </transition-group>
           </template>
         </td>
       </tr>
