@@ -53,25 +53,24 @@ const baseConfig = {
     [SETTINGS.ADDRESS_NOT_FOUND]: 'Adresgegevens niet ingevuld',
 
     // Other strings
-    // [SETTINGS.AGAIN]: 'Again',
     [SETTINGS.CLOSED]: 'Gesloten',
     [SETTINGS.DISCOUNT]: 'korting',
     [SETTINGS.FREE]: 'Gratis',
     [SETTINGS.FROM]: 'Vanaf',
     [SETTINGS.LOAD_MORE]: 'Laad meer',
-    [SETTINGS.RETRY]: 'Opnieuw proberen',
+    [SETTINGS.RETRY]: 'Opnieuw',
 
     // Titles of options
-    [SETTINGS.DELIVERY_EVENING_TITLE]: 'Evening delivery',
-    [SETTINGS.DELIVERY_MORNING_TITLE]: 'Morning delivery',
+    [SETTINGS.DELIVERY_EVENING_TITLE]: '',
+    [SETTINGS.DELIVERY_MORNING_TITLE]: '',
     [SETTINGS.DELIVERY_STANDARD_TITLE]: '',
     [SETTINGS.DELIVERY_TITLE]: 'Bezorgen op',
-    [SETTINGS.ONLY_RECIPIENT_TITLE]: 'Home address only',
+    [SETTINGS.ONLY_RECIPIENT_TITLE]: 'Alleen ontvanger',
     [SETTINGS.PICK_UP_FROM]: 'Afhalen vanaf',
     [SETTINGS.PICKUP_TITLE]: 'Afhalen op locatie',
     [SETTINGS.SIGNATURE_TITLE]: 'Handtekening',
 
-    // Opening hours and weekdays
+    // Opening hours
     [SETTINGS.OPENING_HOURS]: 'Openingstijden',
   },
 };

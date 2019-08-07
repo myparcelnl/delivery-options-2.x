@@ -86,17 +86,7 @@ export default {
   },
 
   created() {
-    this.getCheckout();
-
     const debounceDelay = 200;
-
-    // todo remove
-    for (const eventsKey in EVENTS) {
-      document.addEventListener(EVENTS[eventsKey], () => {
-        // eslint-disable-next-line no-console
-        console.log('document event:', EVENTS[eventsKey]);
-      });
-    }
 
     document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, debounce(() => {
       this.getCheckout();
@@ -185,19 +175,15 @@ export default {
      * Hide the checkout completely.
      */
     hideCheckout() {
-      this.$configBus.showCheckout = false;
+      console.log('would hide checkout');
+      // this.$configBus.showCheckout = false;
     },
 
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      */
     updateExternal() {
-      const event = document.createEvent('HTMLEvents');
-      event.initEvent(EVENTS.UPDATE_CHECKOUT_OUT, true, false);
-      const event2 = new Event(EVENTS.UPDATE_CHECKOUT_OUT);
-
-      console.log({ event2 });
-      document.querySelector('body').dispatchEvent(event2);
+      document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_OUT));
     },
 
     /**
