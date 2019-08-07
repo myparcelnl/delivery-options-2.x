@@ -9,9 +9,8 @@ import { configBus } from '@/config/configBus';
  * @returns {Promise}
  */
 export function fetchPickupLocations() {
-  const { cc, number, postalCode } = configBus.address;
-
-  if (!cc || !postalCode || !number) {
+  if (!configBus.hasValidAddress) {
+    configBus.addErrors(Pickup.prototype.endpoint, [ERROR_NO_ADDRESS]);
     return new Promise((resolve) => resolve({ errors: true, response: {} }));
   }
 

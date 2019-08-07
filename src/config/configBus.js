@@ -47,7 +47,7 @@ export const configBus = new Vue({
     /**
      * Whether to show the checkout at all or not.
      */
-    showCheckout: true,
+    showCheckout: false,
 
     /**
      * @type {MyParcel.CarrierData[]}
@@ -98,7 +98,7 @@ export const configBus = new Vue({
      * @returns {boolean}
      */
     hasValidAddress() {
-      if (!this.address.cc) {
+      if (!this.address || !this.address.cc) {
         return false;
       }
 
