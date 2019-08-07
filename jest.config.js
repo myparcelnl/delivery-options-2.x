@@ -21,14 +21,14 @@ module.exports = {
   ],
   collectCoverage: true,
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.{vue}',
-    '<rootDir>/src/**/*.{js}',
     '!**/node_modules/**',
+    '!<rootDir>/demo/**',
     '!<rootDir>/dist/**',
-    '!<rootDir>/src/vendor/**',
-    '!<rootDir>/tests/**',
     '!<rootDir>/myparcel-js-sdk/**',
     '!<rootDir>/sandbox/**',
+    '!<rootDir>/tests/**',
+    '<rootDir>/src/**/*.{js}',
+    '<rootDir>/src/**/*.{vue}',
   ],
   coverageReporters: ['lcov', 'text-summary'],
 };
