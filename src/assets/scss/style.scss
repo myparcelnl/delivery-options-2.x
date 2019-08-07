@@ -36,6 +36,7 @@
     }
 
     &--sm {
+      vertical-align: middle;
       width: $choice-image-size / 2;
       height: $choice-image-size / 2;
     }
@@ -46,8 +47,14 @@
       opacity: .5;
     }
 
-    &--has-image > td:first-child {
-      padding-top: $choice-image-size / 4;
+    &--has-image > td {
+      &:first-child input {
+        height: $choice-image-size;
+      }
+
+      .myparcel-checkout__loader--inline div:nth-child(1) {
+        margin-top: 0;
+      }
     }
   }
 
