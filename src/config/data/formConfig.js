@@ -1,4 +1,4 @@
-import * as SETTINGS from '@/config/settingsConfig';
+import * as SETTINGS from '@/config/data/settingsConfig';
 
 export const DELIVERY = 'delivery';
 

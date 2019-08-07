@@ -1,20 +1,20 @@
-import * as SETTINGS from '@/config/settingsConfig';
+import * as SETTINGS from '@/config/data/settingsConfig';
 import {
   DEFAULT_PLATFORM,
   addressByPlatform,
   configByPlatform,
   getPlatformMap,
   stringsByPlatform,
-} from '@/config/platformConfig';
+} from '@/config/data/platformConfig';
 
 /**
  * Base checkout configuration.
  *
- * @type {MyParcelCheckout.Configuration}
+ * @type {MyParcel.CheckoutConfiguration}
  */
 const baseConfig = {
   /**
-   * @type {MyParcelCheckout.Config}
+   * @type {MyParcel.CheckoutConfigk}
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
@@ -45,7 +45,7 @@ const baseConfig = {
   },
 
   /**
-   * @type {MyParcelCheckout.Strings}
+   * @type {MyParcel.CheckoutStrings}
    */
   strings: {
     // Address strings
@@ -82,9 +82,9 @@ const baseConfig = {
  * Get the default config for given platform. Gets the base config, sets platform and appends platform specific
  * variables, if any.
  *
- * @param {MyParcelCheckout.Platform} platform - Platform name.
+ * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcelCheckout.Configuration}
+ * @returns {MyParcel.CheckoutConfiguration}
  */
 export const defaultConfig = (platform) => {
   baseConfig.config.platform = platform;

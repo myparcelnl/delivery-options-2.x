@@ -1,6 +1,6 @@
-import * as SETTINGS from '@/config/settingsConfig';
+import * as SETTINGS from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfig } from '@/config/data/defaultConfig';
 
 Object.defineProperty(window, 'MyParcelConfig', defaultConfig);
 

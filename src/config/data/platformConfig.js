@@ -10,7 +10,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 export const addressRequirements = {
   NL: ['cc', 'postalCode', 'number'],
-  BE: ['cc', 'city', 'number', 'postalCode'],
+  BE: ['cc', 'postalCode'], // , 'city'
 };
 
 export const addressNL = {
