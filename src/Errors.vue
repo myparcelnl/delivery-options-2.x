@@ -1,6 +1,35 @@
 <template>
   <div class="myparcel-checkout__errors">
-    <div class="alert alert-danger mt-2">
+    <template v-if="isMissingAddressPart">
+      <h3 v-text="$configBus.strings.addressNotFound" />
+      <table>
+        <tr
+          v-for="part in requiredAddressParts"
+          :key="part">
+          <td>
+            <label
+              :for="part + '-input'"
+              v-text="part" />
+          </td>
+
+          <td>
+            <input
+              v-model="values[part]"
+              :name="part + '-input'"
+              type="text"
+              :placeholder="part">
+          </td>
+        </tr>
+      </table>
+
+      <button
+        @click="retry()"
+        v-text="$configBus.strings.retry" />
+    </template>
+
+    <div
+      v-else
+      class="alert alert-danger mt-2">
       Check de volgende errors:
       <ul>
         <template v-for="(errorData, type) in $configBus.errors">
@@ -21,7 +50,36 @@
 </template>
 
 <script>
+import * as EVENTS from '@/config/data/eventConfig';
+import { MISSING_ADDRESS } from '@/config/data/errorConfig';
+import { addressRequirements } from '@/config/data/platformConfig';
+
 export default {
   name: 'Errors',
+  data() {
+    return {
+      values: {},
+    };
+  },
+  computed: {
+    requiredAddressParts() {
+      return addressRequirements[this.$configBus.address.cc];
+    },
+    isMissingAddressPart() {
+      return this.$configBus.errors.hasOwnProperty(MISSING_ADDRESS);
+    },
+  },
+  methods: {
+    /**
+     * Update the address in the configBus with the new address and send the it to the external platform.
+     */
+    retry() {
+      this.$configBus.address = { ...this.$configBus.address, ...this.values };
+      document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_IN));
+
+      // Send the new values in an event. It's up to the external platform to do handle this event or not.
+      document.dispatchEvent(new CustomEvent(EVENTS.ADDRESS_UPDATED, this.values));
+    },
+  },
 };
 </script>

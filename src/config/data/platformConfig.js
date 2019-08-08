@@ -23,8 +23,8 @@ const configMap = {
 };
 
 export const addressRequirements = {
-  NL: ['cc', 'postalCode', 'number'],
-  BE: ['cc', 'postalCode'], // , 'city' // todo it's not mandatory right now?!
+  NL: ['postalCode', 'number'],
+  BE: ['postalCode'], // , 'city' // todo it's not mandatory right now?!
 };
 
 /**

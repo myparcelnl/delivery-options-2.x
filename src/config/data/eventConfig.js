@@ -27,6 +27,13 @@ export const ERROR = 'error';
 export const UPDATE_CHECKOUT_IN = 'myparcel_update_checkout';
 
 /**
+ * To tell the external platform the address is updated.
+ *
+ * @type {string}
+ */
+export const ADDRESS_UPDATED = 'address_updated';
+
+/**
  * To tell the external platform it needs to update.
  *
  * @type {string}

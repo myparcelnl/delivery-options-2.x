@@ -1,11 +1,11 @@
 <template>
   <div>
     <div
-      v-if="$configBus.showCheckout"
+      v-if="showCheckout"
       class="myparcel-checkout">
       <loader v-if="loading" />
 
-      <Errors v-else-if="hasErrors || $configBus.hasErrors" />
+      <Errors v-else-if="!hasValidAddress || $configBus.hasErrors" />
 
       <div
         v-else
@@ -24,7 +24,11 @@
 </template>
 
 <script>
+import { ERROR_NO_ADDRESS } from '@/config/data/appConfig';
+import { MISSING_ADDRESS, addressErrorMap } from '@/config/data/errorConfig';
+import { UPDATE } from '@/config/data/eventConfig';
 import * as EVENTS from '@/config/data/eventConfig';
+import { addressRequirements } from '@/config/data/platformConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
 import Errors from '@/Errors';
@@ -40,6 +44,11 @@ export default {
 
   data() {
     return {
+      /**
+       * Whether to show the checkout at all or not.
+       */
+      showCheckout: false,
+
       /**
        * TODO: Remove. This is a temporary solution to be able to debug the configBus with Vue DevTools.
        */
@@ -69,19 +78,46 @@ export default {
   },
 
   computed: {
-    // Explicitly declared to make it reactive
-    hasErrors() {
-      return this.$configBus.hasErrors;
+    /**
+     * False if:
+     *  - CC is undefined
+     *  - Not all properties in addressRequirements for the current CC are present.
+     *
+     * Otherwise returns true.
+     *
+     * @returns {boolean}
+     */
+    hasValidAddress() {
+      if (!this.$configBus.address || !this.$configBus.address.cc) {
+        return false;
+      }
+
+      const cc = this.$configBus.address.cc.toUpperCase();
+      const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'NL'];
+      const doesntMeetRequirements = (item) => {
+        return !this.$configBus.address.hasOwnProperty(item) || !this.$configBus.address[item];
+      };
+
+      // False if any requirements are not met, true otherwise.
+      const valid = !requirements.some((item) => doesntMeetRequirements(item));
+
+      // If invalid, tell the configBus which fields are missing.
+      if (!valid) {
+        this.$configBus.addErrors(
+          MISSING_ADDRESS,
+          requirements.filter((item) => doesntMeetRequirements(item))
+        );
+      }
+      return valid;
     },
 
     /**
-     * Quick check if the checkout needs to be showed at all.
+     * Check if any top level setting is enabled.
      *
      * @returns {Boolean}
      */
     hasNothingToShow() {
-      return (!this.$configBus.config[ALLOW_PICKUP_POINTS] && !this.$configBus.config[ALLOW_DELIVERY_OPTIONS])
-        || !this.$configBus.hasValidAddress;
+      return !this.$configBus.config[ALLOW_PICKUP_POINTS] && !this.$configBus.config[ALLOW_DELIVERY_OPTIONS];
     },
   },
 
@@ -99,7 +135,6 @@ export default {
     this.$configBus.$on(EVENTS.UPDATE, debounce(this.updateExternal, debounceDelay));
 
     this.$configBus.$on(EVENTS.ERROR, (e) => {
-      this.reset();
       if (process.env.NODE_ENV === 'development') {
         // eslint-disable-next-line no-console
         console.warn('error:', e);
@@ -113,11 +148,6 @@ export default {
      * Create the checkout form.
      */
     createForm() {
-      if (!this.$configBus.hasValidAddress) {
-        this.hideCheckout();
-        return;
-      }
-
       const map = {
         [DELIVERY]: getDeliveryOptions(),
         [PICKUP]: getPickupLocations(),
@@ -151,23 +181,22 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
-      this.$configBus.setAddress();
-
-      console.log(this.$configBus.address);
-      // Stop multiple getCheckout() calls or don't start loading if there's nothing to load
-      if (this.gettingCheckout || this.hasNothingToShow) {
+      // Don't start loading if there's nothing to load
+      if (this.hasNothingToShow) {
         return;
       }
 
-      this.$configBus.showCheckout = true;
-      this.gettingCheckout = true;
-      this.reset();
+      this.$configBus.setAddress();
+      this.showCheckout = true;
 
+      if (!this.$configBus.hasValidAddress) {
+        this.loading = false;
+        return;
+      }
+
+      this.loading = true;
       await fetchAllCarriers();
-
       this.createForm();
-
-      this.gettingCheckout = false;
       this.loading = false;
     },
 
@@ -175,8 +204,8 @@ export default {
      * Hide the checkout completely.
      */
     hideCheckout() {
-      console.log('would hide checkout');
-      // this.$configBus.showCheckout = false;
+      console.trace('would hide checkout');
+      // this.showCheckout = false;
     },
 
     /**
@@ -206,15 +235,6 @@ export default {
       this.$nextTick(() => {
         this.$configBus.$emit(EVENTS.AFTER_UPDATE, { name, value });
       });
-    },
-
-    /**
-     * Reset checkout data.
-     */
-    reset() {
-      this.$configBus.values = {};
-      this.$configBus.errors = {};
-      this.loading = true;
     },
   },
 };

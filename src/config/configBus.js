@@ -7,7 +7,7 @@ import {
   DROP_OFF_DAYS,
   DROP_OFF_DELAY,
 } from '@/config/data/settingsConfig';
-import { FLESPAKKET, MYPARCEL, SENDMYPARCEL, addressRequirements } from '@/config/data/platformConfig';
+import { FLESPAKKET, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { getAddress, getConfig } from '@/config/setup';
 import Vue from 'vue';
 
@@ -27,11 +27,6 @@ export const configBus = new Vue({
      * @type {Object}
      */
     errors: {},
-
-    /**
-     * Whether to show the checkout at all or not.
-     */
-    showCheckout: false,
 
     /**
      * @type {MyParcel.CarrierData[]}
@@ -91,29 +86,6 @@ export const configBus = new Vue({
 
     platform() {
       return this.config.platform;
-    },
-
-    /**
-     * False if:
-     *  - CC is undefined
-     *  - Not all properties in addressRequirements for the current CC are present.
-     *
-     * Otherwise returns true.
-     *
-     * @returns {boolean}
-     */
-    hasValidAddress() {
-      if (!this.address || !this.address.cc) {
-        return false;
-      }
-
-      const cc = this.address.cc.toUpperCase();
-      const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'NL'];
-
-      // Return false if any requirements are not met, true otherwise.
-      return !requirements.some((requirement) => {
-        return !this.address.hasOwnProperty(requirement) || !this.address[requirement];
-      });
     },
 
     /**
@@ -254,8 +226,6 @@ export const configBus = new Vue({
       if (!responseErrors.length) {
         return;
       }
-
-      responseErrors = responseErrors[0].errors;
 
       if (this.errors.hasOwnProperty(key)) {
         this.errors[key] = [...this.errors[key], ...responseErrors];

@@ -42,7 +42,7 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
     response = await endpoint[options.method](options.params);
   } catch (e) {
     errors = e;
-    configBus.addErrors(endpoint.endpoint, [e]);
+    configBus.addErrors(endpoint.endpoint, e[0].errors);
   }
 
   return {
