@@ -59,8 +59,25 @@ export const configBus = new Vue({
      */
     pickupLocations: [],
 
+    /**
+     * Must be defined before it is filled in created().
+     *
+     * @type {MyParcel.CheckoutConfig}
+     */
     config: null,
+
+    /**
+     * Must be defined before it is filled in created().
+     *
+     * @type {MyParcel.CheckoutStrings}
+     */
     strings: null,
+
+    /**
+     * Must be defined before it is filled in created().
+     *
+     * @type {MyParcel.CheckoutAddress}
+     */
     address: null,
   },
   computed: {
@@ -90,21 +107,13 @@ export const configBus = new Vue({
         return false;
       }
 
-      let requirements;
       const cc = this.address.cc.toUpperCase();
-      if (addressRequirements.hasOwnProperty(cc)) {
-        requirements = addressRequirements[cc];
-      } else {
-        requirements = addressRequirements.NL;
-      }
+      const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'NL'];
 
-      requirements.forEach((requirement) => {
-        if (!!this.address[requirement]) {
-          return false;
-        }
+      // Return false if any requirements are not met, true otherwise.
+      return !requirements.some((requirement) => {
+        return !this.address.hasOwnProperty(requirement) || !this.address[requirement];
       });
-
-      return true;
     },
 
     /**
