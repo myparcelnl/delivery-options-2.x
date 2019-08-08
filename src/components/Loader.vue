@@ -5,7 +5,8 @@
     <div
       class="myparcel-checkout__loader"
       :class="{
-        'myparcel-checkout__loader--inline': 'inline' === type
+        'myparcel-checkout__loader--inline': 'inline' === type,
+        'myparcel-checkout__loader--spinner': 'spinner' === type
       }">
       <transition-group
         v-if="'inline' === type"
@@ -31,7 +32,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: null,
+      default: 'spinner',
     },
   },
 };
