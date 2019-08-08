@@ -7,7 +7,7 @@ import {
   DROP_OFF_DAYS,
   DROP_OFF_DELAY,
 } from '@/config/data/settingsConfig';
-import { FLESPAKKET, MYPARCEL, addressRequirements } from '@/config/data/platformConfig';
+import { FLESPAKKET, MYPARCEL, SENDMYPARCEL, addressRequirements } from '@/config/data/platformConfig';
 import { getAddress, getConfig } from '@/config/setup';
 import Vue from 'vue';
 
@@ -28,8 +28,6 @@ export const configBus = new Vue({
      */
     errors: {},
 
-    values: {},
-
     /**
      * Whether to show the checkout at all or not.
      */
@@ -40,26 +38,30 @@ export const configBus = new Vue({
      */
     carrierData: [],
 
+    /**
+     * The current carrier.
+     *
+     * @type {MyParcel.Carrier}
+     */
     currentCarrier: null,
 
     /**
      * Delivery options array from the API.
      *
-     * @type {Array}
+     * @type {MyParcel.DeliveryOption[]}
      */
     deliveryOptions: [],
 
     /**
      * Pickup options array from the API.
      *
-     * @type {Array}
+     * @type {MyParcel.PickupLocation[]}
      */
     pickupLocations: [],
 
-    /**
-     * The configuration data.
-     */
-    ...getConfig(),
+    config: null,
+    strings: null,
+    address: null,
   },
   computed: {
     hasErrors() {
@@ -115,6 +117,26 @@ export const configBus = new Vue({
         ? this.config.carrierSettings[this.currentCarrier]
         : {};
     },
+  },
+
+  created() {
+    // Load the config on the first incoming update event.
+    const listener = () => {
+      // Remove the listener immediately to only do this once.
+      document.removeEventListener(EVENTS.UPDATE_CHECKOUT_IN, listener);
+
+      const config = getConfig();
+
+      /**
+       * The configuration data.
+       */
+      Object.keys(config).forEach((item) => {
+        this[item] = config[item];
+      });
+
+    };
+
+    document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, listener);
   },
 
   methods: {
@@ -262,17 +284,27 @@ export const configBus = new Vue({
         monday_delivery: this.config[ALLOW_MONDAY_DELIVERY],
       };
 
+      const parametersBE = {
+        // TODO:
+        //  "Day-picker is nog niet van toepassing voor SendMyParcel. De data die terugkomt is zelf opgebouwd door JW en
+        //  komt niet officieel uit bpost/DPD." < uit https://jira.dmp.zone/browse/MY-12648
+        //  Wanneer dit niet meer van toepassing is moet deze override weg.
+        deliverydays_window: 1,
+      };
+
       const parametersByPlatform = {
         [MYPARCEL]: parametersNL,
         [FLESPAKKET]: parametersNL,
+        [SENDMYPARCEL]: parametersBE,
       };
 
-      let parameters = {
+      const parameters = {
+        platform: this.platform,
+        carrier,
+
         cc: this.address.cc,
         postal_code: this.address.postalCode,
         number: this.address.number,
-        platform: this.platform,
-        carrier,
 
         cutoff_time: this.config[CUTOFF_TIME],
         deliverydays_window: this.config[DELIVERY_DAYS_WINDOW],
@@ -280,9 +312,7 @@ export const configBus = new Vue({
         dropoff_delay: this.config[DROP_OFF_DELAY],
       };
 
-      parameters = { ...parameters, ...parametersByPlatform[this.config.platform] };
-
-      return parameters;
+      return { ...parameters, ...parametersByPlatform[this.platform] };
     },
 
     /**
