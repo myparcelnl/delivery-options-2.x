@@ -1,5 +1,6 @@
 import { appConfig } from '@/config/data/appConfig';
 import { configBus } from '@/config/configBus';
+import { ERROR } from '@/config/data/eventConfig';
 
 export const METHOD_GET = 'get';
 
@@ -13,13 +14,12 @@ const isDev = process.env.NODE_ENV === 'development';
  * @param {Function} Endpoint - Endpoint to use.
  *
  * @param {Object} options - Options.
- * @param {String} options.method? - Method.
- *
- * @param {Object} param - Parameter to add to the url.
+ * @param {String} options.method? - HTTP Method.
+ * @param {Object} params - Parameters to add to the url.
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
-export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
+export async function fetchFromEndpoint(Endpoint, options = {}, params = {}) {
   const endpoint = new Endpoint();
 
   // Set API URL and accept-language header from config
@@ -32,17 +32,15 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
   // Set default options and override with given options.
   options = {
     method: METHOD_GET,
-    params: {
-      ...param,
-    },
     ...options,
   };
 
   try {
-    response = await endpoint[options.method](options.params);
+    response = await endpoint[options.method](params);
   } catch (e) {
     errors = e;
     configBus.addErrors(endpoint.endpoint, e[0].errors);
+    configBus.$emit(ERROR, { [endpoint.endpoint]: e[0].errors });
   }
 
   return {

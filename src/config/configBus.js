@@ -232,8 +232,6 @@ export const configBus = new Vue({
       } else {
         this.errors[key] = responseErrors;
       }
-
-      this.$emit(EVENTS.ERROR, { [key]: responseErrors });
     },
 
     /**

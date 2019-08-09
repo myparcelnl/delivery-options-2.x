@@ -24,15 +24,13 @@
 </template>
 
 <script>
-import { ERROR_NO_ADDRESS } from '@/config/data/appConfig';
-import { MISSING_ADDRESS, addressErrorMap } from '@/config/data/errorConfig';
-import { UPDATE } from '@/config/data/eventConfig';
 import * as EVENTS from '@/config/data/eventConfig';
-import { addressRequirements } from '@/config/data/platformConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
 import Errors from '@/Errors';
 import Loader from '@/components/Loader';
+import { MISSING_ADDRESS } from '@/config/data/errorConfig';
+import { addressRequirements } from '@/config/data/platformConfig';
 import debounce from 'debounce';
 import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
@@ -108,6 +106,7 @@ export default {
           requirements.filter((item) => doesntMeetRequirements(item))
         );
       }
+
       return valid;
     },
 

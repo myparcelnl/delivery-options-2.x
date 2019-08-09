@@ -1,30 +1,25 @@
 <template>
   <div class="myparcel-checkout__errors">
     <template v-if="isMissingAddressPart">
-      <h3 v-text="$configBus.strings.addressNotFound" />
-      <table>
-        <tr
-          v-for="part in requiredAddressParts"
-          :key="part">
-          <td>
-            <label
-              :for="part + '-input'"
-              v-text="part" />
-          </td>
-
-          <td>
-            <input
-              v-model="values[part]"
-              :name="part + '-input'"
-              type="text"
-              :placeholder="part">
-          </td>
-        </tr>
-      </table>
-
-      <button
-        @click="retry()"
-        v-text="$configBus.strings.retry" />
+      <h4 v-text="$configBus.strings.addressNotFound" />
+      <form v-if="$configBus.config.allowRetry">
+        <template v-for="part in requiredAddressParts">
+          <p :key="part">
+            <label>
+              {{ $configBus.strings[part + 'Text'] }}
+              <input
+                v-model="values[part]"
+                :name="part + '-input'"
+                type="text"
+                :placeholder="$configBus.strings[part + 'Text']"
+                v-text="$configBus.strings[part + 'Text']">
+            </label>
+          </p>
+        </template>
+        <button
+          @click="retry()"
+          v-text="$configBus.strings.retry" />
+      </form>
     </template>
 
     <div
@@ -75,6 +70,8 @@ export default {
      */
     retry() {
       this.$configBus.address = { ...this.$configBus.address, ...this.values };
+
+      // Trigger the checkout_in event to make the checkout update.
       document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_IN));
 
       // Send the new values in an event. It's up to the external platform to do handle this event or not.

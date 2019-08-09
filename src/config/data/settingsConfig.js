@@ -1,7 +1,3 @@
-// NAMES
-export const CONFIG = 'config';
-export const STRINGS = 'strings';
-
 // CONFIG
 export const PLATFORM = 'platform';
 export const CURRENCY = 'currency';
@@ -25,6 +21,7 @@ export const PRICE_SIGNATURE = 'priceSignature';
 export const PRICE_STANDARD_DELIVERY = 'priceStandardDelivery';
 export const CARRIER_SETTINGS = 'carrierSettings';
 
+export const ALLOW_RETRY = 'allowRetry';
 export const ALLOW_SATURDAY_DELIVERY = 'allowSaturdayDelivery';
 export const API_BASE_URL = 'apiBaseUrl';
 export const CARRIERS = 'carriers';
@@ -60,3 +57,7 @@ export const BE_DELIVERY_TITLE = 'beDeliveryTitle';
 export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
 export const WRONG_HOUSE_NUMBER_POSTCODE = 'wrongHouseNumberPostcode';
 export const WRONG_POSTAL_CODE_CITY = 'wrongPostalCodeCity';
+
+export const POSTAL_CODE_TEXT = 'postalCodeText';
+export const NUMBER_TEXT = 'numberText';
+export const CITY_TEXT = 'cityText';

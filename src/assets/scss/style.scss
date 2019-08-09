@@ -98,4 +98,10 @@
   &__text-green {
     color: $positive;
   }
+
+  &__errors {
+    input {
+      width: 100%;
+    }
+  }
 }

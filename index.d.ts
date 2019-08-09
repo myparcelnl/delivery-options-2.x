@@ -107,7 +107,10 @@ declare namespace MyParcel {
     locale: String
     carriers: String | Array<String>
     platform: Platform
-    currency: String
+    allowRetry: Boolean
+
+    allowDeliveryOptions: Boolean
+    allowPickupPoints: Boolean
 
     cutoffTime: String
     deliveryDaysWindow: String | Number
@@ -116,9 +119,6 @@ declare namespace MyParcel {
 
     // BE only
     saturdayCutoffTime?: String
-
-    allowDeliveryOptions: Boolean
-    allowPickupPoints: Boolean
 
     carrierSettings: CarrierSettings
   }

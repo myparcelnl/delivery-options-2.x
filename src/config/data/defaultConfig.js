@@ -16,7 +16,7 @@ const baseConfig = {
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
-    [SETTINGS.CURRENCY]: 'EUR',
+    [SETTINGS.ALLOW_RETRY]: true,
 
     [SETTINGS.CUTOFF_TIME]: '17:00',
     [SETTINGS.DELIVERY_DAYS_WINDOW]: 7,
@@ -72,6 +72,10 @@ const baseConfig = {
 
     // Opening hours
     [SETTINGS.OPENING_HOURS]: 'Openingstijden',
+
+    [SETTINGS.POSTAL_CODE_TEXT]: 'Postcode',
+    [SETTINGS.NUMBER_TEXT]: 'Huisnummer',
+    [SETTINGS.CITY_TEXT]: 'Stad',
   },
 };
 

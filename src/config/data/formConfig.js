@@ -24,7 +24,7 @@ export const ADDITIONAL_OPTIONS = 'additionalOptions';
 
 // Delivery > Deliver (> Carrier) > Delivery moment > Additional options = [signature?, only_recipient?]
 export const SIGNATURE = 'signature';
-export const ONLY_RECIPIENT = 'only_recipient';
+export const ONLY_RECIPIENT = 'onlyRecipient';
 
 // Delivery > Pickup
 export const PICKUP = 'pickup';
@@ -33,7 +33,7 @@ export const PICKUP = 'pickup';
 export const PICKUP_STANDARD = 'pickup';
 
 // Delivery > Pickup > Pickup express
-export const PICKUP_EXPRESS = 'pickup_express';
+export const PICKUP_EXPRESS = 'pickupExpress';
 
 /**
  * Base form config.
