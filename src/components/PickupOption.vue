@@ -4,11 +4,6 @@
       :for="`myparcel-checkout--${parent.name}--${data.name}`"
       @click="selected ? showTooltip = !showTooltip : null">
       <span class="myparcel-checkout__d--block">
-        <img
-          v-if="$configBus.isMultiCarrier"
-          class="myparcel-checkout__image myparcel-checkout__image--sm"
-          :src="data.image"
-          :alt="$configBus.strings[data.label]">
 
         <font-awesome-icon
           v-if="selected"

@@ -3,18 +3,25 @@
     <div
       v-if="showCheckout"
       class="myparcel-checkout">
-      <loader v-if="loading" />
+      <PickupTooltip v-if="$configBus.showPickupTooltip" />
+      <template v-else>
+        <h3
+          v-if="!loading && $configBus.strings.headerDeliveryOptions"
+          v-text="$configBus.strings.headerDeliveryOptions" />
 
-      <Errors v-else-if="!hasValidAddress || $configBus.hasErrors" />
+        <loader v-if="loading" />
 
-      <div
-        v-else
-        class="myparcel-checkout__delivery-options">
-        <recursive-form
-          v-for="option in form.options"
-          :key="option.name"
-          :option="option" />
-      </div>
+        <Errors v-else-if="!hasValidAddress" />
+
+        <div
+          v-else
+          class="myparcel-checkout__delivery-options">
+          <recursive-form
+            v-for="option in form.options"
+            :key="option.name"
+            :option="option" />
+        </div>
+      </template>
     </div>
     <input
       id="mypa-input"
@@ -24,6 +31,7 @@
 </template>
 
 <script>
+import PickupTooltip from '@/components/PickupTooltip';
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
@@ -38,7 +46,8 @@ import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
 export default {
   name: 'App',
-  components: { Errors, Loader },
+  components: { PickupTooltip,
+    Errors, Loader },
 
   data() {
     return {
@@ -180,6 +189,7 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
+      console.log('getCheckout', this.$configBus);
       // Don't start loading if there's nothing to load
       if (this.hasNothingToShow) {
         return;
@@ -188,7 +198,7 @@ export default {
       this.$configBus.setAddress();
       this.showCheckout = true;
 
-      if (!this.$configBus.hasValidAddress) {
+      if (!this.hasValidAddress) {
         this.loading = false;
         return;
       }

@@ -25,7 +25,9 @@ export async function fetchAllCarriers() {
     return { ...acc, errors, responses };
   }, {});
 
-  configBus.addErrors('carriers', carriers.errors[0].errors);
+  if (carriers.errors.length) {
+    configBus.addErrors('carriers', carriers.errors[0].errors);
+  }
 
   const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
   configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));

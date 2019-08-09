@@ -1,4 +1,4 @@
-import * as SETTINGS from '../../src/config/settingsConfig';
+import * as SETTINGS from '../../src/config/data/settingsConfig';
 
 export default {
   en: {

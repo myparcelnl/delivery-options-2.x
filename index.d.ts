@@ -39,6 +39,7 @@ declare namespace MyParcel {
     from: String
     loadMore: String
     retry: String
+    headerDeliveryOptions: String
     deliveryEveningTitle: String
     deliveryMorningTitle: String
     deliveryStandardTitle: String
@@ -108,6 +109,7 @@ declare namespace MyParcel {
     carriers: String | Array<String>
     platform: Platform
     allowRetry: Boolean
+    currency: String
 
     allowDeliveryOptions: Boolean
     allowPickupPoints: Boolean

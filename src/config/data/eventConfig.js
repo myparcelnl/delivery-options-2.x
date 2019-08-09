@@ -31,7 +31,7 @@ export const UPDATE_CHECKOUT_IN = 'myparcel_update_checkout';
  *
  * @type {string}
  */
-export const ADDRESS_UPDATED = 'address_updated';
+export const ADDRESS_UPDATED_OUT = 'address_updated';
 
 /**
  * To tell the external platform it needs to update.

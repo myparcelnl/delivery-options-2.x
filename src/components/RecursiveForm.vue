@@ -12,9 +12,7 @@
           'myparcel-checkout__choice--has-image': choice.hasOwnProperty('image'),
           'myparcel-checkout__choice--disabled': choice.disabled
         }">
-        <td
-          v-if="validChoices.length > 1 || option.type === 'checkbox'"
-          class="myparcel-checkout__input">
+        <td class="myparcel-checkout__input">
           <div>
             <input
               v-if="option.type === 'checkbox'"
@@ -30,7 +28,7 @@
               :id="`myparcel-checkout--${option.name}--${choice.name}`"
               v-model="selected"
               :type="option.type"
-              :disabled="choice.disabled ? 'disabled' : false"
+              :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
               :value="choice.name">
           </div>
         </td>
@@ -56,7 +54,8 @@
                 v-else
                 v-text="choice.plainLabel || $configBus.strings[choice.label]" />
 
-              <span
+              <component
+                :is="isBold(choice) ? 'strong' : 'span'"
                 v-if="!!choice.price"
                 class="myparcel-checkout__float-right"
                 :class="{
@@ -67,7 +66,7 @@
                 }">
                 <span v-text="$configBus.getPrice(choice) >= 0 ? '+ ' : '– '" />
                 {{ $configBus.formatPrice(choice.price) }}
-              </span>
+              </component>
             </label>
 
             <Loader
@@ -104,6 +103,7 @@
     <tr>
       <td>
         <select
+          v-if="option.choices.length > 1"
           :id="`myparcel-checkout--${option.name}`"
           v-model="selected"
           class="myparcel-checkout__select"
@@ -115,6 +115,9 @@
             :selected="index === 0 ? 'selected' : null"
             v-text="selectChoice.label" />
         </select>
+        <strong
+          v-else
+          v-text="option.choices[0].label" />
       </td>
     </tr>
   </table>
@@ -276,6 +279,12 @@ export default {
   },
 
   methods: {
+    isBold(choice) {
+      return this.option.type === 'checkbox'
+        ? this.selected.includes(choice.name)
+        : this.selected === choice.name;
+    },
+
     /**
      * Recursively search for dependencies.
      *

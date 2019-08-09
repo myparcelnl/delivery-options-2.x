@@ -12,11 +12,12 @@ import _mergeWith from 'lodash.mergewith';
  */
 const baseConfig = {
   /**
-   * @type {MyParcel.CheckoutConfigk}
+   * @type {MyParcel.CheckoutConfig}
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
     [SETTINGS.ALLOW_RETRY]: true,
+    [SETTINGS.CURRENCY]: 'EUR',
 
     [SETTINGS.CUTOFF_TIME]: '17:00',
     [SETTINGS.DELIVERY_DAYS_WINDOW]: 7,
@@ -60,11 +61,14 @@ const baseConfig = {
     [SETTINGS.LOAD_MORE]: 'Laad meer',
     [SETTINGS.RETRY]: 'Opnieuw',
 
+    // Main header
+    [SETTINGS.HEADER_DELIVERY_OPTIONS]: '',
+
     // Titles of options
     [SETTINGS.DELIVERY_EVENING_TITLE]: '',
     [SETTINGS.DELIVERY_MORNING_TITLE]: '',
     [SETTINGS.DELIVERY_STANDARD_TITLE]: '',
-    [SETTINGS.DELIVERY_TITLE]: 'Bezorgen op',
+    [SETTINGS.DELIVERY_TITLE]: 'Thuis of op het werk bezorgen',
     [SETTINGS.ONLY_RECIPIENT_TITLE]: 'Alleen ontvanger',
     [SETTINGS.PICK_UP_FROM]: 'Afhalen vanaf',
     [SETTINGS.PICKUP_TITLE]: 'Afhalen op locatie',

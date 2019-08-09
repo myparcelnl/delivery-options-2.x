@@ -34,6 +34,7 @@ Vue.config.devtools = process.env.NODE_ENV === 'development';
  * Load the application.
  */
 function loadApp() {
+  console.log('checkout loaded');
   const instance = new Vue({
     render: (createElement) => createElement(App),
   }).$mount('#myparcel-checkout');

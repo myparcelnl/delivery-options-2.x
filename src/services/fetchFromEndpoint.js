@@ -14,12 +14,13 @@ const isDev = process.env.NODE_ENV === 'development';
  * @param {Function} Endpoint - Endpoint to use.
  *
  * @param {Object} options - Options.
- * @param {String} options.method? - HTTP Method.
- * @param {Object} params - Parameters to add to the url.
+ * @param {String} options.method? - Method.
+ *
+ * @param {Object} param - Parameter to add to the url.
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
-export async function fetchFromEndpoint(Endpoint, options = {}, params = {}) {
+export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
   const endpoint = new Endpoint();
 
   // Set API URL and accept-language header from config
@@ -32,15 +33,20 @@ export async function fetchFromEndpoint(Endpoint, options = {}, params = {}) {
   // Set default options and override with given options.
   options = {
     method: METHOD_GET,
+    params: {
+      ...param,
+    },
     ...options,
   };
 
   try {
-    response = await endpoint[options.method](params);
+    response = await endpoint[options.method](options.params);
   } catch (e) {
     errors = e;
-    configBus.addErrors(endpoint.endpoint, e[0].errors);
-    configBus.$emit(ERROR, { [endpoint.endpoint]: e[0].errors });
+    if (e.length) {
+      configBus.addErrors(endpoint.endpoint, e[0].errors);
+      configBus.$emit(ERROR, { [endpoint.endpoint]: e[0].errors });
+    }
   }
 
   return {

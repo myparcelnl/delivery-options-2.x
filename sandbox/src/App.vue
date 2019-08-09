@@ -23,10 +23,12 @@
           </p>
         </div>
         <div class="col-6">
-          <h3>Result</h3>
+          <h3>Code</h3>
           <p>
-            In order to get the right options, MyParcel needs country, postal code and number. Number must be sent
-            without number suffix. If you only have a full address with street and number suffix, use this regex (php).
+            If you adjust the options in the left column, you will see the change in the code below. In the code below
+            you can see that an object has been built and that object is used in a function. You could build this
+            object by adjusting the values inline with backend code. But it would be better if you can retrieve this
+            object by means of a (rest) api.
           </p>
         </div>
       </div>
@@ -35,20 +37,14 @@
           <SettingsForm @update="updateSettings" />
         </div>
         <div class="col-6">
+          <prism
+            language="js"
+            :code="`const data = ${toCodeString(code)};`"
+            @click="clickCode" />
+        </div>
+        <div class="col-12">
+          <h1>Checkout -></h1>
           <div id="myparcel-checkout" />
-          <div>
-            <h3>Code</h3>
-            <p>
-              If you adjust the options in the left column, you will see the change in the code below. In the code below
-              you can see that an object has been built and that object is used in a function. You could build this
-              object by adjusting the values inline with backend code. But it would be better if you can retrieve this
-              object by means of a (rest) api.
-            </p>
-            <prism
-              language="js"
-              :code="`const data = ${toCodeString(code)};`"
-              @click="clickCode" />
-          </div>
         </div>
       </div>
     </div>
@@ -56,9 +52,9 @@
 </template>
 
 <script>
-// Import the checkout code
-import '../../dist/app.js';
-import SettingsForm from './components/SettingsForm';
+import '@/assets/vendor/js/myparcel';
+import SettingsForm from '@/components/SettingsForm';
+import { samples } from '@/config/samples';
 
 /**
  * @type {Object}
@@ -125,9 +121,17 @@ export default {
   data() {
     return {
       code,
+      regexSectionExpanded: false,
+      values: {},
     };
   },
 
+  computed: {
+    samples: () => samples,
+  },
+  created() {
+    document.dispatchEvent(new Event('myparcel_update_checkout'));
+  },
   methods: {
     clickCode(event) {
       console.log(event);
@@ -148,7 +152,33 @@ export default {
 
     updateSettings(a, b) {
       console.log('updateSettings', a, b);
+
     },
+
+    setOptions() {
+      $('input[name^=\'config\'], input[name^=\'address\'], select[name^=\'address\']').each(function() {
+        val = null;
+        keys = $(this).attr('name').match(/([a-z]+)\[([a-zA-Z0-9]{1,50})]/);
+
+        if (keys[2] === 'deliverydaysWindow') {
+          val = $(this).is(':checked') ? '1' : '0';
+        } else if ($(this).is(':checkbox')) {
+          val = $(this).is(':checked');
+        } else {
+          val = $(this).val();
+        }
+
+        if (val === 'true') {
+          val = true;
+        }
+        if (val === 'false') {
+          val = false;
+        }
+
+        Sandbox.formOptions[keys[1]][keys[2]] = val;
+      });
+    },
+
   },
 };
 </script>

@@ -14,7 +14,7 @@
         </td>
       </tr>
       <tr>
-        <td>
+        <td colspan="2">
           <span v-text="data.address.street + ' ' + data.address.number" /><br>
           <span v-text="data.address.postal_code + ' ' + data.address.city" />
 
@@ -22,12 +22,6 @@
             <br>
             <span v-text="data.location.phone_number" /><br>
           </template>
-        </td>
-        <td>
-          <img
-            class="myparcel-checkout__image myparcel-checkout__image--lg myparcel-checkout__float-right"
-            :src="carrierData.image"
-            alt="">
         </td>
       </tr>
       <tr>
@@ -39,7 +33,7 @@
         v-for="(day, index) in Object.keys(openingHours)"
         :key="day">
         <td>
-          <span v-text="getWeekday[index]" />
+          <span v-text="$configBus.weekdays[index]" />
         </td>
         <td>
           <span
@@ -67,14 +61,22 @@ export default {
       default: false,
     },
   },
-
+  data() {
+    return {
+      weekdays: null,
+    };
+  },
   computed: {
     strings() {
       return this.$configBus.strings;
     },
 
+    // data() {
+    //   return this.$configBus.tooltipData
+    // },
+
     carrierData() {
-      return this.$configBus.getCarrier(this.data.carrier || 1);
+      return this.$configBus.currentCarrier;
     },
 
     /**
@@ -101,12 +103,6 @@ export default {
           [item]: dateString,
         };
       }, {});
-    },
-  },
-
-  methods: {
-    getWeekday(index) {
-      return new Date(0, 0, index).toLocaleTimeString(this.$configBus.locale, { weekday: 'long' });
     },
   },
 };

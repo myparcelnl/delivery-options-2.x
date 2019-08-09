@@ -21,6 +21,9 @@ export const configBus = new Vue({
      */
     dependencies: {},
 
+    showPickupTooltip: false,
+    tooltipData: null,
+
     /**
      * Object containing any errors causing the checkout not to show.
      *
@@ -53,6 +56,11 @@ export const configBus = new Vue({
      * @type {MyParcel.PickupLocation[]}
      */
     pickupLocations: [],
+
+    /**
+     * The object where settings will be stored.
+     */
+    values: {},
 
     /**
      * Must be defined before it is filled in created().
@@ -118,6 +126,8 @@ export const configBus = new Vue({
     };
 
     document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, listener);
+
+    this.weekdays = this.getWeekdays();
   },
 
   methods: {
@@ -358,6 +368,20 @@ export const configBus = new Vue({
       const enabledInConfig = !!this.config[option.enabled];
 
       return !option.hasOwnProperty('enabled') || (option.hasOwnProperty('enabled') && enabledInConfig);
+    },
+
+    /**
+     * Get the array of weekdays by using a (slightly) hacky trick with Intl.
+     *
+     * @returns {String[]}
+     */
+    getWeekdays() {
+      const dates = [];
+      for (let day = 5; day <= 11; day++) {
+        dates.push(new Date(1970, 1 - 1, day).toLocaleString(this.locale, { weekday: 'long' }));
+      }
+
+      return dates;
     },
   },
 });
