@@ -23,10 +23,15 @@ The checkout is written in [Vue.js], it supports IE9 and up.
 An example of the checkout functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for your project.
 
 ## Installation
-1. Download the latest package from [releases].
-2. Include `dist/myparcel.js` in your project. 
-3. Place `<div id="myparcel-checkout"></div>` in your HTML.
-4. The checkout will be rendered inside that element!
+1. Clone the repository or download the latest package from [releases].
+2. Run the following commands:
+```shell script
+   $ npm i
+   $ npm run build
+```
+3. Include `dist/myparcel.js` in your project. 
+4. Place `<div id="myparcel-checkout"></div>` in your HTML.
+5. The checkout will be rendered inside that element!
 
 ## Usage
 You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the checkout with an event.
