@@ -123,6 +123,9 @@ declare namespace MyParcel {
     saturdayCutoffTime?: String
 
     carrierSettings: CarrierSettings
+
+    // Feature toggles
+    featurePickupShowDistance: Boolean
   }
 
   type CarrierSettings = {
