@@ -78,7 +78,7 @@ module.exports = {
     'no-magic-numbers': [
       'warn',
       {
-        'ignore': [0, 1, 100],
+        'ignore': [-1, 0, 1, 100],
         'detectObjects': true,
         'enforceConst': true,
       },
@@ -180,8 +180,7 @@ module.exports = {
     'prefer-template': 'warn',
     'sort-imports': 'warn',
     'template-curly-spacing': 'warn',
-
-    'id-length': ['warn', {'exceptions': ['$', '_', 'i', 'h', 'e']}],
+    'id-length': ['warn', {'exceptions': ['$', '_', 'i', 'e', 'a', 'b', 'x', 'y', 'z']}],
     'no-else-return': 'warn',
     'no-extra-parens': ['warn', 'all', {'nestedBinaryExpressions': false}],
     'babel/object-curly-spacing': ['warn', 'always'],
