@@ -8,8 +8,8 @@ import {
   DROP_OFF_DELAY,
 } from '@/config/data/settingsConfig';
 import { FLESPAKKET, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
-import { getAddress, getConfig } from '@/config/setup';
 import Vue from 'vue';
+import { getConfig } from '@/config/setup';
 
 /**
  * Config bus.
@@ -91,10 +91,6 @@ export const configBus = new Vue({
     address: null,
   },
   computed: {
-    hasErrors() {
-      return Object.keys(this.errors).length > 0;
-    },
-
     isMultiCarrier() {
       return this.carrierData.length > 1;
     },
@@ -379,7 +375,7 @@ export const configBus = new Vue({
     },
 
     /**
-     * Get the array of weekdays by using a (slightly) hacky trick with Intl.
+     * Get the array of weekdays by using a (slightly) hacky trick with dates.
      *
      * @returns {String[]}
      */
