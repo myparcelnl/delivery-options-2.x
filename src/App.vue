@@ -89,6 +89,21 @@ export default {
        * @type {String}
        */
       externalData: null,
+
+      /**
+       * Event listeners object. Stored here so we can add and remove them easily.
+       */
+      listeners: {
+        update: debounce(this.getCheckout, debounceDelay),
+        updateExternal: debounce(this.updateExternal, debounceDelay),
+        error: (e) => {
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.warn('error:', e);
+          }
+          this.hideCheckout();
+        },
+      },
     };
   },
 
@@ -141,25 +156,22 @@ export default {
   },
 
   created() {
-    const debounceDelay = 200;
-
-    document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, debounce(() => {
-      this.getCheckout();
-    }, debounceDelay));
+    document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
 
     // Add the new data to the values object
     this.$configBus.$on(EVENTS.UPDATE, this.updateExternalData);
 
     // Debounce trigger updating the checkout
-    this.$configBus.$on(EVENTS.UPDATE, debounce(this.updateExternal, debounceDelay));
+    this.$configBus.$on(EVENTS.UPDATE, this.listeners.updateExternal);
 
-    this.$configBus.$on(EVENTS.ERROR, (e) => {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.warn('error:', e);
-      }
-      this.hideCheckout();
-    });
+    this.$configBus.$on(EVENTS.ERROR, this.listeners.error);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
+    this.$configBus.$off(EVENTS.UPDATE, this.updateExternalData);
+    this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
+    this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
   },
 
   methods: {
