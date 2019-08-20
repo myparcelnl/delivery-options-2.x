@@ -7,7 +7,7 @@ import { appConfig } from '@/config/data/appConfig';
  *
  * @returns {Array}
  */
-export const formatCarrierData = (response) => {
+export const formatCarrierResponse = (response) => {
   return response.reduce((acc, val) => [
     {
       ...acc,

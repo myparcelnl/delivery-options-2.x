@@ -1,5 +1,6 @@
 import { configBus } from '@/config/configBus';
 import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
+import { fetchMultiple } from '@/services/fetchMultiple';
 
 /**
  * Fetch all carrier information.
@@ -8,28 +9,22 @@ import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
  */
 export async function fetchAllCarriers() {
   // Return existing carrierData if this function is called again.
-  console.log('configBus.carrierData', configBus.carrierData);
   if (Object.keys(configBus.carrierData).length) {
     return configBus.carrierData;
   }
 
   const carriersToFetch = configBus.config.carriers;
+  // Create an array with a request for each carrier.
   const requests = carriersToFetch.map((carrier) => fetchCarrierData(carrier));
 
-  let errors = [], responses = [];
-  // Concatenate all responses and errors
-  const carriers = (await Promise.all(requests)).reduce((acc, response) => {
-    errors = [...errors, ...response.errors];
-    responses = [...responses, ...response.response];
+  // Get the responses and errors from all the requests.
+  const { errors, responses } = await fetchMultiple(requests);
 
-    return { ...acc, errors, responses };
-  }, {});
-
-  if (carriers.errors.length) {
-    configBus.addErrors('carriers', carriers.errors[0].errors);
+  if (errors.length) {
+    configBus.addErrors('carriers', errors[0].errors);
   }
 
-  const unique = new Set(carriers.responses.map((obj) => JSON.stringify(obj)));
+  const unique = new Set(responses.map((obj) => JSON.stringify(obj)));
   configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
 
   configBus.currentCarrier = configBus.carrierData.length ? configBus.carrierData[0].name : null;

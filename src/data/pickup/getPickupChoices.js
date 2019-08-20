@@ -1,3 +1,5 @@
+import { configBus } from '@/config/configBus';
+import { fetchMultiple } from '@/services/fetchMultiple';
 import { fetchPickupLocations } from './fetchPickupLocations';
 import { getPickupMoments } from './getPickupMoments';
 
@@ -7,10 +9,11 @@ import { getPickupMoments } from './getPickupMoments';
  * @returns {Promise}
  */
 export async function getPickupChoices() {
-  const { response } = await fetchPickupLocations();
+  const requests = configBus.carrierData.map((carrier) => fetchPickupLocations(carrier));
+  const { responses } = await fetchMultiple(requests);
 
-  if (response.length) {
-    const pickupChoices = response.map((option, key) => ({
+  if (responses.length) {
+    const pickupChoices = responses.map((option, key) => ({
       pickupData: option,
       name: key,
       label: option.location.location_name,
