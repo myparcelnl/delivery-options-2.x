@@ -1,9 +1,15 @@
+import { ERROR } from '@/config/data/eventConfig';
 import { appConfig } from '@/config/data/appConfig';
 import { configBus } from '@/config/configBus';
-import { ERROR } from '@/config/data/eventConfig';
+
+/**
+ * Data that has been fetched is stored in this object.
+ *
+ * @type {Object}
+ */
+const values = {};
 
 export const METHOD_GET = 'get';
-
 export const METHOD_SEARCH = 'search';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -15,12 +21,13 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * @param {Object} options - Options.
  * @param {String} options.method? - Method.
+ * @param {Object} options.params? - URL parameters.
  *
- * @param {Object} param - Parameter to add to the url.
+ * @param {Array} unique - Array of properties to use to try and skip API calls.
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
-export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
+export async function fetchFromEndpoint(Endpoint, options = {}, unique = null) {
   const endpoint = new Endpoint();
 
   // Set API URL and accept-language header from config
@@ -30,14 +37,28 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
   let response = {};
   let errors = {};
 
+  let key = '_';
+
   // Set default options and override with given options.
   options = {
     method: METHOD_GET,
-    params: {
-      ...param,
-    },
     ...options,
   };
+
+  const valueKey = endpoint.endpoint;
+
+  console.log(values);
+  if (unique) {
+    key = Object.keys(options.params)
+      .filter((item) => unique.includes(item))
+      .map((item) => options.params[item]).join('_');
+
+    if (values.hasOwnProperty(valueKey) && values[valueKey].hasOwnProperty(key)) {
+      console.warn(endpoint.endpoint, 'skipping api, got this already :)))))))');
+      return values[valueKey][key];
+    }
+    console.warn(endpoint.endpoint, 'don\'t have this yet, fetching');
+  }
 
   try {
     response = await endpoint[options.method](options.params);
@@ -49,8 +70,12 @@ export async function fetchFromEndpoint(Endpoint, options = {}, param = {}) {
     }
   }
 
-  return {
-    response: Array.isArray(response) ? response : [],
-    errors: Array.isArray(errors) ? errors : [],
+  values[valueKey] = {
+    [key]: {
+      response: Array.isArray(response) ? response : [],
+      errors: Array.isArray(errors) ? errors : [],
+    },
   };
+
+  return values[valueKey][key];
 }

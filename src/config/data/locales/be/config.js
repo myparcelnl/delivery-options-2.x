@@ -6,4 +6,5 @@ export const config = {
   [SETTINGS.API_BASE_URL]: isDev ? 'http://api.dev.sendmyparcel.be' : 'https://api.sendmyparcel.be',
   [SETTINGS.CARRIERS]: ['bpost', 'dpd'],
   [SETTINGS.LOCALE]: 'nl-BE',
+  [SETTINGS.FEATURE_PICKUP_SHOW_DISTANCE]: false,
 };

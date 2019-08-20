@@ -29,6 +29,8 @@ export const LOCALE = 'locale';
 export const ALLOW_MONDAY_DELIVERY = 'allowMondayDelivery';
 export const SATURDAY_CUTOFF_TIME = 'saturdayCutoffTime';
 
+export const FEATURE_PICKUP_SHOW_DISTANCE = 'featurePickupShowDistance';
+
 // STRINGS
 export const CITY = 'city';
 export const POSTCODE = 'postcode';
