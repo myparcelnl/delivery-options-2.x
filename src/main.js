@@ -80,7 +80,7 @@ function loadApp() {
   };
 
   // This is not present in the compiled code.
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' && !window.hasOwnProperty('MyParcelConfig')) {
     showDeveloperInfo();
   }
 }
@@ -122,7 +122,7 @@ function showDeveloperInfo() {
   console.log('%cWelcome to the MyParcel checkout!', styleHeader1.join(';'));
   console.log('%cCheck out README.md for the full documentation.', styleHeader2.join(';'));
   console.log('%cBy default, the checkout is not visible. \n'
-    + 'To show it you must provide window.MyParcelConfig with at least the following data:', styleText.join(';'));
+    + 'To show it you must fill window.MyParcelConfig with at least the following data:', styleText.join(';'));
   console.log('%cwindow.MyParcelConfig = {\n'
     + '  config: {\n'
     + '    platform: \'belgie\',  \n'

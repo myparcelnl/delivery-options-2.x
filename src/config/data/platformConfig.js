@@ -1,6 +1,6 @@
 import { config as beConfig } from '@/config/data/locales/be/config';
-import { config as nlConfig } from '@/config/data/locales/nl/config';
 import { strings as beStrings } from '@/config/data/locales/be/strings';
+import { config as nlConfig } from '@/config/data/locales/nl/config';
 import { strings as nlStrings } from '@/config/data/locales/nl/strings';
 
 export const FLESPAKKET = 'flespakket';
@@ -23,8 +23,8 @@ const configMap = {
 };
 
 export const addressRequirements = {
-  NL: ['postalCode', 'number'],
-  BE: ['postalCode'], // , 'city' // todo it's not mandatory right now?!
+  nl: ['postalCode', 'number'],
+  be: ['postalCode'], // , 'city' // todo it's not mandatory right now?!
 };
 
 /**
