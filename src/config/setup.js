@@ -25,12 +25,14 @@ function getWindowObject() {
 }
 
 /**
- * Get the address from the window object.
+ * Get the address from the window object and convert cc to lowercase.
  *
  * @returns {MyParcel.CheckoutAddress}
  */
 export const getAddress = () => {
-  return getWindowObject().address;
+  const { address } = getWindowObject();
+  address.cc = address.cc.toLowerCase();
+  return address;
 };
 
 /**
