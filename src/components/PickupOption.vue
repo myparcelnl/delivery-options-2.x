@@ -2,7 +2,7 @@
   <div>
     <label
       :for="`myparcel-checkout--${parent.name}--${data.name}`"
-      @click="selected ? showTooltip = !showTooltip : null">
+      @click="selected ? showModal() : null">
       <span class="myparcel-checkout__d--block">
 
         <font-awesome-icon
@@ -12,15 +12,12 @@
         <span v-text="data.label" />
       </span>
 
-      <span class="myparcel-checkout__d--block">
-        <span v-text="$configBus.formatDistance(pickupData.location.distance)" /> – <span v-text="priceText" />
+      <span
+        v-if="featurePickupShowDistance"
+        class="myparcel-checkout__d--block">
+        <span v-text="$configBus.formatDistance(pickupData.location.distance)" />
       </span>
     </label>
-
-    <PickupTooltip
-      :data="pickupData"
-      :show="selected && showTooltip"
-      @close="showTooltip = false" />
 
     <template v-if="selected">
       <recursive-form
@@ -40,7 +37,6 @@ import PickupTooltip from './PickupTooltip';
 
 export default {
   name: 'PickupOption',
-  components: { PickupTooltip },
   props: {
     selected: {
       type: Boolean,
@@ -55,12 +51,11 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      showTooltip: false,
-    };
-  },
   computed: {
+    featurePickupShowDistance() {
+      return this.$configBus.config.featurePickupShowDistance !== false;
+    },
+
     pickupData() {
       return this.data.pickupData;
     },
@@ -79,39 +74,14 @@ export default {
         };
       });
     },
-
-    /**
-     * Get a formatted string for the minimum price.
-     *
-     * @returns {string}
-     */
-    priceText() {
-      const minPrice = this.price.concat().sort((price1, price2) => {
-        return price1.price > price2.price ? 1 : -1;
-      })[0].price;
-
-      if (minPrice === 0) {
-        return this.$configBus.strings.free;
-      }
-
-      const formattedPrice = this.$configBus.formatPrice(minPrice);
-
-      if (minPrice < 0) {
-        return `${formattedPrice} ${this.$configBus.strings.discount}`;
-      }
-
-      return `${this.$configBus.strings.from} ${formattedPrice}`;
-    },
   },
 
-  watch: {
-    selected() {
-      if (!this.selected) {
-        this.showTooltip = false;
-      }
-    },
-  },
   methods: {
+    showModal() {
+      this.$configBus.showModal = true;
+      this.$configBus.modalComponent = PickupTooltip;
+      this.$configBus.modalData = this.pickupData;
+    },
     updateConfigBus(event) {
       this.$configBus.$emit(EVENTS.UPDATE, event);
     },

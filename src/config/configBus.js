@@ -17,21 +17,6 @@ import Vue from 'vue';
 export const configBus = new Vue({
   data: {
     /**
-     * Dependency object.
-     */
-    dependencies: {},
-
-    showPickupTooltip: false,
-    tooltipData: null,
-
-    /**
-     * Object containing any errors causing the checkout not to show.
-     *
-     * @type {Object}
-     */
-    errors: {},
-
-    /**
      * @type {MyParcel.CarrierData[]}
      */
     carrierData: [],
@@ -44,18 +29,40 @@ export const configBus = new Vue({
     currentCarrier: null,
 
     /**
-     * Delivery options array from the API.
+     * Dependency object, used for settings that depend on each other "vertically".
      *
-     * @type {MyParcel.DeliveryOption[]}
+     * Example: delivery > carrier > deliveryDate ⬅ [horizontal dependency]
+     *                             | deliveryMoment
+     *                             | additionalOptions
+     *                            ⬆️ [vertical dependencies that depend on siblings instead of their parent.].
      */
-    deliveryOptions: [],
+    dependencies: {},
 
     /**
-     * Pickup options array from the API.
-     *
-     * @type {MyParcel.PickupLocation[]}
+     * Whether to show a modal or not.
      */
-    pickupLocations: [],
+    showModal: false,
+
+    /**
+     * The component to show if showModal is true.
+     *
+     * @type {Vue}
+     */
+    modalComponent: null,
+
+    /**
+     * Data object to pass to modalComponent.
+     *
+     * @type {Object}
+     */
+    modalData: null,
+
+    /**
+     * Object containing any errors causing the checkout not to show.
+     *
+     * @type {Object}
+     */
+    errors: {},
 
     /**
      * The object where settings will be stored.
@@ -262,8 +269,9 @@ export const configBus = new Vue({
     /**
      * Parameters for the delivery options request.
      *
-     * @param {string} carrier - Carrier to use.
+     * @see https://myparcelnl.github.io/api/#8
      *
+     * @param {string} carrier - Carrier to use.
      * @returns {Object}
      */
     getRequestParameters(carrier = this.currentCarrier) {
@@ -286,6 +294,13 @@ export const configBus = new Vue({
       };
 
       const parameters = {
+        /**
+         * The endpoints we use in this application follow the JSON API "Inclusion of Related Resources" standard.
+         *
+         * @see https://jsonapi.org/format/#fetching-includes
+         */
+        include: 'shipment_options',
+
         platform: this.platform,
         carrier,
 
@@ -300,13 +315,6 @@ export const configBus = new Vue({
       };
 
       return { ...parameters, ...parametersByPlatform[this.platform] };
-    },
-
-    /**
-     * Update the address using the config.
-     */
-    setAddress() {
-      this.address = getAddress();
     },
 
     /**

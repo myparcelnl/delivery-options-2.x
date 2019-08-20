@@ -1,9 +1,14 @@
 <template>
-  <div>
+  <form @submit.prevent="">
     <div
       v-if="showCheckout"
       class="myparcel-checkout">
-      <PickupTooltip v-if="$configBus.showPickupTooltip" />
+      <component
+        :is="$configBus.modalComponent"
+        v-if="$configBus.showModal"
+        :data="$configBus.modalData"
+        @close="$configBus.showModal = false" />
+
       <template v-else>
         <h3
           v-if="!loading && $configBus.strings.headerDeliveryOptions"
@@ -27,11 +32,10 @@
       id="mypa-input"
       :value="externalData"
       hidden>
-  </div>
+  </form>
 </template>
 
 <script>
-import PickupTooltip from '@/components/PickupTooltip';
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
@@ -41,14 +45,18 @@ import { MISSING_ADDRESS } from '@/config/data/errorConfig';
 import { addressRequirements } from '@/config/data/platformConfig';
 import debounce from 'debounce';
 import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
+import { getAddress } from '@/config/setup';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
 import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
+const debounceDelay = 200;
+
 export default {
   name: 'App',
-  components: { PickupTooltip,
-    Errors, Loader },
-
+  components: {
+    Errors,
+    Loader,
+  },
   data() {
     return {
       /**
@@ -95,12 +103,14 @@ export default {
      * @returns {boolean}
      */
     hasValidAddress() {
-      if (!this.$configBus.address || !this.$configBus.address.cc) {
+      const { cc } = this.$configBus.address;
+
+      if (!this.$configBus.address || !cc) {
         return false;
       }
 
-      const cc = this.$configBus.address.cc.toUpperCase();
-      const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'NL'];
+      const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'nl'];
+
       const doesntMeetRequirements = (item) => {
         return !this.$configBus.address.hasOwnProperty(item) || !this.$configBus.address[item];
       };
@@ -112,6 +122,7 @@ export default {
       if (!valid) {
         this.$configBus.addErrors(
           MISSING_ADDRESS,
+          // Find only invalid fields
           requirements.filter((item) => doesntMeetRequirements(item))
         );
       }
@@ -195,7 +206,9 @@ export default {
         return;
       }
 
-      this.$configBus.setAddress();
+      // Update the address using the window config object.
+      this.address = getAddress();
+
       this.showCheckout = true;
 
       if (!this.hasValidAddress) {

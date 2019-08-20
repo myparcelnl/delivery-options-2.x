@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="show"
-    class="myparcel-checkout__tooltip">
+  <div class="myparcel-checkout__tooltip">
     <div
       class="myparcel-checkout__tooltip__close"
       @click="$emit('close')">
@@ -56,10 +54,6 @@ export default {
       type: Object,
       default: null,
     },
-    show: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -70,10 +64,6 @@ export default {
     strings() {
       return this.$configBus.strings;
     },
-
-    // data() {
-    //   return this.$configBus.tooltipData
-    // },
 
     carrierData() {
       return this.$configBus.currentCarrier;
