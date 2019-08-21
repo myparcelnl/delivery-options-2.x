@@ -1,52 +1,17 @@
-import * as SETTINGS from '../../src/config/data/settingsConfig';
-
 export default {
   en: {
     titles: {
-      additionalOptions: {
-        title: 'Additional Options',
-        description: '',
-      },
-      delivery: {
-        title: 'Delivery',
-        description: '',
-      },
-      eveningDelivery: {
-        title: 'Evening delivery',
-        description: '',
-      },
-      general: {
-        title: 'General',
-        description: '',
-      },
-      morningDelivery: {
-        title: 'Morning delivery',
-        description: '',
-      },
-      onlyRecipient: {
-        title: 'Only Recipient',
-        description: '',
-      },
-      pickup: {
-        title: 'Pickup',
-        description: '',
-      },
-      pickupExpress: {
-        title: 'Pickup Express',
-        description: '',
-      },
-      signature: {
-        title: 'Signature',
-        description: '',
-      },
-      standardDelivery: {
-        title: 'Standard delivery',
-        description: '',
-      },
-      strings: {
-        title: 'Other strings',
-        description: '',
-      },
+      [FORM.ADDITIONAL_OPTIONS]: 'Additional Options',
+      [FORM.DELIVERY]: 'Delivery',
+      [FORM.DELIVERY_EVENING]: 'Evening delivery',
+      [GENERAL]: 'General',
+      [FORM.DELIVERY_MORNING]: 'Morning delivery',
+      [FORM.ONLY_RECIPIENT]: 'Only Recipient',
+      [FORM.PICKUP]: 'Pickup',
+      [FORM.PICKUP_EXPRESS]: 'Pickup Express',
+      [FORM.SIGNATURE]: 'Signature',
+      [FORM.DELIVERY_STANDARD]: 'Standard delivery',
+      [STRINGS]: 'Other strings',
     },
 
     settings: {
@@ -55,6 +20,7 @@ export default {
         description: 'The currency to display prices in. Default: <code>EUR</code>',
       },
       [SETTINGS.CUTOFF_TIME]: {
+        default: '17:00',
         placeholder: '17:00',
         description: 'This option allows the merchant to indicate the latest cut-off time before an order will still be picked, packed and dispatched on the same/first set dropoff day, taking the dropoff delay into account. (Industry standard) default time is <code>17:00</code>. For example, if cutoff time is 17:00, Monday is a delivery day and there\'s no delivery delay; all orders placed Monday before 17:00 will be dropped of at PostNL on that same Monday in time for the Monday collection and delivery on Tuesday.',
       },
@@ -63,12 +29,14 @@ export default {
         description: 'This option allows the Merchant to set the number of days into the future for which she wants to show her consumers delivery options. For example; If set to 3 (days) in her checkout, a consumer ordering on Monday will see possible delivery options for Tuesday, Wednesday and Thursday (provided there is no drop-off delay, it\'s before the cut-off time and she goes to PostNL on Mondays). Min. is 1 and max. is 14.',
       },
       [SETTINGS.DROP_OFF_DAYS]: {
-        placeholder: '',
-        description: '',
+        default: '1,2,3,4,5',
       },
       [SETTINGS.DROP_OFF_DELAY]: {
         placeholder: '',
         description: 'This option allows the merchant to set the number of days it takes her to pick, pack and hand in her parcel at PostNL when ordered before the cutoff time. By default this is 0 and max. is 14.',
+      },
+      [SETTINGS.CARRIERS]: {
+        default: 'bpost,dpd',
       },
       // [SETTINGS.ALLOW_DELIVERY_OPTIONS]: {
       //   placeholder: '',
@@ -213,34 +181,16 @@ export default {
         description: '',
         placeholder: 'Openingstijden',
       },
-      [SETTINGS.MONDAY]: {
-        description: '',
-        placeholder: 'Monday',
-      },
-      [SETTINGS.TUESDAY]: {
-        description: '',
-        placeholder: 'Tuesday',
-      },
-      [SETTINGS.WEDNESDAY]: {
-        description: '',
-        placeholder: 'Wednesday',
-      },
-      [SETTINGS.THURSDAY]: {
-        description: '',
-        placeholder: 'Thursday',
-      },
-      [SETTINGS.FRIDAY]: {
-        description: '',
-        placeholder: 'Friday',
-      },
-      [SETTINGS.SATURDAY]: {
-        description: '',
-        placeholder: 'Saturday',
-      },
-      [SETTINGS.SUNDAY]: {
-        description: '',
-        placeholder: 'Sunday',
-      },
     },
   },
 };
+
+import * as FORM from '../../src/config/data/formConfig';
+import * as SETTINGS from '../../src/config/data/settingsConfig';
+import { GENERAL, STRINGS } from '../src/settings';
+
+
+
+
+
+

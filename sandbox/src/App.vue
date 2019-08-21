@@ -7,8 +7,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
-          <h3>Settings</h3>
+        <div class="col-12 col-md-6">
+          <h2>Settings</h2>
           <p>
             This sandbox is meant to provide clarity about the MyParcel delivery options. Below you can see all
             possible options for MyParcel NL. Change the options to see the result.
@@ -21,27 +21,25 @@
               API docs
             </a>
           </p>
+          <SettingsForm
+            @update="updateSettings"
+            @hover="handleHover" />
         </div>
-        <div class="col-6">
-          <h3>Code</h3>
+
+        <div class="col-12 col-md-6">
+          <h2>Code</h2>
           <p>
             If you adjust the options in the left column, you will see the change in the code below. In the code below
             you can see that an object has been built and that object is used in a function. You could build this
             object by adjusting the values inline with backend code. But it would be better if you can retrieve this
             object by means of a (rest) api.
           </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <SettingsForm @update="updateSettings" />
-        </div>
-        <div class="col-6">
           <prism
+            :ref="'code'"
             language="js"
-            :code="`const data = ${toCodeString(code)};`"
-            @click="clickCode" />
+            :code="`const data = ${toCodeString(code)};`" />
         </div>
+
         <div class="col-12">
           <h1>Checkout -></h1>
           <div id="myparcel-checkout" />
@@ -52,9 +50,8 @@
 </template>
 
 <script>
-import '@/assets/vendor/js/myparcel';
-import SettingsForm from '@/components/SettingsForm';
-import { samples } from '@/config/samples';
+import '../../dist/myparcel';
+import SettingsForm from './components/SettingsForm';
 
 /**
  * @type {Object}
@@ -126,17 +123,11 @@ export default {
     };
   },
 
-  computed: {
-    samples: () => samples,
-  },
   created() {
     document.dispatchEvent(new Event('myparcel_update_checkout'));
   },
-  methods: {
-    clickCode(event) {
-      console.log(event);
-    },
 
+  methods: {
     /**
      * Convert given code to formatted js notation removing quotes around properties and replacing double quotes.
      *
@@ -152,7 +143,7 @@ export default {
 
     updateSettings(a, b) {
       console.log('updateSettings', a, b);
-
+      document.dispatchEvent(new Event('myparcel_update_checkout'));
     },
 
     setOptions() {
@@ -179,6 +170,12 @@ export default {
       });
     },
 
+    /**
+     * @param {MouseEvent} e
+     */
+    handleHover(e) {
+      console.log('hover', e);
+    },
   },
 };
 </script>

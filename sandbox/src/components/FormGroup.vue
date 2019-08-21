@@ -58,7 +58,7 @@
       <hr v-if="isTopLevel">
       <component
         :is="'h' + (level + 1)"
-        id="data.title"
+        :id="data.title"
         v-text="translation('title')" />
       <p
         v-if="hasTranslation('description')"
@@ -95,14 +95,20 @@ export default {
       return this.level === 1;
     },
     translationGroup() {
-      const prefix = this.isTitle ? 'titles' : 'settings';
-      const translation = this.isTitle ? this.data.title : this.data.name;
-      return `${prefix}.${translation}`;
+      let prefix = this.isTitle ? 'titles' : 'settings';
+
+      if (!this.isTitle) {
+        prefix += `.${this.data.name}`;
+      }
+
+      return prefix;
     },
   },
   methods: {
     translation(name) {
-      return this.$t(`${this.translationGroup}.${name}`);
+      return this.isTitle
+        ? this.$t(`${this.translationGroup}.${this.data.title}`)
+        : this.$t(`${this.translationGroup}.${name}`);
     },
     hasTranslation(name) {
       return ![`${this.translationGroup}.${name}`, ''].includes(this.translation(name));

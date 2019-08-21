@@ -4,7 +4,9 @@
       v-for="setting in settings"
       :key="setting.name"
       :data="setting"
-      @change="$emit('update', $event)" />
+      @mousemove="$emit('hover', $event)"
+      @update="$emit('update', $event)" />
+<!--      @mouseleave="$emit('hover', false)"-->
   </form>
 </template>
 

@@ -3,7 +3,7 @@ import './assets/scss/style.scss';
 import App from './App.vue';
 import Vue from 'vue';
 import VuePrism from 'vue-prismjs';
-import { i18n } from '../services/vue-i18n';
+import { i18n } from './services/vue-i18n';
 
 Vue.config.productionTip = false;
 

@@ -1,10 +1,11 @@
 /* eslint-disable no-magic-numbers */
-// import { ADDITIONAL_OPTIONS, ONLY_RECIPIENT, PICKUP, PICKUP_EXPRESS, SIGNATURE } from '../../src/config/formConfig';
-import * as SETTINGS from '../../src/config/settingsConfig';
+import * as FORM from '@/config/data/formConfig';
+import * as SETTINGS from '../../src/config/data/settingsConfig';
 
 export const CONFIG = 'config';
-export const STRINGS = 'strings';
+export const GENERAL = 'general';
 export const SETTING = 'setting';
+export const STRINGS = 'strings';
 
 const trueFalseOptions = [
   {
@@ -17,9 +18,14 @@ const trueFalseOptions = [
   },
 ];
 
+/**
+ * Settings and their default values.
+ *
+ * @type {*[]}
+ */
 export const settings = [
   {
-    title: 'general',
+    title: GENERAL,
     description: 'general',
     settings: [
       {
@@ -36,19 +42,19 @@ export const settings = [
       },
       {
         name: SETTINGS.CUTOFF_TIME,
-        value: 'bpost,dpd',
+        value: '16:00',
       },
     ],
   },
   {
-    title: 'delivery',
+    title: FORM.DELIVERY,
     settings: [
       {
         name: SETTINGS.DELIVERY_TITLE,
         value: 'Bezorgen op',
       },
       {
-        title: 'morningDelivery',
+        title: FORM.DELIVERY_MORNING,
         settings: [
           {
             name: SETTINGS.ALLOW_MORNING_DELIVERY,
@@ -66,7 +72,7 @@ export const settings = [
         ],
       },
       {
-        title: 'standardDelivery',
+        title: FORM.DELIVERY_STANDARD,
         settings: [
           {
             name: SETTINGS.DELIVERY_STANDARD_TITLE,
@@ -79,7 +85,7 @@ export const settings = [
         ],
       },
       {
-        title: 'eveningDelivery',
+        title: FORM.DELIVERY_EVENING,
         settings: [
           {
             name: SETTINGS.ALLOW_EVENING_DELIVERY,
@@ -97,10 +103,10 @@ export const settings = [
         ],
       },
       {
-        title: 'additionalOptions',
+        title: FORM.ADDITIONAL_OPTIONS,
         settings: [
           {
-            title: 'onlyRecipient',
+            title: FORM.ONLY_RECIPIENT,
             settings: [
               {
                 name: SETTINGS.ALLOW_ONLY_RECIPIENT,
@@ -118,7 +124,7 @@ export const settings = [
             ],
           },
           {
-            title: 'signature',
+            title: FORM.SIGNATURE,
             settings: [
               {
                 name: SETTINGS.ALLOW_SIGNATURE,
@@ -140,7 +146,7 @@ export const settings = [
     ],
   },
   {
-    title: 'pickup',
+    title: FORM.PICKUP,
     settings: [
       {
         name: SETTINGS.ALLOW_PICKUP_POINTS,
@@ -158,7 +164,7 @@ export const settings = [
     ],
   },
   {
-    title: 'pickupExpress',
+    title: FORM.PICKUP_EXPRESS,
     settings: [
       {
         name: SETTINGS.ALLOW_PICKUP_EXPRESS,
@@ -172,7 +178,7 @@ export const settings = [
     ],
   },
   {
-    title: 'strings',
+    title: STRINGS,
     settings: [
       {
         name: SETTINGS.CLOSED,
