@@ -213,7 +213,6 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
-      console.log('getCheckout', this.$configBus);
       // Don't start loading if there's nothing to load
       if (this.hasNothingToShow) {
         return;

@@ -47,17 +47,14 @@ export async function fetchFromEndpoint(Endpoint, options = {}, unique = null) {
 
   const valueKey = endpoint.endpoint;
 
-  console.log(values);
   if (unique) {
     key = Object.keys(options.params)
       .filter((item) => unique.includes(item))
       .map((item) => options.params[item]).join('_');
 
     if (values.hasOwnProperty(valueKey) && values[valueKey].hasOwnProperty(key)) {
-      console.warn(endpoint.endpoint, 'skipping api, got this already :)))))))');
       return values[valueKey][key];
     }
-    console.warn(endpoint.endpoint, 'don\'t have this yet, fetching');
   }
 
   try {
