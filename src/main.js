@@ -1,6 +1,7 @@
 import '@/assets/scss/style.scss';
 import '@/services/fontAwesome';
 import App from '@/App.vue';
+import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm';
 import Vue from 'vue';
@@ -34,6 +35,8 @@ Vue.config.devtools = process.env.NODE_ENV === 'development';
  * Load the application.
  */
 function loadApp() {
+  document.removeEventListener(UPDATE_CHECKOUT_IN, loadApp);
+
   const instance = new Vue({
     render: (createElement) => createElement(App),
   }).$mount('#myparcel-checkout');
@@ -85,7 +88,7 @@ function loadApp() {
   }
 }
 
-window.onload = loadApp;
+document.addEventListener(UPDATE_CHECKOUT_IN, loadApp);
 
 /**
  * Output some information in the console to help a developer get started quickly.

@@ -156,6 +156,7 @@ export default {
   },
 
   created() {
+    this.listeners.update();
     document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
 
     // Add the new data to the values object
