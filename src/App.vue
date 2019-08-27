@@ -219,7 +219,7 @@ export default {
       }
 
       // Update the address using the window config object.
-      this.address = getAddress();
+      this.$configBus.address = getAddress();
 
       this.showCheckout = true;
 
