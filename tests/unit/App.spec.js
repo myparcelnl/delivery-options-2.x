@@ -1,9 +1,10 @@
+import { defaultAddress, getConfigBus } from './testConfig';
 import App from '@/App';
+import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import Vue from 'vue';
-import { configBus } from '@/config/configBus';
 import { shallowMount } from '@vue/test-utils';
 
-Vue.prototype.$configBus = configBus;
+Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
 
 jest.spyOn(global.console, 'trace');
 jest.spyOn(global.console, 'log');
@@ -17,14 +18,10 @@ describe('App.vue', () => {
     app = shallowMount(App);
     expect(app.vm.hasValidAddress).toBe(false);
 
-    app.vm.$configBus.address = {
-      cc: 'nl',
-      postalCode: '1025WK',
-      number: 576,
-    };
+    app.vm.$configBus.$data.address = defaultAddress[SENDMYPARCEL];
     expect(app.vm.hasValidAddress).toBe(true);
 
-    app.vm.$configBus.address = {
+    app.vm.$configBus.$data.address = {
       cc: 'nl',
       postalCode: '1025WK',
     };

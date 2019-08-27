@@ -1,8 +1,8 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
-import { configBus } from '@/config/configBus';
-import { defaultConfig } from '@/config/data/defaultConfig';
+import { SENDMYPARCEL } from '@/config/data/platformConfig';
+import { getConfigBus } from './testConfig';
 
-Object.defineProperty(window, 'MyParcelConfig', defaultConfig);
+const configBus = getConfigBus(SENDMYPARCEL);
 
 const settingCases = [
   SETTINGS.ALLOW_DELIVERY_OPTIONS,
@@ -28,9 +28,10 @@ describe('configBus', () => {
   });
 
   it('formats prices', () => {
-    expect(configBus.formatPrice(0)).toBe('€0.00');
-    expect(configBus.formatPrice(100)).toBe('€100.00');
-    expect(configBus.formatPrice(24.50)).toBe('€24.50');
+    // The spaces in the expected strings are non-breaking spaces.
+    expect(configBus.formatPrice(0)).toBe('€ 0,00');
+    expect(configBus.formatPrice(100)).toBe('€ 100,00');
+    expect(configBus.formatPrice(24.50)).toBe('€ 24,50');
   });
 
   it.each(settingCases)('enables %p by default', (arg) => {

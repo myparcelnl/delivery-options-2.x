@@ -118,11 +118,11 @@ export default {
      * @returns {boolean}
      */
     hasValidAddress() {
-      const { cc } = this.$configBus.address;
-
-      if (!this.$configBus.address || !cc) {
+      if (!this.$configBus.address || !this.$configBus.address.cc) {
         return false;
       }
+
+      const { cc } = this.$configBus.address;
 
       const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'nl'];
 
