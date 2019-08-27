@@ -1,8 +1,8 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
-import { SENDMYPARCEL } from '@/config/data/platformConfig';
+import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
 import { getConfigBus } from './testConfig';
 
-const configBus = getConfigBus(SENDMYPARCEL);
+const configBus = getConfigBus(DEFAULT_PLATFORM);
 
 const settingCases = [
   SETTINGS.ALLOW_DELIVERY_OPTIONS,

@@ -1,5 +1,4 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { Pickup } from 'Sdk/src/endpoint/public/pickup';
 import { addressRequirements } from '@/config/data/platformConfig';
 import { configBus } from '@/config/configBus';
 import { formatPickupResponse } from '@/data/pickup/formatPickupResponse';
@@ -17,7 +16,7 @@ const parameterMapping = {
  */
 export async function fetchPickupLocations(carrier) {
   const data = await fetchFromEndpoint(
-    Pickup,
+    'pickup_locations',
     {
       method: METHOD_SEARCH,
       params: {

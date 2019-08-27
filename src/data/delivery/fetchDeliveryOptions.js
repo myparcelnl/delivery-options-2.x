@@ -1,5 +1,4 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { Delivery } from 'Sdk/src/endpoint/public/delivery';
 import { addressRequirements } from '@/config/data/platformConfig';
 import { configBus } from '@/config/configBus';
 
@@ -12,7 +11,7 @@ import { configBus } from '@/config/configBus';
  */
 export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
   return fetchFromEndpoint(
-    Delivery,
+    'delivery_options',
     {
       method: METHOD_SEARCH,
       params: configBus.getRequestParameters(carrier),

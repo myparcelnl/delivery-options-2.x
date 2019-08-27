@@ -89,7 +89,7 @@ const code = {
     deliveryStandardTitle: '',
   },
   config: {
-    apiBaseUrl: 'https://api.myparcel.nl/',
+    platform: 'myparcel',
     dropOffDays: '1;2;3;4;5;6',
     cutoffTime: '17:00',
     deliverydaysWindow: 5,

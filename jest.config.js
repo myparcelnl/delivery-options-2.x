@@ -7,7 +7,7 @@ module.exports = {
   },
   transformIgnorePatterns: ['node_modules/(?!(babel-jest|jest-vue-preprocessor)/)'],
   moduleNameMapper: {
-    '^Sdk/(.*)$': '<rootDir>/myparcel-js-sdk/$1',
+    '^@myparcel/sdk/(.*)$': '<rootDir>/myparcel-js-sdk/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   snapshotSerializers: ['jest-serializer-vue'],

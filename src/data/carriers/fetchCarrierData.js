@@ -1,5 +1,4 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { Carriers } from 'Sdk/src/endpoint/public/carriers';
 import { formatCarrierResponse } from '@/data/carriers/formatCarrierResponse';
 
 /**
@@ -11,7 +10,7 @@ import { formatCarrierResponse } from '@/data/carriers/formatCarrierResponse';
  */
 export async function fetchCarrierData(carrier) {
   const data = await fetchFromEndpoint(
-    Carriers,
+    'carriers',
     {
       method: METHOD_SEARCH,
       params: {

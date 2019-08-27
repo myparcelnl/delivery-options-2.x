@@ -1,3 +1,4 @@
+import Client from '../../myparcel-js-sdk/src';
 import { ERROR } from '@/config/data/eventConfig';
 import { appConfig } from '@/config/data/appConfig';
 import { configBus } from '@/config/configBus';
@@ -17,7 +18,7 @@ const isDev = process.env.NODE_ENV === 'development';
 /**
  * Fetch data from an endpoint and return an object containing the response and errors.
  *
- * @param {Function} Endpoint - Endpoint to use.
+ * @param {String} endpoint - Endpoint to use.
  *
  * @param {Object} options - Options.
  * @param {String} options.method? - Method.
@@ -27,12 +28,13 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
-export async function fetchFromEndpoint(Endpoint, options = {}, unique = null) {
-  const endpoint = new Endpoint();
+export async function fetchFromEndpoint(endpoint, options = {}, unique = null) {
+  const client = new Client(null, configBus.config.locale);
 
-  // Set API URL and accept-language header from config
-  endpoint.config.acceptLanguage = configBus.config.locale;
-  endpoint.config.url = new URL(isDev ? appConfig.apiUrl : configBus.config.apiBaseUrl);
+  console.log(appConfig);
+  console.log(isDev ? appConfig.dev.apiUrl : configBus.config.apiBaseUrl || appConfig.prod.apiUrl);
+  // Set API URL from config
+  client.config.url = new URL(isDev ? appConfig.dev.apiUrl : configBus.config.apiBaseUrl || appConfig.prod.apiUrl);
 
   let response = {};
   let errors = {};
@@ -45,34 +47,32 @@ export async function fetchFromEndpoint(Endpoint, options = {}, unique = null) {
     ...options,
   };
 
-  const valueKey = endpoint.endpoint;
-
   if (unique) {
     key = Object.keys(options.params)
       .filter((item) => unique.includes(item))
       .map((item) => options.params[item]).join('_');
 
-    if (values.hasOwnProperty(valueKey) && values[valueKey].hasOwnProperty(key)) {
-      return values[valueKey][key];
+    if (values.hasOwnProperty(endpoint) && values[endpoint].hasOwnProperty(key)) {
+      return values[endpoint][key];
     }
   }
 
   try {
-    response = await endpoint[options.method](options.params);
+    response = await client[endpoint][options.method](options.params);
   } catch (e) {
     errors = e;
     if (e.length) {
-      configBus.addErrors(endpoint.endpoint, e[0].errors);
-      configBus.$emit(ERROR, { [endpoint.endpoint]: e[0].errors });
+      configBus.addErrors(endpoint, e[0].errors);
+      configBus.$emit(ERROR, { [endpoint]: e[0].errors });
     }
   }
 
-  values[valueKey] = {
+  values[endpoint] = {
     [key]: {
       response: Array.isArray(response) ? response : [],
       errors: Array.isArray(errors) ? errors : [],
     },
   };
 
-  return values[valueKey][key];
+  return values[endpoint][key];
 }

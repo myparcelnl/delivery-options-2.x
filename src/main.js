@@ -1,9 +1,9 @@
 import '@/assets/scss/style.scss';
 import '@/services/fontAwesome';
 import App from '@/App.vue';
-import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm';
+import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
 import Vue from 'vue';
 import { configBus } from '@/config/configBus';
 

@@ -1,5 +1,4 @@
 const path = require('path');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = {
   css: {
@@ -12,14 +11,9 @@ module.exports = {
   },
   productionSourceMap: false,
   configureWebpack: {
-    // plugins: process.env.NODE_ENV === 'production' ? [
-    //   new BundleAnalyzerPlugin({
-    //     analyzerPort: 'auto',
-    //   }),
-    // ] : [],
     resolve: {
       alias: {
-        Sdk: path.resolve(__dirname, './myparcel-js-sdk'),
+        '@myparcel/sdk': path.resolve(__dirname, './myparcel-js-sdk'),
       },
     },
     output: {
