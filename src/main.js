@@ -81,11 +81,11 @@ function loadApp() {
      */
     showAllDeliveryOptions: app.getCheckout,
   };
+}
 
-  // This is not present in the compiled code.
-  if (process.env.NODE_ENV === 'development' && !window.hasOwnProperty('MyParcelConfig')) {
-    showDeveloperInfo();
-  }
+// This is not present in the compiled code.
+if (process.env.NODE_ENV === 'development' && !window.hasOwnProperty('MyParcelConfig')) {
+  window.onload = showDeveloperInfo;
 }
 
 document.addEventListener(UPDATE_CHECKOUT_IN, loadApp);
@@ -96,7 +96,6 @@ document.addEventListener(UPDATE_CHECKOUT_IN, loadApp);
 function showDeveloperInfo() {
   /* eslint-disable no-console */
   const styleHeader1 = [
-    'color: white',
     'font-size: 2em',
     'font-family: sans-serif',
     'padding: .2em 0;',
