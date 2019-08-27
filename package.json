@@ -3,13 +3,10 @@
   "version": "3.0.0",
   "types": "index.d.ts",
   "scripts": {
-    "serve": "npm run link && vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode development && npm run copy",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit",
-    "clean": "rm /Users/edie/projects/myparcel/api-nl/src/assets/vendor/js/myparcel.js || : && rm /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js || : && rm /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcelbe/assets/js/myparcel.js || :",
-    "copy": "npm run clean && cp dist/myparcel.js /Users/edie/projects/myparcel/api-nl/src/assets/vendor/js/myparcel.js && cp dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js && cp dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcelbe/assets/js/myparcel.js",
-    "link": "npm run clean && ln -s /Users/edie/projects/myparcel/checkout-be/dist/myparcel.js /Users/edie/projects/myparcel/api-nl/src/assets/vendor/js/myparcel.js && ln -s /Users/edie/projects/myparcel/checkout-be/dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcel/assets/js/myparcel.js && ln -s /Users/edie/projects/myparcel/checkout-be/dist/myparcel.js /Users/edie/projects/sites/wordpress/wp-content/plugins/woocommerce-myparcelbe/assets/js/myparcel.js"
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
