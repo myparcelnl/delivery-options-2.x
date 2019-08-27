@@ -16,6 +16,8 @@ describe('App.vue', () => {
 
   it('validates addresses', () => {
     app = shallowMount(App);
+    app.vm.getCheckout = jest.fn();
+
     expect(app.vm.hasValidAddress).toBe(false);
 
     app.vm.$configBus.$data.address = defaultAddress[SENDMYPARCEL];
