@@ -26,6 +26,12 @@ export function getDeliveryDates(deliveryOptions) {
 
   return deliveryOptions.map(({ date: option }) => {
     const date = new Date(option.date);
+    const name = date.toLocaleDateString(configBus.config.locale, {
+      month: 'numeric',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
     const dateString = date.toLocaleDateString(configBus.config.locale, {
       weekday: 'long',
       month: 'long',
