@@ -13,8 +13,6 @@ const values = {};
 export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';
 
-const isDev = process.env.NODE_ENV === 'development';
-
 /**
  * Fetch data from an endpoint and return an object containing the response and errors.
  *
@@ -28,34 +26,20 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
-export async function fetchFromEndpoint(endpoint, options = {}, unique = null) {
-  const client = new Client(null, configBus.config.locale);
+export async function fetchFromEndpoint(endpoint, options = {}) {
+  const client = new Client();
 
-  console.log(appConfig);
-  console.log(isDev ? appConfig.dev.apiUrl : configBus.config.apiBaseUrl || appConfig.prod.apiUrl);
-  // Set API URL from config
-  client.config.url = new URL(isDev ? appConfig.dev.apiUrl : configBus.config.apiBaseUrl || appConfig.prod.apiUrl);
+  client.config.acceptLanguage = configBus.config[LOCALE];
+  client.config.url = getApiUrl();
 
   let response = {};
   let errors = {};
-
-  let key = '_';
 
   // Set default options and override with given options.
   options = {
     method: METHOD_GET,
     ...options,
   };
-
-  if (unique) {
-    key = Object.keys(options.params)
-      .filter((item) => unique.includes(item))
-      .map((item) => options.params[item]).join('_');
-
-    if (values.hasOwnProperty(endpoint) && values[endpoint].hasOwnProperty(key)) {
-      return values[endpoint][key];
-    }
-  }
 
   try {
     response = await client[endpoint][options.method](options.params);
@@ -67,12 +51,8 @@ export async function fetchFromEndpoint(endpoint, options = {}, unique = null) {
     }
   }
 
-  values[endpoint] = {
-    [key]: {
-      response: Array.isArray(response) ? response : [],
-      errors: Array.isArray(errors) ? errors : [],
-    },
+  return {
+    response: Array.isArray(response) ? response : [],
+    errors: Array.isArray(errors) ? errors : [],
   };
-
-  return values[endpoint][key];
 }

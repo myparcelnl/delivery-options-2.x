@@ -10,21 +10,28 @@ const platformUrlMap = {
   [FLESPAKKET]: 'flespakket.nl',
 };
 
-export const url = platformUrlMap[configBus.config ? configBus.config.platform : DEFAULT_PLATFORM];
+const platform = configBus.config ? configBus.config.platform : DEFAULT_PLATFORM;
 
-export const appConfig = {};
+const url = platformUrlMap[platform];
 
-appConfig.prod = {
+const config = {};
+
+config.production = {
   apiUrl: `https://api.${url}`,
   assetsUrl: `https://assets.${url}`,
 };
 
-appConfig.stage = {
+config.staging = {
   apiUrl: `https://api.staging.${url}`,
-  assetsUrl: appConfig.prod.assetsUrl,
+  assetsUrl: config.production.assetsUrl,
 };
 
-appConfig.dev = {
+config.development = {
   apiUrl: `http://api.dev.${url}`,
-  assetsUrl: appConfig.prod.assetsUrl,
+  assetsUrl: config.production.assetsUrl,
 };
+
+/**
+ * Config by environment and platform.
+ */
+export const appConfig = config[process.env.NODE_ENV];
