@@ -17,7 +17,6 @@ export async function fetchCarrierData(carrier) {
         carrier,
       },
     },
-    ['carrier']
   );
 
   data.response = formatCarrierResponse(data.response);

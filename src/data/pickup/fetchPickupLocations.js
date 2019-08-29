@@ -24,7 +24,6 @@ export async function fetchPickupLocations(carrier) {
         ...configBus.getRequestParameters(),
       },
     },
-    addressRequirements[configBus.address.cc].map((item) => parameterMapping[item] || item)
   );
 
   data.response = formatPickupResponse(data.response, carrier);

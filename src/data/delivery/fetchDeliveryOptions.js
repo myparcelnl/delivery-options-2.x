@@ -16,6 +16,5 @@ export function fetchDeliveryOptions(carrier = configBus.currentCarrier) {
       method: METHOD_SEARCH,
       params: configBus.getRequestParameters(carrier),
     },
-    [...addressRequirements[configBus.address.cc], 'carrier']
   );
 }

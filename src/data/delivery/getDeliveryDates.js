@@ -24,13 +24,15 @@ export function getDeliveryDates(deliveryOptions) {
     return [];
   }
 
-  return deliveryOptions.reverse().map(({ date: option }) => {
+  return deliveryOptions.map(({ date: option }) => {
     const date = new Date(option.date);
-    const name = date.toLocaleDateString(configBus.config.locale);
+    const dateString = date.toLocaleDateString(configBus.config.locale, {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    });
 
-    const weekDay = formatWeekday(date);
-
-    const label = `${weekDay} ${name}`;
+    const label = dateString.charAt(0).toUpperCase() + dateString.slice(1);
     return { label, name };
   });
 }
