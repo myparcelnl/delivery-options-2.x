@@ -304,8 +304,13 @@ export default {
           result = dependencies[needle][values[needle]];
           needles.splice(index, 1);
 
+          // Get the first item if result is undefined
+          if (!result) {
+            result = dependencies[needle][Object.keys(dependencies[needle])[0]];
+          }
+
           if (needles.length > 0) {
-            result = this.getDep(dependencies[needle][values[needle]], needles);
+            result = this.getDep(result, needles);
           }
         }
       });
