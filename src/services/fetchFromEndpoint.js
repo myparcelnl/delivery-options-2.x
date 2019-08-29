@@ -1,14 +1,8 @@
 import Client from '../../myparcel-js-sdk/src';
 import { ERROR } from '@/config/data/eventConfig';
-import { appConfig } from '@/config/data/appConfig';
+import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
-
-/**
- * Data that has been fetched is stored in this object.
- *
- * @type {Object}
- */
-const values = {};
+import { getApiUrl } from '@/services/getApiUrl';
 
 export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';
@@ -21,8 +15,6 @@ export const METHOD_SEARCH = 'search';
  * @param {Object} options - Options.
  * @param {String} options.method? - Method.
  * @param {Object} options.params? - URL parameters.
- *
- * @param {Array} unique - Array of properties to use to try and skip API calls.
  *
  * @returns {Promise.<{errors: Object, response: Object}>}
  */
