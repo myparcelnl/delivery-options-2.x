@@ -44,13 +44,6 @@ export const configBus = new Vue({
     showModal: false,
 
     /**
-     * The component to show if showModal is true.
-     *
-     * @type {Vue}
-     */
-    modalComponent: null,
-
-    /**
      * Data object to pass to modalComponent.
      *
      * @type {Object}

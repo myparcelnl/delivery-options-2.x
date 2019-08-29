@@ -3,11 +3,10 @@
     <div
       v-if="showCheckout"
       class="myparcel-checkout">
-      <component
-        :is="$configBus.modalComponent"
+      <Modal
         v-if="$configBus.showModal"
-        :data="$configBus.modalData"
-        @close="$configBus.showModal = false" />
+        :data="modalData"
+        :component="$configBus.modalData.component" />
 
       <template v-else>
         <h3
@@ -36,6 +35,7 @@
 </template>
 
 <script>
+import Modal from '@/components/Modal';
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
@@ -54,6 +54,7 @@ const debounceDelay = 200;
 export default {
   name: 'App',
   components: {
+    Modal,
     Errors,
     Loader,
   },
@@ -146,6 +147,17 @@ export default {
      */
     hasNothingToShow() {
       return !this.$configBus.config[ALLOW_PICKUP_POINTS] && !this.$configBus.config[ALLOW_DELIVERY_OPTIONS];
+    },
+
+    /**
+     * Return modalData without component.
+     *
+     * @returns {Object}
+     */
+    modalData() {
+      const { component, ...data } = this.$configBus.modalData;
+
+      return data;
     },
   },
 

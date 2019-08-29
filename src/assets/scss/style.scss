@@ -1,13 +1,13 @@
 @import "variables";
 @import "keyframes";
 @import "loader";
-@import "tooltip";
+@import "modal";
 @import "transitions/index";
 
 .myparcel-checkout {
   position: relative;
 
-  &__d--block {
+  &__d-block {
     display: block;
   }
 
@@ -15,10 +15,6 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
-  }
-
-  &__image-large {
-    max-width: 7.5em;
   }
 
   &__image {

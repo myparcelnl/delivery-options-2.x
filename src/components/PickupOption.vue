@@ -3,7 +3,7 @@
     <label
       :for="`myparcel-checkout--${parent.name}--${data.name}`"
       @click="selected ? showModal() : null">
-      <span class="myparcel-checkout__d--block">
+      <span class="myparcel-checkout__d-block">
 
         <font-awesome-icon
           v-if="selected"
@@ -14,7 +14,7 @@
 
       <span
         v-if="featurePickupShowDistance"
-        class="myparcel-checkout__d--block">
+        class="myparcel-checkout__d-block">
         <span v-text="$configBus.formatDistance(pickupData.location.distance)" />
       </span>
     </label>
@@ -33,7 +33,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import { PICKUP, formConfig } from '@/config/data/formConfig';
-import PickupTooltip from './PickupTooltip';
+import PickupDetails from './PickupDetails';
 
 export default {
   name: 'PickupOption',
@@ -79,8 +79,10 @@ export default {
   methods: {
     showModal() {
       this.$configBus.showModal = true;
-      this.$configBus.modalComponent = PickupTooltip;
-      this.$configBus.modalData = this.pickupData;
+      this.$configBus.modalData = {
+        ...this.pickupData,
+        component: PickupDetails,
+      };
     },
     updateConfigBus(event) {
       this.$configBus.$emit(EVENTS.UPDATE, event);
