@@ -65,11 +65,6 @@ export default {
       showCheckout: false,
 
       /**
-       * TODO: Remove. This is a temporary solution to be able to debug the configBus with Vue DevTools.
-       */
-      configBus: this.$configBus,
-
-      /**
        * Whether the checkout is loading or not.
        *
        * @type {Boolean}
@@ -123,22 +118,21 @@ export default {
       }
 
       const { cc } = this.$configBus.address;
-
       const requirements = addressRequirements[addressRequirements.hasOwnProperty(cc) ? cc : 'nl'];
 
-      const doesntMeetRequirements = (item) => {
-        return !this.$configBus.address.hasOwnProperty(item) || !this.$configBus.address[item];
+      const meetsRequirements = (item) => {
+        return this.$configBus.address.hasOwnProperty(item) && this.$configBus.address[item];
       };
 
       // False if any requirements are not met, true otherwise.
-      const valid = !requirements.some((item) => doesntMeetRequirements(item));
+      const valid = requirements.every((item) => meetsRequirements(item));
 
       // If invalid, tell the configBus which fields are missing.
       if (!valid) {
         this.$configBus.addErrors(
           MISSING_ADDRESS,
           // Find only invalid fields
-          requirements.filter((item) => doesntMeetRequirements(item))
+          requirements.filter((item) => !meetsRequirements(item))
         );
       }
 
@@ -213,7 +207,6 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
-      console.log(this.$configBus.config);
       // Don't start loading if there's nothing to load
       if (this.hasNothingToShow) {
         return;
@@ -239,6 +232,8 @@ export default {
      * Hide the checkout completely.
      */
     hideCheckout() {
+      // This has to stay here until after testing
+      // eslint-disable-next-line no-console
       console.trace('would hide checkout');
       // this.showCheckout = false;
     },
