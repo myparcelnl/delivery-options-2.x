@@ -58,7 +58,8 @@
     margin: 0;
     width: 100%;
 
-    tr, td {
+    tr,
+    td {
       background-color: transparent;
       border: 0;
     }
@@ -72,9 +73,11 @@
         text-align: left;
       }
 
-      &.myparcel-checkout__input {
-        width: 1px;
-        padding-right: 6px;
+      &.myparcel-checkout {
+        &__input {
+          width: 1px;
+          padding-right: 6px;
+        }
       }
     }
   }

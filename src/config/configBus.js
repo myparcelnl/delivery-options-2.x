@@ -249,7 +249,7 @@ export const configBus = new Vue({
      */
     getCarrier(search) {
       return this.carrierData.find((carrier) => {
-        return typeof search === 'number'
+        return isNaN(parseInt(search))
           ? carrier.id === search
           : carrier.name === search;
       });
@@ -338,11 +338,10 @@ export const configBus = new Vue({
       const mToKm = 1000;
 
       let unit = 'm';
+
       if (distance >= mToKm) {
-        distance = (distance / mToKm)
-          .toFixed(1)
-          .toString()
-          .replace(/\./, ',');
+        const intl = new Intl.NumberFormat(this.config.locale, { maximumFractionDigits: 1 });
+        distance = intl.format(distance / mToKm);
         unit = 'km';
       }
 

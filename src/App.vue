@@ -145,8 +145,8 @@ export default {
      *
      * @returns {Boolean}
      */
-    hasNothingToShow() {
-      return !this.$configBus.config[ALLOW_PICKUP_POINTS] && !this.$configBus.config[ALLOW_DELIVERY_OPTIONS];
+    hasSomethingToShow() {
+      return this.$configBus.config[ALLOW_PICKUP_POINTS] || this.$configBus.config[ALLOW_DELIVERY_OPTIONS];
     },
 
     /**
@@ -220,7 +220,7 @@ export default {
      */
     async getCheckout() {
       // Don't start loading if there's nothing to load
-      if (this.hasNothingToShow) {
+      if (!this.hasSomethingToShow) {
         return;
       }
 
