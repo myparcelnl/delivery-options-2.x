@@ -1,3 +1,7 @@
+import * as FORM from '../../src/config/data/formConfig';
+import * as SETTINGS from '../../src/config/data/settingsConfig';
+import { GENERAL, STRINGS } from '../src/settings';
+
 export default {
   en: {
     titles: {
@@ -38,34 +42,34 @@ export default {
       [SETTINGS.CARRIERS]: {
         default: 'bpost,dpd',
       },
-      // [SETTINGS.ALLOW_DELIVERY_OPTIONS]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_EVENING_DELIVERY]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_MORNING_DELIVERY]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_ONLY_RECIPIENT]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_PICKUP_EXPRESS]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_PICKUP_POINTS]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
-      // [SETTINGS.ALLOW_SIGNATURE]: {
-      //   placeholder: '',
-      //   description: '',
-      // },
+      [SETTINGS.ALLOW_DELIVERY_OPTIONS]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_EVENING_DELIVERY]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_MORNING_DELIVERY]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_ONLY_RECIPIENT]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_PICKUP_EXPRESS]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_PICKUP_POINTS]: {
+        placeholder: '',
+        description: '',
+      },
+      [SETTINGS.ALLOW_SIGNATURE]: {
+        placeholder: '',
+        description: '',
+      },
       [SETTINGS.PRICE_EVENING_DELIVERY]: {
         placeholder: '',
         description: '',
@@ -184,13 +188,4 @@ export default {
     },
   },
 };
-
-import * as FORM from '../../src/config/data/formConfig';
-import * as SETTINGS from '../../src/config/data/settingsConfig';
-import { GENERAL, STRINGS } from '../src/settings';
-
-
-
-
-
 

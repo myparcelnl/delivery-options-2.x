@@ -142,7 +142,6 @@ export default {
     },
 
     updateSettings(a, b) {
-      console.log('updateSettings', a, b);
       document.dispatchEvent(new Event('myparcel_update_checkout'));
     },
 
