@@ -17,6 +17,3 @@ export const addressErrorMap = {
   cc: MISSING_CC,
   city: MISSING_CITY,
 };
-
-// België
-/// pickup location carrier
