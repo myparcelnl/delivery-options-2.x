@@ -1,0 +1,23 @@
+.myparcel-checkout {
+  &__modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: $modal-content-padding;
+    background-color: white;
+
+    &__close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: $modal-content-padding;
+
+      img {
+        width: 1em;
+        cursor: pointer;
+      }
+    }
+  }
+}
