@@ -31,7 +31,7 @@ const emptyData = {
  * @param {MyParcel.Platform|Object} platform - Platform name or.
  * @param {Object} data - Platform name or.
  *
- * @returns {Vue}
+ * @returns {configBus}
  */
 export const getConfigBus = (platform = DEFAULT_PLATFORM, data = emptyData) => {
   if (typeof platform === 'string') {

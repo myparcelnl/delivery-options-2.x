@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import App from '@/App';
 import * as EVENTS from '@/config/data/eventConfig';
 import {
   ALLOW_MONDAY_DELIVERY, CARRIER_SETTINGS,

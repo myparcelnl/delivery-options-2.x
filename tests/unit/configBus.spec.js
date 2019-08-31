@@ -1,7 +1,6 @@
-import { defaultConfig } from '@/config/data/defaultConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
-import * as CARRIERS from '@/config/data/settingsConfig';
 import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
+import { defaultConfig } from '@/config/data/defaultConfig';
 import { getConfigBus } from './testConfig';
 
 let configBus = getConfigBus(DEFAULT_PLATFORM);

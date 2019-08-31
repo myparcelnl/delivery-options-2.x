@@ -3,12 +3,7 @@ const createCommand = (input) => {
 };
 
 const preCommit = createCommand([
-  'npm run build',
-  'git add dist',
-  'cd myparcel-js-sdk',
-  'npm run build',
-  'cd ..',
-  'git add myparcel-js-sdk',
+  'npm run lint',
 ]);
 
 module.exports = {

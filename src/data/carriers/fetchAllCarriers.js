@@ -1,5 +1,5 @@
-import { configBus } from '@/config/configBus';
 import { CARRIERS } from '@/config/data/settingsConfig';
+import { configBus } from '@/config/configBus';
 import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
 import { fetchMultiple } from '@/services/fetchMultiple';
 

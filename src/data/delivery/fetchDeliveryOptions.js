@@ -1,5 +1,4 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { addressRequirements } from '@/config/data/platformConfig';
 import { configBus } from '@/config/configBus';
 
 /**
