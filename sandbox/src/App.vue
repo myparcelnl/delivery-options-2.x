@@ -168,13 +168,6 @@ export default {
         Sandbox.formOptions[keys[1]][keys[2]] = val;
       });
     },
-
-    /**
-     * @param {MouseEvent} e
-     */
-    handleHover(e) {
-      console.log('hover', e);
-    },
   },
 };
 </script>

@@ -148,7 +148,6 @@ export default {
      * @returns {Boolean}
      */
     hasSomethingToShow() {
-      console.log(this.$configBus.get(ALLOW_PICKUP_LOCATIONS));
       return this.$configBus.get(ALLOW_PICKUP_LOCATIONS) || this.$configBus.get(ALLOW_DELIVERY_OPTIONS);
     },
 
@@ -165,7 +164,6 @@ export default {
   },
 
   created() {
-    console.log('app created');
     this.listeners.update();
     document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
 
