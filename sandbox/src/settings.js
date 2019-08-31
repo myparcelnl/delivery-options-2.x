@@ -149,7 +149,7 @@ export const settings = [
     title: FORM.PICKUP,
     settings: [
       {
-        name: SETTINGS.ALLOW_PICKUP_POINTS,
+        name: SETTINGS.ALLOW_PICKUP_LOCATIONS,
         type: 'select',
         options: trueFalseOptions,
       },

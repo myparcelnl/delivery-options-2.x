@@ -105,7 +105,7 @@ const code = {
     priceSignature: 0.36,
     allowOnlyRecipient: true,
     priceOnlyRecipient: 0.29,
-    allowPickupPoints: false,
+    allowPickupLocations: false,
     pricePickup: 5.85,
     allowPickupExpress: true,
     pricePickupExpress: 7.23,

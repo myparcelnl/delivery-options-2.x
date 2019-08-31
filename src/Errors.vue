@@ -3,7 +3,7 @@
     v-if="isMissingAddressPart"
     class="myparcel-checkout__errors">
     <h4 v-text="$configBus.strings.addressNotFound" />
-    <form v-if="$configBus.config.allowRetry">
+    <form v-if="$configBus.get('allowRetry')">
       <template v-for="part in requiredAddressParts">
         <p :key="part">
           <label>

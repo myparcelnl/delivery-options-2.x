@@ -13,7 +13,7 @@ export const fakeConfig = {
     allowMorningDelivery: 0,
     allowOnlyRecipient: 1,
     allowPickupExpress: 0,
-    allowPickupPoints: 1,
+    allowPickupLocations: 1,
     allowSignature: 1,
 
     priceEveningDelivery: 0,

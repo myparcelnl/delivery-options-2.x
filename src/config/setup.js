@@ -9,7 +9,7 @@ export const mock = false;
  *
  * @returns {MyParcel.CheckoutConfiguration}
  */
-function getWindowObject() {
+const getWindowObject = () => {
   // Allow mocking for user and tests.
   if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
     if (['development', 'test'].includes(process.env.NODE_ENV)) {
@@ -22,7 +22,7 @@ function getWindowObject() {
   return typeof window.MyParcelConfig === 'string'
     ? JSON.parse(window.MyParcelConfig)
     : window.MyParcelConfig;
-}
+};
 
 /**
  * Get the address from the window object and convert cc to lowercase.

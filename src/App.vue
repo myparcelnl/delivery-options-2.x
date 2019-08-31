@@ -35,14 +35,16 @@
 </template>
 
 <script>
-import Modal from '@/components/Modal';
 import * as EVENTS from '@/config/data/eventConfig';
-import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_POINTS } from '@/config/data/settingsConfig';
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
 import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
 import Errors from '@/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
+import Modal from '@/components/Modal';
+import Vue from 'vue';
 import { addressRequirements } from '@/config/data/platformConfig';
+import { createConfigBus } from '@/config/configBus';
 import debounce from 'debounce';
 import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
 import { getAddress } from '@/config/setup';
@@ -146,7 +148,8 @@ export default {
      * @returns {Boolean}
      */
     hasSomethingToShow() {
-      return this.$configBus.config[ALLOW_PICKUP_POINTS] || this.$configBus.config[ALLOW_DELIVERY_OPTIONS];
+      console.log(this.$configBus.get(ALLOW_PICKUP_LOCATIONS));
+      return this.$configBus.get(ALLOW_PICKUP_LOCATIONS) || this.$configBus.get(ALLOW_DELIVERY_OPTIONS);
     },
 
     /**
@@ -162,6 +165,7 @@ export default {
   },
 
   created() {
+    console.log('app created');
     this.listeners.update();
     document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
 

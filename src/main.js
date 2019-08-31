@@ -5,31 +5,7 @@ import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm';
 import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
 import Vue from 'vue';
-import { configBus } from '@/config/configBus';
-
-/**
- * Async computed properties plugin.
- *
- * @see https://github.com/foxbenjaminfox/vue-async-computed
- */
-Vue.use(AsyncComputed);
-
-/**
- * Register a component globally so it's available in all templates.
- *
- * @see https://vuejs.org/v2/guide/components.html#Organizing-Components
- */
-Vue.component('recursive-form', RecursiveForm);
-
-/**
- * Set the configBus as a global property in the entire application.
- *
- * @type {Vue}
- */
-Vue.prototype.$configBus = configBus;
-
-Vue.config.productionTip = false;
-Vue.config.devtools = process.env.NODE_ENV === 'development';
+import { createConfigBus } from '@/config/configBus';
 
 /**
  * Load the application.
@@ -37,6 +13,28 @@ Vue.config.devtools = process.env.NODE_ENV === 'development';
 function loadApp() {
   document.removeEventListener(UPDATE_CHECKOUT_IN, loadApp);
 
+  /**
+   * Async computed properties plugin.
+   *
+   * @see https://github.com/foxbenjaminfox/vue-async-computed
+   */
+  Vue.use(AsyncComputed);
+
+  /**
+   * Register a component globally so it's available in all templates.
+   *
+   * @see https://vuejs.org/v2/guide/components.html#Organizing-Components
+   */
+  Vue.component('recursive-form', RecursiveForm);
+
+  /**
+   * Create the config bus and set it as a global property in the entire application.
+   */
+  Vue.prototype.$configBus = createConfigBus();
+
+  /**
+   * The Vue instance.
+   */
   const instance = new Vue({
     render: (createElement) => createElement(App),
   }).$mount('#myparcel-checkout');

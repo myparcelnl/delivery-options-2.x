@@ -10,9 +10,8 @@ import { configBus } from '@/config/configBus';
  */
 export function getApiUrl() {
   const apiUrl = configBus.config.hasOwnProperty(API_BASE_URL)
-    ? configBus.config[API_BASE_URL]
+    ? configBus.get(API_BASE_URL)
     : appConfig.apiUrl;
 
-  console.log(apiUrl);
   return new URL(apiUrl);
 }

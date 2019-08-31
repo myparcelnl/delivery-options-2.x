@@ -62,7 +62,7 @@ export default {
         placeholder: '',
         description: '',
       },
-      [SETTINGS.ALLOW_PICKUP_POINTS]: {
+      [SETTINGS.ALLOW_PICKUP_LOCATIONS]: {
         placeholder: '',
         description: '',
       },

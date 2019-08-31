@@ -108,11 +108,10 @@ declare namespace MyParcel {
     locale: String
     carriers: String | Array<String>
     platform: Platform
-    allowRetry: Boolean
     currency: String
 
     allowDeliveryOptions: Boolean
-    allowPickupPoints: Boolean
+    allowPickupLocations: Boolean
 
     cutoffTime: String
     deliveryDaysWindow: String | Number
@@ -125,7 +124,8 @@ declare namespace MyParcel {
     carrierSettings: CarrierSettings
 
     // Feature toggles
-    featurePickupShowDistance: Boolean
+    allowRetry: Boolean
+    pickupShowDistance: Boolean
   }
 
   type CarrierSettings = {

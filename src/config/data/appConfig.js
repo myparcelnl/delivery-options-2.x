@@ -10,7 +10,7 @@ const platformUrlMap = {
   [FLESPAKKET]: 'flespakket.nl',
 };
 
-const platform = configBus.config ? configBus.config.platform : DEFAULT_PLATFORM;
+const platform = configBus && configBus.config ? configBus.config.platform : DEFAULT_PLATFORM;
 
 const url = platformUrlMap[platform];
 

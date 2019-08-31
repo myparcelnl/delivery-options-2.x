@@ -32,7 +32,7 @@
 
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
-import { PICKUP, formConfig } from '@/config/data/formConfig';
+import { FEATURE_PICKUP_SHOW_DISTANCE } from '@/config/data/settingsConfig';
 import PickupDetails from './PickupDetails';
 
 export default {
@@ -53,26 +53,11 @@ export default {
   },
   computed: {
     featurePickupShowDistance() {
-      return this.$configBus.config.featurePickupShowDistance !== false;
+      return this.$configBus.get(FEATURE_PICKUP_SHOW_DISTANCE) !== false;
     },
 
     pickupData() {
       return this.data.pickupData;
-    },
-
-    carrierData() {
-      return this.$configBus.getCarrier(this.data.carrier);
-    },
-
-    price() {
-      return this.pickupData.possibilities.map((time) => {
-        const type = time.delivery_type_name;
-
-        return {
-          type,
-          price: this.$configBus.getPrice(formConfig[PICKUP].options[type]),
-        };
-      });
     },
   },
 

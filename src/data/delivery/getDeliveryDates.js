@@ -1,17 +1,5 @@
+import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
-
-/**
- *
- * @param {Date} date - Date object.
- * @returns {string}
- */
-export function formatWeekday(date) {
-  const intl = new Intl.DateTimeFormat(configBus.config.locale, { weekday: 'long' });
-
-  let weekDay = intl.format(date);
-  weekDay = weekDay.charAt(0).toUpperCase() + weekDay.slice(1);
-  return weekDay;
-}
 
 /**
  *
@@ -26,13 +14,13 @@ export function getDeliveryDates(deliveryOptions) {
 
   return deliveryOptions.map(({ date: option }) => {
     const date = new Date(option.date);
-    const name = date.toLocaleDateString(configBus.config.locale, {
+    const name = date.toLocaleDateString(configBus.get(LOCALE), {
       month: 'numeric',
       day: 'numeric',
       year: 'numeric',
     });
 
-    const dateString = date.toLocaleDateString(configBus.config.locale, {
+    const dateString = date.toLocaleDateString(configBus.get(LOCALE), {
       weekday: 'long',
       month: 'long',
       day: 'numeric',

@@ -14,7 +14,7 @@ window.MyParcelConfig = {
     // Delivery additional options
     allowSaturdayDelivery: true,
     allowSignature: true,
-    allowPickupPoints: true,
+    allowPickupLocations: true,
 
     // Other settings
     dropOffDays: '1;2;3;4;5;6',

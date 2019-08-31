@@ -62,9 +62,9 @@
                   'myparcel-checkout__text-bold': option.type === 'checkbox'
                     ? selected.includes(choice.name)
                     : selected === choice.name,
-                  'myparcel-checkout__text-green': $configBus.getPrice(choice) < 0
+                  'myparcel-checkout__text-green': $configBus.get(choice, 'price') < 0
                 }">
-                <span v-text="$configBus.getPrice(choice) >= 0 ? '+ ' : '– '" />
+                <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
                 {{ $configBus.formatPrice(choice.price) }}
               </component>
             </label>

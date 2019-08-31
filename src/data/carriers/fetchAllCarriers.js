@@ -1,4 +1,5 @@
 import { configBus } from '@/config/configBus';
+import { CARRIERS } from '@/config/data/settingsConfig';
 import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
 import { fetchMultiple } from '@/services/fetchMultiple';
 
@@ -13,7 +14,7 @@ export async function fetchAllCarriers() {
     return configBus.carrierData;
   }
 
-  const carriersToFetch = configBus.config.carriers;
+  const carriersToFetch = configBus.get(CARRIERS);
   // Create an array with a request for each carrier.
   const requests = carriersToFetch.map((carrier) => fetchCarrierData(carrier));
 

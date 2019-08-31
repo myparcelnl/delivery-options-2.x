@@ -99,7 +99,7 @@ export const formConfig = {
    * Pickup locations.
    */
   [PICKUP]: {
-    enabled: SETTINGS.ALLOW_PICKUP_POINTS,
+    enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
     name: PICKUP,
     options: {
       [PICKUP_EXPRESS]: {
@@ -108,7 +108,7 @@ export const formConfig = {
         price: SETTINGS.PRICE_PICKUP_EXPRESS,
       },
       [PICKUP_STANDARD]: {
-        enabled: SETTINGS.ALLOW_PICKUP_POINTS,
+        enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
         name: PICKUP_STANDARD,
         price: SETTINGS.PRICE_PICKUP,
         selected: true,

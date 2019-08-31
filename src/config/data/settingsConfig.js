@@ -1,17 +1,23 @@
 // CONFIG
+export const API_BASE_URL = 'apiBaseUrl';
+export const CARRIERS = 'carriers';
+export const LOCALE = 'locale';
 export const PLATFORM = 'platform';
 export const CURRENCY = 'currency';
+
+export const ALLOW_DELIVERY_OPTIONS = 'allowDeliveryOptions';
+export const ALLOW_EVENING_DELIVERY = 'allowEveningDelivery';
+export const ALLOW_MONDAY_DELIVERY = 'allowMondayDelivery';
+export const ALLOW_MORNING_DELIVERY = 'allowMorningDelivery';
+export const ALLOW_ONLY_RECIPIENT = 'allowOnlyRecipient';
+export const ALLOW_PICKUP_EXPRESS = 'allowPickupExpress';
+export const ALLOW_PICKUP_LOCATIONS = 'allowPickupLocations';
+export const ALLOW_SATURDAY_DELIVERY = 'allowSaturdayDelivery';
+export const ALLOW_SIGNATURE = 'allowSignature';
 export const CUTOFF_TIME = 'cutoffTime';
 export const DELIVERY_DAYS_WINDOW = 'deliveryDaysWindow';
 export const DROP_OFF_DAYS = 'dropOffDays';
 export const DROP_OFF_DELAY = 'dropOffDelay';
-export const ALLOW_DELIVERY_OPTIONS = 'allowDeliveryOptions';
-export const ALLOW_EVENING_DELIVERY = 'allowEveningDelivery';
-export const ALLOW_MORNING_DELIVERY = 'allowMorningDelivery';
-export const ALLOW_ONLY_RECIPIENT = 'allowOnlyRecipient';
-export const ALLOW_PICKUP_EXPRESS = 'allowPickupExpress';
-export const ALLOW_PICKUP_POINTS = 'allowPickupPoints';
-export const ALLOW_SIGNATURE = 'allowSignature';
 export const PRICE_EVENING_DELIVERY = 'priceEveningDelivery';
 export const PRICE_MORNING_DELIVERY = 'priceMorningDelivery';
 export const PRICE_ONLY_RECIPIENT = 'priceOnlyRecipient';
@@ -19,17 +25,14 @@ export const PRICE_PICKUP = 'pricePickup';
 export const PRICE_PICKUP_EXPRESS = 'pricePickupExpress';
 export const PRICE_SIGNATURE = 'priceSignature';
 export const PRICE_STANDARD_DELIVERY = 'priceStandardDelivery';
-export const CARRIER_SETTINGS = 'carrierSettings';
-
-export const ALLOW_RETRY = 'allowRetry';
-export const ALLOW_SATURDAY_DELIVERY = 'allowSaturdayDelivery';
-export const API_BASE_URL = 'apiBaseUrl';
-export const CARRIERS = 'carriers';
-export const LOCALE = 'locale';
-export const ALLOW_MONDAY_DELIVERY = 'allowMondayDelivery';
 export const SATURDAY_CUTOFF_TIME = 'saturdayCutoffTime';
 
-export const FEATURE_PICKUP_SHOW_DISTANCE = 'featurePickupShowDistance';
+// Carrier settings object
+export const CARRIER_SETTINGS = 'carrierSettings';
+
+// Extra features
+export const FEATURE_ALLOW_RETRY = 'allowRetry';
+export const FEATURE_PICKUP_SHOW_DISTANCE = 'pickupShowDistance';
 
 // STRINGS
 export const CITY = 'city';
@@ -62,6 +65,18 @@ export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
 export const WRONG_HOUSE_NUMBER_POSTCODE = 'wrongHouseNumberPostcode';
 export const WRONG_POSTAL_CODE_CITY = 'wrongPostalCodeCity';
 
-export const POSTAL_CODE_TEXT = 'postalCodeText';
-export const NUMBER_TEXT = 'numberText';
-export const CITY_TEXT = 'cityText';
+/**
+ * These settings can't be overridden by the carrierSettings object in the config.
+ *
+ * @type {Array}
+ */
+export const settingsWithoutCarrierOverride = [
+  PLATFORM,
+  CURRENCY,
+  API_BASE_URL,
+  CARRIERS,
+  LOCALE,
+
+  FEATURE_ALLOW_RETRY,
+  FEATURE_PICKUP_SHOW_DISTANCE,
+];

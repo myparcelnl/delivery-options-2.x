@@ -21,7 +21,7 @@ export const METHOD_SEARCH = 'search';
 export async function fetchFromEndpoint(endpoint, options = {}) {
   const client = new Client();
 
-  client.config.acceptLanguage = configBus.config[LOCALE];
+  client.config.acceptLanguage = configBus.get(LOCALE);
   client.config.url = getApiUrl();
 
   let response = {};
