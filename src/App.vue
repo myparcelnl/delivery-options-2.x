@@ -191,11 +191,9 @@ export default {
         [PICKUP]: getPickupLocations(),
       };
 
-      const choices = Object.keys(map).map((setting) => {
-        if (this.$configBus.isEnabled(formConfig[setting])) {
-          return map[setting];
-        }
-      });
+      const choices = Object.keys(map).reduce((acc, setting) => {
+        return this.$configBus.isEnabled(formConfig[setting]) ? [...acc, map[setting]] : acc;
+      }, []);
 
       if (!choices.length) {
         this.hideCheckout();
@@ -247,7 +245,7 @@ export default {
       // This has to stay here until after testing
       // eslint-disable-next-line no-console
       console.trace('would hide checkout');
-      // this.showCheckout = false;
+      this.showCheckout = false;
     },
 
     /**

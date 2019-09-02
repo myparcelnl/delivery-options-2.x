@@ -6,7 +6,7 @@
  *
  * @returns {Object}
  */
-export function deliveryAdditionalOptions(choice, options) {
+export function formatAdditionalOptions(choice, options) {
   choice.disabled = options.enum.length === 1;
 
   // If there is only one allowed value disable the option and set the selected property accordingly.

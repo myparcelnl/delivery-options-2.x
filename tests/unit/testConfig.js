@@ -1,5 +1,5 @@
 import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
-import { configBus } from '@/config/configBus';
+import { createConfigBus } from '@/config/configBus';
 import { defaultConfig } from '@/config/data/defaultConfig';
 
 /**
@@ -34,6 +34,7 @@ const emptyData = {
  * @returns {configBus}
  */
 export const getConfigBus = (platform = DEFAULT_PLATFORM, data = emptyData) => {
+  let configBus = createConfigBus();
   if (typeof platform === 'string') {
     platform = defaultConfig(platform);
   }

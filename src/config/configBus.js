@@ -166,62 +166,6 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Get the name of the selected choice for given option. The chosen value is either the previously set value for
-       *  current option, the option that has 'selected: true' or the first option.
-       *
-       * @param {Object} option - Option object.
-       *
-       * @param {Array} option.choices - Object choices.
-       * @param {String} option.type - Object type.
-       * @param {String} option.name - Object name.
-       *
-       * @returns {String}
-       */
-      getSelected(option) {
-        const { choices, type, name } = option;
-        const [firstChoice] = choices;
-        const isSet = this.values.hasOwnProperty(name);
-        const setValue = this.values[name];
-        const hasChoices = !!choices && choices.length > 0;
-
-        let selected;
-
-        if (type === 'checkbox') {
-        // setValue is always an array for type checkbox
-          const copiedSetValue = [...setValue || []];
-
-          // If there's a value set dedupe the array of values, otherwise set empty array.
-          const selectedChoices = choices.reduce((acc, choice) => {
-            if (choice.selected === true) {
-              acc.push(choice.name);
-            }
-
-            if (choice.disabled === true && copiedSetValue.includes(choice.name)) {
-              copiedSetValue.splice(copiedSetValue.findIndex((name) => name === choice.name), 1);
-            }
-
-            return acc;
-          }, []);
-
-          selected = isSet ? [...new Set([...copiedSetValue, ...selectedChoices])] : selectedChoices;
-        } else if (type === 'select') {
-          if (isSet) {
-            selected = setValue;
-          } else if (hasChoices) {
-            selected = firstChoice.name;
-          }
-        } else if (isSet && !!setValue) {
-        // If this option is in configBus.values, select it.
-          selected = (choices.find((choice) => choice.name === setValue) || firstChoice).name;
-        } else if (hasChoices) {
-        // If nothing was selected, choose the option with a selected attribute or just get the first option.
-          selected = (choices.find((choice) => choice.selected === true) || firstChoice).name;
-        }
-
-        return selected;
-      },
-
-      /**
        * Format a given date string to "hh:mm".
        *
        * @param {Date|string} date - Date string to format.
@@ -372,6 +316,8 @@ export const createConfigBus = () => {
           [SENDMYPARCEL]: parametersBE,
         };
 
+        const dropoffDays = this.get(DROP_OFF_DAYS);
+
         const parameters = {
         /**
          * The endpoints we use in this application follow the JSON API "Inclusion of Related Resources" standard.
@@ -389,7 +335,7 @@ export const createConfigBus = () => {
 
           cutoff_time: this.get(CUTOFF_TIME),
           deliverydays_window: this.get(DELIVERY_DAYS_WINDOW),
-          dropoff_days: this.get(DROP_OFF_DAYS),
+          dropoff_days: Array.isArray(dropoffDays) ? dropoffDays.join(';') : dropoffDays,
           dropoff_delay: this.get(DROP_OFF_DELAY),
         };
 

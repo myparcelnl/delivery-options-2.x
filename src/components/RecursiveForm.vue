@@ -335,7 +335,7 @@ export default {
       }
 
       // Return if the field that changed is not a dependency of this.option
-      if (dependencyName !== name) {
+      if (dependencyName !== name && !dependency.name.includes(name)) {
         return;
       }
 
@@ -380,7 +380,63 @@ export default {
      * 'selected' attribute or the first option.
      */
     setSelected() {
-      this.selected = this.$configBus.getSelected(this.option);
+      this.selected = this.getSelected(this.option);
+    },
+
+    /**
+     * Get the name of the selected choice for given option. The chosen value is either the previously set value for
+     *  current option, the option that has 'selected: true' or the first option.
+     *
+     * @param {Object} option - Option object.
+     *
+     * @param {Array} option.choices - Object choices.
+     * @param {String} option.type - Object type.
+     * @param {String} option.name - Object name.
+     *
+     * @returns {String}
+     */
+    getSelected(option) {
+      const { choices, type, name } = option;
+      const [firstChoice] = choices;
+      const isSet = this.$configBus.values.hasOwnProperty(name);
+      const setValue = this.$configBus.values[name];
+      const hasChoices = !!choices && choices.length > 0;
+
+      let selected;
+
+      if (type === 'checkbox') {
+      // setValue is always an array for type checkbox
+        const copiedSetValue = [...setValue || []];
+
+        // If there's a value set dedupe the array of values, otherwise set empty array.
+        const selectedChoices = choices.reduce((acc, choice) => {
+          if (choice.selected === true) {
+            acc.push(choice.name);
+          }
+
+          if (choice.disabled === true && copiedSetValue.includes(choice.name)) {
+            copiedSetValue.splice(copiedSetValue.findIndex((name) => name === choice.name), 1);
+          }
+
+          return acc;
+        }, []);
+
+        selected = isSet ? [...new Set([...copiedSetValue, ...selectedChoices])] : selectedChoices;
+      } else if (type === 'select') {
+        if (isSet) {
+          selected = setValue;
+        } else if (hasChoices) {
+          selected = firstChoice.name;
+        }
+      } else if (isSet && !!setValue) {
+        // If this option is in configBus.values, select it.
+        selected = (choices.find((choice) => choice.name === setValue) || firstChoice).name;
+      } else if (hasChoices) {
+        // If nothing was selected, choose the option with a selected attribute or just get the first option.
+        selected = (choices.find((choice) => choice.selected === true) || firstChoice).name;
+      }
+
+      return selected;
     },
   },
 };

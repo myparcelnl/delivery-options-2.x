@@ -1,10 +1,10 @@
 import { ADDITIONAL_OPTIONS, DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/data/formConfig';
 import { configBus } from '@/config/configBus';
 import { createDeliveryDependencies } from '@/data/delivery/createDeliveryDependencies';
-import { deliveryAdditionalOptions } from '@/data/delivery/getDeliveryAdditionalOptions';
 import { fetchDeliveryOptions } from '@/data/delivery/fetchDeliveryOptions';
+import { formatAdditionalOptions } from '@/data/delivery/getDeliveryAdditionalOptions';
+import { formatDeliveryMoments } from '@/data/delivery/formatDeliveryMoments';
 import { getDeliveryDates } from '@/data/delivery/getDeliveryDates';
-import { getDeliveryPossibility } from '@/data/delivery/getDeliveryPossibility';
 
 /**
  * If multi carrier, return another level of settings.
@@ -32,7 +32,7 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
         dependency: {
           name: DELIVERY_DATE,
           parent: DELIVERY,
-          transform: getDeliveryPossibility,
+          transform: formatDeliveryMoments,
         },
         choices: [],
       },
@@ -42,7 +42,7 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
         dependency: {
           name: [DELIVERY_DATE, DELIVERY_MOMENT],
           parent: ADDITIONAL_OPTIONS,
-          transform: deliveryAdditionalOptions,
+          transform: formatAdditionalOptions,
         },
         choices: [],
       },
