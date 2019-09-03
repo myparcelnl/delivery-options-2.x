@@ -33,8 +33,6 @@ export async function fetchAllCarriers() {
     deliveryEnabled: configBus.get(ALLOW_DELIVERY_OPTIONS, null, carrier.name),
   }));
 
-  console.log(configBus.carrierData);
-
   configBus.currentCarrier = configBus.carrierData.length ? configBus.carrierData[0].name : null;
 
   return configBus.carrierData;
