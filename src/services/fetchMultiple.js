@@ -5,7 +5,8 @@
  * @returns {Promise<Object>}
  */
 export async function fetchMultiple(requests) {
-  let errors = [], responses = [];
+  let errors = [];
+  let responses = [];
 
   // Concatenate all responses and errors
   return (await Promise.all(requests)).reduce((acc, response) => {

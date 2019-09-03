@@ -18,10 +18,20 @@ export function getDeliveryOptions() {
       ? [{
         name: DELIVERY_CARRIER,
         type: 'radio',
-        choices: configBus.carrierData.map((carrier) => ({
-          ...carrier,
-          options: () => createDeliveryOptions(carrier.name),
-        })),
+        choices: configBus.carrierData.reduce((acc, carrier) => {
+          // Don't add the carrier if it doesn't have delivery enabled.
+          if (carrier.deliveryEnabled) {
+            return [
+              ...acc,
+              {
+                ...carrier,
+                options: () => createDeliveryOptions(carrier.name),
+              },
+            ];
+          }
+
+          return acc;
+        }, []),
       }]
       : createDeliveryOptions,
   };

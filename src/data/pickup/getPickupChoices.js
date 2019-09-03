@@ -9,7 +9,11 @@ import { getPickupMoments } from './getPickupMoments';
  * @returns {Promise}
  */
 export async function getPickupChoices() {
-  const requests = configBus.carrierData.map((carrier) => fetchPickupLocations(carrier));
+  // Get requests for carriers which have pickup enabled.
+  const requests = configBus.carrierData.reduce((acc, carrier) => {
+    return carrier.pickupEnabled ? [...acc, fetchPickupLocations(carrier)] : acc;
+  }, []);
+
   const { responses } = await fetchMultiple(requests);
 
   if (responses.length) {

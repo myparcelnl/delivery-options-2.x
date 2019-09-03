@@ -138,20 +138,28 @@ export const createConfigBus = () => {
        * Get the value of a given option in the config.
        *
        * ## Order of priority:
-       *  1. `this.config.<carrier>.<option>` - User defined carrier specific settings. Only if option is not in
-       *                                        the settingsWithoutCarrierOverride array.
-       *  2. `this.config.<option>`           - User defined default settings.
-       *  3. `defaultConfig.<option>`         - Will be in `this.config` if there are no user defined default settings.
+       * 1. `config.carrierData.<carrier>.<option>`        - Only if `carrier` is set!
+       * 2. `config.carrierData.<currentCarrier>.<option>` - User defined carrier specific settings. Only if
+       *                                                     option is not in the settingsWithoutCarrierOverride array.
+       * 3. `config.<option>`                              - User defined default settings.
+       * 4. `defaultConfig.<option>`                       - Will be in `this.config` if there are no user defined
+       *                                                     default settings.
        *
-       * @param {Object|String} option - Option object or name.
-       * @param {String} key - Key name to use. Defaults to "name".
+       * @param {Object|String} option  - Option object or name.
+       * @param {String} key            - Key name to use. Defaults to "name".
+       * @param {String|Number} carrier - Carrier name or ID.
        *
        * @returns {*}
        */
-      get(option, key = 'name') {
+      get(option, key = 'name', carrier = null) {
         let setting;
         if (typeof option === 'string') {
           option = { [key]: option };
+        }
+
+        // Return carrier specific settings if carrier is defined.
+        if (!!carrier) {
+          return this.getSettingsByCarrier(carrier)[option[key]];
         }
 
         // If the setting is in the settingsWithoutCarrierOverride array don't check the carrierSettings object.
@@ -188,8 +196,8 @@ export const createConfigBus = () => {
       getCarrier(search) {
         return this.carrierData.find((carrier) => {
           return isNaN(parseInt(search))
-            ? carrier.id === search
-            : carrier.name === search;
+            ? carrier.name === search
+            : carrier.id === search;
         });
       },
 
@@ -242,16 +250,18 @@ export const createConfigBus = () => {
        *
        * @param {Object} option - FormConfig options object.
        *
+       * @param key
+       * @param carrier
        * @returns {boolean}
        */
-      isEnabled(option) {
+      isEnabled(option, key = null, carrier = null) {
         if (!option.hasOwnProperty('enabled') || !this.config.hasOwnProperty(option.enabled)) {
           return true;
         }
 
-        const enabledInConfig = !!this.get(option.enabled);
+        const enabledInConfig = !!this.get(option.enabled, key, carrier);
 
-        return !option.hasOwnProperty('enabled') || (option.hasOwnProperty('enabled') && enabledInConfig);
+        return option.hasOwnProperty('enabled') && enabledInConfig;
       },
 
       /**
@@ -340,6 +350,33 @@ export const createConfigBus = () => {
         };
 
         return { ...parameters, ...parametersByPlatform[this.get(PLATFORM)] };
+      },
+
+      /**
+       * Get the carrier specific settings for the given carrier.
+       *
+       * @param {String|Number} carrier - Carrier name or ID.
+       *
+       * @returns {Object}
+       */
+      getSettingsByCarrier(carrier = this.currentCarrier) {
+        // Make sure we use the carrier name and not the id.
+        const carrierName = this.getCarrier(carrier).name;
+
+        if (!this.config.carrierSettings.hasOwnProperty(carrierName)) {
+          return false;
+        }
+
+        return this.config.carrierSettings[carrierName];
+      },
+
+      /**
+       *
+       * @param setting
+       * @return {boolean}
+       */
+      isEnabledInAnyCarrier(setting) {
+        return Object.keys(this.config.carrierSettings).some((aaa) => this.getSettingsByCarrier(aaa)[setting]);
       },
     },
   });

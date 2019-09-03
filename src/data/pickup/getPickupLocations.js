@@ -1,4 +1,5 @@
 import { PICKUP } from '@/config/data/formConfig';
+import { PICKUP_TITLE } from '@/config/data/settingsConfig';
 import { getPickupChoices } from './getPickupChoices';
 
 /**
@@ -9,7 +10,7 @@ import { getPickupChoices } from './getPickupChoices';
 export function getPickupLocations() {
   return {
     name: PICKUP,
-    label: 'pickupTitle',
+    label: PICKUP_TITLE,
     options: () => getPickupChoices(),
   };
 }

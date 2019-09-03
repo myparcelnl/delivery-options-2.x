@@ -37,7 +37,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
-import { DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
+import { DELIVER, DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
 import Errors from '@/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
@@ -186,15 +186,24 @@ export default {
      * Create the checkout form.
      */
     createForm() {
+      // Map form entries to functions to retrieve their content.
       const map = {
-        [DELIVERY]: getDeliveryOptions(),
-        [PICKUP]: getPickupLocations(),
+        [DELIVERY]: getDeliveryOptions,
+        [PICKUP]: getPickupLocations,
       };
 
+      // Map form entries to setting names.
+      const settingsMap = {
+        [DELIVERY]: ALLOW_DELIVERY_OPTIONS,
+        [PICKUP]: ALLOW_PICKUP_LOCATIONS,
+      };
+
+      // Filter the choices checking if any of the given carriers have any above setting enabled.
       const choices = Object.keys(map).reduce((acc, setting) => {
-        return this.$configBus.isEnabled(formConfig[setting]) ? [...acc, map[setting]] : acc;
+        return this.$configBus.isEnabledInAnyCarrier(settingsMap[setting]) ? [...acc, map[setting]()] : acc;
       }, []);
 
+      // Hide the checkout if there are no choices.
       if (!choices.length) {
         this.hideCheckout();
         return;

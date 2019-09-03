@@ -1,4 +1,4 @@
-import { CARRIERS } from '@/config/data/settingsConfig';
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS, CARRIERS } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
 import { fetchMultiple } from '@/services/fetchMultiple';
@@ -27,6 +27,13 @@ export async function fetchAllCarriers() {
 
   const unique = new Set(responses.map((obj) => JSON.stringify(obj)));
   configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
+  configBus.carrierData = configBus.carrierData.map((carrier) => ({
+    ...carrier,
+    pickupEnabled: configBus.get(ALLOW_PICKUP_LOCATIONS, null, carrier.name),
+    deliveryEnabled: configBus.get(ALLOW_DELIVERY_OPTIONS, null, carrier.name),
+  }));
+
+  console.log(configBus.carrierData);
 
   configBus.currentCarrier = configBus.carrierData.length ? configBus.carrierData[0].name : null;
 
