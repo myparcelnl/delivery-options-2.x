@@ -4,9 +4,6 @@ import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import Vue from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
-// Mock the Client because Travis can't use myparcel-js-sdk.
-jest.mock('../../myparcel-js-sdk/src', () => jest.fn());
-
 Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
 
 jest.spyOn(global.console, 'trace');
