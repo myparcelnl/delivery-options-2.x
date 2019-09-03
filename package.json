@@ -20,7 +20,7 @@
     "vue-async-computed": "^3.7.0"
   },
   "devDependencies": {
-    "@myparcel/eslint-config": "^1.0.0",
+    "@myparcel/eslint-config": "^1.0.1",
     "@types/jest": "^23.3.14",
     "@vue/cli-plugin-babel": "^3.9.2",
     "@vue/cli-plugin-eslint": "^3.9.2",

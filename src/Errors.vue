@@ -3,7 +3,7 @@
     v-if="isMissingAddressPart"
     class="myparcel-checkout__errors">
     <h4 v-text="$configBus.strings.addressNotFound" />
-    <form v-if="$configBus.get('allowRetry')">
+    <form v-if="hasRetry">
       <template v-for="part in requiredAddressParts">
         <p :key="part">
           <label>
@@ -28,6 +28,7 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
 import { addressRequirements } from '@/config/data/platformConfig';
+import { FEATURE_ALLOW_RETRY } from '@/config/data/settingsConfig';
 
 export default {
   name: 'Errors',
@@ -42,6 +43,9 @@ export default {
     },
     isMissingAddressPart() {
       return this.$configBus.errors.hasOwnProperty(MISSING_ADDRESS);
+    },
+    hasRetry() {
+      return this.$configBus.get(FEATURE_ALLOW_RETRY);
     },
   },
   methods: {
