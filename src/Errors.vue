@@ -59,7 +59,7 @@ export default {
       document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_IN));
 
       // Send the new values in an event. It's up to the external platform to do handle this event or not.
-      document.dispatchEvent(new CustomEvent(EVENTS.ADDRESS_UPDATED_OUT, { detail: this.values }));
+      document.dispatchEvent(new CustomEvent(EVENTS.UPDATE_ADDRESS_OUT, { detail: this.values }));
     },
   },
 };

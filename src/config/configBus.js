@@ -130,7 +130,7 @@ export const createConfigBus = () => {
 
       initialize();
 
-      document.addEventListener(EVENTS.UPDATE_CONFIG, initialize);
+      document.addEventListener(EVENTS.UPDATE_CONFIG_IN, initialize);
     },
 
     methods: {

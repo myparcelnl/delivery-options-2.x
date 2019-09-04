@@ -1,3 +1,7 @@
+/*
+ * configBus events
+ */
+
 /**
  * Sent by configBus when a setting is updated.
  *
@@ -19,12 +23,17 @@ export const AFTER_UPDATE = 'afterUpdate';
  */
 export const ERROR = 'error';
 
+/*
+ * Document events
+ * The following events should be namespaced to avoid any possible conflicts.
+ */
+
 /**
  * This event is used to change the config after the initialization.
  *
  * @type {string}
  */
-export const UPDATE_CONFIG = 'myparcel_update_config';
+export const UPDATE_CONFIG_IN = 'myparcel_update_config';
 
 /**
  * For the external platform to tell this application to update.
@@ -38,11 +47,11 @@ export const UPDATE_CHECKOUT_IN = 'myparcel_update_checkout';
  *
  * @type {string}
  */
-export const ADDRESS_UPDATED_OUT = 'address_updated';
+export const UPDATE_ADDRESS_OUT = 'myparcel_updated_address';
 
 /**
  * To tell the external platform it needs to update.
  *
  * @type {string}
  */
-export const UPDATE_CHECKOUT_OUT = 'update_checkout';
+export const UPDATE_CHECKOUT_OUT = 'myparecl_updated_checkout';
