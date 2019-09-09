@@ -13,16 +13,17 @@
           v-if="!loading && $configBus.strings.headerDeliveryOptions"
           v-text="$configBus.strings.headerDeliveryOptions" />
 
-        <loader v-if="loading" />
+        <loader
+          v-if="loading"
+          v-test="'loader'" />
 
         <Errors v-else-if="!hasValidAddress" />
 
-        <div
-          v-else
-          class="${$classBase}__delivery-options">
+        <div v-else>
           <recursive-form
             v-for="option in form.options"
             :key="option.name"
+            v-test="option.name"
             :option="option" />
         </div>
       </template>

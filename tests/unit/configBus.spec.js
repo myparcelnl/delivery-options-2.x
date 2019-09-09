@@ -90,13 +90,13 @@ describe('configBus', () => {
     configBus = getConfigBus(DEFAULT_PLATFORM);
     expect(configBus.get('locale')).toEqual('nl-NL');
     expect(configBus.getWeekdays()).toEqual([
-      'maandag',
-      'dinsdag',
-      'woensdag',
-      'donderdag',
-      'vrijdag',
-      'zaterdag',
-      'zondag',
+      'Maandag',
+      'Dinsdag',
+      'Woensdag',
+      'Donderdag',
+      'Vrijdag',
+      'Zaterdag',
+      'Zondag',
     ]);
 
     configBus.$data.config.locale = 'en-GB';

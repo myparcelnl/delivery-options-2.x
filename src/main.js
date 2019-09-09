@@ -1,5 +1,6 @@
 import '@/assets/scss/style.scss';
 import '@/services/fontAwesome';
+import '@/services/directives';
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm';

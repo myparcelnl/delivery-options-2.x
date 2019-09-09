@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isMissingAddressPart"
-    class="${$classBase}__errors">
+    :class="`${$classBase}__errors`">
     <h4 v-text="$configBus.strings.addressNotFound" />
     <form v-if="hasRetry">
       <template v-for="part in requiredAddressParts">
