@@ -33,6 +33,7 @@ export const CARRIER_SETTINGS = 'carrierSettings';
 // Extra features
 export const FEATURE_ALLOW_RETRY = 'allowRetry';
 export const FEATURE_PICKUP_SHOW_DISTANCE = 'pickupShowDistance';
+export const FEATURE_MAX_PAGE_ITEMS = 'maxPageItems';
 
 // STRINGS
 export const CITY = 'city';

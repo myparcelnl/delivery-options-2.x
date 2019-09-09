@@ -1,8 +1,18 @@
 <template>
   <table>
     <tr>
-      <td colspan="2">
+      <td :colspan="$configBus.isMultiCarrier ? 1 : 2">
         <h3 v-text="data.location.location_name" />
+      </td>
+
+      <td v-if="$configBus.isMultiCarrier">
+        <img
+          :class="[
+            `${$classBase}__image--lg`,
+            `${$classBase}__float-right`
+          ]"
+          :src="data.carrier.image"
+          :alt="data.carrier.human">
       </td>
     </tr>
     <tr>
@@ -29,7 +39,7 @@
       </td>
       <td>
         <span
-          class="${$classBase}__float-right"
+          :class="`${$classBase}__float-right`"
           v-text="openingHours[day]" />
       </td>
     </tr>

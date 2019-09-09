@@ -159,7 +159,9 @@ declare namespace MyParcel {
     meta: {
       logo_png: String
       logo_svg: String
-    }
+    },
+    deliveryEnabled?: boolean,
+    pickupEnabled?: boolean
   }
 
   interface Timestamp {

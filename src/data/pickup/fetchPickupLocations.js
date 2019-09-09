@@ -1,11 +1,10 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { formatPickupResponse } from '@/data/pickup/formatPickupResponse';
 import { getRequestParameters } from '@/services/getRequestParameters';
 
 /**
  * Fetch pickup options.
  *
- * @param {MyParcel.Carrier} carrier - Carrier id or name.
+ * @param {MyParcel.CarrierData} carrier - Carrier object.
  *
  * @returns {Promise}
  */
@@ -16,12 +15,12 @@ export async function fetchPickupLocations(carrier) {
       method: METHOD_SEARCH,
       params: {
         carrier,
-        ...getRequestParameters(),
+        ...getRequestParameters(carrier.name),
       },
     },
   );
 
-  data.response = formatPickupResponse(data.response, carrier);
+  data.response = data.response.map((res) => ({ ...res, carrier }));
 
   return data;
 }

@@ -3,13 +3,13 @@
     <label
       :for="`${$classBase}--${parent.name}--${data.name}`"
       @click="selected ? showModal() : null">
-      <span :class="[`${$classBase}__d-block`, `${$classBase}__float-left`]">
+      <span
+        v-if="pickupData.carrier.image"
+        :class="[`${$classBase}__d-block`, `${$classBase}__float-left`]">
         <img
+          :class="`${$classBase}__image--sm`"
           :src="pickupData.carrier.image"
-          :alt="pickupData.carrier.name"
-          :style="{
-            width: '30px',
-          }">
+          :alt="pickupData.carrier.name">
         &nbsp;
       </span>
 

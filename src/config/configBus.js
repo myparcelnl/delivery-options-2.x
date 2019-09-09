@@ -150,9 +150,7 @@ export const createConfigBus = () => {
 
         // Return carrier specific settings if carrier is defined.
         if (!!carrier) {
-          const carrierSetting = this.getSettingsByCarrier(carrier)[option[key]];
-
-          return carrierSetting || this.get(option, key);
+          return this.getSettingsByCarrier(carrier)[option[key]];
         }
 
         // If the setting is in the settingsWithoutCarrierOverride array don't check the carrierSettings object.
@@ -270,10 +268,15 @@ export const createConfigBus = () => {
       getWeekdays() {
         const dates = [];
         for (let day = 5; day <= 11; day++) {
-          dates.push(new Date(1970, 1 - 1, day).toLocaleString(
+          let date = new Date(1970, 1 - 1, day).toLocaleString(
             this.get(SETTINGS.LOCALE),
             { weekday: 'long' },
-          ));
+          );
+
+          // Uppercase first letter.
+          date = date.charAt(0).toUpperCase() + date.substring(1);
+
+          dates.push(date);
         }
 
         return dates;
@@ -300,25 +303,16 @@ export const createConfigBus = () => {
       /**
        * Get the carrier specific settings for the given carrier.
        *
-       * @param {String|Number} carrier - Carrier name or ID.
+       * @param {String} carrier - Carrier name.
        *
-       * @returns {Object}
+       * @returns {Object|boolean}
        */
       getSettingsByCarrier(carrier = this.currentCarrier) {
-        // Make sure we use the carrier name and not the id.
-        const foundCarrier = this.getCarrier(carrier);
-
-        if (!foundCarrier) {
+        if (!this.config.carrierSettings.hasOwnProperty(carrier)) {
           return false;
         }
 
-        const carrierName = foundCarrier.name;
-
-        if (!this.config.carrierSettings.hasOwnProperty(carrierName)) {
-          return false;
-        }
-
-        return this.config.carrierSettings[carrierName];
+        return this.config.carrierSettings[carrier];
       },
 
       /**

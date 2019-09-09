@@ -7,7 +7,7 @@ import { configBus } from '@/config/configBus';
  *
  * @see https://myparcelnl.github.io/api/#8
  *
- * @param {string} carrier - Carrier to use.
+ * @param {MyParcel.CarrierData} carrier - Carrier to use.
  *
  * @returns {Object}
  */

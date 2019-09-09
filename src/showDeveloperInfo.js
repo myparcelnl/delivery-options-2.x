@@ -1,13 +1,14 @@
+/* eslint-disable max-lines-per-function,no-console */
 /**
  * Output some information in the console to help a developer get started quickly.
  */
 export const showDeveloperInfo = () => {
-  /* eslint-disable no-console */
   const styleHeader1 = [
     'font-size: 2em',
     'font-family: sans-serif',
     'padding: .2em 0;',
   ];
+
   const styleHeader2 = [
     'color: gray',
     'font-size: 1.4em',
@@ -15,6 +16,7 @@ export const showDeveloperInfo = () => {
     'font-family: sans-serif',
     'padding: .2em 0;',
   ];
+
   const styleText = [
     'color: white',
     'font-size: 1.2em',
@@ -25,22 +27,24 @@ export const showDeveloperInfo = () => {
     'margin: .1em 0',
     'border-left: 3px solid #14785A',
   ];
+
   const styleCode = [
     'font-size: 1.2em',
     'padding: .2em 0;',
   ];
+
   console.log('%cWelcome to the MyParcel checkout!', styleHeader1.join(';'));
   console.log('%cCheck out README.md for the full documentation.', styleHeader2.join(';'));
   console.log('%cBy default, the checkout is not visible. \n'
       + 'To show it you must fill window.MyParcelConfig with at least the following data:', styleText.join(';'));
   console.log('%cwindow.MyParcelConfig = {\n'
       + '  config: {\n'
-      + '    platform: \'belgie\',  \n'
-      + '    carrierSettings: {'
-      + '      bpost: {'
-      + '        allowDeliveryOptions: true,'
-      + '      }'
-      + '    }'
+      + '    platform: \'belgie\',\n'
+      + '    carrierSettings: {\n'
+      + '      bpost: {\n'
+      + '        allowDeliveryOptions: true,\n'
+      + '      }\n'
+      + '    }\n'
       + '  },\n'
       + '  address: {\n'
       + '    cc: \'BE\',\n'

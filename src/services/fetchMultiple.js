@@ -8,6 +8,15 @@ export async function fetchMultiple(requests) {
   let errors = [];
   let responses = [];
 
+  /**
+   * Allow nested functions too to be able to pass parameters to the requests.
+   *
+   * @type {Array}
+   */
+  requests = requests.map((request) => {
+    return typeof request === 'function' ? request() : request;
+  });
+
   // Concatenate all responses and errors
   return (await Promise.all(requests)).reduce((acc, response) => {
     errors = [...errors, ...response.errors];

@@ -1,7 +1,7 @@
-//$classBase: '' !default; // Is set in vue.config.js
+$classBase: 'development' !default; // Is overridden in prod by vue.config.js
 
 $primary: #eee;
 $positive: green;
 
 $modal-content-padding: 1em;
-$choice-image-size: 42px;
+$choice-image-size: 50px;

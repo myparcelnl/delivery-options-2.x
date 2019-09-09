@@ -37,6 +37,8 @@ const baseConfig = {
     [SETTINGS.PRICE_STANDARD_DELIVERY]: 0,
 
     [SETTINGS.CARRIER_SETTINGS]: {},
+
+    [SETTINGS.FEATURE_MAX_PAGE_ITEMS]: 5,
   },
 
   /**

@@ -7,6 +7,34 @@
 .#{$classBase} {
   position: relative;
 
+  table {
+    margin: 0;
+    width: 100%;
+
+    tr,
+    td {
+      background-color: transparent;
+      border: 0;
+    }
+
+    td {
+      padding: 0;
+      vertical-align: top;
+
+      label {
+        display: block;
+        text-align: left;
+      }
+
+      &.#{$classBase} {
+        &__input {
+          width: 1px;
+          padding-right: 6px;
+        }
+      }
+    }
+  }
+
   &__d-block {
     display: block;
   }
@@ -44,40 +72,16 @@
     }
 
     &--has-image > td {
+      & > label {
+        height: 100%;
+      }
+
       &:first-child input {
-        height: $choice-image-size;
+        height: $choice-image-size / 2.5;
       }
 
       .#{$classBase}__loader--inline div:nth-child(1) {
         margin-top: 0;
-      }
-    }
-  }
-
-  table {
-    margin: 0;
-    width: 100%;
-
-    tr,
-    td {
-      background-color: transparent;
-      border: 0;
-    }
-
-    td {
-      padding: 0;
-      vertical-align: top;
-
-      label {
-        display: block;
-        text-align: left;
-      }
-
-      &.#{$classBase} {
-        &__input {
-          width: 1px;
-          padding-right: 6px;
-        }
       }
     }
   }
