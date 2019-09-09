@@ -3,7 +3,7 @@
     appear
     name="fade">
     <div
-      class="myparcel-checkout__loader"
+      class="${$classBase}__loader"
       :class="{
         'myparcel-checkout__loader--inline': 'inline' === type,
         'myparcel-checkout__loader--spinner': 'spinner' === type

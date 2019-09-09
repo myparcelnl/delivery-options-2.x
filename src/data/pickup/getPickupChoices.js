@@ -21,9 +21,8 @@ export async function getPickupChoices() {
       pickupData: option,
       name: key,
       label: option.location.location_name,
-      // todo: multicarrier pickup locations
-      // carrier: option.carrier,
-      // image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier).image : null,
+      carrier: option.carrier,
+      image: configBus.isMultiCarrier ? configBus.getCarrier(option.carrier).image : null,
       options: getPickupMoments(option),
     }));
 

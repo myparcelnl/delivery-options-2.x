@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-library.add(faAngleDown, faTimes);
+library.add(faEllipsisH, faTimes);
 
 /**
  * Font Awesome 5 Vue component.

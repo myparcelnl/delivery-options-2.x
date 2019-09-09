@@ -1,6 +1,6 @@
 import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { configBus } from '@/config/configBus';
 import { formatPickupResponse } from '@/data/pickup/formatPickupResponse';
+import { getRequestParameters } from '@/services/getRequestParameters';
 
 /**
  * Fetch pickup options.
@@ -16,7 +16,7 @@ export async function fetchPickupLocations(carrier) {
       method: METHOD_SEARCH,
       params: {
         carrier,
-        ...configBus.getRequestParameters(),
+        ...getRequestParameters(),
       },
     },
   );

@@ -2,7 +2,7 @@
   <form @submit.prevent="">
     <div
       v-if="showCheckout"
-      class="myparcel-checkout">
+      :class="`${$classBase}`">
       <Modal
         v-if="$configBus.showModal"
         :data="modalData"
@@ -19,7 +19,7 @@
 
         <div
           v-else
-          class="myparcel-checkout__delivery-options">
+          class="${$classBase}__delivery-options">
           <recursive-form
             v-for="option in form.options"
             :key="option.name"
@@ -37,7 +37,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
-import { DELIVER, DELIVERY, DELIVERY_CARRIER, PICKUP, formConfig } from '@/config/data/formConfig';
+import { DELIVERY, DELIVERY_CARRIER, PICKUP } from '@/config/data/formConfig';
 import Errors from '@/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
@@ -133,7 +133,7 @@ export default {
         this.$configBus.addErrors(
           MISSING_ADDRESS,
           // Find only invalid fields
-          requirements.filter((item) => !meetsRequirements(item))
+          requirements.filter((item) => !meetsRequirements(item)),
         );
       }
 
@@ -146,7 +146,8 @@ export default {
      * @returns {Boolean}
      */
     hasSomethingToShow() {
-      return this.$configBus.get(ALLOW_PICKUP_LOCATIONS) || this.$configBus.get(ALLOW_DELIVERY_OPTIONS);
+      return this.$configBus.isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS)
+        || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS);
     },
 
     /**
@@ -282,7 +283,11 @@ export default {
       // Using $nextTick to emit event after this function is done.
       // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
       this.$nextTick(() => {
-        this.$configBus.$emit(EVENTS.AFTER_UPDATE, { name, value });
+        this.$configBus.$emit(EVENTS.AFTER_UPDATE,
+          {
+            name,
+            value,
+          });
       });
     },
   },

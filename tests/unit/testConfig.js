@@ -1,4 +1,6 @@
 import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import { carrierData } from '../placeholder/carrierData';
+import { createCarrierData } from '@/data/carriers/createCarrierData';
 import { createConfigBus } from '@/config/configBus';
 import { defaultConfig } from '@/config/data/defaultConfig';
 
@@ -28,13 +30,13 @@ const emptyData = {
 /**
  * Get a configBus instance with the given default platform data and optional overrides.
  *
- * @param {MyParcel.Platform|Object} platform - Platform name or.
+ * @param {MyParcel.Platform|Object} platform - Platform name or settings object.
  * @param {Object} data - Platform name or.
  *
- * @returns {configBus}
+ * @returns {Object}
  */
 export const getConfigBus = (platform = DEFAULT_PLATFORM, data = emptyData) => {
-  let configBus = createConfigBus();
+  const configBus = createConfigBus();
   if (typeof platform === 'string') {
     platform = defaultConfig(platform);
   }
@@ -42,6 +44,12 @@ export const getConfigBus = (platform = DEFAULT_PLATFORM, data = emptyData) => {
   configBus.$data.config = { ...platform.config, ...data.config };
   configBus.$data.address = { ...platform.address, ...data.address };
   configBus.$data.strings = { ...platform.strings, ...data.strings };
+
+  const { carriers } = configBus.$data.config;
+
+  if (carriers) {
+    configBus.$data.carrierData = createCarrierData(carriers.map((carrier) => carrierData(carrier)));
+  }
 
   return configBus;
 };

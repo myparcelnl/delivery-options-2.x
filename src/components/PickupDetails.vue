@@ -29,7 +29,7 @@
       </td>
       <td>
         <span
-          class="myparcel-checkout__float-right"
+          class="${$classBase}__float-right"
           v-text="openingHours[day]" />
       </td>
     </tr>

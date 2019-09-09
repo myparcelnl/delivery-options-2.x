@@ -45,7 +45,7 @@
     "vue-template-compiler": "^2.6.10",
     "webpack-bundle-analyzer": "^3.4.1"
   },
-  "description": "[![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout) [![Coverage Status](https://coveralls.io/repos/github/myparcelbe/checkout/badge.svg?branch=master)](https://coveralls.io/github/myparcelbe/checkout?branch=master)",
+  "description": "MyParcel delivery options module for checkouts.",
   "main": "dist/myparcel.js",
   "directories": {
     "test": "tests"

@@ -1,20 +1,29 @@
 <template>
-  <div>
+  <td>
     <label
-      :for="`myparcel-checkout--${parent.name}--${data.name}`"
+      :for="`${$classBase}--${parent.name}--${data.name}`"
       @click="selected ? showModal() : null">
-      <span class="myparcel-checkout__d-block">
+      <span :class="[`${$classBase}__d-block`, `${$classBase}__float-left`]">
+        <img
+          :src="pickupData.carrier.image"
+          :alt="pickupData.carrier.name"
+          :style="{
+            width: '30px',
+          }">
+        &nbsp;
+      </span>
 
+      <span :class="`${$classBase}__d-block`">
+        <span v-text="data.label" />
         <font-awesome-icon
           v-if="selected"
-          icon="angle-down"
-          class="myparcel-checkout__float-right" />
-        <span v-text="data.label" />
+          icon="ellipsis-h"
+          :class="`${$classBase}__float-right`" />
       </span>
 
       <span
         v-if="featurePickupShowDistance"
-        class="myparcel-checkout__d-block">
+        :class="`${$classBase}__d-block`">
         <span v-text="$configBus.formatDistance(pickupData.location.distance)" />
       </span>
     </label>
@@ -27,7 +36,7 @@
         :name="data.name"
         @update="updateConfigBus()" />
     </template>
-  </div>
+  </td>
 </template>
 
 <script>

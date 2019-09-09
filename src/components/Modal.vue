@@ -1,7 +1,7 @@
 <template>
-  <div class="myparcel-checkout__modal">
+  <div class="${$classBase}__modal">
     <div
-      class="myparcel-checkout__modal__close"
+      class="${$classBase}__modal__close"
       @click="$configBus.showModal = false">
       <font-awesome-icon icon="times" />
     </div>

@@ -1,15 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import * as EVENTS from '@/config/data/eventConfig';
-import {
-  ALLOW_MONDAY_DELIVERY, CARRIER_SETTINGS,
-  CURRENCY,
-  CUTOFF_TIME,
-  DELIVERY_DAYS_WINDOW,
-  DROP_OFF_DAYS,
-  DROP_OFF_DELAY, LOCALE, PLATFORM,
-  settingsWithoutCarrierOverride,
-} from '@/config/data/settingsConfig';
-import { FLESPAKKET, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import * as SETTINGS from '@/config/data/settingsConfig';
 import Vue from 'vue';
 import { getConfig } from '@/config/setup';
 
@@ -27,9 +18,9 @@ export let configBus;
 export const createConfigBus = () => {
   configBus = new Vue({
     data: {
-    /**
-     * @type {MyParcel.CarrierData[]}
-     */
+      /**
+       * @type {MyParcel.CarrierData[]}
+       */
       carrierData: [],
 
       /**
@@ -105,8 +96,8 @@ export const createConfigBus = () => {
        * @returns {Object}
        */
       currentCarrierSettings() {
-        return this.config[CARRIER_SETTINGS].hasOwnProperty(this.currentCarrier)
-          ? this.config[CARRIER_SETTINGS][this.currentCarrier]
+        return this.config[SETTINGS.CARRIER_SETTINGS].hasOwnProperty(this.currentCarrier)
+          ? this.config[SETTINGS.CARRIER_SETTINGS][this.currentCarrier]
           : {};
       },
     },
@@ -159,12 +150,14 @@ export const createConfigBus = () => {
 
         // Return carrier specific settings if carrier is defined.
         if (!!carrier) {
-          return this.getSettingsByCarrier(carrier)[option[key]];
+          const carrierSetting = this.getSettingsByCarrier(carrier)[option[key]];
+
+          return carrierSetting || this.get(option, key);
         }
 
         // If the setting is in the settingsWithoutCarrierOverride array don't check the carrierSettings object.
-        if (!settingsWithoutCarrierOverride.includes(option[key])
-        && this.currentCarrierSettings.hasOwnProperty(option[key])) {
+        if (!SETTINGS.settingsWithoutCarrierOverride.includes(option[key])
+          && this.currentCarrierSettings.hasOwnProperty(option[key])) {
           setting = this.currentCarrierSettings[option[key]];
         } else {
           setting = this.config[option[key]];
@@ -181,7 +174,11 @@ export const createConfigBus = () => {
        *
        * @returns {string}
        */
-      formatTime(date = new Date(), options = { hour: '2-digit', minute: '2-digit' }) {
+      formatTime(date = new Date(),
+        options = {
+          hour: '2-digit',
+          minute: '2-digit',
+        }) {
         const dateClass = date instanceof Date ? date : new Date(date);
         return dateClass.toLocaleTimeString('default', options);
       },
@@ -212,10 +209,10 @@ export const createConfigBus = () => {
         }
 
         const formatter = new Intl.NumberFormat(
-          this.get(LOCALE),
+          this.get(SETTINGS.LOCALE),
           {
             style: 'currency',
-            currency: this.get(CURRENCY),
+            currency: this.get(SETTINGS.CURRENCY),
           },
         );
 
@@ -235,7 +232,7 @@ export const createConfigBus = () => {
         let unit = 'm';
 
         if (distance >= mToKm) {
-          const intl = new Intl.NumberFormat(this.get(LOCALE), { maximumFractionDigits: 1 });
+          const intl = new Intl.NumberFormat(this.get(SETTINGS.LOCALE), { maximumFractionDigits: 1 });
           distance = intl.format(distance / mToKm);
           unit = 'km';
         }
@@ -250,8 +247,9 @@ export const createConfigBus = () => {
        *
        * @param {Object} option - FormConfig options object.
        *
-       * @param key
-       * @param carrier
+       * @param {String} key - String key to use with this.get().
+       * @param {String|Number} carrier - Carrier name or id.
+       *
        * @returns {boolean}
        */
       isEnabled(option, key = null, carrier = null) {
@@ -273,8 +271,8 @@ export const createConfigBus = () => {
         const dates = [];
         for (let day = 5; day <= 11; day++) {
           dates.push(new Date(1970, 1 - 1, day).toLocaleString(
-            this.get(LOCALE),
-            { weekday: 'long' }
+            this.get(SETTINGS.LOCALE),
+            { weekday: 'long' },
           ));
         }
 
@@ -300,59 +298,6 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Parameters for the delivery options request.
-       *
-       * @see https://myparcelnl.github.io/api/#8
-       *
-       * @param {string} carrier - Carrier to use.
-       * @returns {Object}
-       */
-      getRequestParameters(carrier = this.currentCarrier) {
-        const parametersNL = {
-          monday_delivery: this.get(ALLOW_MONDAY_DELIVERY),
-        };
-
-        const parametersBE = {
-        // TODO:
-        //  "Day-picker is nog niet van toepassing voor SendMyParcel. De data die terugkomt is zelf opgebouwd door JW en
-        //  komt niet officieel uit bpost/DPD." < uit https://jira.dmp.zone/browse/MY-12648
-        //  Wanneer dit niet meer van toepassing is moet deze override weg.
-          deliverydays_window: 1,
-        };
-
-        const parametersByPlatform = {
-          [MYPARCEL]: parametersNL,
-          [FLESPAKKET]: parametersNL,
-          [SENDMYPARCEL]: parametersBE,
-        };
-
-        const dropoffDays = this.get(DROP_OFF_DAYS);
-
-        const parameters = {
-        /**
-         * The endpoints we use in this application follow the JSON API "Inclusion of Related Resources" standard.
-         *
-         * @see https://jsonapi.org/format/#fetching-includes
-         */
-          include: 'shipment_options',
-
-          platform: this.get(PLATFORM),
-          carrier,
-
-          cc: this.address.cc,
-          postal_code: this.address.postalCode,
-          number: this.address.number,
-
-          cutoff_time: this.get(CUTOFF_TIME),
-          deliverydays_window: this.get(DELIVERY_DAYS_WINDOW),
-          dropoff_days: Array.isArray(dropoffDays) ? dropoffDays.join(';') : dropoffDays,
-          dropoff_delay: this.get(DROP_OFF_DELAY),
-        };
-
-        return { ...parameters, ...parametersByPlatform[this.get(PLATFORM)] };
-      },
-
-      /**
        * Get the carrier specific settings for the given carrier.
        *
        * @param {String|Number} carrier - Carrier name or ID.
@@ -361,7 +306,13 @@ export const createConfigBus = () => {
        */
       getSettingsByCarrier(carrier = this.currentCarrier) {
         // Make sure we use the carrier name and not the id.
-        const carrierName = this.getCarrier(carrier).name;
+        const foundCarrier = this.getCarrier(carrier);
+
+        if (!foundCarrier) {
+          return false;
+        }
+
+        const carrierName = foundCarrier.name;
 
         if (!this.config.carrierSettings.hasOwnProperty(carrierName)) {
           return false;
@@ -371,12 +322,12 @@ export const createConfigBus = () => {
       },
 
       /**
+       * @param {String} setting - Setting name.
        *
-       * @param setting
-       * @return {boolean}
+       * @returns {boolean}
        */
       isEnabledInAnyCarrier(setting) {
-        return Object.keys(this.config.carrierSettings).some((aaa) => this.getSettingsByCarrier(aaa)[setting]);
+        return Object.keys(this.config.carrierSettings).some((carrier) => this.getSettingsByCarrier(carrier)[setting]);
       },
     },
   });

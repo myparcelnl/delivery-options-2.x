@@ -1,20 +1,15 @@
+import * as SETTINGS from '@/config/data/settingsConfig';
+import { MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { defaultAddress, getConfigBus } from './testConfig';
 import App from '@/App';
-import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import Vue from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
-Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
-
-jest.spyOn(global.console, 'trace');
-jest.spyOn(global.console, 'log');
-jest.spyOn(global.console, 'warn');
-jest.spyOn(global.console, 'error');
-
-describe('App.vue', () => {
+describe('The checkout', () => {
   let app;
 
-  it('validates addresses', () => {
+  it('checks address requirements', () => {
+    Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
     app = shallowMount(App);
     app.vm.getCheckout = jest.fn();
 
@@ -28,5 +23,27 @@ describe('App.vue', () => {
       postalCode: '1025WK',
     };
     expect(app.vm.hasValidAddress).toBe(false);
+  });
+
+  it('only shows itself when necessary', () => {
+    Vue.prototype.$configBus = getConfigBus();
+    app = shallowMount(App);
+
+    expect(app.vm.hasSomethingToShow).toBe(false);
+
+    Vue.prototype.$configBus = getConfigBus(MYPARCEL, {
+      config: {
+        carriers: ['postnl'],
+        carrierSettings: {
+          postnl: {
+            [SETTINGS.ALLOW_DELIVERY_OPTIONS]: true,
+            [SETTINGS.ALLOW_PICKUP_LOCATIONS]: false,
+          },
+        },
+      },
+    });
+    app = shallowMount(App);
+
+    expect(app.vm.hasSomethingToShow).toBe(true);
   });
 });

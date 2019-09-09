@@ -1,12 +1,13 @@
-import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS, CARRIERS } from '@/config/data/settingsConfig';
+import { CARRIERS } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
+import { createCarrierData } from '@/data/carriers/createCarrierData';
 import { fetchCarrierData } from '@/data/carriers/fetchCarrierData';
 import { fetchMultiple } from '@/services/fetchMultiple';
 
 /**
  * Fetch all carrier information.
  *
- * @returns {Promise}
+ * @returns {boolean}
  */
 export async function fetchAllCarriers() {
   // Return existing carrierData if this function is called again.
@@ -25,15 +26,12 @@ export async function fetchAllCarriers() {
     configBus.addErrors('carriers', errors[0].errors);
   }
 
-  const unique = new Set(responses.map((obj) => JSON.stringify(obj)));
-  configBus.carrierData = Array.from(unique).map((obj) => JSON.parse(obj));
-  configBus.carrierData = configBus.carrierData.map((carrier) => ({
-    ...carrier,
-    pickupEnabled: configBus.get(ALLOW_PICKUP_LOCATIONS, null, carrier.name),
-    deliveryEnabled: configBus.get(ALLOW_DELIVERY_OPTIONS, null, carrier.name),
-  }));
+  // Create the carrierData array
+  configBus.carrierData = createCarrierData(responses);
 
+  // Set the first carrier to currentCarrier
   configBus.currentCarrier = configBus.carrierData.length ? configBus.carrierData[0].name : null;
 
-  return configBus.carrierData;
+  // Async function must return something to be able to resolve.
+  return true;
 }

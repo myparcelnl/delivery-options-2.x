@@ -1,22 +1,18 @@
 <template>
-  <div
-    v-if="validChoices"
-    :class="{
-      [`myparcel-checkout__overflow-wrapper`]: option.overflow
-    }">
+  <div v-if="validChoices">
     <table>
       <tr
         v-for="choice in validChoices"
         :key="option.name + '_' + choice.name"
         :class="{
-          'myparcel-checkout__choice--has-image': choice.hasOwnProperty('image'),
-          'myparcel-checkout__choice--disabled': choice.disabled
+          [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
+          [`${$classBase}__choice--disabled`]: choice.disabled
         }">
-        <td class="myparcel-checkout__input">
+        <td :class="`${$classBase}__input`">
           <div>
             <input
               v-if="option.type === 'checkbox'"
-              :id="`myparcel-checkout--${option.name}--${choice.name}`"
+              :id="`${$classBase}--${option.name}--${choice.name}`"
               v-model="selected"
               type="checkbox"
               :name="option.name"
@@ -25,7 +21,7 @@
 
             <input
               v-else
-              :id="`myparcel-checkout--${option.name}--${choice.name}`"
+              :id="`${$classBase}--${option.name}--${choice.name}`"
               v-model="selected"
               :type="option.type"
               :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
@@ -33,62 +29,60 @@
           </div>
         </td>
 
-        <td :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
-          <component
-            :is="option.component"
-            v-if="option.hasOwnProperty('component')"
-            :parent="option"
-            :data="choice"
-            :selected="selected === choice.name"
-            @click="selected = choice.name" />
+        <component
+          :is="option.component"
+          v-if="option.hasOwnProperty('component')"
+          :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
+          :parent="option"
+          :data="choice"
+          :selected="selected === choice.name"
+          @click="selected = choice.name" />
 
-          <template v-else>
-            <label :for="`myparcel-checkout--${option.name}--${choice.name}`">
-              <img
-                v-if="choice.hasOwnProperty('image')"
-                :src="choice.image"
-                :alt="choice.name"
-                class="myparcel-checkout__image myparcel-checkout__image--md"
-                :title="$configBus.strings[choice.label]">
-              <span
-                v-else
-                v-text="choice.plainLabel || $configBus.strings[choice.label]" />
+        <td
+          v-else
+          :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
+          <label :for="`${$classBase}--${option.name}--${choice.name}`">
+            <img
+              v-if="choice.hasOwnProperty('image')"
+              :src="choice.image"
+              :alt="choice.name"
+              :class="[`${$classBase}__image`, `${$classBase}__image--md`]"
+              :title="$configBus.strings[choice.label]">
+            <span
+              v-else
+              v-text="choice.plainLabel || $configBus.strings[choice.label]" />
 
-              <component
-                :is="isBold(choice) ? 'strong' : 'span'"
-                v-if="!!choice.price"
-                class="myparcel-checkout__float-right"
-                :class="{
-                  'myparcel-checkout__text-bold': option.type === 'checkbox'
-                    ? selected.includes(choice.name)
-                    : selected === choice.name,
-                  'myparcel-checkout__text-green': $configBus.get(choice, 'price') < 0
-                }">
-                <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
-                {{ $configBus.formatPrice(choice.price) }}
-              </component>
-            </label>
+            <component
+              :is="isBold(choice) ? 'strong' : 'span'"
+              v-if="!!choice.price"
+              :class="{
+                [`${$classBase}__float-right`]: true,
+                [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0}
+              ">
+              <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
+              {{ $configBus.formatPrice(choice.price) }}
+            </component>
+          </label>
 
-            <Loader
-              v-if="loading === choice.name"
-              type="inline" />
+          <Loader
+            v-if="loading === choice.name"
+            type="inline" />
 
-            <transition-group
-              v-else-if="selected === choice.name && chosenOptions"
-              name="fade"
-              appear>
-              <recursive-form
-                v-for="subOption in chosenOptions"
-                :key="choice.name + '_' + subOption.name"
-                :option="subOption"
-                :loading="loading" />
-            </transition-group>
-          </template>
+          <transition-group
+            v-else-if="selected === choice.name && chosenOptions"
+            name="fade"
+            appear>
+            <recursive-form
+              v-for="subOption in chosenOptions"
+              :key="choice.name + '_' + subOption.name"
+              :option="subOption"
+              :loading="loading" />
+          </transition-group>
         </td>
       </tr>
       <tr v-if="hasPagination && mutablePagination < option.choices.length">
         <td colspan="2">
-          <div class="myparcel-checkout__button">
+          <div :class="[`${$classBase}__button`]">
             <hr>
             <a
               href="#"
@@ -104,9 +98,9 @@
       <td>
         <select
           v-if="option.choices.length > 1"
-          :id="`myparcel-checkout--${option.name}`"
+          :id="`${$classBase}--${option.name}`"
           v-model="selected"
-          class="myparcel-checkout__select"
+          :class="`${$classBase}__select`"
           :name="option.name">
           <option
             v-for="(selectChoice, index) of option.choices"
