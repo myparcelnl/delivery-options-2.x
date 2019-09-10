@@ -54,4 +54,4 @@ export const UPDATE_ADDRESS_OUT = 'myparcel_updated_address';
  *
  * @type {string}
  */
-export const UPDATE_CHECKOUT_OUT = 'myparecl_updated_checkout';
+export const UPDATE_CHECKOUT_OUT = 'myparcel_updated_checkout';
