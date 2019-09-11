@@ -1,4 +1,4 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/data/request/fetchFromEndpoint';
 import { formatCarrierResponse } from '@/data/carriers/formatCarrierResponse';
 
 /**

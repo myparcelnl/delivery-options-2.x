@@ -1,5 +1,6 @@
 declare namespace MyParcel {
-  type Carrier = 'postnl' | 'bpost' | 'dpd'
+  type CarrierName = 'postnl' | 'bpost' | 'dpd'
+  type CarrierNameOrId = CarrierName | Number
   type Platform = 'myparcel' | 'belgie' | 'flespakket'
 
   type DeliveryType = 'morning' | 'standard' | 'evening' | 'pickup' | 'pickup_express'
@@ -129,7 +130,7 @@ declare namespace MyParcel {
   }
 
   type CarrierSettings = {
-    [key in Carrier]?: {
+    [key in CarrierName]?: {
       allowEveningDelivery?: Boolean
       allowMorningDelivery?: Boolean
       allowOnlyRecipient?: Boolean
@@ -154,7 +155,7 @@ declare namespace MyParcel {
 
   interface CarrierData {
     id: Number
-    name: String
+    name: CarrierName
     human: String
     meta: {
       logo_png: String

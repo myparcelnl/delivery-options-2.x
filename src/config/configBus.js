@@ -26,7 +26,7 @@ export const createConfigBus = () => {
       /**
        * The current carrier.
        *
-       * @type {MyParcel.Carrier}
+       * @type {MyParcel.CarrierNameOrId}
        */
       currentCarrier: null,
 
@@ -39,6 +39,13 @@ export const createConfigBus = () => {
        *                            ⬆️ [vertical dependencies that depend on siblings instead of their parent.].
        */
       dependencies: {},
+
+      /**
+       * Object to store all pickup data in to be able to send it back to the application.
+       *
+       * @type {Object.<MyParcel.PickupLocation>}
+       */
+      pickupLocations: null,
 
       /**
        * Whether to show a modal or not.
@@ -86,6 +93,11 @@ export const createConfigBus = () => {
       address: null,
     },
     computed: {
+      /**
+       * Whether there are multiple carriers available or not.
+       *
+       * @returns {boolean}
+       */
       isMultiCarrier() {
         return this.carrierData.length > 1;
       },
@@ -182,11 +194,11 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Get carrier by id or name.
+       * Get carrier data by id or name.
        *
-       * @param {Number|String} search - Id or name of the carrier.
+       * @param {MyParcel.CarrierNameOrId} search - Carrier name or id.
        *
-       * @returns {{id: Number, name: String, human: String, meta: Object}|undefined} - Carrier object.
+       * @returns {MyParcel.CarrierData} - Carrier object.
        */
       getCarrier(search) {
         return this.carrierData.find((carrier) => {

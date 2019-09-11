@@ -1,5 +1,7 @@
 /*
  * configBus events
+ *
+ * These are only used for and by the configBus so they don't need to be namespaced.
  */
 
 /**
@@ -14,7 +16,7 @@ export const UPDATE = 'update';
  *
  * @type {string}
  */
-export const AFTER_UPDATE = 'afterUpdate';
+export const AFTER_UPDATE = 'after_update';
 
 /**
  * Sent by configBus when an error has occurred.

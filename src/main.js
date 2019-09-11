@@ -8,7 +8,7 @@ import RecursiveForm from '@/components/RecursiveForm';
 import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';
-import { showDeveloperInfo } from '@/showDeveloperInfo';
+import { showDeveloperInfo } from '@/services/showDeveloperInfo';
 
 /**
  * Load the application.

@@ -1,11 +1,11 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/data/request/fetchFromEndpoint';
 import { configBus } from '@/config/configBus';
-import { getRequestParameters } from '@/services/getRequestParameters';
+import { getRequestParameters } from '@/data/request/getRequestParameters';
 
 /**
  * Fetch delivery options.
  *
- * @param {String|Number} carrier - Carrier name or id.
+ * @param {MyParcel.CarrierNameOrId} carrier - Carrier name or id.
  *
  * @returns {Promise}
  */

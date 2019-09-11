@@ -29,11 +29,15 @@ export const ONLY_RECIPIENT = 'onlyRecipient';
 // Delivery > Pickup
 export const PICKUP = 'pickup';
 
-// Delivery > Pickup > Pickup standard
-export const PICKUP_STANDARD = 'pickup';
+// Delivery > Pickup (> Pickup location)
+export const PICKUP_LOCATION = 'pickupLocation';
 
-// Delivery > Pickup > Pickup express
-export const PICKUP_EXPRESS = 'pickupExpress';
+// Delivery > Pickup (> Pickup location) > Pickup moment
+export const PICKUP_MOMENT = 'pickupMoment';
+
+// Delivery > Pickup (> Pickup location) > Pickup moment = standard | express
+export const PICKUP_STANDARD = 'standard';
+export const PICKUP_EXPRESS = 'express';
 
 /**
  * Base form config.

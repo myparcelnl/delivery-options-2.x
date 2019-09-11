@@ -31,16 +31,14 @@
     <template v-if="selected">
       <recursive-form
         v-for="subOption in data.options"
-        :key="data.name + '_' + subOption.name"
+        :key="`${data.name}_${subOption.name}`"
         :option="subOption"
-        :name="data.name"
-        @update="updateConfigBus()" />
+        :name="data.name" />
     </template>
   </td>
 </template>
 
 <script>
-import * as EVENTS from '@/config/data/eventConfig';
 import { FEATURE_PICKUP_SHOW_DISTANCE } from '@/config/data/settingsConfig';
 import PickupDetails from './PickupDetails';
 
@@ -77,9 +75,6 @@ export default {
         ...this.pickupData,
         component: PickupDetails,
       };
-    },
-    updateConfigBus(event) {
-      this.$configBus.$emit(EVENTS.UPDATE, event);
     },
   },
 };

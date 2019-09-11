@@ -29,6 +29,7 @@
       </template>
     </div>
     <input
+      v-if="useLegacy"
       id="mypa-input"
       :value="externalData"
       hidden>
@@ -37,9 +38,9 @@
 
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
-import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
-import { DELIVERY, DELIVERY_CARRIER, PICKUP } from '@/config/data/formConfig';
-import Errors from '@/Errors';
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS, FEATURE_USE_LEGACY } from '@/config/data/settingsConfig';
+import { DELIVERY, DELIVERY_CARRIER, PICKUP, PICKUP_LOCATION } from '@/config/data/formConfig';
+import Errors from '@/components/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
 import Modal from '@/components/Modal';
@@ -50,7 +51,7 @@ import { getAddress } from '@/config/setup';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
 import { getPickupLocations } from '@/data/pickup/getPickupLocations';
 
-const debounceDelay = 200;
+const debounceDelay = 300;
 
 export default {
   name: 'App',
@@ -105,6 +106,10 @@ export default {
   },
 
   computed: {
+    configBus() {
+      return this.$configBus;
+    },
+
     /**
      * False if:
      *  - CC is undefined
@@ -160,6 +165,10 @@ export default {
       const { component, ...data } = this.$configBus.modalData;
 
       return data;
+    },
+
+    useLegacy() {
+      return this.$configBus.get(FEATURE_USE_LEGACY);
     },
   },
 
@@ -263,7 +272,18 @@ export default {
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      */
     updateExternal() {
-      document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_OUT));
+      if (this.$configBus.useLegacy) {
+        /*
+         * Send a regular event, used to tell the external platform it should check the legacy input element containing
+         *  the data.
+         */
+        document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_OUT));
+      } else {
+        /*
+         * Or send a CustomEvent with the values as data.
+         */
+        document.dispatchEvent(new CustomEvent(EVENTS.UPDATE_CHECKOUT_OUT, { detail: this.$configBus.values }));
+      }
     },
 
     /**
@@ -274,12 +294,28 @@ export default {
      * @param {*} value - Setting value.
      */
     updateExternalData({ name, value }) {
+      this.$configBus.values[name] = value;
+
+      /**
+       * Set the complex pickup data instead of just the id.
+       */
+      if (PICKUP_LOCATION === name) {
+        this.$configBus.values[name] = this.$configBus.pickupLocations[value];
+      }
+
+      /**
+       * Update the current carrier if carrier changed.
+       */
       if (DELIVERY_CARRIER === name && this.$configBus.currentCarrier !== value) {
         this.$configBus.currentCarrier = value;
       }
 
-      this.$configBus.values[name] = value;
-      this.externalData = JSON.stringify(this.$configBus.values);
+      /**
+       * Fill the variable that's put in the legacy #mypa-input with the values.
+       */
+      if (this.useLegacy) {
+        this.externalData = JSON.stringify(this.$configBus.values);
+      }
 
       // Using $nextTick to emit event after this function is done.
       // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10

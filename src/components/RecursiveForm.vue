@@ -35,8 +35,7 @@
           :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
           :parent="option"
           :data="choice"
-          :selected="selected === choice.name"
-          @click="selected = choice.name" />
+          :selected="selected === choice.name" />
 
         <td
           v-else

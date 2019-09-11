@@ -1,8 +1,8 @@
-import Client from '../../myparcel-js-sdk/src';
+import Client from '@myparcel/sdk/src';
 import { ERROR } from '@/config/data/eventConfig';
 import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
-import { getApiUrl } from '@/services/getApiUrl';
+import { getApiUrl } from '@/data/request/getApiUrl';
 
 export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';

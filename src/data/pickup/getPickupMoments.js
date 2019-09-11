@@ -1,4 +1,4 @@
-import { PICKUP, formConfig } from '@/config/data/formConfig';
+import { PICKUP, PICKUP_EXPRESS, PICKUP_MOMENT, PICKUP_STANDARD, formConfig } from '@/config/data/formConfig';
 import { configBus } from '@/config/configBus';
 
 /**
@@ -26,7 +26,7 @@ export function getPickupMoments(pickupLocation) {
 
   return [
     {
-      name: 'pickupLocationTime',
+      name: PICKUP_MOMENT,
       type: 'radio',
       choices: pickupLocation.possibilities.map((possibility) => {
         const pickupTime = configBus.formatTime(possibility.moment.start.date);
@@ -36,8 +36,13 @@ export function getPickupMoments(pickupLocation) {
           return;
         }
 
+        const deliveryTypeMap = {
+          pickup: PICKUP_STANDARD,
+          pickup_express: PICKUP_EXPRESS,
+        };
+
         return {
-          ...formConfig[PICKUP].options[possibility.delivery_type_name],
+          ...formConfig[PICKUP].options[deliveryTypeMap[possibility.delivery_type_name]],
           plainLabel: pickupText,
         };
       }),

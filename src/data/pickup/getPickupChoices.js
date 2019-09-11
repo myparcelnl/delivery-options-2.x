@@ -1,9 +1,11 @@
-import { FEATURE_MAX_PAGE_ITEMS } from '@/config/data/settingsConfig';
+import PickupOption from '@/components/PickupOption';
 import { configBus } from '@/config/configBus';
-import { fetchMultiple } from '@/services/fetchMultiple';
+import { PICKUP_LOCATION } from '@/config/data/formConfig';
+import { FEATURE_MAX_PAGE_ITEMS } from '@/config/data/settingsConfig';
+import { sortPickupLocations } from '@/data/pickup/sortPickupLocations';
+import { fetchMultiple } from '@/data/request/fetchMultiple';
 import { fetchPickupLocations } from './fetchPickupLocations';
 import { getPickupMoments } from './getPickupMoments';
-import { sortPickupLocations } from '@/data/pickup/sortPickupLocations';
 
 /**
  * Get the pickup options if they are enabled in the config.
@@ -21,9 +23,22 @@ export async function getPickupChoices() {
   if (responses.length) {
     responses = sortPickupLocations(responses);
 
-    const pickupChoices = responses.map((option, key) => ({
+    // Create a pickupLocations object on configBus for later reference when sending data to the application.
+    configBus.pickupLocations = responses.reduce((acc, val) => {
+      const { location, address } = val;
+
+      return {
+        ...acc,
+        [location.location_code]: {
+          location,
+          address,
+        },
+      };
+    }, {});
+
+    const pickupChoices = responses.map((option) => ({
       pickupData: option,
-      name: key,
+      name: option.location.location_code,
       label: option.location.location_name,
       carrier: option.carrier,
       image: configBus.isMultiCarrier ? option.carrier.image : null,
@@ -32,9 +47,9 @@ export async function getPickupChoices() {
 
     return [
       {
-        name: 'pickupMoment',
+        name: PICKUP_LOCATION,
         type: 'radio',
-        component: 'PickupOption',
+        component: PickupOption,
         pagination: configBus.get(FEATURE_MAX_PAGE_ITEMS),
         choices: pickupChoices,
       },

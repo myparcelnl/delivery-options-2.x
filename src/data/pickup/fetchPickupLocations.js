@@ -1,5 +1,5 @@
-import { METHOD_SEARCH, fetchFromEndpoint } from '@/services/fetchFromEndpoint';
-import { getRequestParameters } from '@/services/getRequestParameters';
+import { METHOD_SEARCH, fetchFromEndpoint } from '@/data/request/fetchFromEndpoint';
+import { getRequestParameters } from '@/data/request/getRequestParameters';
 
 /**
  * Fetch pickup options.

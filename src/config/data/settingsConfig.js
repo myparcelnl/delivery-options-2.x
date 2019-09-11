@@ -34,6 +34,7 @@ export const CARRIER_SETTINGS = 'carrierSettings';
 export const FEATURE_ALLOW_RETRY = 'allowRetry';
 export const FEATURE_PICKUP_SHOW_DISTANCE = 'pickupShowDistance';
 export const FEATURE_MAX_PAGE_ITEMS = 'maxPageItems';
+export const FEATURE_USE_LEGACY = 'useLegacy';
 
 // STRINGS
 export const CITY = 'city';
