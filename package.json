@@ -1,6 +1,6 @@
 {
   "name": "@myparcel/checkout",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "types": "index.d.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "core-js": "^2.6.9",
+    "custom-event-polyfill": "^1.0.7",
     "debounce": "^1.2.0",
     "lodash.mergewith": "^4.6.2",
     "vue": "^2.6.10",

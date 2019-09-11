@@ -1,4 +1,5 @@
 import '@/assets/scss/style.scss';
+import '@/services/polyfills';
 import '@/services/fontAwesome';
 import '@/services/directives';
 import App from '@/App.vue';
