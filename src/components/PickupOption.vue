@@ -9,8 +9,7 @@
         <img
           :class="`${$classBase}__image--sm`"
           :src="pickupData.carrier.image"
-          :alt="pickupData.carrier.name">
-        &nbsp;
+          :alt="pickupData.carrier.name">&nbsp;
       </span>
 
       <span :class="`${$classBase}__d-block`">

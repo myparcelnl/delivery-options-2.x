@@ -1,97 +1,95 @@
 <template>
-  <div v-if="validChoices">
-    <table>
-      <tr
-        v-for="choice in validChoices"
-        :key="option.name + '_' + choice.name"
-        :class="{
-          [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
-          [`${$classBase}__choice--disabled`]: choice.disabled
-        }">
-        <td :class="`${$classBase}__input`">
-          <div>
-            <input
-              v-if="option.type === 'checkbox'"
-              :id="`${$classBase}--${option.name}--${choice.name}`"
-              v-model="selected"
-              type="checkbox"
-              :name="option.name"
-              :disabled="choice.disabled ? 'disabled' : false"
-              :value="choice.name">
+  <table v-if="validChoices">
+    <tr
+      v-for="choice in validChoices"
+      :key="option.name + '_' + choice.name"
+      :class="{
+        [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
+        [`${$classBase}__choice--disabled`]: choice.disabled
+      }">
+      <td :class="`${$classBase}__input`">
+        <div>
+          <input
+            v-if="option.type === 'checkbox'"
+            :id="`${$classBase}--${option.name}--${choice.name}`"
+            v-model="selected"
+            type="checkbox"
+            :name="option.name"
+            :disabled="choice.disabled ? 'disabled' : false"
+            :value="choice.name">
 
-            <input
-              v-else
-              :id="`${$classBase}--${option.name}--${choice.name}`"
-              v-model="selected"
-              :type="option.type"
-              :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
-              :value="choice.name">
-          </div>
-        </td>
+          <input
+            v-else
+            :id="`${$classBase}--${option.name}--${choice.name}`"
+            v-model="selected"
+            :type="option.type"
+            :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
+            :value="choice.name">
+        </div>
+      </td>
 
-        <component
-          :is="option.component"
-          v-if="option.hasOwnProperty('component')"
-          :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
-          :parent="option"
-          :data="choice"
-          :selected="selected === choice.name" />
+      <component
+        :is="option.component"
+        v-if="option.hasOwnProperty('component')"
+        :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
+        :parent="option"
+        :data="choice"
+        :selected="selected === choice.name" />
 
-        <td
-          v-else
-          :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
-          <label :for="`${$classBase}--${option.name}--${choice.name}`">
-            <img
-              v-if="choice.hasOwnProperty('image')"
-              :src="choice.image"
-              :alt="choice.name"
-              :class="[`${$classBase}__image`, `${$classBase}__image--md`]"
-              :title="$configBus.strings[choice.label]">
-            <span
-              v-else
-              v-text="choice.plainLabel || $configBus.strings[choice.label]" />
+      <td
+        v-else
+        :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
+        <label :for="`${$classBase}--${option.name}--${choice.name}`">
+          <img
+            v-if="choice.hasOwnProperty('image')"
+            :src="choice.image"
+            :alt="choice.name"
+            :class="[`${$classBase}__image`, `${$classBase}__image--md`]"
+            :title="$configBus.strings[choice.label]">
+          <span
+            v-else
+            v-text="choice.plainLabel || $configBus.strings[choice.label]" />
 
-            <component
-              :is="isBold(choice) ? 'strong' : 'span'"
-              v-if="!!choice.price"
-              :class="{
-                [`${$classBase}__float-right`]: true,
-                [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0}
-              ">
-              <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
-              {{ $configBus.formatPrice(choice.price) }}
-            </component>
-          </label>
+          <component
+            :is="isBold(choice) ? 'strong' : 'span'"
+            v-if="!!choice.price"
+            :class="{
+              [`${$classBase}__float-right`]: true,
+              [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0}
+            ">
+            <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
+            {{ $configBus.formatPrice(choice.price) }}
+          </component>
+        </label>
 
-          <Loader
-            v-if="loading === choice.name"
-            type="inline" />
+        <Loader
+          v-if="loading === choice.name"
+          type="inline" />
 
-          <transition-group
-            v-else-if="selected === choice.name && chosenOptions"
-            name="fade"
-            appear>
-            <recursive-form
-              v-for="subOption in chosenOptions"
-              :key="choice.name + '_' + subOption.name"
-              :option="subOption"
-              :loading="loading" />
-          </transition-group>
-        </td>
-      </tr>
-      <tr v-if="hasPagination && mutablePagination < option.choices.length">
-        <td colspan="2">
-          <div :class="[`${$classBase}__button`]">
-            <hr>
-            <a
-              href="#"
-              @click.prevent="mutablePagination = mutablePagination + option.pagination"
-              v-text="$configBus.strings.loadMore" />
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
+        <transition-group
+          v-else-if="selected === choice.name && chosenOptions"
+          name="fade"
+          appear>
+          <recursive-form
+            v-for="subOption in chosenOptions"
+            :key="choice.name + '_' + subOption.name"
+            :option="subOption"
+            :loading="loading" />
+        </transition-group>
+      </td>
+    </tr>
+    <tr v-if="hasPagination && mutablePagination < option.choices.length">
+      <td colspan="2">
+        <div :class="[`${$classBase}__button`]">
+          <hr>
+          <a
+            href="#"
+            @click.prevent="mutablePagination = mutablePagination + option.pagination"
+            v-text="$configBus.strings.loadMore" />
+        </div>
+      </td>
+    </tr>
+  </table>
   <table v-else>
     <tr>
       <td>

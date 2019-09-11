@@ -19,13 +19,12 @@
 
         <Errors v-else-if="!hasValidAddress" />
 
-        <div v-else>
-          <recursive-form
-            v-for="option in form.options"
-            :key="option.name"
-            v-test="option.name"
-            :option="option" />
-        </div>
+        <recursive-form
+          v-for="option in form.options"
+          v-else
+          :key="option.name"
+          v-test="option.name"
+          :option="option" />
       </template>
     </div>
     <input
