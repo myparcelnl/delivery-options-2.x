@@ -25,13 +25,13 @@ export async function getPickupChoices() {
 
     // Create a pickupLocations object on configBus for later reference when sending data to the application.
     configBus.pickupLocations = responses.reduce((acc, val) => {
-      const { location, address } = val;
+      const { location: { location_code, location_name }, address } = val;
 
       return {
         ...acc,
-        [location.location_code]: {
-          location,
-          address,
+        [location_code]: {
+          location_name,
+          ...address,
         },
       };
     }, {});

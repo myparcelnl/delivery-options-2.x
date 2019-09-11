@@ -39,7 +39,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS, FEATURE_USE_LEGACY } from '@/config/data/settingsConfig';
-import { DELIVERY, DELIVERY_CARRIER, PICKUP, PICKUP_LOCATION } from '@/config/data/formConfig';
+import { CARRIER, DELIVERY, PICKUP, PICKUP_LOCATION } from '@/config/data/formConfig';
 import Errors from '@/components/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
@@ -306,7 +306,7 @@ export default {
       /**
        * Update the current carrier if carrier changed.
        */
-      if (DELIVERY_CARRIER === name && this.$configBus.currentCarrier !== value) {
+      if (CARRIER === name && this.$configBus.currentCarrier !== value) {
         this.$configBus.currentCarrier = value;
       }
 

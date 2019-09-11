@@ -6,7 +6,8 @@ export const DELIVERY = 'delivery';
 export const DELIVER = 'deliver';
 
 // Delivery > Deliver > Carrier
-export const DELIVERY_CARRIER = 'deliveryCarrier';
+// (Also used for pickup carrier)
+export const CARRIER = 'carrier';
 
 // Delivery > Deliver (> Carrier) > Delivery date
 export const DELIVERY_DATE = 'deliveryDate';
