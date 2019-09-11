@@ -5,7 +5,7 @@
  * @param {Object} binding - The value for the attribute.
  */
 export const vTest = (el, binding) => {
-  if ('test' === process.env.NODE_ENV) {
+  if (process.env.NODE_ENV === 'test') {
     el.setAttribute('data-test-id', binding.value);
   }
 };

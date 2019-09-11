@@ -1,11 +1,11 @@
+import { FEATURE_MAX_PAGE_ITEMS } from '@/config/data/settingsConfig';
+import { PICKUP_LOCATION } from '@/config/data/formConfig';
 import PickupOption from '@/components/PickupOption';
 import { configBus } from '@/config/configBus';
-import { PICKUP_LOCATION } from '@/config/data/formConfig';
-import { FEATURE_MAX_PAGE_ITEMS } from '@/config/data/settingsConfig';
-import { sortPickupLocations } from '@/data/pickup/sortPickupLocations';
 import { fetchMultiple } from '@/data/request/fetchMultiple';
 import { fetchPickupLocations } from './fetchPickupLocations';
 import { getPickupMoments } from './getPickupMoments';
+import { sortPickupLocations } from '@/data/pickup/sortPickupLocations';
 
 /**
  * Get the pickup options if they are enabled in the config.
