@@ -1,4 +1,4 @@
-import { DEFAULT_PLATFORM, FLESPAKKET, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { configBus } from '@/config/configBus';
 
 /**
@@ -7,7 +7,6 @@ import { configBus } from '@/config/configBus';
 const platformUrlMap = {
   [SENDMYPARCEL]: 'sendmyparcel.be',
   [MYPARCEL]: 'myparcel.nl',
-  [FLESPAKKET]: 'flespakket.nl',
 };
 
 const platform = configBus && configBus.config ? configBus.config.platform : DEFAULT_PLATFORM;

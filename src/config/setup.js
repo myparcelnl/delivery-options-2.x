@@ -7,7 +7,7 @@ export const mock = false;
 /**
  * Get the window object supplied by the environment we're in. Parse it as JSON if needed.
  *
- * @returns {MyParcel.CheckoutConfiguration}
+ * @returns {MyParcel.DeliveryOptionsConfiguration}
  */
 const getWindowObject = () => {
   // Allow mocking for user and tests.
@@ -27,7 +27,7 @@ const getWindowObject = () => {
 /**
  * Get the address from the window object and convert cc to lowercase.
  *
- * @returns {MyParcel.CheckoutAddress}
+ * @returns {MyParcel.DeliveryOptionsAddress}
  */
 export const getAddress = () => {
   const { address } = getWindowObject();
@@ -38,9 +38,9 @@ export const getAddress = () => {
 /**
  * Modifies the config data.
  *
- * @param {MyParcel.CheckoutConfiguration} data - Configuration.
+ * @param {MyParcel.DeliveryOptionsConfiguration} data - Configuration.
  *
- * @returns {MyParcel.CheckoutConfiguration}
+ * @returns {MyParcel.DeliveryOptionsConfiguration}
  */
 const prepareConfig = (data) => {
   // Allow array of strings, single string and comma separated strings as input for carriers.
@@ -58,7 +58,7 @@ const prepareConfig = (data) => {
 /**
  * Get data from the window config object and convert some variables.
  *
- * @returns {MyParcel.CheckoutConfiguration}
+ * @returns {MyParcel.DeliveryOptionsConfiguration}
  */
 export const getConfig = () => {
   const windowObject = getWindowObject();

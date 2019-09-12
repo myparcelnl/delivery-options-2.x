@@ -5,8 +5,8 @@
     <div
       class="${$classBase}__loader"
       :class="{
-        'myparcel-checkout__loader--inline': 'inline' === type,
-        'myparcel-checkout__loader--spinner': 'spinner' === type
+        [`${$classBase}__loader--inline`]: 'inline' === type,
+        [`${$classBase}__loader--spinner`]: 'spinner' === type
       }">
       <transition-group
         v-if="'inline' === type"

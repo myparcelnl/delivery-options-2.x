@@ -5,7 +5,7 @@ import { createConfigBus } from '@/config/configBus';
 import { defaultConfig } from '@/config/data/defaultConfig';
 
 /**
- * @type {Object<MyParcel.CheckoutAddress>}
+ * @type {Object<MyParcel.DeliveryOptionsAddress>}
  */
 export const defaultAddress = {
   [MYPARCEL]: {

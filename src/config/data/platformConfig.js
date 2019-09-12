@@ -3,7 +3,6 @@ import { strings as beStrings } from '@/config/data/locales/be/strings';
 import { config as nlConfig } from '@/config/data/locales/nl/config';
 import { strings as nlStrings } from '@/config/data/locales/nl/strings';
 
-export const FLESPAKKET = 'flespakket';
 export const MYPARCEL = 'myparcel';
 export const SENDMYPARCEL = 'belgie';
 
@@ -35,13 +34,12 @@ export const addressRequirements = {
 const platformLocaleMap = {
   [SENDMYPARCEL]: 'be',
   [MYPARCEL]: 'nl',
-  [FLESPAKKET]: 'nl',
 };
 
 /**
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcel.CheckoutConfiguration}
+ * @returns {MyParcel.DeliveryOptionsConfiguration}
  */
 export const platformConfig = (platform) => {
   return configMap[platformLocaleMap[platform]];

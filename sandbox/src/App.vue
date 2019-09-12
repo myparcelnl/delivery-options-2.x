@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12 jumbotron">
-          <h1>MyParcel checkout sandbox</h1>
+          <h1>MyParcel delivery options sandbox</h1>
         </div>
       </div>
       <div class="row">
@@ -41,8 +41,8 @@
         </div>
 
         <div class="col-12">
-          <h1>Checkout -></h1>
-          <div id="myparcel-checkout" />
+          <h1>Delivery options -></h1>
+          <div id="myparcel-delivery-options" />
         </div>
       </div>
     </div>

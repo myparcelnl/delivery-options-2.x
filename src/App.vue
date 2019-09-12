@@ -146,13 +146,14 @@ export default {
     },
 
     /**
-     * Check if any top level setting is enabled.
+     * Check if the cc in the given address allows delivery options and if any top level setting is enabled.
      *
      * @returns {Boolean}
      */
     hasSomethingToShow() {
-      return this.$configBus.isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS)
-        || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS);
+      return this.$configBus.isValidCountry
+        && (this.$configBus.isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS)
+        || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS));
     },
 
     /**

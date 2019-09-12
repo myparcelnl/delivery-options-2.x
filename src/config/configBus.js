@@ -2,6 +2,7 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
 import Vue from 'vue';
+import { allowedCountryCodesForPlatform } from '@/config/data/countryConfig';
 import { getConfig } from '@/config/setup';
 
 /**
@@ -60,7 +61,7 @@ export const createConfigBus = () => {
       modalData: null,
 
       /**
-       * Object containing any errors causing the checkout not to show.
+       * Object containing any errors causing the delivery options not to show.
        *
        * @type {Object}
        */
@@ -74,25 +75,34 @@ export const createConfigBus = () => {
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.CheckoutConfig}
+       * @type {MyParcel.DeliveryOptionsConfig}
        */
       config: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.CheckoutStrings}
+       * @type {MyParcel.DeliveryOptionsStrings}
        */
       strings: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.CheckoutAddress}
+       * @type {MyParcel.DeliveryOptionsAddress}
        */
       address: null,
     },
     computed: {
+      /**
+       * Whether the cc of the current address is in the list of valid codes for the current platform.
+       *
+       * @returns {boolean}
+       */
+      isValidCountry() {
+        return allowedCountryCodesForPlatform().includes(this.address.cc);
+      },
+
       /**
        * Whether there are multiple carriers available or not.
        *

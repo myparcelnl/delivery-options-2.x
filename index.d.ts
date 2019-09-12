@@ -9,16 +9,16 @@ declare namespace MyParcel {
   /**
    * Configuration object supplied by the platform.
    */
-  interface CheckoutConfiguration {
-    address: CheckoutAddress
-    strings: CheckoutStrings
-    config: CheckoutConfig
+  interface DeliveryOptionsConfiguration {
+    address: DeliveryOptionsAddress
+    strings: DeliveryOptionsStrings
+    config: DeliveryOptionsConfig
   }
 
   /**
    * Address object from the external platform.
    */
-  interface CheckoutAddress {
+  interface DeliveryOptionsAddress {
     cc: String
     number: String | Number
     postalCode: String
@@ -28,7 +28,7 @@ declare namespace MyParcel {
   /**
    * Strings object from the external platform.
    */
-  interface CheckoutStrings {
+  interface DeliveryOptionsStrings {
     city: String
     postcode: String
     houseNumber: String
@@ -104,7 +104,7 @@ declare namespace MyParcel {
   /**
    * Configuration object from the external platform.
    */
-  interface CheckoutConfig {
+  interface DeliveryOptionsConfig {
     apiBaseUrl: String
     locale: String
     carriers: String | Array<String>

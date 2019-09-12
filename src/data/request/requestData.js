@@ -1,5 +1,5 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
-import { FLESPAKKET, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import { MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { configBus } from '@/config/configBus';
 
 const getParametersForNL = () => ({
@@ -16,7 +16,6 @@ const getParametersForBE = () => ({
 
 const parametersByPlatform = {
   [MYPARCEL]: getParametersForNL,
-  [FLESPAKKET]: getParametersForNL,
   [SENDMYPARCEL]: getParametersForBE,
 };
 

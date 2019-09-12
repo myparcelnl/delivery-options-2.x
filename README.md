@@ -8,7 +8,7 @@
 - [Usage](#usage)
 
 ## Introduction
-This is the MyParcel checkout module. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It barely has any css styling by itself so it should integrate with the design of your website easily.
+This is the MyParcel delivery options module for use in any e-commerce platform's checkout. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It barely has any css styling by itself so it should integrate with the design of your webshop easily.
 
 ![alt text](/demo/screenshots/checkout1.png)
 ![alt text](/demo/screenshots/checkout2.png)
@@ -17,10 +17,10 @@ This is the MyParcel checkout module. It's used to show your customers the possi
 ![alt text](/demo/screenshots/checkout5.png)
 
 ### Support
-The checkout is written in [Vue.js], it supports IE9 and up. 
+This app is written in [Vue.js], it supports IE9 and up. 
 
 ## Example
-An example of the checkout functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for your project.
+An example of the delivery options functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for your project.
 
 ## Installation
 1. Clone the repository or download the latest package from [releases].
@@ -30,14 +30,15 @@ An example of the checkout functionality can be found in our [sandbox]. Here you
    $ npm run build
 ```
 3. Include `dist/myparcel.js` in your project. 
-4. Place `<div id="myparcel-checkout"></div>` in your HTML.
-5. The checkout will be rendered inside that element!
+4. Place `<div id="myparcel-delivery-options"></div>` in your HTML.
+5. Follow the usage instructions. 
+6. The delivery options will be rendered inside the div created in step 4.
 
 ## Usage
-You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the checkout with an event.
+You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the delivery options with an event.
 
 ### Minimum required data
-This is the minimum amount of data you need to provide for the checkout to work correctly as a SendMyParcel user.  
+This is the minimum amount of data you need to provide for the delivery options to work correctly as a SendMyParcel user.  
 ```js
 window.MyParcelConfig = {
   config: {
@@ -50,9 +51,9 @@ window.MyParcelConfig = {
   }
 };
 
-// Trigger this event on the document to tell the checkout to update.
+// Trigger this event on the document to tell the delivery options to update.
 // Usually only needed on initializing and when the address changes.
-document.dispatchEvent(new Event('myparcel_update_checkout'));
+document.dispatchEvent(new Event('myparcel_update_delivery_options'));
 ```
 
 ### All options
@@ -135,7 +136,7 @@ window.MyParcelConfig = {
 
 When there is no title set for `deliveryMorningTitle`, `deliveryStandardTitle` or `deliveryEveningTitle` , the delivery time will automatically be visible. For more in-depth explanation of each config item and string and an interactive demo please see our [sandbox]
 
-To get the object with the selected options from the checkout do the following:
+To get the object with the selected options from the delivery options do the following:
 ```js
 const data = document.querySelector('#mypa-input').value;
 const obj = JSON.parse(data);

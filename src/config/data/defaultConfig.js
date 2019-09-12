@@ -8,11 +8,11 @@ import _mergeWith from 'lodash.mergewith';
 /**
  * Base checkout configuration.
  *
- * @type {MyParcel.CheckoutConfiguration}
+ * @type {MyParcel.DeliveryOptionsConfiguration}
  */
 const baseConfig = {
   /**
-   * @type {MyParcel.CheckoutConfig}
+   * @type {MyParcel.DeliveryOptionsConfig}
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
@@ -43,7 +43,7 @@ const baseConfig = {
   },
 
   /**
-   * @type {MyParcel.CheckoutStrings}
+   * @type {MyParcel.DeliveryOptionsStrings}
    */
   strings: {
     // Address strings
@@ -84,7 +84,7 @@ const baseConfig = {
  *
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcel.CheckoutConfiguration}
+ * @returns {MyParcel.DeliveryOptionsConfiguration}
  */
 export const defaultConfig = (platform) => {
   baseConfig.config.platform = platform;
