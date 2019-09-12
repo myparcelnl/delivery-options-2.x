@@ -42,18 +42,18 @@ export const UPDATE_CONFIG_IN = 'myparcel_update_config';
  *
  * @type {string}
  */
-export const UPDATE_CHECKOUT_IN = 'myparcel_update_delivery_options';
+export const UPDATE_DELIVERY_OPTIONS = 'myparcel_update_delivery_options';
 
 /**
  * To tell the external platform the address is updated.
  *
  * @type {string}
  */
-export const UPDATE_ADDRESS_OUT = 'myparcel_updated_address';
+export const UPDATED_ADDRESS = 'myparcel_updated_address';
 
 /**
  * To tell the external platform it needs to update.
  *
  * @type {string}
  */
-export const UPDATE_CHECKOUT_OUT = 'myparcel_updated_delivery_options';
+export const UPDATED_DELIVERY_OPTIONS = 'myparcel_updated_delivery_options';

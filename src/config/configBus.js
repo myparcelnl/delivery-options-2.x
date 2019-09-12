@@ -138,7 +138,7 @@ export const createConfigBus = () => {
 
         this.weekdays = this.getWeekdays();
 
-        document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_IN));
+        document.dispatchEvent(new Event(EVENTS.UPDATE_DELIVERY_OPTIONS));
       };
 
       initialize();

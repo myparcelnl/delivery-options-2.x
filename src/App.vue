@@ -174,7 +174,7 @@ export default {
 
   created() {
     this.listeners.update();
-    document.addEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
+    document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
 
     // Add the new data to the values object
     this.$configBus.$on(EVENTS.UPDATE, this.updateExternalData);
@@ -186,7 +186,7 @@ export default {
   },
 
   beforeDestroy() {
-    document.removeEventListener(EVENTS.UPDATE_CHECKOUT_IN, this.listeners.update);
+    document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
     this.$configBus.$off(EVENTS.UPDATE, this.updateExternalData);
     this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
     this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
@@ -277,12 +277,12 @@ export default {
          * Send a regular event, used to tell the external platform it should check the legacy input element containing
          *  the data.
          */
-        document.dispatchEvent(new Event(EVENTS.UPDATE_CHECKOUT_OUT));
+        document.dispatchEvent(new Event(EVENTS.UPDATED_DELIVERY_OPTIONS));
       } else {
         /*
          * Or send a CustomEvent with the values as data.
          */
-        document.dispatchEvent(new CustomEvent(EVENTS.UPDATE_CHECKOUT_OUT, { detail: this.$configBus.values }));
+        document.dispatchEvent(new CustomEvent(EVENTS.UPDATED_DELIVERY_OPTIONS, { detail: this.$configBus.values }));
       }
     },
 

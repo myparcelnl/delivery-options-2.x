@@ -5,7 +5,7 @@ import '@/services/directives';
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm';
-import { UPDATE_CHECKOUT_IN } from '@/config/data/eventConfig';
+import { UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';
 import { showDeveloperInfo } from '@/services/showDeveloperInfo';
@@ -14,7 +14,7 @@ import { showDeveloperInfo } from '@/services/showDeveloperInfo';
  * Load the application.
  */
 function loadApp() {
-  document.removeEventListener(UPDATE_CHECKOUT_IN, loadApp);
+  document.removeEventListener(UPDATE_DELIVERY_OPTIONS, loadApp);
 
   /**
    * Async computed properties plugin.
@@ -98,4 +98,4 @@ if (process.env.NODE_ENV === 'development' && !window.hasOwnProperty('MyParcelCo
   window.onload = showDeveloperInfo;
 }
 
-document.addEventListener(UPDATE_CHECKOUT_IN, loadApp);
+document.addEventListener(UPDATE_DELIVERY_OPTIONS, loadApp);
