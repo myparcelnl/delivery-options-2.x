@@ -237,13 +237,13 @@ export default {
      * @returns {Promise}
      */
     async getCheckout() {
+      // Update the address using the window config object.
+      this.$configBus.address = getAddress();
+
       // Don't start loading if there's nothing to load
       if (!this.hasSomethingToShow) {
         return;
       }
-
-      // Update the address using the window config object.
-      this.$configBus.address = getAddress();
 
       this.showCheckout = true;
 
