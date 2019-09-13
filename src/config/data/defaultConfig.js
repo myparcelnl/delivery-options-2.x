@@ -6,7 +6,7 @@ import {
 import _mergeWith from 'lodash.mergewith';
 
 /**
- * Base checkout configuration.
+ * Base delivery options configuration.
  *
  * @type {MyParcel.DeliveryOptionsConfiguration}
  */

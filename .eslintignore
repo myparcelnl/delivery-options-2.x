@@ -1,4 +1,6 @@
-public
-dist
-node_modules
 **/*.d.ts
+coverage
+dist
+myparcel_js_sdk
+node_modules
+public

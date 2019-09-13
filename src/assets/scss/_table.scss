@@ -1,0 +1,27 @@
+.#{$classBase} table {
+  margin: 0;
+  width: 100%;
+
+  tr,
+  td {
+    background-color: transparent;
+    border: 0;
+  }
+
+  td {
+    padding: 0;
+    vertical-align: top;
+
+    label {
+      display: block;
+      text-align: left;
+    }
+
+    &.#{$classBase} {
+      &__input {
+        width: 1px;
+        padding-right: 6px;
+      }
+    }
+  }
+}

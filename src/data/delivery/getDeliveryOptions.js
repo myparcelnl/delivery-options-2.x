@@ -1,5 +1,6 @@
 import { CARRIER, DELIVER } from '@/config/data/formConfig';
 import { DELIVERY_TITLE } from '@/config/data/settingsConfig';
+import Vue from 'vue';
 import { configBus } from '@/config/configBus';
 import { createDeliveryOptions } from '@/data/delivery/createDeliveryOptions';
 
@@ -25,6 +26,7 @@ export function getDeliveryOptions() {
               ...acc,
               {
                 ...carrier,
+                class: `${Vue.prototype.$classBase}__spacing--md`,
                 options: () => createDeliveryOptions(carrier.name),
               },
             ];

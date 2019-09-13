@@ -45,52 +45,11 @@ function loadApp() {
   Vue.prototype.$classBase = process.env.VUE_APP_CLASS_BASE;
 
   /**
-   * The Vue instance.
+   * Create the Vue instance.
    */
-  const instance = new Vue({
+  new Vue({
     render: (createElement) => createElement(App),
   }).$mount(`#${Vue.prototype.$classBase}`);
-
-  /**
-   * The top level component (the one rendered above).
-   */
-  const app = instance.$children[0];
-
-  /**
-   * The legacy checkout window object.
-   *
-   * @deprecated Since v4.0.0. Use events instead.
-   *
-   * @type {{callDeliveryOptions: function, showAllDeliveryOptions: function, hideAllDeliveryOptions: function}}
-   */
-  window.MyParcel = {
-    /**
-     * Get the checkout.
-     *
-     * @deprecated Since v4.0.0. Use event: `myparcel_update_checkout` instead.
-     *
-     * @type {function}
-     */
-    callDeliveryOptions: app.getCheckout,
-
-    /**
-     * Hide the checkout.
-     *
-     * @deprecated Since v4.0.0.
-     *
-     * @type {function}
-     */
-    hideAllDeliveryOptions: app.hideCheckout,
-
-    /**
-     * Show the checkout. Does the same as getCheckout because it's no longer needed.
-     *
-     * @deprecated Since v4.0.0. Use event: `myparcel_update_checkout` instead.
-     *
-     * @type {function}
-     */
-    showAllDeliveryOptions: app.getCheckout,
-  };
 }
 
 // This is not present in the compiled code.

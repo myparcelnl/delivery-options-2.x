@@ -1,29 +1,21 @@
 <template>
-  <transition
-    appear
-    name="fade">
-    <div
-      class="${$classBase}__loader"
-      :class="{
-        [`${$classBase}__loader--inline`]: 'inline' === type,
-        [`${$classBase}__loader--spinner`]: 'spinner' === type
-      }">
-      <transition-group
-        v-if="'inline' === type"
-        name="shove"
-        appear>
-        <div
-          v-for="index in 3"
-          :key="`block-${index}`"
-          :style="{
-            'animation-delay': index * .05 + 's',
-            'transition-delay': index * .035 + 's',
-          }" />
-      </transition-group>
-
-      <span v-else />
-    </div>
-  </transition>
+  <div
+    :class="{
+      [`${$classBase}__loader`]: true,
+      [`${$classBase}__loader--inline`]: 'inline' === type,
+    }">
+    <transition-group
+      name="shove"
+      appear>
+      <div
+        v-for="index in 3"
+        :key="`block-${index}`"
+        :style="{
+          'animation-delay': index * .05 + 's',
+          'transition-delay': index * .035 + 's',
+        }" />
+    </transition-group>
+  </div>
 </template>
 
 <script>
@@ -32,7 +24,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'spinner',
+      default: 'inline',
     },
   },
 };

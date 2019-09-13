@@ -1,0 +1,20 @@
+.#{$classBase}__image {
+  user-select: none;
+  display: inline-block;
+
+  &--lg {
+    width: $spacing-lg;
+    height: $spacing-lg;
+  }
+
+  &--md {
+    width: $spacing-md;
+    height: $spacing-md;
+  }
+
+  &--sm {
+    vertical-align: middle;
+    width: $spacing-sm;
+    height: $spacing-sm;
+  }
+}

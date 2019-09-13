@@ -4,6 +4,7 @@
       v-for="choice in validChoices"
       :key="option.name + '_' + choice.name"
       :class="{
+        [`${$classBase}__choice`]: true,
         [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
         [`${$classBase}__choice--disabled`]: choice.disabled
       }">
@@ -11,8 +12,9 @@
         <div>
           <input
             v-if="option.type === 'checkbox'"
-            :id="`${$classBase}--${option.name}--${choice.name}`"
+            :id="`${$classBase}__${option.name}--${choice.name}`"
             v-model="selected"
+            :class="choice.class"
             type="checkbox"
             :name="option.name"
             :disabled="choice.disabled ? 'disabled' : false"
@@ -20,8 +22,9 @@
 
           <input
             v-else
-            :id="`${$classBase}--${option.name}--${choice.name}`"
+            :id="`${$classBase}__${option.name}--${choice.name}`"
             v-model="selected"
+            :class="choice.class"
             :type="option.type"
             :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
             :value="choice.name">
@@ -39,12 +42,15 @@
       <td
         v-else
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2">
-        <label :for="`${$classBase}--${option.name}--${choice.name}`">
+        <label :for="`${$classBase}__${option.name}--${choice.name}`">
           <img
             v-if="choice.hasOwnProperty('image')"
             :src="choice.image"
             :alt="choice.name"
-            :class="[`${$classBase}__image`, `${$classBase}__image--md`]"
+            :class="[
+              `${$classBase}__image`,
+              `${$classBase}__image--md`
+            ]"
             :title="$configBus.strings[choice.label]">
           <span
             v-else
@@ -55,8 +61,9 @@
             v-if="!!choice.price"
             :class="{
               [`${$classBase}__float-right`]: true,
-              [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0}
-            ">
+              [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0,
+              ...choice.class,
+            }">
             <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />
             {{ $configBus.formatPrice(choice.price) }}
           </component>
@@ -95,9 +102,12 @@
       <td>
         <select
           v-if="option.choices.length > 1"
-          :id="`${$classBase}--${option.name}`"
+          :id="`${$classBase}__${option.name}`"
           v-model="selected"
-          :class="`${$classBase}__select`"
+          :class="{
+            [`${$classBase}__select`]: true,
+            ...option.class,
+          }"
           :name="option.name">
           <option
             v-for="(selectChoice, index) of option.choices"

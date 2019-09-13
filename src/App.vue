@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="">
     <div
-      v-if="showCheckout"
+      v-if="showDeliveryOptions"
       :class="`${$classBase}`">
       <Modal
         v-if="$configBus.showModal"
@@ -62,19 +62,19 @@ export default {
   data() {
     return {
       /**
-       * Whether to show the checkout at all or not.
+       * Whether to show the delivery options module at all or not.
        */
-      showCheckout: false,
+      showDeliveryOptions: false,
 
       /**
-       * Whether the checkout is loading or not.
+       * Whether the delivery options are loading or not.
        *
        * @type {Boolean}
        */
       loading: true,
 
       /**
-       * The form object which will be filled with all checkout fields and options.
+       * The form object which will be filled with all delivery options fields and options.
        *
        * @type {Object}
        */
@@ -91,14 +91,14 @@ export default {
        * Event listeners object. Stored here so we can add and remove them easily.
        */
       listeners: {
-        update: debounce(this.getCheckout, debounceDelay),
+        update: debounce(this.getDeliveryOptions, debounceDelay),
         updateExternal: debounce(this.updateExternal, debounceDelay),
         error: (e) => {
           if (process.env.NODE_ENV === 'development') {
             // eslint-disable-next-line no-console
             console.warn('error:', e);
           }
-          this.hideCheckout();
+          this.hideSelf();
         },
       },
     };
@@ -216,7 +216,7 @@ export default {
 
       // Hide the checkout if there are no choices.
       if (!choices.length) {
-        this.hideCheckout();
+        this.hideSelf();
         return;
       }
 
@@ -232,11 +232,11 @@ export default {
     },
 
     /**
-     * Show the checkout, getting all necessary data in the process..
+     * Show the delivery options, getting all necessary data in the process..
      *
      * @returns {Promise}
      */
-    async getCheckout() {
+    async getDeliveryOptions() {
       // Update the address using the window config object.
       this.$configBus.address = getAddress();
 
@@ -245,7 +245,7 @@ export default {
         return;
       }
 
-      this.showCheckout = true;
+      this.showDeliveryOptions = true;
 
       if (!this.hasValidAddress) {
         this.loading = false;
@@ -261,11 +261,11 @@ export default {
     /**
      * Hide the checkout completely.
      */
-    hideCheckout() {
+    hideSelf() {
       // This has to stay here until after testing
       // eslint-disable-next-line no-console
-      console.trace('would hide checkout');
-      this.showCheckout = false;
+      console.trace('hiding delivery options');
+      this.showDeliveryOptions = false;
     },
 
     /**
@@ -287,7 +287,7 @@ export default {
     },
 
     /**
-     * Updates the configBus and the #mypa-input element with the new checkout data.
+     * Updates the configBus with the new delivery options data and communicate it to the external platform.
      *
      * @param {Object} <ObjectPattern> - Destructured update event.
      * @param {String} name - Name of the setting that was updated.

@@ -1,89 +1,17 @@
 @import "variables";
 @import "keyframes";
+@import "transitions/index";
+@import "choice";
+@import "image";
 @import "loader";
 @import "modal";
-@import "transitions/index";
+@import "table";
 
 .#{$classBase} {
   position: relative;
 
-  table {
-    margin: 0;
-    width: 100%;
-
-    tr,
-    td {
-      background-color: transparent;
-      border: 0;
-    }
-
-    td {
-      padding: 0;
-      vertical-align: top;
-
-      label {
-        display: block;
-        text-align: left;
-      }
-
-      &.#{$classBase} {
-        &__input {
-          width: 1px;
-          padding-right: 6px;
-        }
-      }
-    }
-  }
-
   &__d-block {
     display: block;
-  }
-
-  &__button {
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  &__image {
-    user-select: none;
-    display: inline-block;
-
-    &--lg {
-      width: $choice-image-size * 1.25;
-      height: $choice-image-size * 1.25;
-    }
-
-    &--md {
-      width: $choice-image-size;
-      height: $choice-image-size;
-    }
-
-    &--sm {
-      vertical-align: middle;
-      width: $choice-image-size / 2;
-      height: $choice-image-size / 2;
-    }
-  }
-
-  &__choice {
-    &--disabled label {
-      opacity: .5;
-    }
-
-    &--has-image > td {
-      & > label {
-        height: 100%;
-      }
-
-      &:first-child input {
-        height: $choice-image-size / 2.5;
-      }
-
-      .#{$classBase}__loader--inline div:nth-child(1) {
-        margin-top: 0;
-      }
-    }
   }
 
   &__select {
@@ -105,6 +33,12 @@
   &__errors {
     input {
       width: 100%;
+    }
+  }
+
+  &__spacing {
+    &--md {
+      height: $spacing-md !important;
     }
   }
 }

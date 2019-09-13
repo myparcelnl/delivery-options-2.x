@@ -1,4 +1,4 @@
-# MyParcel Checkout
+# MyParcel Delivery Options
 [![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout)
 [![Coverage Status](https://coveralls.io/repos/github/myparcelbe/checkout/badge.svg?branch=master)](https://coveralls.io/github/myparcelbe/checkout?branch=master)
 
@@ -8,19 +8,19 @@
 - [Usage](#usage)
 
 ## Introduction
-This is the MyParcel delivery options module for use in any e-commerce platform's checkout. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It barely has any css styling by itself so it should integrate with the design of your webshop easily.
+This is the MyParcel delivery options module for use in any e-commerce platform's checkout. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It only has the bare minimum css styling so it should integrate with the design of your webshop easily.
 
-![alt text](/demo/screenshots/checkout1.png)
-![alt text](/demo/screenshots/checkout2.png)
-![alt text](/demo/screenshots/checkout3.png)
-![alt text](/demo/screenshots/checkout4.png)
-![alt text](/demo/screenshots/checkout5.png)
+![screenshot](/demo/screenshots/checkout1.png)
+![screenshot](/demo/screenshots/checkout2.png)
+![screenshot](/demo/screenshots/checkout3.png)
+![screenshot](/demo/screenshots/checkout4.png)
+![screenshot](/demo/screenshots/checkout5.png)
 
 ### Support
 This app is written in [Vue.js], it supports IE9 and up. 
 
 ## Example
-An example of the delivery options functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for your project.
+An example of the delivery options functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for use in your project.
 
 ## Installation
 1. Clone the repository or download the latest package from [releases].

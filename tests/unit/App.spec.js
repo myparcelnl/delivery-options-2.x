@@ -5,13 +5,13 @@ import App from '@/App';
 import Vue from 'vue';
 import { shallowMount } from '@vue/test-utils';
 
-describe('The checkout', () => {
+describe('The delivery options module', () => {
   let app;
 
   it('checks address requirements', () => {
     Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
     app = shallowMount(App);
-    app.vm.getCheckout = jest.fn();
+    app.vm.getDeliveryOptions = jest.fn();
 
     expect(app.vm.hasValidAddress).toBe(false);
 

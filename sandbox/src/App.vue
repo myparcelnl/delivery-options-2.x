@@ -51,6 +51,7 @@
 
 <script>
 import '../../dist/myparcel';
+import { UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
 import SettingsForm from './components/SettingsForm';
 
 /**
@@ -124,7 +125,7 @@ export default {
   },
 
   created() {
-    document.dispatchEvent(new Event('myparcel_update_checkout'));
+    document.dispatchEvent(new Event(UPDATE_DELIVERY_OPTIONS));
   },
 
   methods: {
@@ -142,7 +143,7 @@ export default {
     },
 
     updateSettings(a, b) {
-      document.dispatchEvent(new Event('myparcel_update_checkout'));
+      document.dispatchEvent(new Event(UPDATE_DELIVERY_OPTIONS));
     },
 
     setOptions() {
