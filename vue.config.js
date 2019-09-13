@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 process.env.VUE_APP_VERSION = require('./package.json').version;
 const { VUE_APP_CLASS_BASE } = process.env;
@@ -30,6 +31,9 @@ module.exports = {
       },
     },
     plugins: [
+      new CopyWebpackPlugin([
+        { from: './update-package.js' },
+      ]),
       new webpack.DefinePlugin({
         'process.env': {
           VUE_APP_VERSION: JSON.stringify(process.env.VUE_APP_VERSION),
