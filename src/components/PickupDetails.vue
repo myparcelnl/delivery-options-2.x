@@ -8,6 +8,7 @@
       <td v-if="$configBus.isMultiCarrier">
         <img
           :class="[
+            `${$classBase}__image`,
             `${$classBase}__image--lg`,
             `${$classBase}__float-right`
           ]"

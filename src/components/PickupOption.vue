@@ -7,7 +7,7 @@
         v-if="pickupData.carrier.image"
         :class="[`${$classBase}__d-block`, `${$classBase}__float-left`]">
         <img
-          :class="`${$classBase}__image--sm`"
+          :class="[`${$classBase}__image`, `${$classBase}__image--sm`]"
           :src="pickupData.carrier.image"
           :alt="pickupData.carrier.name">&nbsp;
       </span>
