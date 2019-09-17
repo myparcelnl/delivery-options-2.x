@@ -112,7 +112,7 @@ export default {
         description: '',
         placeholder: 'Postcode',
       },
-      [SETTINGS.HOUSE_NUMBER]: {
+      [SETTINGS.NUMBER]: {
         description: '',
         placeholder: 'Huisnummer',
       },

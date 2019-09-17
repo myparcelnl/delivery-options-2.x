@@ -56,7 +56,7 @@ export const FEATURE_USE_LEGACY = 'useLegacy';
 // STRINGS
 export const CITY = 'city';
 export const POSTAL_CODE = 'postalCode';
-export const HOUSE_NUMBER = 'houseNumber';
+export const NUMBER = 'number';
 export const ADDRESS_NOT_FOUND = 'addressNotFound';
 
 export const CLOSED = 'closed';
@@ -81,7 +81,7 @@ export const SIGNATURE_TITLE = 'signatureTitle';
 export const BE_DELIVERY_STANDARD_TITLE = 'beDeliveryStandardTitle';
 export const BE_DELIVERY_TITLE = 'beDeliveryTitle';
 export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
-export const WRONG_HOUSE_NUMBER_POSTCODE = 'wrongHouseNumberPostcode';
+export const WRONG_NUMBER_POSTAL_CODE = 'wrongNumberPostalCode';
 export const WRONG_POSTAL_CODE_CITY = 'wrongPostalCodeCity';
 
 /**
