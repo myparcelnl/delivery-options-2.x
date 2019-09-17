@@ -10,7 +10,7 @@
           :class="[
             `${$classBase}__image`,
             `${$classBase}__image--lg`,
-            `${$classBase}__float-right`
+            `${$classBase}__float--right`
           ]"
           :src="data.carrier.image"
           :alt="data.carrier.human">
@@ -40,7 +40,7 @@
       </td>
       <td>
         <span
-          :class="`${$classBase}__float-right`"
+          :class="`${$classBase}__float--right`"
           v-text="openingHours[day]" />
       </td>
     </tr>

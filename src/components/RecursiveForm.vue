@@ -60,8 +60,8 @@
             :is="isBold(choice) ? 'strong' : 'span'"
             v-if="!!choice.price"
             :class="{
-              [`${$classBase}__float-right`]: true,
-              [`${$classBase}__text-green`]: $configBus.get(choice, 'price') < 0,
+              [`${$classBase}__float--right`]: true,
+              [`${$classBase}__text--green`]: $configBus.get(choice, 'price') < 0,
               ...choice.class,
             }">
             <span v-text="$configBus.get(choice, 'price') >= 0 ? '+ ' : '– '" />

@@ -5,7 +5,7 @@ import { GENERAL, STRINGS } from '../src/settings';
 export default {
   en: {
     titles: {
-      [FORM.ADDITIONAL_OPTIONS]: 'Additional Options',
+      [FORM.SHIPMENT_OPTIONS]: 'Shipment Options',
       [FORM.DELIVERY]: 'Delivery',
       [FORM.DELIVERY_EVENING]: 'Evening delivery',
       [GENERAL]: 'General',
@@ -108,7 +108,7 @@ export default {
         description: '',
         placeholder: 'Plaats',
       },
-      [SETTINGS.POSTCODE]: {
+      [SETTINGS.POSTAL_CODE]: {
         description: '',
         placeholder: 'Postcode',
       },

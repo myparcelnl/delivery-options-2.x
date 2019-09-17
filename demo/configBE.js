@@ -34,9 +34,9 @@ window.MyParcelConfig = {
     deliveryTitle: 'Bezorgen op',
     pickupTitle: 'Afhalen op locatie',
 
+    saturdayDeliveryTitle: 'Zaterdaglevering',
     signatureTitle: 'Handtekening',
-    wrongPostalCodeCity: 'Zaterdaglevering',
-    saturdayDeliveryTitle: 'Combinatie postcode/plaats onbekend',
+    wrongPostalCodeCity: 'Combinatie postcode/plaats onbekend',
   },
   address: {
     cc: 'BE',

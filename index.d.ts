@@ -30,7 +30,7 @@ declare namespace MyParcel {
    */
   interface DeliveryOptionsStrings {
     city: String
-    postcode: String
+    postalCode: String
     houseNumber: String
     addressNotFound: String
     again: String

@@ -103,7 +103,7 @@ export const settings = [
         ],
       },
       {
-        title: FORM.ADDITIONAL_OPTIONS,
+        title: FORM.SHIPMENT_OPTIONS,
         settings: [
           {
             title: FORM.ONLY_RECIPIENT,

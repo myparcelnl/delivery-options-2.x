@@ -1,5 +1,5 @@
 /**
- * Sort the given pickup locations by distance.
+ * Sort the given pickup locations by distance from low to high.
  *
  * @param {Array} pickupLocations - Response array from /pickup_locations.
  *
@@ -10,6 +10,6 @@ export function sortPickupLocations(pickupLocations) {
     const distanceA = locationA.distance;
     const distanceB = locationB.distance;
 
-    return distanceA > distanceB ? -1 : 1;
+    return distanceA < distanceB ? -1 : 1;
   });
 }

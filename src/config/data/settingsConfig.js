@@ -36,14 +36,26 @@ export const SATURDAY_CUTOFF_TIME = 'saturdayCutoffTime';
 export const CARRIER_SETTINGS = 'carrierSettings';
 
 // Extra features
+/*
+ * Allow a retry modal to let the user re-enter their address on error.
+ */
 export const FEATURE_ALLOW_RETRY = 'allowRetry';
+
+/*
+ * Show distance under each pickup location if true. Otherwise shows street name and number.
+ */
 export const FEATURE_PICKUP_SHOW_DISTANCE = 'pickupShowDistance';
+
+/*
+ * Max amount of pickup locations shown.
+ */
 export const FEATURE_MAX_PAGE_ITEMS = 'maxPageItems';
+
 export const FEATURE_USE_LEGACY = 'useLegacy';
 
 // STRINGS
 export const CITY = 'city';
-export const POSTCODE = 'postcode';
+export const POSTAL_CODE = 'postalCode';
 export const HOUSE_NUMBER = 'houseNumber';
 export const ADDRESS_NOT_FOUND = 'addressNotFound';
 

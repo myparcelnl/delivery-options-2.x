@@ -18,16 +18,25 @@
     width: 100%;
   }
 
-  &__float-left {
-    float: left;
+  &__float {
+    &--left {
+      float: left;
+    }
+
+    &--right {
+      float: right;
+    }
   }
 
-  &__float-right {
-    float: right;
-  }
+  &__text {
+    &--green {
+      color: $positive;
+    }
 
-  &__text-green {
-    color: $positive;
+    &--small {
+      opacity: .6;
+      font-size: 0.9em;
+    }
   }
 
   &__errors {

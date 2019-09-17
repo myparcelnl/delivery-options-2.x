@@ -48,7 +48,7 @@ const baseConfig = {
   strings: {
     // Address strings
     [SETTINGS.CITY]: 'Plaats',
-    [SETTINGS.POSTCODE]: 'Postcode',
+    [SETTINGS.POSTAL_CODE]: 'Postcode',
     [SETTINGS.HOUSE_NUMBER]: 'Huisnummer',
     [SETTINGS.ADDRESS_NOT_FOUND]: 'Adresgegevens niet ingevuld',
 

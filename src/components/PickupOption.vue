@@ -7,7 +7,7 @@
         v-if="pickupData.carrier.image"
         :class="[
           `${$classBase}__d-block`,
-          `${$classBase}__float-left`
+          `${$classBase}__float--left`
         ]">
         <img
           :class="[
@@ -23,13 +23,22 @@
         <font-awesome-icon
           v-if="selected"
           icon="ellipsis-h"
-          :class="`${$classBase}__float-right`" />
+          :class="`${$classBase}__float--right`" />
       </span>
 
       <span
         v-if="featurePickupShowDistance"
         :class="`${$classBase}__d-block`">
         <span v-text="$configBus.formatDistance(pickupData.location.distance)" />
+      </span>
+
+      <span
+        v-else
+        :class="[
+          `${$classBase}__d-block`,
+          `${$classBase}__text--small`
+        ]">
+        <span v-text="pickupData.address.street + ' ' + pickupData.address.number" />
       </span>
     </label>
 

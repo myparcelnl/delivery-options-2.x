@@ -7,13 +7,13 @@
       <template v-for="part in requiredAddressParts">
         <p :key="part">
           <label>
-            {{ $configBus.strings[part + 'Text'] }}
+            {{ $configBus.strings[part] }}
             <input
               v-model="values[part]"
               :name="part + '-input'"
               type="text"
-              :placeholder="$configBus.strings[part + 'Text']"
-              v-text="$configBus.strings[part + 'Text']">
+              :placeholder="$configBus.strings[part]"
+              v-text="$configBus.strings[part]">
           </label>
         </p>
       </template>
