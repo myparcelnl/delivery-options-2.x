@@ -73,7 +73,7 @@ window.MyParcelConfig = {
     priceOnlyRecipient: 0.30,
     pricePickup: 5.85,
     
-    // Additional delivery options
+    // Shipment options
     allowSaturdayDelivery: true,
     allowPickupLocations: true,
     allowSignature: true,
@@ -111,7 +111,7 @@ window.MyParcelConfig = {
     deliveryTitle: 'Bezorgen op',
     pickupTitle: 'Afhalen op locatie',
 
-    // Additional options
+    // Shipment options
     onlyRecipientTitle: 'Home address only',
     signatureTitle: 'Handtekening',
 
@@ -146,7 +146,7 @@ const obj = JSON.parse(data);
 //   "delivery": "deliver", 
 //   "deliveryDate": "8-8-2019", 
 //   "deliveryMoment": "standard", 
-//   "additionalOptions": []
+//   "shipmentOptions": []
 // }
 ```
 

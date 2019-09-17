@@ -36,7 +36,7 @@ export const createConfigBus = () => {
        *
        * Example: delivery > carrier > deliveryDate ⬅ [horizontal dependency]
        *                             | deliveryMoment
-       *                             | additionalOptions
+       *                             | shipmentOptions
        *                            ⬆️ [vertical dependencies that depend on siblings instead of their parent.].
        */
       dependencies: {},

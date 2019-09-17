@@ -4,7 +4,7 @@ declare namespace MyParcel {
   type Platform = 'myparcel' | 'belgie' | 'flespakket'
 
   type DeliveryType = 'morning' | 'standard' | 'evening' | 'pickup' | 'pickup_express'
-  type AdditionalOptionName = 'cooled_delivery' | 'large_format' | 'only_recipient' | 'signature' | 'return'
+  type ShipmentOptionName = 'cooled_delivery' | 'large_format' | 'only_recipient' | 'signature' | 'return'
 
   /**
    * Configuration object supplied by the platform.
@@ -180,7 +180,7 @@ declare namespace MyParcel {
   }
 
   interface ShipmentOption {
-    name: AdditionalOptionName
+    name: ShipmentOptionName
     schema: {
       type: String
       enum: Boolean[]

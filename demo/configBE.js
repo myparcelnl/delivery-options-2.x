@@ -11,7 +11,7 @@ window.MyParcelConfig = {
     priceOnlyRecipient: '0.29',
     pricePickup: '5.85',
 
-    // Delivery additional options
+    // Shipment options
     allowSaturdayDelivery: true,
     allowSignature: true,
     allowPickupLocations: true,

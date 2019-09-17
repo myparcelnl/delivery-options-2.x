@@ -20,10 +20,10 @@ export const DELIVERY_MORNING = 'morning';
 export const DELIVERY_STANDARD = 'standard';
 export const DELIVERY_EVENING = 'evening';
 
-// Delivery > Deliver (> Carrier) > Delivery moment > Additional options
-export const ADDITIONAL_OPTIONS = 'additionalOptions';
+// Delivery > Deliver (> Carrier) > Delivery moment > Shipment options
+export const SHIPMENT_OPTIONS = 'shipmentOptions';
 
-// Delivery > Deliver (> Carrier) > Delivery moment > Additional options = [signature?, only_recipient?]
+// Delivery > Deliver (> Carrier) > Delivery moment > Shipment options = [signature?, only_recipient?]
 export const SIGNATURE = 'signature';
 export const ONLY_RECIPIENT = 'onlyRecipient';
 
@@ -78,12 +78,12 @@ export const formConfig = {
   },
 
   /**
-   * Additional options for delivery.
+   * Shipment options for delivery.
    *
    * @see https://myparcelnl.github.io/api/#7_C
    */
-  [ADDITIONAL_OPTIONS]: {
-    name: ADDITIONAL_OPTIONS,
+  [SHIPMENT_OPTIONS]: {
+    name: SHIPMENT_OPTIONS,
     options: {
       [SIGNATURE]: {
         enabled: SETTINGS.ALLOW_SIGNATURE,

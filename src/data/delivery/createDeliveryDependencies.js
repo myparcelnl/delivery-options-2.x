@@ -1,4 +1,4 @@
-import { ADDITIONAL_OPTIONS, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/data/formConfig';
+import { DELIVERY_DATE, DELIVERY_MOMENT, SHIPMENT_OPTIONS } from '@/config/data/formConfig';
 import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 
@@ -22,8 +22,8 @@ export const createDeliveryDependencies = (deliveryOptions) => {
             [timeFrame.type]: configBus.formatTime(timeFrame.date_time.date),
           }), {}),
 
-          // And additional_options is dependant on delivery_moment
-          [ADDITIONAL_OPTIONS]: {
+          // And shipment_options is dependant on delivery_moment
+          [SHIPMENT_OPTIONS]: {
             ...possibility.shipment_options.reduce((acc, shipmentOption) => ({
               ...acc,
               [shipmentOption.name]: shipmentOption.schema,

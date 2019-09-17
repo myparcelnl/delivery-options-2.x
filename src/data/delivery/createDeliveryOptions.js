@@ -1,9 +1,9 @@
-import { ADDITIONAL_OPTIONS, DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/data/formConfig';
+import { SHIPMENT_OPTIONS, DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT } from '@/config/data/formConfig';
 import { configBus } from '@/config/configBus';
 import { createDeliveryDependencies } from '@/data/delivery/createDeliveryDependencies';
 import { fetchDeliveryOptions } from '@/data/delivery/fetchDeliveryOptions';
-import { formatAdditionalOptions } from '@/data/delivery/getDeliveryAdditionalOptions';
 import { formatDeliveryMoments } from '@/data/delivery/formatDeliveryMoments';
+import { formatShipmentOptions } from '@/data/delivery/formatShipmentOptions';
 import { getDeliveryDates } from '@/data/delivery/getDeliveryDates';
 
 /**
@@ -37,12 +37,12 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
         choices: [],
       },
       {
-        name: ADDITIONAL_OPTIONS,
+        name: SHIPMENT_OPTIONS,
         type: 'checkbox',
         dependency: {
           name: [DELIVERY_DATE, DELIVERY_MOMENT],
-          parent: ADDITIONAL_OPTIONS,
-          transform: formatAdditionalOptions,
+          parent: SHIPMENT_OPTIONS,
+          transform: formatShipmentOptions,
         },
         choices: [],
       },
