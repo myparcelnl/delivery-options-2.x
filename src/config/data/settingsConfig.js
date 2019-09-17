@@ -14,17 +14,22 @@ export const ALLOW_PICKUP_EXPRESS = 'allowPickupExpress';
 export const ALLOW_PICKUP_LOCATIONS = 'allowPickupLocations';
 export const ALLOW_SATURDAY_DELIVERY = 'allowSaturdayDelivery';
 export const ALLOW_SIGNATURE = 'allowSignature';
+
 export const CUTOFF_TIME = 'cutoffTime';
 export const DELIVERY_DAYS_WINDOW = 'deliveryDaysWindow';
 export const DROP_OFF_DAYS = 'dropOffDays';
 export const DROP_OFF_DELAY = 'dropOffDelay';
+
 export const PRICE_EVENING_DELIVERY = 'priceEveningDelivery';
+export const PRICE_MONDAY_DELIVERY = 'priceMondayDelivery';
 export const PRICE_MORNING_DELIVERY = 'priceMorningDelivery';
 export const PRICE_ONLY_RECIPIENT = 'priceOnlyRecipient';
 export const PRICE_PICKUP = 'pricePickup';
 export const PRICE_PICKUP_EXPRESS = 'pricePickupExpress';
+export const PRICE_SATURDAY_DELIVERY = 'priceSaturdayDelivery';
 export const PRICE_SIGNATURE = 'priceSignature';
 export const PRICE_STANDARD_DELIVERY = 'priceStandardDelivery';
+
 export const SATURDAY_CUTOFF_TIME = 'saturdayCutoffTime';
 
 // Carrier settings object
