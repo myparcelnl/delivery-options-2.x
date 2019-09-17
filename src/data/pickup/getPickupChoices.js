@@ -31,6 +31,7 @@ export async function getPickupChoices() {
         ...acc,
         [location_code]: {
           location_name,
+          location_code,
           ...address,
         },
       };
