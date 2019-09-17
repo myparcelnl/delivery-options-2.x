@@ -1,3 +1,4 @@
+const packageJson = require('./package.json');
 const exec = require('child_process').exec;
 
 const run = async(command) => {
@@ -14,8 +15,7 @@ const run = async(command) => {
 
 async function execute() {
   const [path, file, ...arguments] = process.argv;
-
-  const packageName = arguments[0];
+  const packageName = arguments[0] || packageJson.name;
 
   const [latestVersion, currentVersion] = await Promise.all([
     run(`npm view ${packageName} version`).catch(() => false),
