@@ -1,44 +1,38 @@
 <template>
-  <form @submit.prevent="">
-    <div
-      v-if="showDeliveryOptions"
-      :class="`${$classBase}`">
-      <Modal
-        v-if="$configBus.showModal"
-        :data="modalData"
-        :component="$configBus.modalData.component" />
+  <form
+    v-if="showDeliveryOptions"
+    :class="`${$classBase}`"
+    @submit.prevent="">
+    <Modal
+      v-if="$configBus.showModal"
+      :data="modalData"
+      :component="$configBus.modalData.component" />
 
-      <template v-else>
-        <h3
-          v-if="!loading && $configBus.strings.headerDeliveryOptions"
-          v-text="$configBus.strings.headerDeliveryOptions" />
+    <template v-else>
+      <h3
+        v-if="!loading && $configBus.strings.headerDeliveryOptions"
+        v-text="$configBus.strings.headerDeliveryOptions" />
 
-        <loader
-          v-if="loading"
-          v-test="'loader'" />
+      <loader
+        v-if="loading"
+        v-test="'loader'" />
 
-        <Errors v-else-if="!hasValidAddress" />
+      <Errors v-else-if="!hasValidAddress" />
 
-        <recursive-form
-          v-for="option in form.options"
-          v-else
-          :key="option.name"
-          v-test="option.name"
-          :option="option" />
-      </template>
-    </div>
-    <input
-      v-if="useLegacy"
-      id="mypa-input"
-      :value="externalData"
-      hidden>
+      <recursive-form
+        v-for="option in form.options"
+        v-else
+        :key="option.name"
+        v-test="option.name"
+        :option="option" />
+    </template>
   </form>
 </template>
 
 <script>
+import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
-import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS, FEATURE_USE_LEGACY } from '@/config/data/settingsConfig';
-import { CARRIER, DELIVERY, PICKUP, PICKUP_LOCATION } from '@/config/data/formConfig';
+import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
 import Errors from '@/components/Errors';
 import Loader from '@/components/Loader';
 import { MISSING_ADDRESS } from '@/config/data/errorConfig';
@@ -166,10 +160,6 @@ export default {
 
       return data;
     },
-
-    useLegacy() {
-      return this.$configBus.get(FEATURE_USE_LEGACY);
-    },
   },
 
   created() {
@@ -199,14 +189,14 @@ export default {
     createForm() {
       // Map form entries to functions to retrieve their content.
       const map = {
-        [DELIVERY]: getDeliveryOptions,
-        [PICKUP]: getPickupLocations,
+        [CONFIG.DELIVERY]: getDeliveryOptions,
+        [CONFIG.PICKUP]: getPickupLocations,
       };
 
       // Map form entries to setting names.
       const settingsMap = {
-        [DELIVERY]: ALLOW_DELIVERY_OPTIONS,
-        [PICKUP]: ALLOW_PICKUP_LOCATIONS,
+        [CONFIG.DELIVERY]: ALLOW_DELIVERY_OPTIONS,
+        [CONFIG.PICKUP]: ALLOW_PICKUP_LOCATIONS,
       };
 
       // Filter the choices checking if any of the given carriers have any above setting enabled.
@@ -223,7 +213,7 @@ export default {
       this.form = {
         options: [
           {
-            name: DELIVERY,
+            name: CONFIG.DELIVERY,
             type: 'radio',
             choices,
           },
@@ -272,18 +262,24 @@ export default {
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      */
     updateExternal() {
-      if (this.$configBus.useLegacy) {
-        /*
-         * Send a regular event, used to tell the external platform it should check the legacy input element containing
-         *  the data.
-         */
-        document.dispatchEvent(new Event(EVENTS.UPDATED_DELIVERY_OPTIONS));
-      } else {
-        /*
-         * Or send a CustomEvent with the values as data.
-         */
-        document.dispatchEvent(new CustomEvent(EVENTS.UPDATED_DELIVERY_OPTIONS, { detail: this.$configBus.values }));
+      /*
+       * If delivery type is not set it means either delivery or pickup was clicked but the subsequent request is not
+       * finished yet. Once that finishes loading any delivery type will immediately be selected, triggering another
+       * update event which will allow this condition to pass.
+       */
+      if (!this.$configBus.hasExportValue(CONFIG.DELIVERY_TYPE)) {
+        return;
       }
+
+      /*
+       * Send a CustomEvent with the values as data.
+       */
+      document.dispatchEvent(new CustomEvent(
+        EVENTS.UPDATED_DELIVERY_OPTIONS,
+        {
+          detail: this.$configBus.exportValues,
+        }
+      ));
     },
 
     /**
@@ -295,26 +291,19 @@ export default {
      */
     updateExternalData({ name, value }) {
       this.$configBus.values[name] = value;
+      this.$configBus.setExportValue(name, value);
 
-      /**
-       * Set the complex pickup data instead of just the id.
-       */
-      if (PICKUP_LOCATION === name) {
-        this.$configBus.values[name] = this.$configBus.pickupLocations[value];
+      if (CONFIG.DELIVER === this.$configBus.getValue(CONFIG.DELIVERY)) {
+        this.$configBus.setDeliveryValues({ name, value });
+      } else {
+        this.$configBus.setPickupValues({ name, value });
       }
 
       /**
        * Update the current carrier if carrier changed.
        */
-      if (CARRIER === name && this.$configBus.currentCarrier !== value) {
+      if (CONFIG.CARRIER === name && this.$configBus.currentCarrier !== value) {
         this.$configBus.currentCarrier = value;
-      }
-
-      /**
-       * Fill the variable that's put in the legacy #mypa-input with the values.
-       */
-      if (this.useLegacy) {
-        this.externalData = JSON.stringify(this.$configBus.values);
       }
 
       // Using $nextTick to emit event after this function is done.

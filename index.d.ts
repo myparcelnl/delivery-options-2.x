@@ -3,7 +3,14 @@ declare namespace MyParcel {
   type CarrierNameOrId = CarrierName | Number
   type Platform = 'myparcel' | 'belgie' | 'flespakket'
 
+  /**
+   * @see https://myparcelnl.github.io/api/#6_A_2
+   */
   type DeliveryType = 'morning' | 'standard' | 'evening' | 'pickup' | 'pickup_express'
+
+  /**
+   * @see https://myparcelnl.github.io/api/#6_A_3
+   */
   type ShipmentOptionName = 'cooled_delivery' | 'large_format' | 'only_recipient' | 'signature' | 'return'
 
   /**

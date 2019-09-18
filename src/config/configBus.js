@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
 import Vue from 'vue';
@@ -71,6 +72,8 @@ export const createConfigBus = () => {
        * The object where settings will be stored.
        */
       values: {},
+
+      exportValues: {},
 
       /**
        * Must be defined before it is filled in created().
@@ -344,6 +347,93 @@ export const createConfigBus = () => {
        */
       isEnabledInAnyCarrier(setting) {
         return Object.keys(this.config.carrierSettings).some((carrier) => this.getSettingsByCarrier(carrier)[setting]);
+      },
+
+      /**
+       * Get a value by name.
+       *
+       * @param {String} name - Name of the property to add/update.
+       *
+       * @returns {*}
+       */
+      getValue(name) {
+        return this.values[name];
+      },
+
+      /**
+       * Set a property to the given value in the values object.
+       *
+       * @param {String} name - Name of the property to add/update.
+       * @param {String} value - New value.
+       */
+      setExportValue(name, value) {
+        this.exportValues[name] = value;
+      },
+
+      /**
+       * Unset a property from the values object.
+       *
+       * @param {String} name - Name of the property to remove.
+       */
+      unsetExportValue(...name) {
+        name.forEach((name) => delete this.exportValues[name]);
+      },
+
+      /**
+       * Check if a value is present in the exportValues object.
+       *
+       * @param {String} name - Name of the item to check for.
+       *
+       * @returns {boolean}
+       */
+      hasExportValue(name) {
+        return !!this.exportValues[name];
+      },
+
+      /**
+       * Sets the delivery settings, removing anything related to pickup.
+       */
+      setDeliveryValues() {
+        this.unsetExportValue(
+          CONFIG.DELIVERY,
+          CONFIG.DELIVERY_MOMENT,
+          CONFIG.PICKUP_LOCATION,
+          CONFIG.PICKUP_MOMENT
+        );
+
+        this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.DELIVERY_MOMENT));
+      },
+
+      /**
+       * Sets the pickup settings, removing anything related to delivery.
+       */
+      setPickupValues() {
+        const carrier = this.getValue(CONFIG.PICKUP_LOCATION);
+
+        this.unsetExportValue(
+          CONFIG.DELIVERY,
+          CONFIG.DELIVERY_DATE,
+          CONFIG.DELIVERY_MOMENT,
+          CONFIG.PICKUP_MOMENT,
+          CONFIG.SHIPMENT_OPTIONS,
+        );
+
+        /**
+         * "Transform" pickup moment to the delivery_type as we know it from the API.
+         *
+         * @see MyParcel.DeliveryType
+         */
+        this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.PICKUP_MOMENT));
+
+        /**
+         * Add the complex pickup data to the exported values instead of just the name.
+         */
+        this.setExportValue(CONFIG.PICKUP_LOCATION, this.$configBus.pickupLocations[carrier]);
+
+        /**
+         * Set the carrier to the carrier found in the pickup location.
+         */
+        this.setExportValue(CONFIG.CARRIER, this.$configBus.pickupLocations[carrier].carrier);
       },
     },
   });
