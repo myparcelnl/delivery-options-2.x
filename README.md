@@ -16,7 +16,7 @@ This is the MyParcel delivery options module for use in any e-commerce platform'
 ![screenshot](/demo/screenshots/checkout4.png)
 ![screenshot](/demo/screenshots/checkout5.png)
 
-### Support
+### Browser support
 This app is written in [Vue.js], it supports IE9 and up. 
 
 ## Example
@@ -35,26 +35,8 @@ An example of the delivery options functionality can be found in our [sandbox]. 
 6. The delivery options will be rendered inside the div created in step 4.
 
 ## Usage
-You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the delivery options with an event.
 
-### Minimum required data
-This is the minimum amount of data you need to provide for the delivery options to work correctly as a SendMyParcel user.  
-```js
-window.MyParcelConfig = {
-  config: {
-    platform: 'belgie',  
-  },
-  address: {
-    cc: 'BE',
-    city: 'Antwerpen',
-    postalCode: '1000',
-  }
-};
 
-// Trigger this event on the document to tell the delivery options to update.
-// Usually only needed on initializing and when the address changes.
-document.dispatchEvent(new Event('myparcel_update_delivery_options'));
-```
 
 ### All options
 ```js
@@ -146,9 +128,87 @@ const obj = JSON.parse(data);
 //   "delivery": "deliver", 
 //   "deliveryDate": "8-8-2019", 
 //   "deliveryMoment": "standard", 
-//   "shipmentOptions": []
+//   "shipmentOptions": {signature: true, only_recipient: false}
 // }
 ```
+
+## Examples
+These examples assume you've already loaded the delivery options in your page. See [Installation] if you haven't. 
+You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the delivery options with an event.
+
+### Setting up the configuration
+This is an example.  
+```js
+window.MyParcelConfig = {
+  config: {
+    platform: 'belgie', // REQUIRED!
+    carrierSettings: {
+      bpost: {
+        allowDeliveryOptions: true,
+        allowPickupLocations: true,
+      },
+      dpd: {
+        allowDeliveryOptions: true,
+        allowPickupLocations: true,
+      },
+    },
+  },
+  address: {
+    cc: 'BE',
+    city: 'Antwerpen',
+    postalCode: '1000',
+  },
+};
+
+// Trigger this event on the document to tell the delivery options to update.
+// Usually only needed on initializing and when the address changes.
+document.dispatchEvent(new Event('myparcel_update_delivery_options'));
+```
+
+### Getting the address from your environment
+1. Set up the link between the address fields and the delivery options:
+   ```js
+   /**
+    * Get data from form fields and put it in the global MyParcelConfig.
+    */
+   function updateAddress() {
+     window.MyParcelConfig.address = {
+       cc: document.querySelector('#country').value,
+       postalCode: document.querySelector('#house_number').value,
+       number: document.querySelector('#postcode').value,
+       city: document.querySelector('#address_1').value,
+     };
+   
+     /* 
+      * Send the event that tells the delivery options module to reload data. 
+      */
+     document.dispatchEvent(new Event('myparcel_update_delivery_options'));
+   
+     // IE9–11 compatible example
+     var event = document.createEvent('HTMLEvents');
+     event.initEvent('myparcel_update_delivery_options', true, false);
+     document.querySelector('body').dispatchEvent(event);
+   }
+   ```
+1. Add event listeners to each address field to execute this function:
+    ```js
+    // ES6 example, use var for older environments.
+    const addressFields = [
+      '<Country field selector>',
+      '<Postal code field selector>',
+      '<Address line 1 field selector>',
+    ];
+    
+    addressFields.forEach((field) => {
+      document.querySelector(field).addEventListener('change', updateAddress);
+    });
+    ```
+1. Now, when an user changes the value in any of the fields set in `addressFields` the `window.MyParcelConfig` will be updated and the delivery options module will receive the event that tells it to update. The delivery options will reload and fetch the available options for the new address.
+
+### Usage in forms
+You'll often want to use the delivery options module in a checkout form in your webshop software. We have implemented it in WooCommerce and Magento2 using the following method to get its data in the `$_POST` variable on submitting the form.
+1. Follow the steps in [Installation] and 
+
 
 ## Contribute
 1. Clone this repository
@@ -158,9 +218,23 @@ const obj = JSON.parse(data);
 5. Create a pull request!
 
 ## Support
-If you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via [support@sendmyparcel.be]
+If you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via [support@sendmyparcel.be] or join our support community on [Slack].
 
 [Vue.js]: https://vuejs.org/
 [sandbox]: https://myparcelnl.github.io/api/v2/checkout/sandbox
 [support@sendmyparcel.be]: mailto:support@sendmyparcel.be
 [releases]: https://github.com/myparcelbe/checkout/releases
+[Slack]: https://join.slack.com/t/myparcel-dev/shared_invite/enQtNDkyNTg3NzA1MjM4LTM0Y2IzNmZlY2NkOWFlNTIyODY5YjFmNGQyYzZjYmQzMzliNDBjYzBkOGMwYzA0ZDYzNmM1NzAzNDY1ZjEzOTM
+
+[MyParcel Delivery Options]: #myparcel-delivery-options
+[Introduction]: #introduction
+[Browser support]: #browser-support
+[Installation]: #installation
+[Usage]: #usage
+[Minimum required data]: #minimum-required-data
+[All options]: #all-options
+[Examples]: #examples
+[Getting the address from your environment]: #getting-the-address-from-your-environment
+[Usage in forms]: #usage-in-forms
+[Contribute]: #contribute
+[Support]: #support
