@@ -17,7 +17,6 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
   const { response: deliveryOptions } = await fetchDeliveryOptions(carrier);
 
   if (deliveryOptions.length) {
-    configBus.deliveryOptions = deliveryOptions;
     createDeliveryDependencies(deliveryOptions);
 
     return [

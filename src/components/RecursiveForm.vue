@@ -13,7 +13,7 @@
           <input
             v-if="option.type === 'checkbox'"
             :id="`${$classBase}__${option.name}--${choice.name}`"
-            v-model="selected"
+            v-model="selected[choice.name]"
             :class="choice.class"
             type="checkbox"
             :name="option.name"
@@ -128,7 +128,7 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
 import PickupOption from './PickupOption';
-import { formConfig } from '@/config/data/formConfig';
+import { ONLY_RECIPIENT, SHIPMENT_OPTIONS, formConfig } from '@/config/data/formConfig';
 
 export default {
   name: 'RecursiveForm',
@@ -156,9 +156,9 @@ export default {
       /**
        * Currently selected value.
        *
-       * @type {Array|String}
+       * @type {Object|String}
        */
-      selected: this.option.type === 'checkbox' ? [] : null,
+      selected: this.option.type === 'checkbox' ? {} : null,
 
       /**
        * Mutable copy of the option.pagination attribute. Unused if option has no pagination.
@@ -250,14 +250,23 @@ export default {
   watch: {
     /**
      * Watch the value of selected to emit a change event.
-     *
-     * @param {*} value - New value for current option.
      */
-    selected(value) {
-      this.$configBus.$emit(EVENTS.UPDATE, {
-        name: this.option.name,
-        value,
-      });
+    selected: {
+      /**
+       * @param {*} value - New value for current option.
+       */
+      handler(value) {
+        this.$configBus.$emit(EVENTS.UPDATE, {
+          name: this.option.name,
+          value,
+        });
+      },
+      /**
+       * Set deep to true to be able to detect changes in Object properties.
+       *
+       * @see https://stackoverflow.com/questions/42133894/vue-js-how-to-properly-watch-for-nested-data
+       */
+      deep: typeof selected !== 'string',
     },
   },
 
@@ -282,7 +291,7 @@ export default {
   methods: {
     isBold(choice) {
       return this.option.type === 'checkbox'
-        ? this.selected.includes(choice.name)
+        ? this.selected[choice.name] === true
         : this.selected === choice.name;
     },
 
@@ -377,14 +386,6 @@ export default {
     },
 
     /**
-     * Set default chosen value to either the previously set value for the current option, the option that has a
-     * 'selected' attribute or the first option.
-     */
-    setSelected() {
-      this.selected = this.getSelected(this.option);
-    },
-
-    /**
      * Get the name of the selected choice for given option. The chosen value is either the previously set value for
      *  current option, the option that has 'selected: true' or the first option.
      *
@@ -393,10 +394,8 @@ export default {
      * @param {Array} option.choices - Object choices.
      * @param {String} option.type - Object type.
      * @param {String} option.name - Object name.
-     *
-     * @returns {String}
      */
-    getSelected(option) {
+    setSelected(option = this.option) {
       const { choices, type, name } = option;
       const [firstChoice] = choices;
       const isSet = this.$configBus.values.hasOwnProperty(name);
@@ -406,23 +405,44 @@ export default {
       let selected;
 
       if (type === 'checkbox') {
-      // setValue is always an array for type checkbox
-        const copiedSetValue = [...setValue || []];
-
         // If there's a value set dedupe the array of values, otherwise set empty array.
-        const selectedChoices = choices.reduce((acc, choice) => {
-          if (choice.selected === true) {
-            acc.push(choice.name);
+        selected = choices.reduce((currentValue, choice) => {
+
+          /**
+           * If the choice is disabled set it to its only allowed value.
+           *
+           * @see src/data/delivery/formatShipmentOptions.js
+           */
+          if (choice.disabled === true) {
+            return { ...currentValue, [choice.name]: choice.selected };
           }
 
-          if (choice.disabled === true && copiedSetValue.includes(choice.name)) {
-            copiedSetValue.splice(copiedSetValue.findIndex((name) => name === choice.name), 1);
+          /**
+           * If choice is already set just return it. Note `setValue` being the initialValue of reduce().
+           */
+          if (currentValue.hasOwnProperty(choice.name)) {
+            return currentValue;
           }
 
-          return acc;
-        }, []);
+          /**
+           * If the choice is enabled in the config return the value of choice.selected.
+           */
+          if (this.$configBus.isEnabled(choice)) {
+            return {
+              ...currentValue,
+              [choice.name]: choice.selected === true,
+            };
+          }
 
-        selected = isSet ? [...new Set([...copiedSetValue, ...selectedChoices])] : selectedChoices;
+          /**
+           * If the choice is not enabled, return null instead of omitting the property entirely, for clarity.
+           */
+          return {
+            ...currentValue,
+            [choice.name]: null,
+          };
+        }, setValue || {});
+
       } else if (type === 'select') {
         if (isSet) {
           selected = setValue;
@@ -437,7 +457,7 @@ export default {
         selected = (choices.find((choice) => choice.selected === true) || firstChoice).name;
       }
 
-      return selected;
+      this.selected = selected;
     },
   },
 };
