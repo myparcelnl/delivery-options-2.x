@@ -218,21 +218,6 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Get carrier data by id or name.
-       *
-       * @param {MyParcel.CarrierNameOrId} search - Carrier name or id.
-       *
-       * @returns {MyParcel.CarrierData} - Carrier object.
-       */
-      getCarrier(search) {
-        return this.carrierData.find((carrier) => {
-          return isNaN(parseInt(search))
-            ? carrier.name === search
-            : carrier.id === search;
-        });
-      },
-
-      /**
        * @param {String|Number} price - Price config item or value.
        *
        * @returns {string}
@@ -375,7 +360,7 @@ export const createConfigBus = () => {
        * Set a property to the given value in the values object.
        *
        * @param {String} name - Name of the property to add/update.
-       * @param {String} value - New value.
+       * @param {*} value - New value.
        */
       setExportValue(name, value) {
         this.exportValues[name] = value;
@@ -412,6 +397,17 @@ export const createConfigBus = () => {
           CONFIG.PICKUP_MOMENT,
         );
 
+        /**
+         * Add a simple boolean for the external platform to be able to distinguish between pickup and delivery without
+         *  having to check for the values of deliveryType.
+         */
+        this.setExportValue(CONFIG.IS_PICKUP, false);
+
+        /**
+         * Set deliveryType to what we call deliveryMoment internally.
+         *
+         * @see MyParcel.DeliveryType
+         */
         this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.DELIVERY_MOMENT));
       },
 
@@ -428,7 +424,13 @@ export const createConfigBus = () => {
         );
 
         /**
-         * "Transform" pickup moment to the delivery_type as we know it from the API.
+         * Add a simple boolean for the external platform to be able to distinguish between pickup and delivery without
+         *  having to check for the values of deliveryType.
+         */
+        this.setExportValue(CONFIG.IS_PICKUP, true);
+
+        /**
+         * Set deliveryType to what we call pickupMoment internally.
          *
          * @see MyParcel.DeliveryType
          */

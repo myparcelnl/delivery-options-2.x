@@ -1,7 +1,5 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
 
-export const DELIVERY_TYPE = 'deliveryType';
-
 export const DELIVERY = 'delivery';
 
 // Delivery > Deliver
@@ -41,6 +39,12 @@ export const PICKUP_MOMENT = 'pickupMoment';
 // Delivery > Pickup (> Pickup location) > Pickup moment = standard | express
 export const PICKUP_STANDARD = 'pickup';
 export const PICKUP_EXPRESS = 'pickup_express';
+
+/*
+ * The following properties are only added to configBus.exportValues and not used internally.
+ */
+export const IS_PICKUP = 'isPickup';
+export const DELIVERY_TYPE = 'deliveryType';
 
 /**
  * Base form config.
