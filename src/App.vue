@@ -167,7 +167,7 @@ export default {
     document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
 
     // Add the new data to the values object
-    this.$configBus.$on(EVENTS.UPDATE, this.updateExternalData);
+    this.$configBus.$on(EVENTS.UPDATE, this.$configBus.updateExternalData);
 
     // Debounce trigger updating the checkout
     this.$configBus.$on(EVENTS.UPDATE, this.listeners.updateExternal);
@@ -177,7 +177,7 @@ export default {
 
   beforeDestroy() {
     document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
-    this.$configBus.$off(EVENTS.UPDATE, this.updateExternalData);
+    this.$configBus.$off(EVENTS.UPDATE, this.$configBus.updateExternalData);
     this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
     this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
   },
@@ -280,41 +280,6 @@ export default {
           detail: this.$configBus.exportValues,
         }
       ));
-    },
-
-    /**
-     * Updates the configBus with the new delivery options data and communicate it to the external platform.
-     *
-     * @param {Object} <ObjectPattern> - Destructured update event.
-     * @param {String} name - Name of the setting that was updated.
-     * @param {*} value - Setting value.
-     */
-    updateExternalData({ name, value }) {
-      this.$configBus.values[name] = value;
-      this.$configBus.setExportValue(name, value);
-
-      if (CONFIG.DELIVER === this.$configBus.getValue(CONFIG.DELIVERY)) {
-        this.$configBus.setDeliveryValues({ name, value });
-      } else {
-        this.$configBus.setPickupValues({ name, value });
-      }
-
-      /**
-       * Update the current carrier if carrier changed.
-       */
-      if (CONFIG.CARRIER === name && this.$configBus.currentCarrier !== value) {
-        this.$configBus.currentCarrier = value;
-      }
-
-      // Using $nextTick to emit event after this function is done.
-      // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
-      this.$nextTick(() => {
-        this.$configBus.$emit(EVENTS.AFTER_UPDATE,
-          {
-            name,
-            value,
-          });
-      });
     },
   },
 };

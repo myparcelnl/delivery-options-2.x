@@ -127,6 +127,17 @@ export const createConfigBus = () => {
       },
     },
 
+    watch: {
+      /**
+       * When the current carrier changes update the export values.
+       *
+       * @param {MyParcel.CarrierName} value - New currentCarrier.
+       */
+      currentCarrier(value) {
+        this.setExportValue(CONFIG.CARRIER, value);
+      },
+    },
+
     created() {
       // Load the configuration.
       const initialize = () => {
@@ -393,12 +404,12 @@ export const createConfigBus = () => {
       /**
        * Sets the delivery settings, removing anything related to pickup.
        */
-      setDeliveryValues() {
+      setDeliveryExportValues() {
         this.unsetExportValue(
           CONFIG.DELIVERY,
           CONFIG.DELIVERY_MOMENT,
           CONFIG.PICKUP_LOCATION,
-          CONFIG.PICKUP_MOMENT
+          CONFIG.PICKUP_MOMENT,
         );
 
         this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.DELIVERY_MOMENT));
@@ -407,9 +418,7 @@ export const createConfigBus = () => {
       /**
        * Sets the pickup settings, removing anything related to delivery.
        */
-      setPickupValues() {
-        const carrier = this.getValue(CONFIG.PICKUP_LOCATION);
-
+      setPickupExportValues() {
         this.unsetExportValue(
           CONFIG.DELIVERY,
           CONFIG.DELIVERY_DATE,
@@ -425,15 +434,59 @@ export const createConfigBus = () => {
          */
         this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.PICKUP_MOMENT));
 
-        /**
-         * Add the complex pickup data to the exported values instead of just the name.
-         */
-        this.setExportValue(CONFIG.PICKUP_LOCATION, this.$configBus.pickupLocations[carrier]);
+        const pickupLocation = this.getValue(CONFIG.PICKUP_LOCATION);
 
-        /**
-         * Set the carrier to the carrier found in the pickup location.
-         */
-        this.setExportValue(CONFIG.CARRIER, this.$configBus.pickupLocations[carrier].carrier);
+        if (!!pickupLocation) {
+          /**
+           * Add the complex pickup data to the exported values instead of just the name.
+           */
+          this.setExportValue(CONFIG.PICKUP_LOCATION, this.$configBus.pickupLocations[pickupLocation]);
+        }
+      },
+
+      /**
+       * Updates the configBus with the new delivery options data and communicate it to the external platform.
+       *
+       * @param {Object} <ObjectPattern> - Destructured update event.
+       * @param {String} name - Name of the setting that was updated.
+       * @param {*} value - Setting value.
+       */
+      updateExternalData({ name, value }) {
+        this.values[name] = value;
+        this.setExportValue(name, value);
+        this.updateCurrentCarrier({ name, value });
+
+        switch (this.getValue(CONFIG.DELIVERY)) {
+          case CONFIG.DELIVER:
+            this.setDeliveryExportValues({ name, value });
+            break;
+          case CONFIG.PICKUP:
+            this.setPickupExportValues({ name, value });
+            break;
+        }
+
+        // Using $nextTick to emit event after this function is done.
+        // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
+        this.$nextTick(() => {
+          this.$emit(EVENTS.AFTER_UPDATE, { name, value });
+        });
+      },
+
+      /**
+       * Update the current carrier.
+       *
+       * @param {String} name - Setting that changed.
+       * @param {MyParcel.CarrierName|Number} value - New carrier or pickup location id.
+       */
+      updateCurrentCarrier({ name, value }) {
+        switch (name) {
+          case CONFIG.CARRIER:
+            this.currentCarrier = value;
+            break;
+          case CONFIG.PICKUP_LOCATION:
+            this.currentCarrier = this.pickupLocations[value].carrier;
+            break;
+        }
       },
     },
   });
