@@ -17,8 +17,6 @@
         v-if="loading"
         v-test="'loader'" />
 
-      <Errors v-else-if="!hasValidAddress" />
-
       <recursive-form
         v-for="option in form.options"
         v-else
@@ -248,11 +246,18 @@ export default {
 
       if (!this.hasValidAddress) {
         this.loading = false;
+        this.$configBus.showModal = true;
+        this.$configBus.modalData = {
+          component: Errors,
+        };
         return;
       }
 
-      this.loading = true;
-      await fetchAllCarriers();
+      if (!this.$configBus.carrierData.length) {
+        this.loading = true;
+        await fetchAllCarriers();
+      }
+
       this.createForm();
       this.loading = false;
     },
@@ -261,9 +266,6 @@ export default {
      * Hide the checkout completely.
      */
     hideSelf() {
-      // This has to stay here until after testing
-      // eslint-disable-next-line no-console
-      console.trace('hiding delivery options');
       this.showDeliveryOptions = false;
     },
 

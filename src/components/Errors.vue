@@ -60,6 +60,9 @@ export default {
 
       // Send the new values in an event. It's up to the external platform to do handle this event or not.
       document.dispatchEvent(new CustomEvent(EVENTS.UPDATED_ADDRESS, { detail: this.values }));
+
+      // Hide the modal
+      this.$configBus.showModal = false;
     },
   },
 };
