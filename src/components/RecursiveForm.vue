@@ -37,7 +37,7 @@
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
         :parent="option"
         :data="choice"
-        :selected="selected === choice.name" />
+        :selected="isSelected(choice)" />
 
       <td
         v-else
@@ -57,7 +57,7 @@
             v-text="choice.plainLabel || $configBus.strings[choice.label]" />
 
           <component
-            :is="isBold(choice) ? 'strong' : 'span'"
+            :is="isSelected(choice) ? 'strong' : 'span'"
             v-if="!!choice.price"
             :class="{
               [`${$classBase}__float--right`]: true,
@@ -74,7 +74,7 @@
           type="inline" />
 
         <transition-group
-          v-else-if="selected === choice.name && chosenOptions"
+          v-else-if="isSelected(choice) && chosenOptions"
           name="fade"
           appear>
           <recursive-form
@@ -146,6 +146,8 @@ export default {
 
   data() {
     return {
+      loadedOptions: null,
+
       /**
        * Loading state.
        *
@@ -211,7 +213,7 @@ export default {
      * @returns {Object}
      */
     selectedChoice() {
-      return this.option.choices.find((choice) => choice.name === this.selected);
+      return this.option.choices.find((choice) => this.isSelected(choice));
     },
   },
 
@@ -236,9 +238,10 @@ export default {
           this.loading = this.selected;
 
           const options = await choice.options();
-
           this.loading = false;
-          return options;
+
+          choice.options = options;
+          return choice.options;
         }
         return choice.options;
       }
@@ -289,11 +292,26 @@ export default {
   },
 
   methods: {
-    isBold(choice) {
-      return this.option.type === 'checkbox'
-        ? this.selected[choice.name] === true
-        : this.selected === choice.name;
+    /**
+     * @param {Object} choice - The choice to check.
+     *
+     * @returns {Boolean}
+     */
+    isSelected(choice) {
+      if (typeof this.selected === 'string') {
+        return this.selected === choice.name;
+      }
+
+      return this.selected ? this.selected[choice.name] === true : false;
     },
+
+    // isLoading(choice) {
+    //   if (typeof this.selected === 'string') {
+    //     return this.loading === choice.name;
+    //   }
+    //
+    //   return this.selected ? this.selected[choice.name] === this.loading : false;
+    // },
 
     /**
      * Recursively search for dependencies.
