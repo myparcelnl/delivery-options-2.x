@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="isMissingAddressPart"
+    v-if="hasInvalidAddress"
     :class="`${$classBase}__errors`">
     <h4 v-text="$configBus.strings.addressNotFound" />
     <form v-if="hasRetry">
@@ -26,23 +26,23 @@
 
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
+import { ADDRESS_ERROR } from '@/config/data/errorConfig';
 import { FEATURE_ALLOW_RETRY } from '@/config/data/settingsConfig';
-import { MISSING_ADDRESS } from '@/config/data/errorConfig';
 import { addressRequirements } from '@/config/data/platformConfig';
 
 export default {
   name: 'Errors',
   data() {
     return {
-      values: {},
+      values: { ...this.$configBus.address },
     };
   },
   computed: {
     requiredAddressParts() {
       return addressRequirements[this.$configBus.address.cc];
     },
-    isMissingAddressPart() {
-      return this.$configBus.errors.hasOwnProperty(MISSING_ADDRESS);
+    hasInvalidAddress() {
+      return this.$configBus.errors.find(({ code }) => code === ADDRESS_ERROR);
     },
     hasRetry() {
       return this.$configBus.get(FEATURE_ALLOW_RETRY);
@@ -53,7 +53,7 @@ export default {
      * Update the address in the configBus with the new address and send the it to the external platform.
      */
     retry() {
-      this.$configBus.address = { ...this.$configBus.address, ...this.values };
+      window.MyParcelConfig.address = { ...this.$configBus.address, ...this.values };
 
       // Trigger the checkout_in event to make the checkout update.
       document.dispatchEvent(new Event(EVENTS.UPDATE_DELIVERY_OPTIONS));

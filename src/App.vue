@@ -33,9 +33,9 @@
 import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import { ALLOW_DELIVERY_OPTIONS, ALLOW_PICKUP_LOCATIONS } from '@/config/data/settingsConfig';
+import { ADDRESS_ERROR } from '@/config/data/errorConfig';
 import Errors from '@/components/Errors';
 import Loader from '@/components/Loader';
-import { MISSING_ADDRESS } from '@/config/data/errorConfig';
 import Modal from '@/components/Modal';
 import { addressRequirements } from '@/config/data/platformConfig';
 import debounce from 'debounce';
@@ -130,9 +130,18 @@ export default {
       // If invalid, tell the configBus which fields are missing.
       if (!valid) {
         this.$configBus.addErrors(
-          MISSING_ADDRESS,
-          // Find only invalid fields
-          requirements.filter((item) => !meetsRequirements(item)),
+          // Add the invalid fields to errors
+          requirements.reduce((acc, item) => {
+            return meetsRequirements(item)
+              ? acc
+              : [
+                ...acc,
+                {
+                  code: ADDRESS_ERROR,
+                  message: item,
+                },
+              ];
+          }, []),
         );
       }
 

@@ -62,11 +62,11 @@ export const createConfigBus = () => {
       modalData: null,
 
       /**
-       * Object containing any errors causing the delivery options not to show.
+       * Array containing any errors causing the delivery options not to show.
        *
-       * @type {Object}
+       * @type {Array}
        */
-      errors: {},
+      errors: [],
 
       /**
        * The object where settings will be stored.
@@ -304,21 +304,17 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Add errors to `this.errors` under a given key, if there are any.
+       * Add errors to `this.errors` under a given key.
        *
-       * @param {string} key - Key to add to errors object.
-       * @param {Array} responseErrors - Errors to add.
+       * @param {Array} errors - Errors to add.
        */
-      addErrors(key, responseErrors) {
-        if (!responseErrors.length) {
+      addErrors(errors) {
+        console.log(errors);
+        if (!errors.length) {
           return;
         }
 
-        if (this.errors.hasOwnProperty(key)) {
-          this.errors[key] = [...this.errors[key], ...responseErrors];
-        } else {
-          this.errors[key] = responseErrors;
-        }
+        this.errors = [...this.errors, ...errors];
       },
 
       /**

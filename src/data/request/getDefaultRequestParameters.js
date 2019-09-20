@@ -30,6 +30,8 @@ export const getDefaultRequestParameters = () => {
    * Skip undefined entries, if any.
    */
   Object.keys(addressValues).forEach((key) => {
+    parameters[key] = addressValues[key];
+
     if (!!addressValues[key]) {
       /**
        * TODO: https://jira.dmp.zone/browse/MY-14888.
@@ -40,6 +42,9 @@ export const getDefaultRequestParameters = () => {
         return;
       }
 
+      if (configBus.currentCarrier === 'dpd') {
+        delete addressValues.postal_code;
+      }
       parameters[key] = addressValues[key];
     }
   });

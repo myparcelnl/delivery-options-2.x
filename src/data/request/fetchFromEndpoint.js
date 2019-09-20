@@ -8,7 +8,7 @@ export const METHOD_GET = 'get';
 export const METHOD_SEARCH = 'search';
 
 /**
- * Fetch data from an endpoint and return an object containing the response and errors.
+ * Fetch data from an endpoint and return an object containing the response.
  *
  * @param {String} endpoint - Endpoint to use.
  *
@@ -16,7 +16,7 @@ export const METHOD_SEARCH = 'search';
  * @param {String} options.method? - Method.
  * @param {Object} options.params? - URL parameters.
  *
- * @returns {Promise.<{errors: Object, response: Object}>}
+ * @returns {Promise.<{response: Object}>}
  */
 export async function fetchFromEndpoint(endpoint, options = {}) {
   const client = new Client();
@@ -25,7 +25,6 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   client.config.url = getApiUrl();
 
   let response = {};
-  let errors = {};
 
   // Set default options and override with given options.
   options = {
@@ -36,15 +35,11 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   try {
     response = await client[endpoint][options.method](options.params);
   } catch (e) {
-    errors = e;
-    if (e.length) {
-      configBus.addErrors(endpoint, e[0].errors);
-      configBus.$emit(ERROR, { [endpoint]: e[0].errors });
+    if (e.errors.length) {
+      configBus.addErrors(endpoint, e.errors);
+      configBus.$emit(ERROR, { [endpoint]: e.errors });
     }
   }
 
-  return {
-    response: Array.isArray(response) ? response : [],
-    errors: Array.isArray(errors) ? errors : [],
-  };
+  return { response: Array.isArray(response) ? response : [] };
 }

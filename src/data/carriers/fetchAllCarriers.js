@@ -20,11 +20,7 @@ export async function fetchAllCarriers() {
   const requests = carriersToFetch.map((carrier) => fetchCarrierData(carrier));
 
   // Get the responses and errors from all the requests.
-  const { errors, responses } = await fetchMultiple(requests);
-
-  if (errors.length) {
-    configBus.addErrors('carriers', errors[0].errors);
-  }
+  const { responses } = await fetchMultiple(requests);
 
   // Create the carrierData array
   configBus.carrierData = createCarrierData(responses);

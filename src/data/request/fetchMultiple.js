@@ -1,11 +1,10 @@
 /**
- * Fetch multiple requests at once and concatenate the responses and errors.
+ * Fetch multiple requests at once and concatenate the responses.
  *
  * @param {Array} requests - Array of asynchronous functions.
  * @returns {Promise<Object>}
  */
 export async function fetchMultiple(requests) {
-  let errors = [];
   let responses = [];
 
   /**
@@ -17,14 +16,12 @@ export async function fetchMultiple(requests) {
     return typeof request === 'function' ? request() : request;
   });
 
-  // Concatenate all responses and errors
+  // Concatenate all responses
   return (await Promise.all(requests)).reduce((acc, response) => {
-    errors = [...errors, ...response.errors];
     responses = [...responses, ...response.response];
 
     return {
       ...acc,
-      errors,
       responses,
     };
   }, {});
