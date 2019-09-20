@@ -42,9 +42,6 @@ export const getDefaultRequestParameters = () => {
         return;
       }
 
-      if (configBus.currentCarrier === 'dpd') {
-        delete addressValues.postal_code;
-      }
       parameters[key] = addressValues[key];
     }
   });

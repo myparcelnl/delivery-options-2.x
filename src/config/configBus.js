@@ -309,7 +309,6 @@ export const createConfigBus = () => {
        * @param {Array} errors - Errors to add.
        */
       addErrors(errors) {
-        console.log(errors);
         if (!errors.length) {
           return;
         }
