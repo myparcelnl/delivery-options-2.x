@@ -24,7 +24,7 @@ export const showDeveloperInfo = () => {
     'font-size: 1.2em',
     'font-family: sans-serif',
     'padding: .2em .3em;',
-    'background-color: #21C493',
+    'background-color: #51B67D',
     'border-radius: 3px',
     'margin: .1em 0',
     'border-left: 3px solid #14785A',
