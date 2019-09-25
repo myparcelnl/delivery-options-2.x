@@ -44,6 +44,11 @@ describe('The delivery options module', () => {
     });
     app = shallowMount(App);
 
+    // hasValidAddress is false as cc is missing.
+    expect(app.vm.hasSomethingToShow).toBe(false);
+
+    // hasValidAddress is true as cc is allowed for current platform.
+    app.vm.$configBus.$data.address = defaultAddress[MYPARCEL];
     expect(app.vm.hasSomethingToShow).toBe(true);
   });
 });

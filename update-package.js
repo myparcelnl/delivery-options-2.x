@@ -1,7 +1,7 @@
 const packageJson = require('./package.json');
-const exec = require('child_process').exec;
+const { exec } = require('child_process');
 
-const run = async(command) => {
+const run = (command) => {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error !== null) {
@@ -14,12 +14,13 @@ const run = async(command) => {
 };
 
 async function execute() {
-  const [path, file, ...arguments] = process.argv;
-  const packageName = arguments[0] || packageJson.name;
+  // Ignore path and file arguments.
+  const [, , ...args] = process.argv;
+  const packageName = args[0] || packageJson.name;
 
   const [latestVersion, currentVersion] = await Promise.all([
     run(`npm view ${packageName} version`).catch(() => false),
-    run(`npm show ${packageName} version`).catch(() => false)
+    run(`npm show ${packageName} version`).catch(() => false),
   ]);
 
   if (!latestVersion || !currentVersion) {
@@ -27,12 +28,12 @@ async function execute() {
     return;
   }
 
-  if (latestVersion !== currentVersion) {
+  if (latestVersion === currentVersion) {
+    console.log(`${packageName}: Package up to date!`);
+  } else {
     await run(`npm install ${packageName}@latest`).then(() => {
       console.log(`${packageName}: Updated package from ${currentVersion} to ${latestVersion}.`);
     });
-  } else {
-    console.log(`${packageName}: Package up to date!`);
   }
 }
 

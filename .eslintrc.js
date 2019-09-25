@@ -9,4 +9,13 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['./update-package.js'],
+      rules: {
+        'no-magic-numbers': "off",
+        'no-console': "off",
+      },
+    },
+  ],
 };
