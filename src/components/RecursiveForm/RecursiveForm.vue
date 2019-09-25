@@ -303,10 +303,11 @@ export default {
        */
       handler(newOption) {
         this.mutableOption = newOption;
-        this.setSelected();
-      },
 
-      immediate: true,
+        if (!this.hasDependency) {
+          this.setSelected();
+        }
+      },
 
       /**
        * Set deep to true to detect the Array choices changing. If we don't use this watcher the application can't
@@ -331,12 +332,18 @@ export default {
        * @see https://stackoverflow.com/questions/42133894/vue-js-how-to-properly-watch-for-nested-data
        */
       deep: true,
+
+      /**
+       * To run the handler on creation.
+       */
+      immediate: true,
     },
 
     /**
      * Watch the value of selected to emit a change event.
      */
     selected: {
+
       /**
        * @param {*} value - New value for current option.
        */
@@ -344,6 +351,7 @@ export default {
         this.$configBus.$emit(EVENTS.UPDATE, { name: this.mutableOption.name, value });
       },
       deep: typeof selected !== 'string',
+      immediate: true,
     },
   },
   created() {
@@ -353,8 +361,6 @@ export default {
 
     if (this.hasDependency) {
       this.$configBus.$on(EVENTS.AFTER_UPDATE, this.listeners.updateDependency);
-    } else {
-
     }
   },
 
