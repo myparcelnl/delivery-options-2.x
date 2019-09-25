@@ -4,7 +4,7 @@ import '@/services/fontAwesome';
 import '@/services/directives';
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
-import RecursiveForm from '@/components/RecursiveForm';
+import RecursiveForm from '@/components/RecursiveForm/RecursiveForm';
 import { UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';

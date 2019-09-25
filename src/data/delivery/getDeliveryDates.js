@@ -14,8 +14,7 @@ function toLocaleDateString(date, format = { month: 'numeric', day: 'numeric', y
 }
 
 /**
- *
- * @param {Object} deliveryOptions - Delivery options object.
+ * @param {MyParcel.DeliveryOption[]} deliveryOptions - Delivery options object.
  *
  * @returns {Array|null}
  */

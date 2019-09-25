@@ -6,15 +6,17 @@ import { configBus } from '@/config/configBus';
  * Create the dependencies object for delivery options.
  *
  * @param {Object} deliveryOptions - Delivery options object.
+ *
+ * @returns {Object}
  */
-export const createDeliveryDependencies = (deliveryOptions) => {
-  configBus.dependencies[DELIVERY_DATE] = deliveryOptions.reduce((acc, option) => ({
-    ...acc,
+export const createDeliveryDependencies = (deliveryOptions) => ({
+  [DELIVERY_DATE]: deliveryOptions.reduce((deliveryDates, option) => ({
+    ...deliveryDates,
     [new Date(option.date.date).toLocaleDateString(configBus.get(LOCALE))]: {
 
       // delivery_moment is dependant on delivery_date
-      [DELIVERY_MOMENT]: option.possibilities.reduce((acc, possibility) => ({
-        ...acc,
+      [DELIVERY_MOMENT]: option.possibilities.reduce((deliveryMoments, possibility) => ({
+        ...deliveryMoments,
         [possibility.type]: {
 
           moments: possibility.delivery_time_frames.reduce((acc, timeFrame) => ({
@@ -23,14 +25,13 @@ export const createDeliveryDependencies = (deliveryOptions) => {
           }), {}),
 
           // And shipment_options is dependant on delivery_moment
-          [SHIPMENT_OPTIONS]: {
-            ...possibility.shipment_options.reduce((acc, shipmentOption) => ({
-              ...acc,
+          [SHIPMENT_OPTIONS]: possibility.shipment_options
+            .reduce((shipmentOptions, shipmentOption) => ({
+              ...shipmentOptions,
               [shipmentOption.name]: shipmentOption.schema,
             }), {}),
-          },
         },
       }), {}),
     },
-  }), {});
-};
+  }), {}),
+});

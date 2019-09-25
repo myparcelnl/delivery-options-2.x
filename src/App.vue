@@ -48,7 +48,6 @@ export default {
   name: 'App',
   components: {
     Modal,
-    Errors,
     Loader,
   },
   data() {
