@@ -2,18 +2,6 @@ import * as SETTINGS from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 
 /**
- * Helper function for date.toLocaleDateString with locale from the config bus and default format.
- *
- * @param {Date} date - Date to format.
- * @param {Object} format - The format to apply.
- *
- * @returns {string}
- */
-function toLocaleDateString(date, format = { month: 'numeric', day: 'numeric', year: 'numeric' }) {
-  return date.toLocaleDateString(configBus.get(SETTINGS.LOCALE), format);
-}
-
-/**
  * @param {MyParcel.DeliveryOption[]} deliveryOptions - Delivery options object.
  *
  * @returns {Array|null}
@@ -28,7 +16,7 @@ export function getDeliveryDates(deliveryOptions) {
   if (configBus.get(SETTINGS.DELIVERY_DAYS_WINDOW) === 0) {
     return [
       {
-        name: toLocaleDateString(new Date(deliveryOptions[0].date.date)),
+        name: new Date(deliveryOptions[0].date.date).toString(),
         label: '',
       },
     ];
@@ -36,13 +24,16 @@ export function getDeliveryDates(deliveryOptions) {
 
   return deliveryOptions.map(({ date: option }) => {
     const date = new Date(option.date);
-    const name = toLocaleDateString(date);
+    const name = date.toISOString();
 
-    const dateString = toLocaleDateString(date, {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-    });
+    const dateString = date.toLocaleDateString(
+      configBus.get(SETTINGS.LOCALE),
+      {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      }
+    );
 
     const label = dateString.charAt(0).toUpperCase() + dateString.slice(1);
 

@@ -348,7 +348,11 @@ export default {
        * @param {*} value - New value for current option.
        */
       handler(value) {
-        this.$configBus.$emit(EVENTS.UPDATE, { name: this.mutableOption.name, value });
+        this.$configBus.$emit(EVENTS.UPDATE,
+          {
+            name: this.mutableOption.name,
+            value,
+          });
       },
       deep: typeof selected !== 'string',
       immediate: true,
@@ -392,6 +396,11 @@ export default {
      */
     getChoicesByDependency({ name }) {
       const dependencies = this.$configBus.dependencies[this.$configBus.currentCarrier];
+
+      if (!dependencies) {
+        return;
+      }
+
       const { dependency } = this.mutableOption;
       let dependencyName = dependency.name;
 

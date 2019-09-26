@@ -70,9 +70,18 @@ export const createConfigBus = () => {
 
       /**
        * The object where settings will be stored.
+       *
+       * @type {Object}
        */
       values: {},
 
+      /**
+       * The object where the values that are sent to the external platform will be stored. Similar to `this.values`,
+       *  but this object is tweaked to comply with our API and conventions and to maximize readability for the
+       *  developers using it.
+       *
+       * @type {Object}
+       */
       exportValues: {},
 
       /**
