@@ -1,6 +1,6 @@
 import { DELIVERY_DATE, DELIVERY_MOMENT, SHIPMENT_OPTIONS } from '@/config/data/formConfig';
-import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
+import { createDateString } from '@/data/createDateString';
 
 /**
  * Create the dependencies object for delivery options.
@@ -12,7 +12,7 @@ import { configBus } from '@/config/configBus';
 export const createDeliveryDependencies = (deliveryOptions) => ({
   [DELIVERY_DATE]: deliveryOptions.reduce((deliveryDates, option) => ({
     ...deliveryDates,
-    [new Date(option.date.date).toLocaleDateString(configBus.get(LOCALE))]: {
+    [createDateString(option.date.date)]: {
 
       // delivery_moment is dependant on delivery_date
       [DELIVERY_MOMENT]: option.possibilities.reduce((deliveryMoments, possibility) => ({
