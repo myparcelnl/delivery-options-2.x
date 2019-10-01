@@ -5,6 +5,7 @@ import * as SETTINGS from '@/config/data/settingsConfig';
 import Vue from 'vue';
 import { allowedCountryCodesForPlatform } from '@/config/data/countryConfig';
 import { getConfig } from '@/config/setup';
+import { getPickupDate } from '@/data/pickup/getPickupDate';
 
 /**
  * The config bus to be used throughout the application. It's filled with `createConfigBus()`, otherwise the entire
@@ -210,23 +211,6 @@ export const createConfigBus = () => {
       },
 
       /**
-       * Format a given date string to "hh:mm".
-       *
-       * @param {Date|string} date - Date string to format.
-       * @param {Object} options - Options for formatting.
-       *
-       * @returns {string}
-       */
-      formatTime(date = new Date(),
-        options = {
-          hour: '2-digit',
-          minute: '2-digit',
-        }) {
-        const dateClass = date instanceof Date ? date : new Date(date);
-        return dateClass.toLocaleTimeString('default', options);
-      },
-
-      /**
        * @param {String|Number} price - Price config item or value.
        *
        * @returns {string}
@@ -396,6 +380,7 @@ export const createConfigBus = () => {
       setDeliveryExportValues() {
         this.unsetExportValue(
           CONFIG.DELIVERY,
+          CONFIG.DELIVERY_DATE,
           CONFIG.DELIVERY_MOMENT,
           CONFIG.PICKUP_LOCATION,
           CONFIG.PICKUP_MOMENT,
@@ -413,6 +398,8 @@ export const createConfigBus = () => {
          * @see MyParcel.DeliveryType
          */
         this.setExportValue(CONFIG.DELIVERY_TYPE, this.getValue(CONFIG.DELIVERY_MOMENT));
+
+        this.setExportValue(CONFIG.DATE, this.getValue(CONFIG.DELIVERY_DATE));
       },
 
       /**
@@ -442,11 +429,23 @@ export const createConfigBus = () => {
 
         const pickupLocation = this.getValue(CONFIG.PICKUP_LOCATION);
 
-        if (!!pickupLocation) {
+        // Only do this after a pickup location and moment are selected.
+        if (!!pickupLocation && !!this.getValue(CONFIG.PICKUP_MOMENT)) {
+          /**
+           * Take out the possibilities array to use it to get the deliveryDate, but don't add it to the exportValues.
+           * Also remove carrier from the currentPickupLocation object because it's already set in exportValues.carrier.
+           */
+          const { carrier, possibilities, ...currentPickupLocation } = this.$configBus.pickupLocations[pickupLocation];
+
           /**
            * Add the complex pickup data to the exported values instead of just the name.
            */
-          this.setExportValue(CONFIG.PICKUP_LOCATION, this.$configBus.pickupLocations[pickupLocation]);
+          this.setExportValue(CONFIG.PICKUP_LOCATION, currentPickupLocation);
+
+          /**
+           * Get the date from the currently selected pickup possibility.
+           */
+          this.setExportValue(CONFIG.DATE, getPickupDate(possibilities));
         }
       },
 

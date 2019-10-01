@@ -43,6 +43,7 @@ export const PICKUP_EXPRESS = 'pickup_express';
 /*
  * The following properties are only added to configBus.exportValues and not used internally.
  */
+export const DATE = 'date';
 export const IS_PICKUP = 'isPickup';
 export const DELIVERY_TYPE = 'deliveryType';
 

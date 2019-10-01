@@ -9,8 +9,8 @@ const getParametersForNL = () => ({
 const getParametersForBE = () => ({
   // TODO:
   //  "Day-picker is nog niet van toepassing voor SendMyParcel. De data die terugkomt is zelf opgebouwd door JW
-  // en komt niet officieel uit bpost/DPD." < uit https://jira.dmp.zone/browse/MY-12648 Wanneer dit niet meer
-  // van toepassing is moet deze override weg.
+  //  en komt niet officieel uit bpost/DPD." < uit https://jira.dmp.zone/browse/MY-12648 Wanneer dit niet meer
+  //  van toepassing is moet deze override weg.
   deliverydays_window: 1,
 });
 

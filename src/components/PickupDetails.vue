@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { createLocaleString } from '@/data/dates/createLocaleString';
+
 export default {
   name: 'PickupDetails',
   props: {
@@ -87,7 +89,7 @@ export default {
         if (openingHours[item].length) {
           const time = openingHours[item][0];
 
-          dateString = `${this.$configBus.formatTime(time.start.date)} – ${this.$configBus.formatTime(time.end.date)}`;
+          dateString = `${createLocaleString(time.start.date)} – ${createLocaleString(time.end.date)}`;
         } else {
           dateString = this.strings.closed;
         }

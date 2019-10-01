@@ -1,5 +1,6 @@
 import { PICKUP, PICKUP_EXPRESS, PICKUP_MOMENT, PICKUP_STANDARD, formConfig } from '@/config/data/formConfig';
 import { configBus } from '@/config/configBus';
+import { createLocaleString } from '@/data/dates/createLocaleString';
 
 /**
  * Get pickup moments.
@@ -29,7 +30,7 @@ export function getPickupMoments(pickupLocation) {
       name: PICKUP_MOMENT,
       type: 'radio',
       choices: pickupLocation.possibilities.map((possibility) => {
-        const pickupTime = configBus.formatTime(possibility.moment.start.date);
+        const pickupTime = createLocaleString(possibility.moment.start.date);
         const pickupText = `${configBus.strings.pickUpFrom} ${pickupTime}`;
 
         if (!configBus.isEnabled(possibility.delivery_type_name)) {

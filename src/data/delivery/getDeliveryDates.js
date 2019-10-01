@@ -1,6 +1,6 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
-import { createDateString } from '@/data/createDateString';
+import { createIsoString } from '@/data/dates/createIsoString';
 
 /**
  * @param {MyParcel.DeliveryOption[]} deliveryOptions - Delivery options object.
@@ -25,7 +25,7 @@ export function getDeliveryDates(deliveryOptions) {
 
   return deliveryOptions.map(({ date: option }) => {
     const date = new Date(option.date);
-    const name = createDateString(option.date);
+    const name = createIsoString(option.date);
 
     const dateString = date.toLocaleDateString(
       configBus.get(SETTINGS.LOCALE),
