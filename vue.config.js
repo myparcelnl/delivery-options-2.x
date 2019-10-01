@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 process.env.VUE_APP_VERSION = require('./package.json').version;
 const { VUE_APP_CLASS_BASE } = process.env;
 
-// throw process.env.VUE_APP_CLASS_BASE;
 module.exports = {
   css: {
     extract: false,
@@ -14,7 +13,7 @@ module.exports = {
         /*
          * @see https://stackoverflow.com/questions/50828904/using-environment-variables-with-vue-js
          */
-        data: `$classBase: '${VUE_APP_CLASS_BASE}';`,
+        prependData: `$classBase: '${VUE_APP_CLASS_BASE}';`,
       },
     },
   },
