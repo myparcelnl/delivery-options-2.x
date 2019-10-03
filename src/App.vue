@@ -82,6 +82,15 @@ export default {
        * Event listeners object. Stored here so we can add and remove them easily.
        */
       listeners: {
+        show: () => {
+          this.showDeliveryOptions = true;
+          this.listeners.update();
+          document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+        },
+        hide: () => {
+          this.showDeliveryOptions = false;
+          document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+        },
         update: debounce(this.getDeliveryOptions, debounceDelay),
         updateExternal: debounce(this.updateExternal, debounceDelay),
         error: (e) => {
@@ -96,10 +105,6 @@ export default {
   },
 
   computed: {
-    configBus() {
-      return this.$configBus;
-    },
-
     /**
      * False if:
      *  - CC is undefined
@@ -153,7 +158,7 @@ export default {
     hasSomethingToShow() {
       return this.$configBus.isValidCountry
         && (this.$configBus.isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS)
-        || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS));
+          || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS));
     },
 
     /**
@@ -169,8 +174,9 @@ export default {
   },
 
   created() {
-    this.listeners.update();
-    document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+    this.listeners.show();
+    document.addEventListener(EVENTS.SHOW_DELIVERY_OPTIONS, this.listeners.show);
+    document.addEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
 
     // Add the new data to the values object
     this.$configBus.$on(EVENTS.UPDATE, this.$configBus.updateExternalData);
@@ -288,7 +294,7 @@ export default {
         EVENTS.UPDATED_DELIVERY_OPTIONS,
         {
           detail: this.$configBus.exportValues,
-        }
+        },
       ));
     },
   },

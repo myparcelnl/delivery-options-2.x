@@ -1,5 +1,5 @@
-/*
- * configBus events
+/**
+ * ConfigBus events.
  *
  * These are only used for and by the configBus so they don't need to be namespaced.
  */
@@ -57,3 +57,17 @@ export const UPDATED_ADDRESS = 'myparcel_updated_address';
  * @type {string}
  */
 export const UPDATED_DELIVERY_OPTIONS = 'myparcel_updated_delivery_options';
+
+/**
+ * Manually show the delivery options. The update listener has to be re-enabled after this.
+ *
+ * @type {String}
+ */
+export const SHOW_DELIVERY_OPTIONS = 'myparcel_show_delivery_options';
+
+/**
+ * Manually hide the delivery options. Should remove the update listener.
+ *
+ * @type {String}
+ */
+export const HIDE_DELIVERY_OPTIONS = 'myparcel_hide_delivery_options';
