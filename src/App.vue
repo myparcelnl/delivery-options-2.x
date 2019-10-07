@@ -174,7 +174,9 @@ export default {
   },
 
   created() {
-    this.listeners.show();
+    this.listeners.update();
+    document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+
     document.addEventListener(EVENTS.SHOW_DELIVERY_OPTIONS, this.listeners.show);
     document.addEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
 
