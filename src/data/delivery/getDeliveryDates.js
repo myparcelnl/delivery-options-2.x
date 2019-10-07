@@ -17,7 +17,7 @@ export function getDeliveryDates(deliveryOptions) {
   if (configBus.get(SETTINGS.DELIVERY_DAYS_WINDOW) === 0) {
     return [
       {
-        name: new Date(deliveryOptions[0].date.date).toString(),
+        name: createIsoString(deliveryOptions[0].date.date),
         label: '',
       },
     ];
