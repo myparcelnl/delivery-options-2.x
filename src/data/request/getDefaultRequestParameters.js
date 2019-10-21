@@ -39,7 +39,7 @@ export const getDefaultRequestParameters = () => {
      *  This is a temporary workaround for the validation for the dpd endpoint; It gives a 422 response if there are
      *  location parameters it does not expect, city in this case. Can be removed once above story is fixed.
      */
-    if (configBus.currentCarrier === 'dpd' && parameters[key] === 'city') {
+    if (configBus.currentCarrier === 'dpd' && key === 'city') {
       return;
     }
 
