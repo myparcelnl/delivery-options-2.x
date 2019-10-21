@@ -1,5 +1,7 @@
 <template>
-  <table v-if="validChoices">
+  <table
+    v-if="validChoices"
+    :class="`${$classBase}__table`">
     <tr
       v-for="choice in validChoices"
       :key="mutableOption.name + '_' + choice.name"
@@ -97,7 +99,9 @@
       </td>
     </tr>
   </table>
-  <table v-else>
+  <table
+    v-else
+    :class="`${$classBase}__table`">
     <tr>
       <td>
         <select

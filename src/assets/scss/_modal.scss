@@ -1,18 +1,17 @@
-.#{$classBase} {
-  &__modal {
+.#{$classBase}__modal {
+  padding: $modal-content-padding;
+  background-color: white;
+
+  &__close {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    right: 0;
     padding: $modal-content-padding;
-    background-color: white;
 
-    &__close {
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: $modal-content-padding;
-
-      img {
-        width: 1em;
-        cursor: pointer;
-      }
+    img {
+      width: 1em;
+      cursor: pointer;
     }
   }
 }

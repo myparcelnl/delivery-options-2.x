@@ -1,53 +1,57 @@
 @import "variables";
 @import "keyframes";
-@import "transitions/index";
-@import "choice";
-@import "image";
-@import "loader";
-@import "modal";
-@import "table";
 
 .#{$classBase} {
+  @import "transitions/index";
+  @import "choice";
+  @import "image";
+  @import "loader";
+  @import "modal";
+  @import "table";
+  @import "pickup";
+
   position: relative;
 
-  &__d-block {
-    display: block;
-  }
-
-  &__select {
-    width: 100%;
-  }
-
-  &__float {
-    &--left {
-      float: left;
+  .#{$classBase} {
+    &__d-block {
+      display: block;
     }
 
-    &--right {
-      float: right;
-    }
-  }
-
-  &__text {
-    &--green {
-      color: $positive;
-    }
-
-    &--small {
-      opacity: .6;
-      font-size: 0.9em;
-    }
-  }
-
-  &__errors {
-    input {
+    &__select {
       width: 100%;
     }
-  }
 
-  &__spacing {
-    &--md {
-      height: $spacing-md !important;
+    &__float {
+      &--left {
+        float: left;
+      }
+
+      &--right {
+        float: right;
+      }
+    }
+
+    &__text {
+      &--green {
+        color: $positive;
+      }
+
+      &--small {
+        opacity: .6;
+        font-size: 0.9em;
+      }
+    }
+
+    &__errors {
+      input {
+        width: 100%;
+      }
+    }
+
+    &__spacing {
+      &--md {
+        height: $spacing-md !important;
+      }
     }
   }
 }
