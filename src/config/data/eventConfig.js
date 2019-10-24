@@ -59,6 +59,13 @@ export const UPDATED_ADDRESS = 'myparcel_updated_address';
 export const UPDATED_DELIVERY_OPTIONS = 'myparcel_updated_delivery_options';
 
 /**
+ * Disable the delivery options.
+ *
+ * @type {string}
+ */
+export const DISABLE_DELIVERY_OPTIONS = 'myparcel_disable_delivery_options';
+
+/**
  * Manually show the delivery options. The update listener has to be re-enabled after this.
  *
  * @type {String}

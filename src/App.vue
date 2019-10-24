@@ -1,6 +1,7 @@
 <template>
   <form
     v-if="showDeliveryOptions"
+    v-show="fakeShowDeliveryOptions"
     :class="`${$classBase}`"
     @submit.prevent="">
     <Modal
@@ -58,6 +59,14 @@ export default {
       showDeliveryOptions: false,
 
       /**
+       * "fake" version of showDeliveryOptions, only hides the module visually by using v-show instead of v-if.
+       *
+       * Used while hiding the delivery options to disappear instantly but allow the module to clean up and send events
+       *  before actually removing itself.
+       */
+      fakeShowDeliveryOptions: true,
+
+      /**
        * Whether the delivery options are loading or not.
        *
        * @type {Boolean}
@@ -82,6 +91,12 @@ export default {
        * Event listeners object. Stored here so we can add and remove them easily.
        */
       listeners: {
+        /**
+         * Empty the export values and force sending an update with the empty data.
+         */
+        removeData: () => {
+          this.$configBus.exportValues = {};
+        },
         show: () => {
           if (this.showDeliveryOptions === true) {
             return;
@@ -92,8 +107,16 @@ export default {
           document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
         },
         hide: () => {
-          this.showDeliveryOptions = false;
-          document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+          this.$configBus.exportValues = {};
+          this.fakeShowDeliveryOptions = false;
+
+          const listenForLastUpdate = () => {
+            this.showDeliveryOptions = false;
+            document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+            document.removeEventListener(EVENTS.UPDATED_DELIVERY_OPTIONS, listenForLastUpdate);
+          };
+
+          document.addEventListener(EVENTS.UPDATED_DELIVERY_OPTIONS, listenForLastUpdate);
         },
         update: debounce(this.getDeliveryOptions, debounceDelay),
         updateExternal: debounce(this.updateExternal, debounceDelay),
@@ -181,6 +204,7 @@ export default {
     this.listeners.update();
     document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
 
+    document.addEventListener(EVENTS.DISABLE_DELIVERY_OPTIONS, this.listeners.removeData);
     document.addEventListener(EVENTS.SHOW_DELIVERY_OPTIONS, this.listeners.show);
     document.addEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
 
@@ -285,14 +309,18 @@ export default {
 
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
+     *
+     * @param {Boolean} force - Ignore the safety check and force dispatching the event.
      */
-    updateExternal() {
+    updateExternal({ name, value }) {
+      const isEmptied = name === CONFIG.DELIVERY && value === null;
+
       /*
        * If delivery type is not set it means either delivery or pickup was clicked but the subsequent request is not
        * finished yet. Once that finishes loading any delivery type will immediately be selected, triggering another
        * update event which will allow this condition to pass.
        */
-      if (!this.$configBus.hasExportValue(CONFIG.DELIVERY_TYPE)) {
+      if (!isEmptied && !this.$configBus.hasExportValue(CONFIG.DELIVERY_TYPE)) {
         return;
       }
 
@@ -302,7 +330,7 @@ export default {
       document.dispatchEvent(new CustomEvent(
         EVENTS.UPDATED_DELIVERY_OPTIONS,
         {
-          detail: this.$configBus.exportValues,
+          detail: isEmptied ? {} : this.$configBus.exportValues,
         },
       ));
     },

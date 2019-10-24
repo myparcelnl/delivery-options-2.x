@@ -189,6 +189,13 @@ export default {
        */
       listeners: {
         /**
+         * Empty this.selected.
+         */
+        unselect: () => {
+          this.selected = null;
+        },
+
+        /**
          * Update dependencies of the current option. Without this.$nextTick switching carriers for the first time will
          *  not show all the options.
          *
@@ -370,12 +377,18 @@ export default {
     if (this.hasDependency) {
       this.$configBus.$on(EVENTS.AFTER_UPDATE, this.listeners.updateDependency);
     }
+
+    document.addEventListener(EVENTS.DISABLE_DELIVERY_OPTIONS, this.listeners.unselect);
+    document.addEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.unselect);
   },
 
   beforeDestroy() {
     if (this.hasDependency) {
       this.$configBus.$off(EVENTS.AFTER_UPDATE, this.listeners.updateDependency);
     }
+
+    document.removeEventListener(EVENTS.DISABLE_DELIVERY_OPTIONS, this.listeners.unselect);
+    document.removeEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.unselect);
   },
 
   methods: {
