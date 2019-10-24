@@ -83,6 +83,10 @@ export default {
        */
       listeners: {
         show: () => {
+          if (this.showDeliveryOptions === true) {
+            return;
+          }
+
           this.showDeliveryOptions = true;
           this.listeners.update();
           document.addEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
@@ -191,6 +195,9 @@ export default {
 
   beforeDestroy() {
     document.removeEventListener(EVENTS.UPDATE_DELIVERY_OPTIONS, this.listeners.update);
+
+    document.removeEventListener(EVENTS.SHOW_DELIVERY_OPTIONS, this.listeners.show);
+    document.removeEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
     this.$configBus.$off(EVENTS.UPDATE, this.$configBus.updateExternalData);
     this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
     this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
