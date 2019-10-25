@@ -6,7 +6,8 @@
     @submit.prevent="">
     <Modal
       v-if="$configBus.showModal"
-      :data="modalData"
+      :modal-data="modalData"
+      :has-close-button="$configBus.modalData.hasCloseButton"
       :component="$configBus.modalData.component" />
 
     <template v-else>
@@ -194,7 +195,7 @@ export default {
      * @returns {Object}
      */
     modalData() {
-      const { component, ...data } = this.$configBus.modalData;
+      const { component, hasCloseButton, ...data } = this.$configBus.modalData;
 
       return data;
     },
@@ -290,6 +291,9 @@ export default {
         };
         return;
       }
+
+      this.$configBus.showModal = false;
+      this.$configBus.modalData = {};
 
       if (!this.$configBus.carrierData.length) {
         this.loading = true;

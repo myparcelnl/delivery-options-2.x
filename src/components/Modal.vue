@@ -1,13 +1,14 @@
 <template>
   <div :class="`${$classBase}__modal`">
     <div
+      v-if="hasCloseButton"
       :class="`${$classBase}__modal__close`"
       @click="$configBus.showModal = false">
       <font-awesome-icon icon="times" />
     </div>
     <component
       :is="component"
-      :data="data" />
+      :data="modalData" />
   </div>
 </template>
 
@@ -19,9 +20,13 @@ export default {
       type: Object,
       default: null,
     },
-    data: {
+    modalData: {
       type: Object,
       default: null,
+    },
+    hasCloseButton: {
+      type: Boolean,
+      default: false,
     },
   },
 };

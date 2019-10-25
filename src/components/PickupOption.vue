@@ -88,6 +88,7 @@ export default {
       this.$configBus.modalData = {
         ...this.pickupData,
         component: PickupDetails,
+        hasCloseButton: true,
       };
     },
   },
