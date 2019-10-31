@@ -489,7 +489,11 @@ export const createConfigBus = () => {
             this.currentCarrier = value;
             break;
           case CONFIG.PICKUP_LOCATION:
-            this.currentCarrier = this.pickupLocations[value].carrier;
+            const givenPickupLocationExists = this.pickupLocations.hasOwnProperty(value);
+
+            if (givenPickupLocationExists) {
+              this.currentCarrier = this.pickupLocations[value].carrier;
+            }
             break;
         }
       },

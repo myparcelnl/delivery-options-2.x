@@ -5,7 +5,7 @@ import '@/services/directives';
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm/RecursiveForm';
-import { UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
+import { RENDER_DELIVERY_OPTIONS, UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';
 import { showDeveloperInfo } from '@/services/showDeveloperInfo';
@@ -14,6 +14,9 @@ import { showDeveloperInfo } from '@/services/showDeveloperInfo';
  * Load the application.
  */
 function loadApp() {
+  /**
+   * Only let update_delivery_options render it the first time. Use render_delivery_options after to reload the app.
+   */
   document.removeEventListener(UPDATE_DELIVERY_OPTIONS, loadApp);
 
   /**
@@ -57,4 +60,5 @@ if (process.env.NODE_ENV === 'development' && !window.hasOwnProperty('MyParcelCo
   window.onload = showDeveloperInfo;
 }
 
+document.addEventListener(RENDER_DELIVERY_OPTIONS, loadApp);
 document.addEventListener(UPDATE_DELIVERY_OPTIONS, loadApp);

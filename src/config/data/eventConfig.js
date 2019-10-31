@@ -78,3 +78,10 @@ export const SHOW_DELIVERY_OPTIONS = 'myparcel_show_delivery_options';
  * @type {String}
  */
 export const HIDE_DELIVERY_OPTIONS = 'myparcel_hide_delivery_options';
+
+/**
+ * Used to (re)render the entire module.
+ *
+ * @type {string}
+ */
+export const RENDER_DELIVERY_OPTIONS = 'myparcel_render_delivery_options';
