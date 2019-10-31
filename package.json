@@ -5,9 +5,10 @@
   "author": "Edie Lemoine (edie@myparcel.nl)",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build:prod": "vue-cli-service build",
+    "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build:prod",
     "release": "standard-version",
     "test": "vue-cli-service test:unit"
   },
