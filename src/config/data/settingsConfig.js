@@ -41,6 +41,20 @@ export const CARRIER_SETTINGS = 'carrierSettings';
  */
 export const FEATURE_ALLOW_RETRY = 'allowRetry';
 
+/**
+ * Enable a map for the pickup locations instead of the default list.
+ *
+ * @type {string}
+ */
+export const FEATURE_PICKUP_LOCATIONS_MAP = 'pickupLocationsMap';
+
+/**
+ * Tile layer data for use with the pickup locations map.
+ *
+ * @type {string}
+ */
+export const PICKUP_LOCATIONS_MAP_TILE_LAYER_DATA = 'pickupLocationsMapTileLayerData';
+
 /*
  * Show distance under each pickup location if true. Otherwise shows street name and number.
  */

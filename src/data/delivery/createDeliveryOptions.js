@@ -11,7 +11,7 @@ import { getDeliveryDates } from '@/data/delivery/getDeliveryDates';
  *
  * @param {MyParcel.CarrierName} carrier - Carrier name or id.
  *
- * @returns {Promise<Object[]|[]>}
+ * @returns {Promise<DeliveryOptionsFormChoice[]>}
  */
 export async function createDeliveryOptions(carrier = configBus.currentCarrier) {
   const { response: deliveryOptions } = await fetchDeliveryOptions(carrier);

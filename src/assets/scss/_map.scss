@@ -1,0 +1,43 @@
+.#{$classBase}__pickup-locations {
+
+  &__map, &__sidebar {
+    height: 400px;
+  }
+
+  &__sidebar {
+    overflow: scroll;
+    padding-right: $spacing;
+    position: absolute;
+    background-color: #fff;
+    z-index: 3000;
+
+    &__content {
+      position: relative;
+    }
+
+    & > .tab {
+      background-color: #fdfdfd;
+      border-left: 1px solid #ccc;
+      height: 100%;
+      width: 15px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+
+  &__map {
+    &__marker {
+      filter: drop-shadow(2px 2px rgba(0, 0, 0, 0.4));
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+
+      .leaflet-popup-content {
+        padding: $spacing;
+      }
+    }
+  }
+}

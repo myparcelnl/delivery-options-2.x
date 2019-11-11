@@ -1,8 +1,8 @@
 <template>
   <td>
     <label
-      :for="`${$classBase}__${parent.name}--${data.name}`"
-      @click="selected ? showModal() : null">
+      :for="`${$classBase}__${data.name}`"
+      @click="selected && allowModal ? showModal() : null">
       <span
         v-if="pickupData.carrier.image"
         :class="[
@@ -21,7 +21,7 @@
       <span :class="`${$classBase}__d-block`">
         <span v-text="data.label" />
         <font-awesome-icon
-          v-if="selected"
+          v-if="selected && allowModal"
           icon="ellipsis-h"
           :class="`${$classBase}__float--right`" />
       </span>
@@ -63,9 +63,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    parent: {
-      type: Object,
-      default: null,
+    allowModal: {
+      type: Boolean,
+      default: true,
     },
     data: {
       type: Object,

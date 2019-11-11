@@ -9,6 +9,7 @@
   @import "modal";
   @import "table";
   @import "pickup";
+  @import "map";
 
   position: relative;
 
@@ -50,7 +51,7 @@
 
     &__spacing {
       &--md {
-        height: $spacing-md !important;
+        height: $image-size-md !important;
       }
     }
   }

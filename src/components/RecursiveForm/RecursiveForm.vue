@@ -1,6 +1,17 @@
 <template>
   <table
-    v-if="validChoices"
+    v-if="mutableOption.hasOwnProperty('component') && mutableOption.loop === false"
+    :class="`${$classBase}__table`">
+    <tr
+      :class="`${$classBase}__choice`">
+      <component
+        :is="mutableOption.component"
+        :data="mutableOption" />
+    </tr>
+  </table>
+
+  <table
+    v-else-if="validChoices"
     :class="`${$classBase}__table`">
     <tr
       v-for="choice in validChoices"
@@ -37,7 +48,6 @@
         :is="mutableOption.component"
         v-if="mutableOption.hasOwnProperty('component')"
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
-        :parent="option"
         :data="choice"
         :selected="isSelected(choice)" />
 
@@ -131,7 +141,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
-import PickupOption from '../PickupOption';
+import PickupOption from '../Pickup/PickupOption';
 import { formConfig } from '@/config/data/formConfig';
 import { getChoiceOrFirst } from '@/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';
