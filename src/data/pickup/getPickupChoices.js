@@ -15,7 +15,7 @@ import { sortPickupLocations } from '@/data/pickup/sortPickupLocations';
 export async function getPickupChoices() {
   // Get requests for carriers which have pickup enabled.
   const requests = configBus.carrierData.reduce((acc, carrier) => {
-    return carrier.pickupEnabled ? [...acc, () => fetchPickupLocations(carrier)] : acc;
+    return carrier.pickupEnabled ? [...acc, () => fetchPickupLocations(carrier.name)] : acc;
   }, []);
 
   let { responses } = await fetchMultiple(requests);

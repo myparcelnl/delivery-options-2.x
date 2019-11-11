@@ -1,3 +1,5 @@
+import './jest';
+
 declare namespace MyParcel {
   type CarrierName = 'postnl' | 'bpost' | 'dpd'
   type CarrierNameOrId = CarrierName | Number

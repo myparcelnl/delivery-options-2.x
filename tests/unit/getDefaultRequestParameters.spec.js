@@ -9,7 +9,7 @@ describe('getting default request parameters', () => {
   test('gets the correct default parameters', () => {
     expect(getDefaultRequestParameters())
       .toEqual({
-        carrier: null,
+        carrier: 'postnl',
         include: 'shipment_options',
         platform: DEFAULT_PLATFORM,
       });

@@ -10,13 +10,13 @@ export const METHOD_SEARCH = 'search';
 /**
  * Fetch data from an endpoint and return an object containing the response.
  *
- * @param {String} endpoint - Endpoint to use.
+ * @param {string} endpoint - Endpoint to use.
  *
- * @param {Object} options - Options.
- * @param {String} options.method? - Method.
- * @param {Object} options.params? - URL parameters.
+ * @param {object} options - Options.
+ * @param {string} options.method? - Method.
+ * @param {object} options.params? - URL parameters.
  *
- * @returns {Promise.<{response: Object}>}
+ * @returns {Promise.<{response: object}>}
  */
 export async function fetchFromEndpoint(endpoint, options = {}) {
   const client = new Client();
