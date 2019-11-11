@@ -1,6 +1,6 @@
 {
   "name": "@myparcel/checkout",
-  "version": "3.0.23",
+  "version": "3.0.24",
   "description": "MyParcel delivery options module for checkouts.",
   "author": "Edie Lemoine (edie@myparcel.nl)",
   "scripts": {
@@ -10,7 +10,8 @@
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build:prod",
     "release": "standard-version",
-    "test": "vue-cli-service test:unit"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "main": "dist/myparcel.js",
   "files": [
