@@ -32,10 +32,7 @@
           :ref="marker.data.location.location_code"
           :class="`${$classBase}__pickup-locations__map__marker`"
           :lat-lng="marker.latLng"
-          :icon="marker.icon"
-          :options="{
-            opacity: selectedMarker === marker.data.location.location_code ? 1 : 0.75
-          }">
+          :icon="marker.icon">
           <l-popup>
             <pickup-details :data="marker.data" />
           </l-popup>
