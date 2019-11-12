@@ -35,9 +35,10 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   try {
     response = await client[endpoint][options.method](options.params);
   } catch (e) {
-    if (e.errors.length) {
-      configBus.addErrors(e.errors);
-      configBus.$emit(ERROR, { [endpoint]: e.errors });
+    if (e.errors && e.errors.length) {
+      configBus.addErrors(endpoint, e.errors);
+    } else {
+      configBus.addErrors('fatal', e);
     }
   }
 

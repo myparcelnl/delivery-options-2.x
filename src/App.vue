@@ -15,7 +15,7 @@
         v-if="!loading && $configBus.strings.headerDeliveryOptions"
         v-text="$configBus.strings.headerDeliveryOptions" />
 
-      <loader
+      <Loader
         v-if="loading"
         v-test="'loader'" />
 
@@ -70,21 +70,21 @@ export default {
       /**
        * Whether the delivery options are loading or not.
        *
-       * @type {Boolean}
+       * @type {boolean}
        */
       loading: true,
 
       /**
        * The form object which will be filled with all delivery options fields and options.
        *
-       * @type {Object}
+       * @type {object}
        */
       form: {},
 
       /**
        * The object that will be converted to a JSON string and put in `#mypa-input`.
        *
-       * @type {String}
+       * @type {string}
        */
       externalData: null,
 
@@ -121,13 +121,6 @@ export default {
         },
         update: debounce(this.getDeliveryOptions, debounceDelay),
         updateExternal: debounce(this.updateExternal, debounceDelay),
-        error: (e) => {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            console.warn('error:', e);
-          }
-          this.hideSelf();
-        },
       },
     };
   },
@@ -181,7 +174,7 @@ export default {
     /**
      * Check if the cc in the given address allows delivery options and if any top level setting is enabled.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     hasSomethingToShow() {
       return this.$configBus.isValidCountry
@@ -192,7 +185,7 @@ export default {
     /**
      * Return modalData without component.
      *
-     * @returns {Object}
+     * @returns {object}
      */
     modalData() {
       const { component, hasCloseButton, ...data } = this.$configBus.modalData;
@@ -215,7 +208,7 @@ export default {
     // Debounce trigger updating the checkout
     this.$configBus.$on(EVENTS.UPDATE, this.listeners.updateExternal);
 
-    this.$configBus.$on(EVENTS.ERROR, this.listeners.error);
+    this.$configBus.$on(EVENTS.ERROR, this.handleError);
   },
 
   beforeDestroy() {
@@ -225,7 +218,7 @@ export default {
     document.removeEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
     this.$configBus.$off(EVENTS.UPDATE, this.$configBus.updateExternalData);
     this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
-    this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
+    this.$configBus.$off(EVENTS.ERROR, this.handleError);
   },
 
   methods: {
@@ -314,7 +307,7 @@ export default {
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
-     * @param {Boolean} force - Ignore the safety check and force dispatching the event.
+     * @param {boolean} force - Ignore the safety check and force dispatching the event.
      */
     updateExternal({ name, value }) {
       const isEmptied = name === CONFIG.DELIVERY && value === null;
@@ -337,6 +330,23 @@ export default {
           detail: isEmptied ? {} : this.$configBus.exportValues,
         },
       ));
+    },
+
+    /**
+     * Handle incoming errors from the configBus.
+     *
+     * @param {object} e
+     */
+    handleError(e) {
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.warn('error:', e);
+      }
+
+      console.log(this.$configBus.errors);
+      if (this.$configBus.errors.some((error) => error.type === 'fatal')) {
+        this.hideSelf();
+      }
     },
   },
 };

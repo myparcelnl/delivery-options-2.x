@@ -18,7 +18,7 @@
         </p>
       </template>
       <button
-        @click.prevent="retry()"
+        @click.prevent="retry"
         v-text="$configBus.strings.retry" />
     </form>
   </div>
@@ -41,8 +41,11 @@ export default {
     requiredAddressParts() {
       return addressRequirements[this.$configBus.address.cc];
     },
+    hasFatalError() {
+      return this.$configBus.errors.some(({ code }) => code === 'fatal');
+    },
     hasInvalidAddress() {
-      return this.$configBus.errors.find(({ code }) => code === ADDRESS_ERROR);
+      return this.$configBus.errors.some(({ code }) => code === ADDRESS_ERROR);
     },
     hasRetry() {
       return this.$configBus.get(FEATURE_ALLOW_RETRY);

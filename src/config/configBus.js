@@ -302,10 +302,6 @@ export const createConfigBus = () => {
        * @param {Array} errors - Errors to add.
        */
       addErrors(errors) {
-        if (!errors.length) {
-          return;
-        }
-
         this.errors = [...this.errors, ...errors];
       },
 
