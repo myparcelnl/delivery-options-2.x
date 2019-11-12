@@ -41,12 +41,13 @@ export default {
     requiredAddressParts() {
       return addressRequirements[this.$configBus.address.cc];
     },
-    hasFatalError() {
-      return this.$configBus.errors.some(({ code }) => code === 'fatal');
-    },
+
     hasInvalidAddress() {
-      return this.$configBus.errors.some(({ code }) => code === ADDRESS_ERROR);
+      return this.$configBus.errors.some(({ type, code }) => {
+        return type === 'address' || (type === 'api' && code === ADDRESS_ERROR);
+      });
     },
+
     hasRetry() {
       return this.$configBus.get(FEATURE_ALLOW_RETRY);
     },

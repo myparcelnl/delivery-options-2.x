@@ -266,6 +266,10 @@ export const createConfigBus = () => {
        * @returns {boolean}
        */
       isEnabled(option, key = null, carrier = null) {
+        if (typeof option === 'string') {
+          option = { enabled: option };
+        }
+
         if (!option.hasOwnProperty('enabled') || !this.config.hasOwnProperty(option.enabled)) {
           return true;
         }

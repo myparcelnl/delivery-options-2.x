@@ -148,7 +148,7 @@ export default {
       };
 
       // False if any requirements are not met, true otherwise.
-      const valid = requirements.every((item) => meetsRequirements(item));
+      const valid = requirements.every(meetsRequirements);
 
       // If invalid, tell the configBus which fields are missing.
       if (!valid) {
@@ -161,7 +161,8 @@ export default {
                 ...acc,
                 {
                   code: ADDRESS_ERROR,
-                  message: item,
+                  type: 'address',
+                  error: item,
                 },
               ];
           }, []),
@@ -268,12 +269,17 @@ export default {
      * @returns {Promise}
      */
     async getDeliveryOptions(event) {
+      let address;
+
+      /**
+       * Get the address from the CustomEvent if that is how this function was called.
+       */
       if (event instanceof CustomEvent) {
-        event = event.detail.address || {};
+        address = event.detail.address || {};
       }
 
       // Update the address using the window config object.
-      this.$configBus.address = event || getAddress();
+      this.$configBus.address = address || getAddress();
 
       // Don't start loading if there's nothing to load
       if (!this.hasSomethingToShow) {
@@ -283,11 +289,7 @@ export default {
       this.showDeliveryOptions = true;
 
       if (!this.hasValidAddress) {
-        this.loading = false;
-        this.$configBus.showModal = true;
-        this.$configBus.modalData = {
-          component: Errors,
-        };
+        this.showAddressErrors();
         return;
       }
 
@@ -339,23 +341,27 @@ export default {
     },
 
     /**
-     * Handle incoming errors from the configBus.
+     * Handle incoming errors from the configBus. Hide on "fatal" errors and show the address error modal otherwise.
      *
-     * @param {Object} e
+     * @param {Object} e - Error object.
      */
     handleError(e) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.warn(`"${e.type}" error in "/${e.endpoint}":`, e.error);
-      }
-
-      /**
-       * Hide on complete failure.
-       */
       if (e.type === 'fatal') {
         this.hideSelf();
       }
 
+      this.showAddressErrors();
+    },
+
+    /**
+     * Show the modal with the Errors component.
+     */
+    showAddressErrors() {
+      this.loading = false;
+      this.$configBus.showModal = true;
+      this.$configBus.modalData = {
+        component: Errors,
+      };
     },
   },
 };
