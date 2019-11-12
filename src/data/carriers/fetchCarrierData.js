@@ -19,7 +19,5 @@ export async function fetchCarrierData(carrier) {
     },
   );
 
-  data.response = formatCarrierResponse(data.response);
-
-  return data;
+  return formatCarrierResponse(data);
 }

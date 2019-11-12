@@ -14,7 +14,7 @@ import { getDeliveryDates } from '@/data/delivery/getDeliveryDates';
  * @returns {Promise<Object[]|[]>}
  */
 export async function createDeliveryOptions(carrier = configBus.currentCarrier) {
-  const { response: deliveryOptions } = await fetchDeliveryOptions(carrier);
+  const deliveryOptions = await fetchDeliveryOptions(carrier);
 
   if (!deliveryOptions.length) {
     return [];

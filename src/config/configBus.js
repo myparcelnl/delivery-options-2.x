@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { ERROR } from '@/config/data/eventConfig';
 import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
@@ -58,7 +59,7 @@ export const createConfigBus = () => {
       /**
        * Data object to pass to modalComponent.
        *
-       * @type {object}
+       * @type {Object}
        */
       modalData: null,
 
@@ -72,7 +73,7 @@ export const createConfigBus = () => {
       /**
        * The object where settings will be stored.
        *
-       * @type {object}
+       * @type {Object}
        */
       values: {},
 
@@ -81,7 +82,7 @@ export const createConfigBus = () => {
        *  but this object is tweaked to comply with our API and conventions and to maximize readability for the
        *  developers using it.
        *
-       * @type {object}
+       * @type {Object}
        */
       exportValues: {},
 
@@ -128,7 +129,7 @@ export const createConfigBus = () => {
       /**
        * The settings specific to the current carrier from the config, if any.
        *
-       * @returns {object}
+       * @returns {Object}
        */
       currentCarrierSettings() {
         return this.config[SETTINGS.CARRIER_SETTINGS].hasOwnProperty(this.currentCarrier)
@@ -182,9 +183,9 @@ export const createConfigBus = () => {
        * 4. `defaultConfig.<option>`                       - Will be in `this.config` if there are no user defined
        *                                                     default settings.
        *
-       * @param {object|string} option  - Option object or name.
-       * @param {string} key            - Key name to use. Defaults to "name".
-       * @param {string|number} carrier - Carrier name or ID.
+       * @param {Object|String} option  - Option object or name.
+       * @param {String} key            - Key name to use. Defaults to "name".
+       * @param {String|number} carrier - Carrier name or ID.
        *
        * @returns {*}
        */
@@ -211,9 +212,9 @@ export const createConfigBus = () => {
       },
 
       /**
-       * @param {string|number} price - Price config item or value.
+       * @param {String|number} price - Price config item or value.
        *
-       * @returns {string}
+       * @returns {String}
        */
       formatPrice(price) {
         if (typeof price === 'string') {
@@ -234,9 +235,9 @@ export const createConfigBus = () => {
       /**
        * Format distance for given amount of meters.
        *
-       * @param {number|string} distance - Distance in meters.
+       * @param {number|String} distance - Distance in meters.
        *
-       * @returns {string}
+       * @returns {String}
        */
       formatDistance(distance) {
         const mToKm = 1000;
@@ -257,14 +258,18 @@ export const createConfigBus = () => {
        *  config or if `option.enabled` is false. Only returns true if `option.enabled` is present, in the config and
        *  true.
        *
-       * @param {object} option - FormConfig options object.
+       * @param {Object} option - FormConfig options object.
        *
-       * @param {string} key - String key to use with this.get().
-       * @param {string|number} carrier - Carrier name or id.
+       * @param {String} key - String key to use with this.get().
+       * @param {String|number} carrier - Carrier name or id.
        *
        * @returns {boolean}
        */
       isEnabled(option, key = null, carrier = null) {
+        if (typeof option === 'string') {
+          option = { enabled: option };
+        }
+
         if (!option.hasOwnProperty('enabled') || !this.config.hasOwnProperty(option.enabled)) {
           return true;
         }
@@ -277,7 +282,7 @@ export const createConfigBus = () => {
       /**
        * Get the array of weekdays by using a (slightly) hacky trick with dates.
        *
-       * @returns {string[]}
+       * @returns {String[]}
        */
       getWeekdays() {
         const dates = [];
@@ -299,22 +304,19 @@ export const createConfigBus = () => {
       /**
        * Add errors to `this.errors` under a given key.
        *
-       * @param {Array} errors - Errors to add.
+       * @param {Object} error - Error to add.
        */
-      addErrors(errors) {
-        if (!errors.length) {
-          return;
-        }
-
-        this.errors = [...this.errors, ...errors];
+      addErrors(error) {
+        this.errors = [...this.errors, error];
+        this.$emit(ERROR, error);
       },
 
       /**
        * Get the carrier specific settings for the given carrier.
        *
-       * @param {string} carrier - Carrier name.
+       * @param {String} carrier - Carrier name.
        *
-       * @returns {object|boolean}
+       * @returns {Object|boolean}
        */
       getSettingsByCarrier(carrier = this.currentCarrier) {
         if (!this.config.carrierSettings.hasOwnProperty(carrier)) {
@@ -325,7 +327,7 @@ export const createConfigBus = () => {
       },
 
       /**
-       * @param {string} setting - Setting name.
+       * @param {String} setting - Setting name.
        *
        * @returns {boolean}
        */
@@ -336,7 +338,7 @@ export const createConfigBus = () => {
       /**
        * Get a value by name.
        *
-       * @param {string} name - Name of the property to add/update.
+       * @param {String} name - Name of the property to add/update.
        *
        * @returns {*}
        */
@@ -347,7 +349,7 @@ export const createConfigBus = () => {
       /**
        * Set a property to the given value in the values object.
        *
-       * @param {string} name - Name of the property to add/update.
+       * @param {String} name - Name of the property to add/update.
        * @param {*} value - New value.
        */
       setExportValue(name, value) {
@@ -357,7 +359,7 @@ export const createConfigBus = () => {
       /**
        * Unset a property from the values object.
        *
-       * @param {string} name - Name of the property to remove.
+       * @param {String} name - Name of the property to remove.
        */
       unsetExportValue(...name) {
         name.forEach((name) => delete this.exportValues[name]);
@@ -366,7 +368,7 @@ export const createConfigBus = () => {
       /**
        * Check if a value is present in the exportValues object.
        *
-       * @param {string} name - Name of the item to check for.
+       * @param {String} name - Name of the item to check for.
        *
        * @returns {boolean}
        */
@@ -452,7 +454,7 @@ export const createConfigBus = () => {
       /**
        * @param {MyParcel.CarrierName} carrierName - Carrier name.
        *
-       * @returns {object}
+       * @returns {Object}
        */
       getCarrierByName(carrierName) {
         return this.carrierData.find((carrier) => carrier.name === carrierName);
@@ -461,8 +463,8 @@ export const createConfigBus = () => {
       /**
        * Updates the configBus with the new delivery options data and communicate it to the external platform.
        *
-       * @param {object} obj - Destructured update event.
-       * @param {string} obj.name - Name of the setting that was updated.
+       * @param {Object} obj - Destructured update event.
+       * @param {String} obj.name - Name of the setting that was updated.
        * @param {*} obj.value - Setting value.
        */
       updateExternalData({ name, value }) {
@@ -489,7 +491,7 @@ export const createConfigBus = () => {
       /**
        * Update the current carrier.
        *
-       * @param {string} name - Setting that changed.
+       * @param {String} name - Setting that changed.
        * @param {MyParcel.CarrierName|number} value - New carrier or pickup location id.
        */
       updateCurrentCarrier({ name, value }) {

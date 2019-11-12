@@ -15,7 +15,7 @@
         v-if="!loading && $configBus.strings.headerDeliveryOptions"
         v-text="$configBus.strings.headerDeliveryOptions" />
 
-      <loader
+      <Loader
         v-if="loading"
         v-test="'loader'" />
 
@@ -70,7 +70,7 @@ export default {
       /**
        * Whether the delivery options are loading or not.
        *
-       * @type {Boolean}
+       * @type {boolean}
        */
       loading: true,
 
@@ -121,13 +121,6 @@ export default {
         },
         update: debounce(this.getDeliveryOptions, debounceDelay),
         updateExternal: debounce(this.updateExternal, debounceDelay),
-        error: (e) => {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            console.warn('error:', e);
-          }
-          this.hideSelf();
-        },
       },
     };
   },
@@ -155,7 +148,7 @@ export default {
       };
 
       // False if any requirements are not met, true otherwise.
-      const valid = requirements.every((item) => meetsRequirements(item));
+      const valid = requirements.every(meetsRequirements);
 
       // If invalid, tell the configBus which fields are missing.
       if (!valid) {
@@ -168,7 +161,8 @@ export default {
                 ...acc,
                 {
                   code: ADDRESS_ERROR,
-                  message: item,
+                  type: 'address',
+                  error: item,
                 },
               ];
           }, []),
@@ -181,7 +175,7 @@ export default {
     /**
      * Check if the cc in the given address allows delivery options and if any top level setting is enabled.
      *
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     hasSomethingToShow() {
       return this.$configBus.isValidCountry
@@ -215,7 +209,7 @@ export default {
     // Debounce trigger updating the checkout
     this.$configBus.$on(EVENTS.UPDATE, this.listeners.updateExternal);
 
-    this.$configBus.$on(EVENTS.ERROR, this.listeners.error);
+    this.$configBus.$on(EVENTS.ERROR, this.handleError);
   },
 
   beforeDestroy() {
@@ -225,7 +219,7 @@ export default {
     document.removeEventListener(EVENTS.HIDE_DELIVERY_OPTIONS, this.listeners.hide);
     this.$configBus.$off(EVENTS.UPDATE, this.$configBus.updateExternalData);
     this.$configBus.$off(EVENTS.UPDATE, this.listeners.updateExternal);
-    this.$configBus.$off(EVENTS.ERROR, this.listeners.error);
+    this.$configBus.$off(EVENTS.ERROR, this.handleError);
   },
 
   methods: {
@@ -270,11 +264,22 @@ export default {
     /**
      * Show the delivery options, getting all necessary data in the process..
      *
+     * @param {CustomEvent|Object} event - Address.
+     *
      * @returns {Promise}
      */
-    async getDeliveryOptions() {
+    async getDeliveryOptions(event) {
+      let address;
+
+      /**
+       * Get the address from the CustomEvent if that is how this function was called.
+       */
+      if (event instanceof CustomEvent) {
+        address = event.detail.address || {};
+      }
+
       // Update the address using the window config object.
-      this.$configBus.address = getAddress();
+      this.$configBus.address = address || getAddress();
 
       // Don't start loading if there's nothing to load
       if (!this.hasSomethingToShow) {
@@ -284,11 +289,7 @@ export default {
       this.showDeliveryOptions = true;
 
       if (!this.hasValidAddress) {
-        this.loading = false;
-        this.$configBus.showModal = true;
-        this.$configBus.modalData = {
-          component: Errors,
-        };
+        this.showAddressErrors();
         return;
       }
 
@@ -314,7 +315,7 @@ export default {
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
-     * @param {Boolean} force - Ignore the safety check and force dispatching the event.
+     * @param {boolean} force - Ignore the safety check and force dispatching the event.
      */
     updateExternal({ name, value }) {
       const isEmptied = name === CONFIG.DELIVERY && value === null;
@@ -337,6 +338,30 @@ export default {
           detail: isEmptied ? {} : this.$configBus.exportValues,
         },
       ));
+    },
+
+    /**
+     * Handle incoming errors from the configBus. Hide on "fatal" errors and show the address error modal otherwise.
+     *
+     * @param {Object} e - Error object.
+     */
+    handleError(e) {
+      if (e.type === 'fatal') {
+        this.hideSelf();
+      }
+
+      this.showAddressErrors();
+    },
+
+    /**
+     * Show the modal with the Errors component.
+     */
+    showAddressErrors() {
+      this.loading = false;
+      this.$configBus.showModal = true;
+      this.$configBus.modalData = {
+        component: Errors,
+      };
     },
   },
 };
