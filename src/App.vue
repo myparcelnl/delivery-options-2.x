@@ -77,14 +77,14 @@ export default {
       /**
        * The form object which will be filled with all delivery options fields and options.
        *
-       * @type {object}
+       * @type {Object}
        */
       form: {},
 
       /**
        * The object that will be converted to a JSON string and put in `#mypa-input`.
        *
-       * @type {string}
+       * @type {String}
        */
       externalData: null,
 
@@ -185,7 +185,7 @@ export default {
     /**
      * Return modalData without component.
      *
-     * @returns {object}
+     * @returns {Object}
      */
     modalData() {
       const { component, hasCloseButton, ...data } = this.$configBus.modalData;
@@ -263,11 +263,17 @@ export default {
     /**
      * Show the delivery options, getting all necessary data in the process..
      *
+     * @param {CustomEvent|Object} event - Address.
+     *
      * @returns {Promise}
      */
-    async getDeliveryOptions() {
+    async getDeliveryOptions(event) {
+      if (event instanceof CustomEvent) {
+        event = event.detail.address || {};
+      }
+
       // Update the address using the window config object.
-      this.$configBus.address = getAddress();
+      this.$configBus.address = event || getAddress();
 
       // Don't start loading if there's nothing to load
       if (!this.hasSomethingToShow) {
@@ -335,18 +341,21 @@ export default {
     /**
      * Handle incoming errors from the configBus.
      *
-     * @param {object} e
+     * @param {Object} e
      */
     handleError(e) {
       if (process.env.NODE_ENV === 'development') {
         // eslint-disable-next-line no-console
-        console.warn('error:', e);
+        console.warn(`"${e.type}" error in "/${e.endpoint}":`, e.error);
       }
 
-      console.log(this.$configBus.errors);
-      if (this.$configBus.errors.some((error) => error.type === 'fatal')) {
+      /**
+       * Hide on complete failure.
+       */
+      if (e.type === 'fatal') {
         this.hideSelf();
       }
+
     },
   },
 };

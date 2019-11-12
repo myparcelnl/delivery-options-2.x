@@ -8,7 +8,7 @@ export async function fetchMultiple(requests) {
   let responses = [];
 
   /**
-   * Allow nested functions too to be able to pass parameters to the requests.
+   * Allow nested functions to be able to pass parameters to the requests.
    *
    * @type {Array}
    */
@@ -18,7 +18,7 @@ export async function fetchMultiple(requests) {
 
   // Concatenate all responses
   return (await Promise.all(requests)).reduce((acc, response) => {
-    responses = [...responses, ...response.response];
+    responses = [...responses, ...response];
 
     return {
       ...acc,

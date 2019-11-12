@@ -1,5 +1,4 @@
 import Client from '@myparcel/sdk/src';
-import { ERROR } from '@/config/data/eventConfig';
 import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { getApiUrl } from '@/data/request/getApiUrl';
@@ -10,13 +9,13 @@ export const METHOD_SEARCH = 'search';
 /**
  * Fetch data from an endpoint and return an object containing the response.
  *
- * @param {string} endpoint - Endpoint to use.
+ * @param {String} endpoint - Endpoint to use.
  *
- * @param {object} options - Options.
- * @param {string} options.method? - Method.
- * @param {object} options.params? - URL parameters.
+ * @param {Object} options - Options.
+ * @param {String} options.method? - Method.
+ * @param {Object} options.params? - URL parameters.
  *
- * @returns {Promise.<{response: object}>}
+ * @returns {Promise.<Array>}
  */
 export async function fetchFromEndpoint(endpoint, options = {}) {
   const client = new Client();
@@ -24,7 +23,7 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   client.config.acceptLanguage = configBus.get(LOCALE);
   client.config.url = getApiUrl();
 
-  let response = {};
+  let response;
 
   // Set default options and override with given options.
   options = {
@@ -36,11 +35,11 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
     response = await client[endpoint][options.method](options.params);
   } catch (e) {
     if (e.errors && e.errors.length) {
-      configBus.addErrors(endpoint, e.errors);
+      configBus.addErrors({ type: 'api', endpoint, error: e.errors });
     } else {
-      configBus.addErrors('fatal', e);
+      configBus.addErrors({ type: 'fatal', endpoint, error: e });
     }
   }
 
-  return { response: Array.isArray(response) ? response : [] };
+  return response || [];
 }

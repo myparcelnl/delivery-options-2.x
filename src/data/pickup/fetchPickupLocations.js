@@ -21,7 +21,11 @@ export async function fetchPickupLocations(carrierName) {
     },
   );
 
-  data.response = data.response.map((res) => ({ ...res, carrier: configBus.getCarrierByName(carrierName) }));
-
-  return data;
+  /**
+   * Add the carrier to the response.
+   */
+  return data.map((pickupLocation) => ({
+    ...pickupLocation,
+    carrier: configBus.getCarrierByName(carrierName),
+  }));
 }
