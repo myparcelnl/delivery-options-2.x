@@ -3,6 +3,10 @@
     opacity: .5;
   }
 
+  svg {
+    cursor: pointer;
+  }
+
   &--has-image > td {
     & > label {
       height: 100%;

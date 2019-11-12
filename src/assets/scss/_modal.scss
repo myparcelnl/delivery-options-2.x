@@ -2,6 +2,7 @@
   padding: $modal-content-padding;
 
   &__close {
+    cursor: pointer;
     z-index: 100;
     position: absolute;
     top: 0;
