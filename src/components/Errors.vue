@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="hasInvalidAddress"
-    :class="`${$classBase}__errors`">
+  <div :class="`${$classBase}__errors`">
     <h4 v-text="$configBus.strings.addressNotFound" />
     <form v-if="hasRetry">
       <template v-for="part in requiredAddressParts">
@@ -26,7 +24,6 @@
 
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
-import { ADDRESS_ERROR } from '@/config/data/errorConfig';
 import { FEATURE_ALLOW_RETRY } from '@/config/data/settingsConfig';
 import { addressRequirements } from '@/config/data/platformConfig';
 
@@ -40,12 +37,6 @@ export default {
   computed: {
     requiredAddressParts() {
       return addressRequirements[this.$configBus.address.cc];
-    },
-
-    hasInvalidAddress() {
-      return this.$configBus.errors.some(({ type, code }) => {
-        return type === 'address' || (type === 'api' && code === ADDRESS_ERROR);
-      });
     },
 
     hasRetry() {
