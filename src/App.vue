@@ -43,6 +43,7 @@ import { fetchAllCarriers } from '@/data/carriers/fetchAllCarriers';
 import { getAddress } from '@/config/setup';
 import { getDeliveryOptions } from '@/data/delivery/getDeliveryOptions';
 import { getPickupLocations } from '@/data/pickup/getPickupLocations';
+import isEqual from 'lodash.isequal';
 
 const debounceDelay = 300;
 
@@ -269,23 +270,34 @@ export default {
      * @returns {Promise}
      */
     async getDeliveryOptions(event) {
-      let address;
+      let newAddress;
 
       /**
        * Get the address from the CustomEvent if that is how this function was called.
        */
       if (event instanceof CustomEvent) {
-        address = event.detail.address || {};
+        newAddress = event.detail.address || {};
+      } else {
+        newAddress = getAddress();
       }
 
-      // Update the address using the window config object.
-      this.$configBus.address = address || getAddress();
+      /**
+       * Return if address didn't change, but only if the delivery options are already showing.
+       */
+      if (this.showDeliveryOptions && isEqual(this.$configBus.address, newAddress)) {
+        return;
+      }
+
+      // Update the address in the config bus
+      this.$configBus.address = newAddress;
 
       // Don't start loading if there's nothing to load
       if (!this.hasSomethingToShow) {
         return;
       }
 
+      // Close any modal in case the update was triggered by the retry modal.
+      this.$configBus.showModal = false;
       this.showDeliveryOptions = true;
 
       if (!this.hasValidAddress) {
