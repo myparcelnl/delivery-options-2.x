@@ -14,7 +14,8 @@
 
   &--sm {
     vertical-align: middle;
-    width: $image-size-sm;
-    height: $image-size-sm;
+    padding-right: 6px;
+    width: $spacing-sm;
+    height: $spacing-sm;
   }
 }

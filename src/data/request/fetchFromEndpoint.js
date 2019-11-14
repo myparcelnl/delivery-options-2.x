@@ -1,5 +1,4 @@
 import Client from '@myparcel/sdk/src';
-import { ERROR } from '@/config/data/eventConfig';
 import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { getApiUrl } from '@/data/request/getApiUrl';
@@ -16,7 +15,7 @@ export const METHOD_SEARCH = 'search';
  * @param {String} options.method? - Method.
  * @param {Object} options.params? - URL parameters.
  *
- * @returns {Promise.<{response: Object}>}
+ * @returns {Promise.<Array>}
  */
 export async function fetchFromEndpoint(endpoint, options = {}) {
   const client = new Client();
@@ -24,7 +23,7 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   client.config.acceptLanguage = configBus.get(LOCALE);
   client.config.url = getApiUrl();
 
-  let response = {};
+  let response;
 
   // Set default options and override with given options.
   options = {
@@ -35,11 +34,12 @@ export async function fetchFromEndpoint(endpoint, options = {}) {
   try {
     response = await client[endpoint][options.method](options.params);
   } catch (e) {
-    if (e.errors.length) {
-      configBus.addErrors(e.errors);
-      configBus.$emit(ERROR, { [endpoint]: e.errors });
+    if (e.errors && e.errors.length) {
+      configBus.addErrors({ type: 'api', endpoint, ...e.errors[0] });
+    } else {
+      configBus.addErrors({ type: 'fatal', endpoint, error: e });
     }
   }
 
-  return { response: Array.isArray(response) ? response : [] };
+  return response || [];
 }

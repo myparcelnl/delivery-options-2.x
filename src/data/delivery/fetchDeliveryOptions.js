@@ -5,7 +5,7 @@ import { getRequestParameters } from '@/data/request/getRequestParameters';
 /**
  * Fetch delivery options.
  *
- * @param {MyParcel.CarrierNameOrId} carrier - Carrier name or id.
+ * @param {MyParcel.CarrierName} carrier - Carrier name.
  *
  * @returns {Promise}
  */

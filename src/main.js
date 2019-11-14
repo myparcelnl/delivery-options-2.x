@@ -12,8 +12,14 @@ import { showDeveloperInfo } from '@/services/showDeveloperInfo';
 
 /**
  * Load the application.
+ *
+ * @param {CustomEvent} event - Optional event.
  */
-function loadApp() {
+function loadApp(event) {
+  if (event instanceof CustomEvent) {
+    window.MyParcelConfig = event.detail;
+  }
+
   /**
    * Only let update_delivery_options render it the first time. Use render_delivery_options after to reload the app.
    */

@@ -1,4 +1,4 @@
-import {Vue} from 'vue/types/vue';
+import './jest';
 
 declare namespace MyParcel {
   type CarrierName = 'postnl' | 'bpost' | 'dpd'

@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { ERROR } from '@/config/data/eventConfig';
 import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
@@ -46,7 +47,7 @@ export const createConfigBus = () => {
       /**
        * Object to store all pickup data in to be able to send it back to the application.
        *
-       * @type {Object.<MyParcel.PickupLocation>}
+       * @type {object.<MyParcel.PickupLocation>}
        */
       pickupLocations: null,
 
@@ -184,7 +185,7 @@ export const createConfigBus = () => {
        *
        * @param {Object|String} option  - Option object or name.
        * @param {String} key            - Key name to use. Defaults to "name".
-       * @param {String|Number} carrier - Carrier name or ID.
+       * @param {String|number} carrier - Carrier name or ID.
        *
        * @returns {*}
        */
@@ -211,9 +212,9 @@ export const createConfigBus = () => {
       },
 
       /**
-       * @param {String|Number} price - Price config item or value.
+       * @param {String|number} price - Price config item or value.
        *
-       * @returns {string}
+       * @returns {String}
        */
       formatPrice(price) {
         if (typeof price === 'string') {
@@ -234,9 +235,9 @@ export const createConfigBus = () => {
       /**
        * Format distance for given amount of meters.
        *
-       * @param {Number|String} distance - Distance in meters.
+       * @param {number|String} distance - Distance in meters.
        *
-       * @returns {string}
+       * @returns {String}
        */
       formatDistance(distance) {
         const mToKm = 1000;
@@ -260,11 +261,15 @@ export const createConfigBus = () => {
        * @param {Object} option - FormConfig options object.
        *
        * @param {String} key - String key to use with this.get().
-       * @param {String|Number} carrier - Carrier name or id.
+       * @param {String|number} carrier - Carrier name or id.
        *
        * @returns {boolean}
        */
       isEnabled(option, key = null, carrier = null) {
+        if (typeof option === 'string') {
+          option = { enabled: option };
+        }
+
         if (!option.hasOwnProperty('enabled') || !this.config.hasOwnProperty(option.enabled)) {
           return true;
         }
@@ -299,14 +304,11 @@ export const createConfigBus = () => {
       /**
        * Add errors to `this.errors` under a given key.
        *
-       * @param {Array} errors - Errors to add.
+       * @param {Object} error - Error to add.
        */
-      addErrors(errors) {
-        if (!errors.length) {
-          return;
-        }
-
-        this.errors = [...this.errors, ...errors];
+      addErrors(error) {
+        this.errors = [...this.errors, error];
+        this.$emit(ERROR, error);
       },
 
       /**
@@ -450,11 +452,20 @@ export const createConfigBus = () => {
       },
 
       /**
+       * @param {MyParcel.CarrierName} carrierName - Carrier name.
+       *
+       * @returns {Object}
+       */
+      getCarrierByName(carrierName) {
+        return this.carrierData.find((carrier) => carrier.name === carrierName);
+      },
+
+      /**
        * Updates the configBus with the new delivery options data and communicate it to the external platform.
        *
-       * @param {Object} <ObjectPattern> - Destructured update event.
-       * @param {String} name - Name of the setting that was updated.
-       * @param {*} value - Setting value.
+       * @param {Object} obj - Destructured update event.
+       * @param {String} obj.name - Name of the setting that was updated.
+       * @param {*} obj.value - Setting value.
        */
       updateExternalData({ name, value }) {
         this.values[name] = value;
@@ -481,7 +492,7 @@ export const createConfigBus = () => {
        * Update the current carrier.
        *
        * @param {String} name - Setting that changed.
-       * @param {MyParcel.CarrierName|Number} value - New carrier or pickup location id.
+       * @param {MyParcel.CarrierName|number} value - New carrier or pickup location id.
        */
       updateCurrentCarrier({ name, value }) {
         switch (name) {
