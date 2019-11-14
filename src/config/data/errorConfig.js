@@ -14,3 +14,6 @@ const ERROR_COUNTRY_NOT_SUPPORTED = 3506;
 // nl: "delivery_options can only be used in the Netherlands or Belgium"
 const ERROR_NL_INVALID_CC = 3212;
 const ERROR_NO_NUMBER = 3212;
+
+const ERROR_INVALID_CARRIER = 3728;
+

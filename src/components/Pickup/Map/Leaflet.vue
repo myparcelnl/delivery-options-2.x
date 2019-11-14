@@ -71,6 +71,7 @@ export default {
     },
   },
   data() {
+    const DEBOUNCE_DELAY = 300;
     return {
       showModal: false,
       modalComponent: PickupDetails,
@@ -85,6 +86,13 @@ export default {
       showMap: false,
       zoom: 16,
       selectedMarker: null,
+      allowDrag: false,
+
+      listeners: {
+        resize: debounce(this.fitToMarkers, DEBOUNCE_DELAY),
+        moveEnd: debounce(this.onMoveEnd, DEBOUNCE_DELAY),
+        zoomEnd: debounce(this.onZoomEnd, DEBOUNCE_DELAY),
+      },
     };
   },
   watch: {
@@ -97,21 +105,6 @@ export default {
         this.createMap();
       }
     },
-
-    // markers() {
-    //   const mapMarkers = [];
-    //
-    //   this.markers.forEach((marker) => {
-    //     const { latLng, ...markerData } = marker;
-    //     const lMarker = L.marker(latLng, markerData);
-    //
-    //     // lMarker.setPopupContent(PickupDetails.render());
-    //
-    //     lMarker.addTo(this.map);
-    //     mapMarkers.push(lMarker);
-    //   });
-    //   console.log(mapMarkers);
-    // },
   },
 
   created() {
@@ -123,7 +116,6 @@ export default {
   },
   methods: {
     findMarkerByLocationCode(code) {
-      console.log(this.$refs[code]);
       return this.$refs[code];
     },
 
@@ -150,20 +142,6 @@ export default {
       const tileLayer = L.tileLayer(url, tileLayerData);
 
       tileLayer.addTo(this.map);
-    },
-
-    onSelectMarker(clickedMarker) {
-      // const markerToSelect = this.markers.find((marker) => marker.data.location.location_code === clickedMarker);
-      const markerToSelect = this.findMarkerByLocationCode(clickedMarker);
-
-      console.log(this.map);
-      console.log(markerToSelect);
-      markerToSelect[0].mapObject.openPopup();
-      // console.log(markerToSelect[0].$children);
-      // console.log(markerToSelect[0].$children[0]);
-      // markerToSelect.openPopup();
-
-      this.onClickMarker(clickedMarker);
     },
 
     onClickMarker(marker) {
@@ -195,20 +173,26 @@ export default {
       const bounds = this.markers.map((marker) => marker.latLng);
 
       this.map.fitBounds(bounds);
+
+      const listener = () => {
+        this.onZoomEnd();
+        this.map.off('moveend', listener);
+      };
+
+      this.map.on('moveend', listener);
     },
 
     addMapEvents() {
-      this.map.on('resize', debounce(this.fitToMarkers, 300));
-      // this.map.on('moveend', debounce(this.onMoveEnd, 300));
-      // this.map.on('movestart', debounce(this.onMoveStart, 300));
+      this.map.on('resize', this.listeners.resize);
+      this.map.on('moveend', this.listeners.moveEnd);
+      this.map.on('zoomend', this.listeners.zoomEnd);
     },
 
-    onMoveStart(event) {
-      console.log('movestart', event);
-      console.log('movestart', event.target);
-    },
+    async onMoveEnd() {
+      if (!this.allowDrag) {
+        return;
+      }
 
-    async onMoveEnd(event) {
       const center = this.map.getCenter();
 
       this.centerMarker.setIcon(this.icons.loading);
@@ -218,7 +202,7 @@ export default {
         return [
           ...acc,
           () => fetchPickupLocations(
-            carrier,
+            carrier.name,
             {
               latitude: center.lat,
               longitude: center.lng,
@@ -228,8 +212,6 @@ export default {
       }, []);
 
       const responses = await fetchMultiple(requests);
-
-      // console.log('locations', responses.responses.map((res) => res.location.location_name));
 
       this.choices = createPickupChoices(responses.responses);
       this.createMarkers();
@@ -243,6 +225,12 @@ export default {
     },
     isSelected(marker) {
       return marker.location.location_code === this.$configBus.get(CONFIG.PICKUP_LOCATION);
+    },
+    onZoomEnd() {
+      setTimeout(() => {
+        this.allowDrag = true;
+      }, 200);
+      this.map.off('zoomend', this.listeners.zoomEnd);
     },
   },
 };

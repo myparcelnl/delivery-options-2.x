@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { configBus } from '@/config/configBus';
 
 const iconSize = 38;
@@ -19,8 +20,8 @@ export function createIcons() {
 
   icons.loading = L.icon({
     iconUrl: require('@/assets/images/loading.gif'),
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+    iconSize: [60, 60],
+    iconAnchor: [30, 30],
   });
 
   icons.default = new L.Icon.Default();
