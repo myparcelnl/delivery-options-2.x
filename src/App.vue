@@ -291,8 +291,9 @@ export default {
       // Update the address in the config bus
       this.$configBus.address = newAddress;
 
-      // Don't start loading if there's nothing to load
+      // Don't start loading if there's nothing to load, and hide if needed.
       if (!this.hasSomethingToShow) {
+        this.showDeliveryOptions = false;
         return;
       }
 
