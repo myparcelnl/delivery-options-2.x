@@ -48,16 +48,13 @@ export default {
      * Update the address in the configBus with the new address and send the it to the external platform.
      */
     retry() {
-      window.MyParcelConfig.address = { ...this.$configBus.address, ...this.values };
+      const newAddress = { ...this.$configBus.address, ...this.values };
 
-      // Trigger the checkout_in event to make the checkout update.
-      document.dispatchEvent(new Event(EVENTS.UPDATE_DELIVERY_OPTIONS));
+      // Trigger the event to make the checkout update.
+      document.dispatchEvent(new CustomEvent(EVENTS.UPDATE_DELIVERY_OPTIONS, { detail: { address: newAddress } }));
 
       // Send the new values in an event. It's up to the external platform to do handle this event or not.
-      document.dispatchEvent(new CustomEvent(EVENTS.UPDATED_ADDRESS, { detail: this.values }));
-
-      // Hide the modal
-      this.$configBus.showModal = false;
+      document.dispatchEvent(new CustomEvent(EVENTS.UPDATED_ADDRESS, { detail: newAddress }));
     },
   },
 };

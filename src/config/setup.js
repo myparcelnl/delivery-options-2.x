@@ -30,8 +30,12 @@ const getWindowObject = () => {
  * @returns {MyParcel.DeliveryOptionsAddress}
  */
 export const getAddress = () => {
-  const { address } = getWindowObject();
-  address.cc = address.cc.toLowerCase();
+  const address = getWindowObject().address || {};
+
+  if (address.cc) {
+    address.cc = address.cc.toLowerCase();
+  }
+
   return address;
 };
 
