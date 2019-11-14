@@ -1,3 +1,4 @@
+import Pickup from '@/components/Pickup/Pickup';
 import { FEATURE_MAX_PAGE_ITEMS, FEATURE_PICKUP_LOCATIONS_MAP } from '@/config/data/settingsConfig';
 import Leaflet from '@/components/Pickup/Map/Leaflet';
 import { PICKUP_LOCATION } from '@/config/data/formConfig';
@@ -30,25 +31,13 @@ export async function getPickupChoices() {
   // Create a pickupLocations object on configBus for later reference when sending data to the application.
   configBus.pickupLocations = createPickupLocations(responses);
 
-  if (FEATURE_PICKUP_LOCATIONS_MAP) {
-    return [
-      {
-        name: PICKUP_LOCATION,
-        type: 'radio',
-        component: Leaflet,
-        choices: createPickupChoices(responses),
-        loop: false,
-      },
-    ];
-  }
-
   return [
     {
       name: PICKUP_LOCATION,
       type: 'radio',
-      component: PickupOption,
-      pagination: configBus.get(FEATURE_MAX_PAGE_ITEMS),
+      component: Pickup,
       choices: createPickupChoices(responses),
+      loop: false,
     },
   ];
 }

@@ -468,6 +468,7 @@ export const createConfigBus = () => {
        * @param {*} obj.value - Setting value.
        */
       updateExternalData({ name, value }) {
+        console.log('updateExternalData', { name, value });
         this.values[name] = value;
         this.setExportValue(name, value);
         this.updateCurrentCarrier({ name, value });

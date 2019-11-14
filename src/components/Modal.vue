@@ -3,7 +3,7 @@
     <div
       v-if="hasCloseButton"
       :class="`${$classBase}__modal__close`"
-      @click="$configBus.showModal = false">
+      @click="inline ? $emit('close') : $configBus.showModal = false">
       <font-awesome-icon icon="times" />
     </div>
     <component
@@ -16,6 +16,10 @@
 export default {
   name: 'Modal',
   props: {
+    inline: {
+      type: Boolean,
+      default: false,
+    },
     component: {
       type: Object,
       default: null,

@@ -1,7 +1,7 @@
 <template>
   <td>
     <label
-      :for="`${$classBase}__${data.name}`"
+      :for="`${$classBase}__pickupLocation--${data.name}`"
       @click="selected && allowModal ? showModal() : null">
       <span
         v-if="pickupData.carrier.image"

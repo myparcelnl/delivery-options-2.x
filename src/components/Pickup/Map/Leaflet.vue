@@ -1,10 +1,16 @@
 <template>
-  <div :class="`${$classBase}__pickup-locations`">
-    <sidebar
-      :data="data.choices"
-      @select="(item) => onSelectMarker(item)" />
+  <div :class="`${$classBase}__pickup-locations--map`">
+    <Modal
+      v-if="showModal"
+      inline
+      :component="modalComponent"
+      :modal-data="selectedMarker"
+      :has-close-button="true"
+      @close="showModal = false" />
 
-    <div :class="`${$classBase}__pickup-locations__map`">
+    <div
+      v-show="!showModal"
+      :class="`${$classBase}__pickup-locations--map`">
       <component
         :is="'link'"
         rel="stylesheet"
@@ -23,20 +29,17 @@
       <l-map
         v-if="showMap"
         ref="map"
-        :class="`${$classBase}__pickup-locations__map`"
+        :class="`${$classBase}__pickup-locations__leaflet`"
         :zoom="zoom"
         :center="center">
         <l-marker
           v-for="marker in markers"
           :key="'marker_' + marker.data.location.location_code"
           :ref="marker.data.location.location_code"
-          :class="`${$classBase}__pickup-locations__map__marker`"
+          :class="`${$classBase}__pickup-locations__leaflet__marker`"
           :lat-lng="marker.latLng"
-          :icon="marker.icon">
-          <l-popup>
-            <pickup-details :data="marker.data" />
-          </l-popup>
-        </l-marker>
+          :icon="marker.icon"
+          @click="() => onClickMarker(marker.data)" />
       </l-map>
     </div>
   </div>
@@ -44,9 +47,10 @@
 
 <script>
 import * as CONFIG from '@/config/data/formConfig';
+import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
+import Modal from '@/components/Modal';
 import PickupDetails from '@/components/Pickup/PickupDetails';
-import Sidebar from '@/components/Pickup/Map/Sidebar';
 import Vue from 'vue';
 import { createIcons } from '@/components/Pickup/Map/createIcons';
 import { createPickupChoices } from '@/data/pickup/createPickupChoices';
@@ -56,10 +60,9 @@ import { fetchPickupLocations } from '@/data/pickup/fetchPickupLocations';
 
 /* eslint-disable babel/new-cap */
 export default {
-  name: 'Map',
+  name: 'Leaflet',
   components: {
-    Sidebar,
-    PickupDetails,
+    Modal,
   },
   props: {
     data: {
@@ -69,6 +72,9 @@ export default {
   },
   data() {
     return {
+      showModal: false,
+      modalComponent: PickupDetails,
+      modalData: null,
       center: [52.2906535, 4.7070306],
       centerMarker: null,
       loaded: false,
@@ -161,8 +167,9 @@ export default {
     },
 
     onClickMarker(marker) {
+      this.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_LOCATION, value: marker.location.location_code });
+      this.showModal = true;
       this.selectedMarker = marker;
-      console.log('selected marker', marker);
     },
 
     createMarkers() {
