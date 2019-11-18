@@ -433,6 +433,17 @@ export const createConfigBus = () => {
 
         // Only do this after a pickup location and moment are selected.
         if (!!pickupLocation && !!this.getValue(CONFIG.PICKUP_MOMENT)) {
+
+          /**
+           * After changing address while pickup is selected, the current pickupLocation might not be updated yet. This
+           *  causes an error because the old pickup location likely doesn't exist anymore in the pickupLocations array.
+           *
+           * Return, because the next time pickupLocation will be set this condition will pass.
+           */
+          if (!this.$configBus.pickupLocations.hasOwnProperty(pickupLocation)) {
+            return;
+          }
+
           /**
            * Take out the possibilities array to use it to get the deliveryDate, but don't add it to the exportValues.
            * Also remove carrier from the currentPickupLocation object because it's already set in exportValues.carrier.
@@ -474,10 +485,10 @@ export const createConfigBus = () => {
 
         switch (this.getValue(CONFIG.DELIVERY)) {
           case CONFIG.DELIVER:
-            this.setDeliveryExportValues({ name, value });
+            this.setDeliveryExportValues();
             break;
           case CONFIG.PICKUP:
-            this.setPickupExportValues({ name, value });
+            this.setPickupExportValues();
             break;
         }
 
