@@ -1,5 +1,5 @@
+const path = require('path');
 const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 process.env.VUE_APP_VERSION = require('./package.json').version;
 const { VUE_APP_CLASS_BASE } = process.env;
@@ -23,6 +23,11 @@ module.exports = {
   },
   productionSourceMap: false,
   configureWebpack: {
+    resolve: {
+      alias: {
+        '@myparcel/sdk': path.resolve(__dirname, './myparcel-js-sdk'),
+      },
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
