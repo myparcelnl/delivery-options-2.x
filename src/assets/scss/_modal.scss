@@ -1,5 +1,9 @@
 .#{$classBase}__modal {
-  padding: $modal-content-padding;
+  position: relative;
+
+  &--full {
+    padding: $modal-content-padding;
+  }
 
   &__close {
     cursor: pointer;

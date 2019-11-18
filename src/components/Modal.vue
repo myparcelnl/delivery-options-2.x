@@ -1,5 +1,10 @@
 <template>
-  <div :class="`${$classBase}__modal`">
+  <div
+    :class="{
+      [`${$classBase}__modal`]: true,
+      [`${$classBase}__modal--full`]: !inline,
+      [`${$classBase}__modal--inline`]: inline
+    }">
     <div
       v-if="hasCloseButton"
       :class="`${$classBase}__modal__close`"
