@@ -13,7 +13,12 @@
     </div>
     <component
       :is="component"
-      :data="modalData" />
+      :data="modalData">
+      <slot
+        v-for="(_, name) in $slots"
+        :slot="name"
+        :name="name" />
+    </component>
   </div>
 </template>
 
