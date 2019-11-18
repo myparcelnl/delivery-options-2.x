@@ -9,7 +9,7 @@
     "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build:prod",
-    "release": "standard-version",
+    "release": "standard-version -t",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:log": "jest --json --outputFile='tests/jest-log.json'"
@@ -32,6 +32,8 @@
     "vue-async-computed": "^3.7.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@myparcel/eslint-config": "^1.0.3",
     "@types/jest": "^24.0.19",
     "@vue/cli-plugin-babel": "^4.0.5",
@@ -50,7 +52,8 @@
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "standard-version": "^7.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "latest"
   },
   "bugs": {
     "url": "https://github.com/myparcelbe/checkout/issues"

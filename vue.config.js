@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -24,15 +23,7 @@ module.exports = {
   },
   productionSourceMap: false,
   configureWebpack: {
-    resolve: {
-      alias: {
-        '@myparcel/sdk': path.resolve(__dirname, './myparcel-js-sdk'),
-      },
-    },
     plugins: [
-      new CopyWebpackPlugin([
-        { from: './update-package.js' },
-      ]),
       new webpack.DefinePlugin({
         'process.env': {
           VUE_APP_VERSION: JSON.stringify(process.env.VUE_APP_VERSION),
