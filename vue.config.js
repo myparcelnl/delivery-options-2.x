@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 
 process.env.VUE_APP_VERSION = require('./package.json').version;
@@ -24,9 +23,7 @@ module.exports = {
   productionSourceMap: false,
   configureWebpack: {
     resolve: {
-      alias: {
-        '@myparcel/sdk': path.resolve(__dirname, './myparcel-js-sdk'),
-      },
+      symlinks: false,
     },
     plugins: [
       new webpack.DefinePlugin({
