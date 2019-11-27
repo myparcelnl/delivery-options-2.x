@@ -2,5 +2,8 @@
   "globals": {
     "L": "readonly",
     "Vue2Leaflet": "readonly"
+  },
+  "rules": {
+    "no-underscore-dangle": "off"
   }
 }

@@ -1,45 +1,31 @@
 <template>
-  <div :class="`${$classBase}__pickup-locations--map`">
+  <div
+    :class="{
+      [baseClass]: true,
+      [`${baseClass}--modal`]: showModal,
+    }">
     <Modal
       v-if="showModal"
       inline
       :component="modalComponent"
-      :modal-data="selectedMarker"
+      :modal-data="selectedMarker.data"
       :has-close-button="true"
       @close="showModal = false" />
 
-    <div
-      v-show="!showModal"
-      :class="`${$classBase}__pickup-locations--map`">
-      <component
-        :is="'link'"
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css"
-        @load="loaded++" />
-      <component
-        :is="'script'"
-        v-if="loaded > 0"
-        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"
-        @load="loaded++" />
-      <component
-        :is="'script'"
-        v-if="loaded > 1"
-        src="https://cdnjs.cloudflare.com/ajax/libs/Vue2Leaflet/1.0.2/vue2-leaflet.min.js"
-        @load="loaded++" />
+    <div v-show="!showModal">
       <l-map
         v-if="showMap"
         ref="map"
-        :class="`${$classBase}__pickup-locations__leaflet`"
+        :class="mapClass"
         :zoom="zoom"
         :center="center">
         <l-marker
           v-for="marker in markers"
-          :key="'marker_' + marker.data.location.location_code"
-          :ref="marker.data.location.location_code"
-          :class="`${$classBase}__pickup-locations__leaflet__marker`"
+          :key="'marker_' + marker.id"
+          :ref="marker.id"
           :lat-lng="marker.latLng"
           :icon="marker.icon"
-          @click="() => onClickMarker(marker.data)" />
+          @click="onClickMarker(marker)" />
       </l-map>
     </div>
   </div>
@@ -51,12 +37,17 @@ import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
 import Modal from '@/components/Modal';
 import PickupDetails from '@/components/Pickup/PickupDetails';
+import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import Vue from 'vue';
 import { createIcons } from '@/components/Pickup/Map/createIcons';
 import { createPickupChoices } from '@/data/pickup/createPickupChoices';
+import { createScript } from '@/services/createScript';
 import debounce from 'debounce';
-import { fetchMultiple } from '@/data/request/fetchMultiple';
-import { fetchPickupLocations } from '@/data/pickup/fetchPickupLocations';
+
+/**
+ * @var this.$refs.map
+ * @property {L} mapObject
+ */
 
 /* eslint-disable babel/new-cap */
 export default {
@@ -72,39 +63,89 @@ export default {
   },
   data() {
     const DEBOUNCE_DELAY = 300;
+    const defaultMaxZoom = 14;
+    const defaultLat = 52.2906535;
+    const defaultLong = 4.7070306;
+    const defaultZoom = 16;
     return {
       showModal: false,
       modalComponent: PickupDetails,
       modalData: null,
-      center: [52.2906535, 4.7070306],
-      centerMarker: null,
-      loaded: false,
+
+      center: [defaultLat, defaultLong],
+      maxZoom: defaultMaxZoom,
+      zoom: defaultZoom,
+
+      /**
+       * The Leaflet map will be stored in this variable.
+       *
+       * @type {L}
+       */
       map: null,
+
+      /**
+       * All pickup location markers.
+       */
       markers: [],
-      maxZoom: 14,
+
+      /**
+       * The marker icons.
+       */
+      icons: [],
+
+      /**
+       * The marker that is displayed in the center of the map.
+       */
+      centerMarker: null,
+
       choices: null,
+
       showMap: false,
-      zoom: 16,
+
       selectedMarker: null,
+
+      /**
+       * Whether the onmove event can trigger searching for new pickup locations.
+       */
       allowDrag: false,
 
+      /**
+       * Base class to use with the map and its child elements.
+       */
+      baseClass: `${this.$classBase}__pickup-locations--map`,
+
+      /**
+       * Listeners object for easy adding/removing.
+       */
       listeners: {
-        resize: debounce(this.fitToMarkers, DEBOUNCE_DELAY),
         moveEnd: debounce(this.onMoveEnd, DEBOUNCE_DELAY),
         zoomEnd: debounce(this.onZoomEnd, DEBOUNCE_DELAY),
       },
     };
   },
-  watch: {
-    loaded(bool) {
-      if (bool) {
-        Vue.component('l-map', Vue2Leaflet.LMap);
-        Vue.component('l-marker', Vue2Leaflet.LMarker);
-        Vue.component('l-popup', Vue2Leaflet.LPopup);
-        Vue.component('l-tile-layer', Vue2Leaflet.LTileLayer);
-        this.createMap();
-      }
+
+  computed: {
+    mapClass() {
+      return `${this.baseClass}__leaflet`;
     },
+  },
+
+  /**
+   * On mounting the map component, load all the needed scripts externally. This is done to not bloat the bundle size
+   *  and only load the map when the user selects it.
+   */
+  mounted() {
+    Promise.all([
+      createScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css'),
+      createScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js'),
+    ]).then(() => {
+      /**
+       * This scripts depends on leaflet.js so has to wait until it's loaded.
+       */
+      createScript('https://cdnjs.cloudflare.com/ajax/libs/Vue2Leaflet/1.0.2/vue2-leaflet.min.js').then(() => {
+        this.onLoadedScripts();
+      });
+    });
   },
 
   created() {
@@ -114,9 +155,32 @@ export default {
   beforeDestroy() {
     this.map.remove();
   },
+
+  /**
+   * This element is used in a <keep-alive> component. This hook will be triggered on "reactivating" the element.
+   *
+   * @see https://vuejs.org/v2/api/#keep-alive
+   */
+  activated() {
+    this.showModal = false;
+    const selectedPickupLocation = this.$configBus.getValue(CONFIG.PICKUP_LOCATION);
+    const selectedMarker = this.getMarkerByLocationCode(selectedPickupLocation);
+
+    if (selectedPickupLocation && selectedMarker) {
+      this.selectMarker(selectedMarker);
+    }
+  },
+
   methods: {
-    findMarkerByLocationCode(code) {
-      return this.$refs[code];
+    /**
+     * When all Leaflet scripts are loaded, initialize the Vue2Leaflet components and start creating the map.
+     */
+    onLoadedScripts() {
+      Vue.component('l-map', Vue2Leaflet.LMap);
+      Vue.component('l-marker', Vue2Leaflet.LMarker);
+      Vue.component('l-popup', Vue2Leaflet.LPopup);
+      Vue.component('l-tile-layer', Vue2Leaflet.LTileLayer);
+      this.createMap();
     },
 
     createMap() {
@@ -124,7 +188,7 @@ export default {
 
       this.$nextTick(() => {
         this.map = this.$refs.map.mapObject;
-        this.icons = createIcons();
+        this.icons = createIcons(`${this.mapClass}__marker`);
 
         this.setTileLayer();
         this.createMarkers();
@@ -132,6 +196,10 @@ export default {
         this.createCenterMarker();
         this.addMapEvents();
       });
+    },
+
+    getMarkerByLocationCode(code) {
+      return this.markers.find((marker) => marker.id === code);
     },
 
     /**
@@ -144,10 +212,28 @@ export default {
       tileLayer.addTo(this.map);
     },
 
-    onClickMarker(marker) {
-      this.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_LOCATION, value: marker.location.location_code });
-      this.showModal = true;
+    selectMarker(marker) {
+      if (this.selectedMarker) {
+        // Replace the active icon with the regular icon if there already was a selected marker.
+        this.selectedMarker.icon = this.icons[this.selectedMarker.data.carrier.name];
+      }
+
       this.selectedMarker = marker;
+
+      // Replace the icon with the active version.
+      this.selectedMarker.icon = this.icons[`${this.selectedMarker.data.carrier.name}_active`];
+
+      // Add the currently selected pickup location's option to the selectedMarker.
+      this.selectedMarker.data = {
+        ...this.selectedMarker.data,
+        ...this.getChoiceByMarkerId(this.selectedMarker.id),
+      };
+    },
+
+    onClickMarker(marker) {
+      this.selectMarker(marker);
+      this.showModal = true;
+      this.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_LOCATION, value: marker.id });
     },
 
     createMarkers() {
@@ -159,8 +245,10 @@ export default {
           ...acc,
           {
             latLng,
+            id: val.pickupData.location.location_code,
             icon: this.icons[val.carrier.name],
             data: val.pickupData,
+            isActive: false,
           },
         ];
       }, []);
@@ -183,11 +271,23 @@ export default {
     },
 
     addMapEvents() {
-      this.map.on('resize', this.listeners.resize);
-      this.map.on('moveend', this.listeners.moveEnd);
-      this.map.on('zoomend', this.listeners.zoomEnd);
+      /**
+       * TODO: Disables the listeners for BE temporarily.
+       *  When we can look up pickup points using coordinates for bpost and dpd this can be removed.
+       *  Research: https://jira.dmp.zone/browse/MY-16566.
+       */
+      if (this.$configBus.get(SETTINGS.PLATFORM) !== SENDMYPARCEL) {
+        this.map.on('moveend', this.listeners.moveEnd);
+        this.map.on('zoomend', this.listeners.zoomEnd);
+      }
     },
 
+    /**
+     * When the user stops dragging or zooming, update the center marker, fetch new pickup locations for the new center
+     *  and replace the existing ones on the map.
+     *
+     * @see https://leafletjs.com/reference-1.6.0.html#map-moveend
+     */
     async onMoveEnd() {
       if (!this.allowDrag) {
         return;
@@ -195,42 +295,53 @@ export default {
 
       const center = this.map.getCenter();
 
-      this.centerMarker.setIcon(this.icons.loading);
+      this.centerMarker._icon.classList.add(`${this.mapClass}__marker--center--loading`);
       this.centerMarker.setLatLng(center);
 
-      const requests = this.$configBus.carrierData.reduce((acc, carrier) => {
-        return [
-          ...acc,
-          () => fetchPickupLocations(
-            carrier.name,
-            {
-              latitude: center.lat,
-              longitude: center.lng,
-            },
-          ),
-        ];
-      }, []);
-
-      const responses = await fetchMultiple(requests);
-
-      this.choices = createPickupChoices(responses.responses);
+      this.choices = await createPickupChoices();
       this.createMarkers();
-      this.centerMarker.setIcon(this.icons.default);
+
+      this.centerMarker._icon.classList.remove(`${this.mapClass}__marker--center--loading`);
     },
 
+    /**
+     * Place the center marker on the map.
+     */
     createCenterMarker() {
-      this.centerMarker = L.marker(this.map.getCenter());
+      const zIndexOffset = 999;
+      this.centerMarker = L.marker(this.map.getCenter(), { icon: this.icons.default, zIndexOffset });
 
       this.centerMarker.addTo(this.map);
     },
     isSelected(marker) {
       return marker.location.location_code === this.$configBus.get(CONFIG.PICKUP_LOCATION);
     },
+
+    /**
+     * Try to postpone allowing to drag the map to when the initial zooming by fitBounds() is complete to avoid the map
+     *  looking for new pickup locations immediately.
+     *
+     * @see https://leafletjs.com/reference-1.6.0.html#map-zoomend
+     */
     onZoomEnd() {
+      const allowDragDelay = 200;
+
       setTimeout(() => {
         this.allowDrag = true;
-      }, 200);
+      }, allowDragDelay);
+
       this.map.off('zoomend', this.listeners.zoomEnd);
+    },
+
+    /**
+     * Get the option relating to the given pickup location id.
+     *
+     * @param {String} id - Marker id, which is a pickup location id.
+     *
+     * @returns {Object}
+     */
+    getChoiceByMarkerId(id) {
+      return this.data.choices.find((choice) => choice.name === id);
     },
   },
 };

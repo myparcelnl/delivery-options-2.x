@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
+
 /**
  * API error code when any address part is wrong.
  *
- * @type {number}
+ * @type {Number}
  */
 export const ADDRESS_ERROR = 3505;
 
@@ -16,4 +18,3 @@ const ERROR_NL_INVALID_CC = 3212;
 const ERROR_NO_NUMBER = 3212;
 
 const ERROR_INVALID_CARRIER = 3728;
-

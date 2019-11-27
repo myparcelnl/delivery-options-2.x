@@ -1,4 +1,5 @@
 import './jest';
+import {Vue} from 'vue/types/vue';
 
 declare namespace MyParcel {
   type CarrierName = 'postnl' | 'bpost' | 'dpd'
@@ -21,16 +22,16 @@ declare namespace MyParcelDeliveryOptions {
   /**
    * Configuration object supplied by the platform.
    */
-  interface DeliveryOptionsConfiguration {
-    address: DeliveryOptionsAddress
-    strings: DeliveryOptionsStrings
-    config: DeliveryOptionsConfig
+  interface Configuration {
+    address: Address
+    strings: Strings
+    config: Config
   }
 
   /**
    * Address object from the external platform.
    */
-  interface DeliveryOptionsAddress {
+  interface Address {
     cc: String
     number: String | Number
     postalCode: String
@@ -40,7 +41,7 @@ declare namespace MyParcelDeliveryOptions {
   /**
    * Strings object from the external platform.
    */
-  interface DeliveryOptionsStrings {
+  interface Strings {
     city: String
     postalCode: String
     houseNumber: String
@@ -116,7 +117,7 @@ declare namespace MyParcelDeliveryOptions {
   /**
    * Configuration object from the external platform.
    */
-  interface DeliveryOptionsConfig {
+  interface Config {
     apiBaseUrl: String
     locale: String
     carriers: String | Array<String>

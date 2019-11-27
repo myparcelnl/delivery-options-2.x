@@ -89,6 +89,7 @@ export default {
         ...this.pickupData,
         component: PickupDetails,
         hasCloseButton: true,
+        options: this.data.options,
       };
     },
   },

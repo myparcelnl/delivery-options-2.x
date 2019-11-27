@@ -27,6 +27,7 @@
             v-if="mutableOption.type === 'checkbox'"
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected[choice.name]"
+            v-test="`${mutableOption.name}--${choice.name}`"
             :class="choice.class"
             type="checkbox"
             :name="mutableOption.name"
@@ -37,6 +38,7 @@
             v-else
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected"
+            v-test="`${mutableOption.name}--${choice.name}`"
             :class="choice.class"
             :type="mutableOption.type"
             :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
@@ -47,6 +49,7 @@
       <component
         :is="mutableOption.component"
         v-if="mutableOption.hasOwnProperty('component')"
+        v-test="`${mutableOption.name}--${choice.name}__${mutableOption.component.name}`"
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
         :data="choice"
         :selected="isSelected(choice)" />
@@ -119,7 +122,7 @@
           :id="`${$classBase}__${mutableOption.name}`"
           v-model="selected"
           :class="{
-            [`${$classBase}__select`]: true,
+            [`${$classBase}__w-100`]: true,
             ...mutableOption.class,
           }"
           :name="mutableOption.name">

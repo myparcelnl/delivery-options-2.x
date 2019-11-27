@@ -1,6 +1,5 @@
 // CONFIG
 export const API_BASE_URL = 'apiBaseUrl';
-export const CARRIERS = 'carriers';
 export const LOCALE = 'locale';
 export const PLATFORM = 'platform';
 export const CURRENCY = 'currency';
@@ -44,14 +43,14 @@ export const FEATURE_ALLOW_RETRY = 'allowRetry';
 /**
  * Enable a map for the pickup locations instead of the default list.
  *
- * @type {string}
+ * @type {String}
  */
 export const FEATURE_PICKUP_LOCATIONS_MAP = 'pickupLocationsMap';
 
 /**
  * Tile layer data for use with the pickup locations map.
  *
- * @type {string}
+ * @type {String}
  */
 export const PICKUP_LOCATIONS_MAP_TILE_LAYER_DATA = 'pickupLocationsMapTileLayerData';
 
@@ -79,6 +78,7 @@ export const LOAD_MORE = 'loadMore';
 export const RETRY = 'retry';
 export const PICK_UP_FROM = 'pickUpFrom';
 export const OPENING_HOURS = 'openingHours';
+export const OPTIONS = 'options';
 
 export const HEADER_DELIVERY_OPTIONS = 'headerDeliveryOptions';
 
@@ -105,7 +105,6 @@ export const settingsWithoutCarrierOverride = [
   PLATFORM,
   CURRENCY,
   API_BASE_URL,
-  CARRIERS,
   LOCALE,
 
   FEATURE_ALLOW_RETRY,

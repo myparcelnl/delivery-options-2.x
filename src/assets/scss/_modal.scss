@@ -1,6 +1,11 @@
 .#{$classBase}__modal {
   position: relative;
 
+  &--inline {
+    padding-top: $modal-content-padding;
+    padding-bottom: $modal-content-padding;
+  }
+
   &--full {
     padding: $modal-content-padding;
   }

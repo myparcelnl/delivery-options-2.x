@@ -6,10 +6,10 @@ import { createDate } from '@/data/dates/createDate';
  * Format a given date string into the locale format set through the configBus. Force the timezone to be UTC to avoid
  *  issues.
  *
- * @param {string} date - Date string to format.
+ * @param {String} date - Date string to format.
  * @param {Object} options - Options for formatting. Defaults to "HH:mm" format.
  *
- * @returns {string}
+ * @returns {String}
  */
 export function createLocaleString(date,
   options = {
@@ -23,6 +23,6 @@ export function createLocaleString(date,
       {
         ...options,
         timeZone: 'UTC',
-      }
+      },
     );
 }

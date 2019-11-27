@@ -11,7 +11,7 @@ export function createDate(date) {
   /**
    * Index where the date ends, before the time starts.
    *
-   * @type {number}
+   * @type {Number}
    */
   const dateLength = 10;
 
@@ -39,13 +39,13 @@ export function createDate(date) {
 
   /**
    * Split the date and time, passing the year, month, day, hours, minutes and seconds as arguments to Date.UTC to
-   *  create a UTC date.
+   *  createScript a UTC date.
    *
    * @example 2019 10 15 17 00 00.000000 -> 1573837200000
    */
   const utcDate = Date.UTC(
     ...dateArr,
-    ...timeWithoutDate.split(':')
+    ...timeWithoutDate.split(':'),
   );
 
   return new Date(utcDate);

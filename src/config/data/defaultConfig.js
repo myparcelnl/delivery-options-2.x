@@ -8,11 +8,11 @@ import _mergeWith from 'lodash.mergewith';
 /**
  * Base delivery options configuration.
  *
- * @type {MyParcel.DeliveryOptionsConfiguration}
+ * @type {MyParcelDeliveryOptions.DeliveryOptionsConfigurationuration}
  */
 const baseConfig = {
   /**
-   * @type {MyParcel.DeliveryOptionsConfig}
+   * @type {MyParcelDeliveryOptions.Configuration}
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
@@ -37,7 +37,7 @@ const baseConfig = {
     [SETTINGS.CARRIER_SETTINGS]: {},
 
     [SETTINGS.FEATURE_ALLOW_RETRY]: true,
-    [SETTINGS.FEATURE_PICKUP_LOCATIONS_MAP]: true,
+    [SETTINGS.FEATURE_PICKUP_LOCATIONS_MAP]: false,
     [SETTINGS.FEATURE_MAX_PAGE_ITEMS]: 5,
 
     /**
@@ -52,7 +52,7 @@ const baseConfig = {
   },
 
   /**
-   * @type {MyParcel.DeliveryOptionsStrings}
+   * @type {MyParcel.Strings}
    */
   strings: {
     // Address strings
@@ -84,6 +84,7 @@ const baseConfig = {
 
     // Opening hours
     [SETTINGS.OPENING_HOURS]: 'Openingstijden',
+    [SETTINGS.OPTIONS]: 'Opties',
   },
 };
 
@@ -93,10 +94,10 @@ const baseConfig = {
  *
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
-export const defaultConfig = (platform) => {
+export const defaultConfig = (platform = DEFAULT_PLATFORM) => {
   baseConfig.config.platform = platform;
 
-  return _mergeWith({}, baseConfig, platformConfig(platform), () => {});
+  return _mergeWith(baseConfig, platformConfig(platform));
 };

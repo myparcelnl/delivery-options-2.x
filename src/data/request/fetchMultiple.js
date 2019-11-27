@@ -16,6 +16,12 @@ export async function fetchMultiple(requests) {
     return typeof request === 'function' ? request() : request;
   });
 
+  if (!requests.length) {
+    return {
+      responses: [],
+    };
+  }
+
   // Concatenate all responses
   return (await Promise.all(requests)).reduce((acc, response) => {
     responses = [...responses, ...response];

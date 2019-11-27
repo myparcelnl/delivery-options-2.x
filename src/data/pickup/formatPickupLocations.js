@@ -5,7 +5,7 @@
  *
  * @returns {Object[]}
  */
-export function createPickupLocations(responses) {
+export function formatPickupLocations(responses) {
   return responses.reduce((acc, { carrier, location, address, possibilities }) => {
     const { retail_network_id, location_code, location_name } = location;
 

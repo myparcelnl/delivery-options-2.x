@@ -5,21 +5,21 @@ import { createLocaleString } from '@/data/dates/createLocaleString';
 /**
  * Get pickup moments.
  *
- * @param {object} pickupLocation - Pickup location to render.
+ * @param {Object} pickupLocation - Pickup location to render.
  *
  * @param {Array} pickupLocation.possibilities - Possibilities array.
- * @param {object} pickupLocation.possibilities.delivery_type_name - Possibilities array.
+ * @param {Object} pickupLocation.possibilities.delivery_type_name - Possibilities array.
  *
- * @returns {DeliveryOptionsFormChoice[]}
+ * @returns {MyParcelDeliveryOptions.FormChoice[]}
  */
 export function getPickupMoments(pickupLocation) {
 
   /**
    * Sort moments by pickup time, from early to late.
    *
-   * @param {object} dateA
+   * @param {Object} dateA
    * @param {MyParcel.StartEndDate} dateA.moment
-   * @param {object} dateB
+   * @param {Object} dateB
    * @param {MyParcel.StartEndDate} dateB.moment
    */
   pickupLocation.possibilities.sort((dateA, dateB) => {

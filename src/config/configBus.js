@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import { ERROR } from '@/config/data/eventConfig';
 import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
@@ -23,9 +22,25 @@ export const createConfigBus = () => {
   configBus = new Vue({
     data: {
       /**
-       * @type {MyParcel.CarrierData[]}
+       * All carrier data.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
        */
       carrierData: [],
+
+      /**
+       * All carrier data of carriers that have pickup locations enabled.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
+       */
+      carrierDataWithPickupLocations: [],
+
+      /**
+       * All carrier data of carriers that have delivery options enabled.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
+       */
+      carrierDataWithDeliveryOptions: [],
 
       /**
        * The current carrier.
@@ -47,9 +62,9 @@ export const createConfigBus = () => {
       /**
        * Object to store all pickup data in to be able to send it back to the application.
        *
-       * @type {object.<MyParcel.PickupLocation>}
+       * @type {Object.<MyParcel.PickupLocation>}
        */
-      pickupLocations: null,
+      pickupLocations: {},
 
       /**
        * Whether to show a modal or not.
@@ -89,21 +104,21 @@ export const createConfigBus = () => {
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsConfig}
+       * @type {MyParcelDeliveryOptions.Configuration}
        */
       config: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsStrings}
+       * @type {MyParcel.Strings}
        */
       strings: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsAddress}
+       * @type {MyParcel.Address}
        */
       address: null,
     },
@@ -111,7 +126,7 @@ export const createConfigBus = () => {
       /**
        * Whether the cc of the current address is in the list of valid codes for the current platform.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isValidCountry() {
         return allowedCountryCodesForPlatform().includes(this.address.cc);
@@ -120,7 +135,7 @@ export const createConfigBus = () => {
       /**
        * Whether there are multiple carriers available or not.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isMultiCarrier() {
         return this.carrierData.length > 1;
@@ -185,7 +200,7 @@ export const createConfigBus = () => {
        *
        * @param {Object|String} option  - Option object or name.
        * @param {String} key            - Key name to use. Defaults to "name".
-       * @param {String|number} carrier - Carrier name or ID.
+       * @param {String|Number} carrier - Carrier name or ID.
        *
        * @returns {*}
        */
@@ -212,7 +227,7 @@ export const createConfigBus = () => {
       },
 
       /**
-       * @param {String|number} price - Price config item or value.
+       * @param {String|Number} price - Price config item or value.
        *
        * @returns {String}
        */
@@ -235,7 +250,7 @@ export const createConfigBus = () => {
       /**
        * Format distance for given amount of meters.
        *
-       * @param {number|String} distance - Distance in meters.
+       * @param {Number|String} distance - Distance in meters.
        *
        * @returns {String}
        */
@@ -261,9 +276,9 @@ export const createConfigBus = () => {
        * @param {Object} option - FormConfig options object.
        *
        * @param {String} key - String key to use with this.get().
-       * @param {String|number} carrier - Carrier name or id.
+       * @param {String|Number} carrier - Carrier name or id.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isEnabled(option, key = null, carrier = null) {
         if (typeof option === 'string') {
@@ -308,7 +323,7 @@ export const createConfigBus = () => {
        */
       addErrors(error) {
         this.errors = [...this.errors, error];
-        this.$emit(ERROR, error);
+        this.$emit(EVENTS.ERROR, error);
       },
 
       /**
@@ -316,23 +331,27 @@ export const createConfigBus = () => {
        *
        * @param {String} carrier - Carrier name.
        *
-       * @returns {Object|boolean}
+       * @returns {Object|null}
        */
       getSettingsByCarrier(carrier = this.currentCarrier) {
-        if (!this.config.carrierSettings.hasOwnProperty(carrier)) {
-          return false;
+        const carrierSettings = this.get(SETTINGS.CARRIER_SETTINGS);
+
+        if (!carrierSettings.hasOwnProperty(carrier)) {
+          return null;
         }
 
-        return this.config.carrierSettings[carrier];
+        return carrierSettings[carrier];
       },
 
       /**
        * @param {String} setting - Setting name.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isEnabledInAnyCarrier(setting) {
-        return Object.keys(this.config.carrierSettings).some((carrier) => this.getSettingsByCarrier(carrier)[setting]);
+        const carrierSettings = this.get(SETTINGS.CARRIER_SETTINGS);
+
+        return Object.keys(carrierSettings).some((carrier) => carrierSettings[carrier][setting] === true);
       },
 
       /**
@@ -370,7 +389,7 @@ export const createConfigBus = () => {
        *
        * @param {String} name - Name of the item to check for.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       hasExportValue(name) {
         return !!this.exportValues[name];
@@ -502,8 +521,9 @@ export const createConfigBus = () => {
       /**
        * Update the current carrier.
        *
-       * @param {String} name - Setting that changed.
-       * @param {MyParcel.CarrierName|number} value - New carrier or pickup location id.
+       * @param {Object} obj - Name/value object.
+       * @param {String} obj.name - Setting that changed.
+       * @param {MyParcel.CarrierName|Number} obj.value - New carrier or pickup location id.
        */
       updateCurrentCarrier({ name, value }) {
         switch (name) {

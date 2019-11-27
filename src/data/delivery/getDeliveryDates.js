@@ -33,7 +33,7 @@ export function getDeliveryDates(deliveryOptions) {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
-      }
+      },
     );
 
     const label = dateString.charAt(0).toUpperCase() + dateString.slice(1);

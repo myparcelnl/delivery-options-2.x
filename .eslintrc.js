@@ -9,8 +9,11 @@ module.exports = {
   rules: {
     'jsdoc/no-undefined-types': [
       'warn', {
-        definedTypes: ['MyParcel'],
+        definedTypes: [
+          'MyParcel',
+          'MyParcelDeliveryOptions',
+        ],
       },
     ],
-  }
+  },
 };

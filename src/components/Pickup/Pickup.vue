@@ -1,6 +1,6 @@
 <template>
   <td>
-    <div v-if="hasMap">
+    <div>
       <button @click="() => select('list')">
         Lijst
       </button>
@@ -9,8 +9,7 @@
       </button>
     </div>
 
-    <transition
-      name="shove">
+    <transition name="shove">
       <keep-alive>
         <div :class="$classBase + '__pickup-locations--list'">
           <recursive-form
@@ -19,9 +18,7 @@
         </div>
       </keep-alive>
     </transition>
-    <transition
-      v-if="hasMap"
-      name="shove">
+    <transition name="shove">
       <keep-alive>
         <leaflet
           v-if="selected === 'map'"
@@ -50,7 +47,7 @@ export default {
   },
   data() {
     return {
-      selected: 'list',
+      selected: this.$configBus.get(FEATURE_PICKUP_LOCATIONS_MAP) ? 'map' : 'list',
       listOption: {
         name: PICKUP_LOCATION,
         type: 'radio',
@@ -59,11 +56,6 @@ export default {
         choices: this.data.choices,
       },
     };
-  },
-  computed: {
-    hasMap() {
-      return this.$configBus.get(FEATURE_PICKUP_LOCATIONS_MAP);
-    },
   },
   methods: {
     select(item) {

@@ -71,7 +71,7 @@ export default {
       /**
        * Whether the delivery options are loading or not.
        *
-       * @type {boolean}
+       * @type {Boolean}
        */
       loading: true,
 
@@ -134,7 +134,7 @@ export default {
      *
      * Otherwise returns true.
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     hasValidAddress() {
       if (!this.$configBus.address || !this.$configBus.address.cc) {
@@ -176,7 +176,7 @@ export default {
     /**
      * Check if the cc in the given address allows delivery options and if any top level setting is enabled.
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     hasSomethingToShow() {
       return this.$configBus.isValidCountry
@@ -263,7 +263,7 @@ export default {
     },
 
     /**
-     * Show the delivery options, getting all necessary data in the process..
+     * Show the delivery options, getting all necessary data in the process.
      *
      * @param {CustomEvent|Object} event - Address.
      *
@@ -328,7 +328,7 @@ export default {
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
-     * @param {boolean} force - Ignore the safety check and force dispatching the event.
+     * @param {Boolean} force - Ignore the safety check and force dispatching the event.
      */
     updateExternal({ name, value }) {
       const isEmptied = name === CONFIG.DELIVERY && value === null;

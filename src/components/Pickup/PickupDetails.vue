@@ -8,13 +8,15 @@
       </tr>
       <tr>
         <td :colspan="$configBus.isMultiCarrier ? 1 : 2">
-          <span v-text="data.address.street + ' ' + data.address.number" /><br>
-          <span v-text="data.address.postal_code + ' ' + data.address.city" />
+          <p>
+            <span v-text="data.address.street + ' ' + data.address.number" /><br>
+            <span v-text="data.address.postal_code + ' ' + data.address.city" />
 
-          <template v-if="!!data.location.phone_number">
-            <br>
-            <span v-text="data.location.phone_number" /><br>
-          </template>
+            <template v-if="!!data.location.phone_number">
+              <br>
+              <span v-text="data.location.phone_number" /><br>
+            </template>
+          </p>
         </td>
 
         <td v-if="$configBus.isMultiCarrier">
@@ -22,6 +24,7 @@
             :class="[
               `${$classBase}__image`,
               `${$classBase}__image--lg`,
+              `${$classBase}__h-auto`,
               `${$classBase}__float--right`
             ]"
             :src="data.carrier.image"

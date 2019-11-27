@@ -8,13 +8,10 @@ import { appConfig } from '@/config/data/appConfig';
  * @returns {Array}
  */
 export const formatCarrierResponse = (response) => {
-  return response.reduce((acc, val) => [
-    {
-      ...acc,
-      id: val.id,
-      name: val.name,
-      label: val.human,
-      image: `${appConfig.assetsUrl}/${val.meta.logo_svg}`,
-    },
-  ], []);
+  return response.map((carrier) => ({
+    id: carrier.id,
+    name: carrier.name,
+    label: carrier.human,
+    image: `${appConfig.assetsUrl}/${carrier.meta.logo_svg}`,
+  }));
 };

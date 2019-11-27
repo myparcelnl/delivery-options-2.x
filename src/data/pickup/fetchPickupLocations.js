@@ -6,7 +6,7 @@ import { getRequestParameters } from '@/data/request/getRequestParameters';
  * Fetch pickup options.
  *
  * @param {MyParcel.CarrierName} carrierName - Carrier name.
- * @param parameters
+ * @param {Object} parameters - Request parameters which will be appended after getRequestParameters().
  * @returns {Promise}
  */
 export async function fetchPickupLocations(carrierName, parameters = {}) {

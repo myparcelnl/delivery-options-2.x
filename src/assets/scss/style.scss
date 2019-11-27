@@ -14,11 +14,15 @@
   position: relative;
 
   .#{$classBase} {
+    &__h-auto {
+      height: auto;
+    }
+
     &__d-block {
       display: block;
     }
 
-    &__select {
+    &__w-100 {
       width: 100%;
     }
 

@@ -1,11 +1,57 @@
 .#{$classBase}__pickup-locations {
   &--map {
-    height: 400px;
+    &--modal {
+      .#{$classBase}__pickup-locations__leaflet {
+        height: auto;
+      }
+    }
 
     &__leaflet {
+      height: 400px;
 
       &__marker {
-        filter: drop-shadow(2px 2px rgba(0, 0, 0, 0.4));
+        transition: all .2s ease;
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+
+        &--active {
+          background-color: white;
+          border-radius: 100%;
+          border: 5px solid transparent;
+        }
+
+        &--center {
+          $ripple-size: 50px;
+          border: 0;
+          box-shadow: inset -1px -1px 2px darken($positive, 5%);
+          border-radius: 100%;
+          position: relative;
+          overflow: visible;
+          background-color: lighten($positive, 15%);
+
+          &:after {
+            content: ' ';
+            mix-blend-mode: screen;
+            position: absolute;
+            width: $ripple-size;
+            height: $ripple-size;
+            margin: auto;
+            background-color: rgba(lighten($positive, 30%), .5);
+            opacity: 0;
+            border-radius: 100%;
+            top: -($ripple-size / 2 - 5px);
+            left: -($ripple-size / 2 - 5px);
+          }
+
+          &--loading {
+            &:after {
+              animation: ripple 1.2s ease-out infinite;
+            }
+          }
+        }
+      }
+
+      .leaflet-bar > a {
+        text-decoration: none;
       }
 
       .leaflet-popup-content-wrapper {
@@ -14,6 +60,13 @@
         .leaflet-popup-content {
           padding: $spacing;
         }
+      }
+
+      /*
+       * Animates marker movement. Taken from https://gist.github.com/meule/777d9a8a42e2c99a3386
+       */
+      .leaflet-marker-pane > * {
+        transition: transform .3s linear;
       }
     }
   }

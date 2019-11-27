@@ -64,7 +64,7 @@ export const showDeveloperInfo = () => {
     '%cThis example shows a checkout with delivery options and pickup locations enabled for both bpost and dpd. '
     + 'Check out the readme for all possible settings combinations.\n'
     + '⬇ You can try it right here in your browser console. ⬇',
-    styleText.join(';')
+    styleText.join(';'),
   );
   /* eslint-enable no-console */
 };
