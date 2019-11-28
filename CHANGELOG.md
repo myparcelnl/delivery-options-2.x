@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.2](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.1...v3.1.0-alpha.2) (2019-11-28)
+
+
+### Features
+
+* maps functionality ([42869f3](https://github.com/myparcelbe/checkout/commit/42869f300ca44f91a6aae4625e4954fc98f6fa9d))
+
+
+### Bug Fixes
+
+* **layout:** move carrier logo in pickup location details under the header ([2514c4d](https://github.com/myparcelbe/checkout/commit/2514c4d0d009a9faa581bc3c716b4ff7c1c820e6))
+* close button appearing above inline modal and give it a separate class if it is inline to remove padding ([56fc7b9](https://github.com/myparcelbe/checkout/commit/56fc7b9c822c9b0460f0fb7bd2444669994d27ac))
+* error on changing address while pickup is selected ([4980635](https://github.com/myparcelbe/checkout/commit/498063564290a6b01a162e8a23d0b3a8a1e60552))
+* make modal pass any slots to <component> ([0199183](https://github.com/myparcelbe/checkout/commit/01991833e813eca187cb89120d1131f03864bc20))
+* use the js-sdk via npm ([d17a49a](https://github.com/myparcelbe/checkout/commit/d17a49a16e9dd318192ca5e0b4a31e969db9f57e))
+
 ## [3.1.0-alpha.1](https://github.com/myparcelbe/checkout/compare/v0.1.1...v3.1.0-alpha.1) (2019-11-18)
 
 ### 3.0.27 (2019-11-14)
