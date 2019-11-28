@@ -5,6 +5,7 @@
   "author": "Edie Lemoine (edie@myparcel.nl)",
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:prod": "vue-cli-service build --mode development --watch --dest local",
     "build:prod": "vue-cli-service build",
     "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
@@ -30,6 +31,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
     "npm-check-updates": "^3.2.2",
+    "raw-loader": "^4.0.0",
     "vue": "^2.6.10",
     "vue-async-computed": "^3.7.0"
   },
@@ -56,6 +58,7 @@
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "standard-version": "^7.0.1",
+    "vue-svg-loader": "^0.15.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   },

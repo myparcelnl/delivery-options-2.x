@@ -10,3 +10,9 @@ $image-size-md: 50px;
 $image-size-lg: 75px;
 
 $spacing: .5em;
+
+$carriers: (
+  postnl: #ed8c00,
+  bpost: #ef2637,
+  dpd: #dc0032,
+);

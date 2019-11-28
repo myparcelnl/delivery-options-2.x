@@ -1,5 +1,14 @@
 export const fakeCarriersResponse = [
   {
+    id: 1,
+    name: 'postnl',
+    human: 'PostNL',
+    meta: {
+      logo_svg: '/skin/general-images/carrier-logos/svg/postnl.svg',
+      logo_png: '/skin/general-images/carrier-logos/postnl.png',
+    },
+  },
+  {
     id: 2,
     name: 'bpost',
     human: 'bpost',

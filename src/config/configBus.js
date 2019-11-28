@@ -211,7 +211,7 @@ export const createConfigBus = () => {
         }
 
         // Return carrier specific settings if carrier is defined.
-        if (!!carrier) {
+        if (!!carrier && key) {
           return this.getSettingsByCarrier(carrier)[option[key]];
         }
 

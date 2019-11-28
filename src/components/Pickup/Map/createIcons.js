@@ -1,4 +1,5 @@
 /* eslint-disable no-magic-numbers */
+import MarkerSvg from '!raw-loader!@/assets/images/marker.svg';
 import { configBus } from '@/config/configBus';
 
 /**
@@ -10,16 +11,25 @@ import { configBus } from '@/config/configBus';
  */
 export const createIcons = (className = null) => {
   const carrierIcons = configBus.carrierData.reduce((acc, carrier) => {
-    const iconSize = 38;
-    const iconHalfSize = iconSize / 2;
+    const iconSize = [36, 40];
+    const [iconWidth, iconHeight] = iconSize;
 
-    const CarrierIcon = L.Icon.extend({
+    const iconHalfWidth = iconWidth / 2;
+
+    const CarrierIcon = L.DivIcon.extend({
       options: {
-        className,
-        iconUrl: carrier.image,
-        iconSize: [iconSize, 'auto'],
-        iconAnchor: [iconSize, iconSize],
-        popupAnchor: [-iconHalfSize, -iconSize],
+        className: `${className} ${className}--${carrier.name}`,
+        html: `
+          ${MarkerSvg}
+          <img
+            class="${className}__logo"
+            src="${carrier.image}"
+            height="${iconHeight * .5}"
+            alt="${carrier.label} logo" />
+        `,
+        iconSize: iconSize,
+        iconAnchor: iconSize,
+        popupAnchor: [-iconHalfWidth, -iconWidth],
       },
     });
 
@@ -30,7 +40,7 @@ export const createIcons = (className = null) => {
        * Add an active version of each carrier icon.
        */
       [`${carrier.name}_active`]: new CarrierIcon({
-        className: `${className} ${className}--active`,
+        className: `${className} ${className}--${carrier.name} leaflet-marker-active`,
       }),
     };
   }, {});
