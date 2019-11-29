@@ -40,7 +40,7 @@ export const showDeveloperInfo = () => {
 
   const { config } = defaultConfig(SENDMYPARCEL);
 
-  const baseConfig = {
+  const demoConfig = {
     config: {
       [CONFIG.PLATFORM]: config[CONFIG.PLATFORM],
       [CONFIG.CARRIER_SETTINGS]: config[CONFIG.CARRIER_SETTINGS],
@@ -52,7 +52,7 @@ export const showDeveloperInfo = () => {
   console.log('%cCheck out README.md for the full documentation.', styleHeader2.join(';'));
   console.log('%cBy default, the delivery options are not visible. \n'
     + 'To show it you must fill window.MyParcelConfig with the following data:', styleText.join(';'));
-  console.log(`%cwindow.MyParcelConfig = ${JSON.stringify(baseConfig, null, 2)}`, styleCode.join(';'));
+  console.log(`%cwindow.MyParcelConfig = ${JSON.stringify(demoConfig, null, 2)}`, styleCode.join(';'));
   console.log('%cAnd then send an event to tell the delivery options module to update its data:', styleText.join(';'));
   console.log(`%cdocument.dispatchEvent(new Event('${UPDATE_DELIVERY_OPTIONS}'));`, styleCode.join(';'));
   console.log(

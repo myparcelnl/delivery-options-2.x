@@ -34,8 +34,6 @@ const baseConfig = {
     [SETTINGS.PRICE_SIGNATURE]: 0,
     [SETTINGS.PRICE_STANDARD_DELIVERY]: 0,
 
-    [SETTINGS.CARRIER_SETTINGS]: {},
-
     [SETTINGS.FEATURE_ALLOW_RETRY]: true,
     [SETTINGS.FEATURE_PICKUP_LOCATIONS_MAP]: false,
     [SETTINGS.FEATURE_MAX_PAGE_ITEMS]: 5,
@@ -99,5 +97,5 @@ const baseConfig = {
 export const defaultConfig = (platform = DEFAULT_PLATFORM) => {
   baseConfig.config.platform = platform;
 
-  return _mergeWith(baseConfig, platformConfig(platform));
+  return _mergeWith({}, baseConfig, platformConfig(platform));
 };
