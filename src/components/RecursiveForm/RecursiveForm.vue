@@ -52,7 +52,7 @@
         v-test="`${mutableOption.name}--${choice.name}__${mutableOption.component.name}`"
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
         :data="choice"
-        :selected="isSelected(choice)" />
+        :is-selected="isSelected(choice)" />
 
       <td
         v-else
@@ -130,7 +130,6 @@
             v-for="(selectChoice, index) of mutableOption.choices"
             :key="index + '_' + selectChoice.name"
             :value="selectChoice.name"
-            :selected="index === 0 ? 'selected' : null"
             v-text="selectChoice.label" />
         </select>
         <strong
@@ -367,7 +366,6 @@ export default {
      * Watch the value of selected to emit a change event.
      */
     selected: {
-
       /**
        * @param {*} value - New value for current option.
        */
@@ -495,7 +493,7 @@ export default {
       }
 
       if (type === 'checkbox') {
-        // If there's a value set dedupe the array of values, otherwise set empty array.
+        // If there's a value set dedupe the array of values, otherwise set empty object.
         selected = choices.reduce(setCheckboxSelected, setValue || {});
 
       } else if (type === 'select') {

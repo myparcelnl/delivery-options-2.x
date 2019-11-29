@@ -2,12 +2,15 @@ import '@/assets/scss/style.scss';
 import '@/services/polyfills';
 import '@/services/fontAwesome';
 import '@/services/directives';
+import { MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { RENDER_DELIVERY_OPTIONS, UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm/RecursiveForm';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';
+import { defaultAddress } from '../tests/mockConfigBus';
+import { defaultConfig } from '@/config/data/defaultConfig';
 import { showDeveloperInfo } from '@/services/showDeveloperInfo';
 
 /**

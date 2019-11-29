@@ -152,10 +152,6 @@ export default {
     this.choices = this.data.choices;
   },
 
-  beforeDestroy() {
-    this.map.remove();
-  },
-
   /**
    * This element is used in a <keep-alive> component. This hook will be triggered on "reactivating" the element.
    *
@@ -187,6 +183,10 @@ export default {
       this.showMap = true;
 
       this.$nextTick(() => {
+        if (!this.$refs.map) {
+          return;
+        }
+
         this.map = this.$refs.map.mapObject;
         this.icons = createIcons(`${this.mapClass}__marker`);
 

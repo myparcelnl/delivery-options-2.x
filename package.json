@@ -5,7 +5,7 @@
   "author": "Edie Lemoine (edie@myparcel.nl)",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve:prod": "vue-cli-service build --mode development --watch --dest local",
+    "serve:prod": "vue-cli-service build --dest local && serve -s local",
     "build:prod": "vue-cli-service build",
     "build:dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
