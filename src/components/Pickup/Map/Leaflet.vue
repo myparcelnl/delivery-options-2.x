@@ -63,10 +63,11 @@ export default {
   },
   data() {
     const DEBOUNCE_DELAY = 300;
-    const defaultMaxZoom = 14;
     const defaultLat = 52.2906535;
     const defaultLong = 4.7070306;
-    const defaultZoom = 16;
+    const defaultMaxZoom = 12;
+    const defaultZoom = 14;
+
     return {
       showModal: false,
       modalComponent: PickupDetails,
@@ -262,6 +263,7 @@ export default {
 
       this.map.fitBounds(bounds);
 
+      this.map.setZoom(this.zoom);
       const listener = () => {
         this.onZoomEnd();
         this.map.off('moveend', listener);
