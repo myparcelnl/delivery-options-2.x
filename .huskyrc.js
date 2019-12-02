@@ -4,9 +4,7 @@ const preCommit = createCommand([
   'npm run lint',
 ]);
 
-const prePush = createCommand([
-  'npm run test',
-]);
+const prePush = createCommand([]);
 
 module.exports = {
   hooks: {
