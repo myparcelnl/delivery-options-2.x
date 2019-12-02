@@ -275,7 +275,6 @@ export default {
         return this.mutableChoices.filter((item, index) => index < this.mutablePagination);
       }
 
-      console.log('validChoices', this.mutableOption.name, this.mutableChoices);
       return this.mutableOption.type === 'select' ? false : this.mutableChoices;
     },
 
@@ -456,7 +455,6 @@ export default {
 
       const deps = getDependencies(dependencies, dependency.name);
 
-      console.warn('-----_-_-_---__--_---_--_-_--');
       if (!!deps) {
         const createChoices = (choices, option) => {
           let choice = dependency.hasOwnProperty('parent')
@@ -482,7 +480,6 @@ export default {
         };
 
         this.mutableChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
-        console.log(JSON.stringify(this.mutableChoices, null, 2));
       }
 
       // Select one of the newly added choices.
