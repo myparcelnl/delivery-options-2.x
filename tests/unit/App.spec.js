@@ -5,7 +5,7 @@ import { defaultAddress } from '../mockConfigBus';
 import { mockApp } from '../mockApp';
 import { withWrapper } from '../jest-setup/wrapper-extensions';
 
-describe('The delivery options module', () => {
+describe('App.vue', () => {
   let app;
 
   it('checks address requirements', () => {
@@ -29,8 +29,8 @@ describe('The delivery options module', () => {
 
     app = mockApp({
       config: {
-        platform: MYPARCEL,
-        carrierSettings: {
+        [SETTINGS.PLATFORM]: MYPARCEL,
+        [SETTINGS.CARRIER_SETTINGS]: {
           postnl: {
             [SETTINGS.ALLOW_DELIVERY_OPTIONS]: false,
             [SETTINGS.ALLOW_PICKUP_LOCATIONS]: false,
@@ -49,36 +49,38 @@ describe('The delivery options module', () => {
   it('shows second carrier\'s options on the first click', () => {
     app = mockApp({
       config: {
-        platform: SENDMYPARCEL,
-        carrierSettings: {
+        [SETTINGS.PLATFORM]: SENDMYPARCEL,
+        [SETTINGS.CARRIER_SETTINGS]: {
           bpost: {
-            allowDeliveryOptions: true,
-            allowPickupLocations: true,
-            allowSignature: false,
-            cutoffTime: '18:00',
-            deliveryDaysWindow: 1,
-            dropOffDays: ['1', '2', '3', '4', '5'],
-            dropOffDelay: 0,
-            pricePickup: -0.14,
-            priceSignature: 0,
-            priceSaturdayDelivery: 0,
+            [SETTINGS.ALLOW_DELIVERY_OPTIONS]: true,
+            [SETTINGS.ALLOW_PICKUP_LOCATIONS]: true,
+            [SETTINGS.ALLOW_SIGNATURE]: false,
+            [SETTINGS.CUTOFF_TIME]: '18:00',
+            [SETTINGS.DELIVERY_DAYS_WINDOW]: 1,
+            [SETTINGS.DROP_OFF_DAYS]: ['1', '2', '3', '4', '5'],
+            [SETTINGS.DROP_OFF_DELAY]: 0,
+            [SETTINGS.PRICE_PICKUP]: -0.14,
+            [SETTINGS.PRICE_SIGNATURE]: 0,
+            [SETTINGS.PRICE_SATURDAY_DELIVERY]: 0,
           },
           dpd: {
-            allowDeliveryOptions: true,
-            allowPickupLocations: true,
-            allowSignature: false,
-            cutoffTime: '17:00',
-            deliveryDaysWindow: 1,
-            dropOffDays: ['1', '2', '3', '4', '5'],
-            dropOffDelay: 0,
-            pricePickup: -0.2,
-            priceSignature: 0,
-            priceSaturdayDelivery: 0,
+            [SETTINGS.ALLOW_DELIVERY_OPTIONS]: true,
+            [SETTINGS.ALLOW_PICKUP_LOCATIONS]: true,
+            [SETTINGS.ALLOW_SIGNATURE]: false,
+            [SETTINGS.CUTOFF_TIME]: '17:00',
+            [SETTINGS.DELIVERY_DAYS_WINDOW]: 1,
+            [SETTINGS.DROP_OFF_DAYS]: ['1', '2', '3', '4', '5'],
+            [SETTINGS.DROP_OFF_DELAY]: 0,
+            [SETTINGS.PRICE_PICKUP]: -0.2,
+            [SETTINGS.PRICE_SIGNATURE]: 0,
+            [SETTINGS.PRICE_SATURDAY_DELIVERY]: 0,
           },
         },
       },
     });
 
+    expect(withWrapper(app).findById('form').exists()).toBe(true);
+    expect(withWrapper(app).findById('loader').exists()).toBe(true);
     expect(withWrapper(app).findById(`${DELIVERY}--${DELIVER}`).exists()).toBe(true);
     expect(withWrapper(app).findById(`${CARRIER}--dpd`).exists()).toBe(true);
   });
