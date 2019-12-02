@@ -100,7 +100,7 @@
         </transition-group>
       </td>
     </tr>
-    <tr v-if="hasPagination && mutablePagination < mutableOption.choices.length">
+    <tr v-if="hasPagination && mutablePagination < mutableChoices.length">
       <td colspan="2">
         <div :class="[`${$classBase}__button`]">
           <hr>
@@ -118,7 +118,7 @@
     <tr>
       <td>
         <select
-          v-if="mutableOption.choices.length > 1"
+          v-if="mutableChoices.length > 1"
           :id="`${$classBase}__${mutableOption.name}`"
           v-model="selected"
           :class="{
@@ -127,7 +127,7 @@
           }"
           :name="mutableOption.name">
           <option
-            v-for="(selectChoice, index) of mutableOption.choices"
+            v-for="(selectChoice, index) of mutableChoices"
             :key="index + '_' + selectChoice.name"
             :value="selectChoice.name"
             v-text="selectChoice.label" />
@@ -144,6 +144,7 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
 import PickupOption from '../Pickup/PickupOption';
+import debounce from 'debounce';
 import { formConfig } from '@/config/data/formConfig';
 import { getChoiceOrFirst } from '@/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';
@@ -172,6 +173,11 @@ export default {
        * @type {Object}
        */
       mutableOption: this.option,
+
+      /**
+       * @type {Array}
+       */
+      mutableChoices: this.option.choices || [],
 
       /**
        * Loading state.
@@ -229,7 +235,7 @@ export default {
      * @returns {Object}
      */
     firstChoice() {
-      return this.mutableOption.choices[0];
+      return this.mutableChoices[0];
     },
 
     /**
@@ -238,9 +244,7 @@ export default {
      * @returns {Boolean}
      */
     hasChoices() {
-      return this.mutableOption.hasOwnProperty('choices')
-        && !!this.mutableOption.choices
-        && !!this.mutableOption.choices.length;
+      return !!this.mutableChoices.length;
     },
 
     /**
@@ -268,10 +272,11 @@ export default {
      */
     validChoices() {
       if (this.hasPagination) {
-        return this.mutableOption.choices.filter((item, index) => index < this.mutablePagination);
+        return this.mutableChoices.filter((item, index) => index < this.mutablePagination);
       }
 
-      return this.mutableOption.type === 'select' ? false : this.mutableOption.choices;
+      console.log('validChoices', this.mutableOption.name, this.mutableChoices);
+      return this.mutableOption.type === 'select' ? false : this.mutableChoices;
     },
 
     /**
@@ -280,7 +285,7 @@ export default {
      * @returns {Object}
      */
     selectedChoice() {
-      return this.mutableOption.choices.find((choice) => this.isSelected(choice));
+      return this.mutableChoices.find((choice) => this.isSelected(choice));
     },
   },
 
@@ -310,6 +315,7 @@ export default {
           this.loading = false;
 
           choice.options = options;
+
           return choice.options;
         }
         return choice.options;
@@ -320,6 +326,12 @@ export default {
   },
 
   watch: {
+    ['mutableChoices']: {
+      handler(choices) {
+        this.mutableChoices = choices;
+      },
+      deep: true,
+    },
     option: {
       /**
        * @param {*} newOption - New value for current option.
@@ -444,6 +456,7 @@ export default {
 
       const deps = getDependencies(dependencies, dependency.name);
 
+      console.warn('-----_-_-_---__--_---_--_-_--');
       if (!!deps) {
         const createChoices = (choices, option) => {
           let choice = dependency.hasOwnProperty('parent')
@@ -468,7 +481,8 @@ export default {
           return choices;
         };
 
-        this.mutableOption.choices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+        this.mutableChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+        console.log(JSON.stringify(this.mutableChoices, null, 2));
       }
 
       // Select one of the newly added choices.
@@ -480,10 +494,11 @@ export default {
      *  current option, the option that has 'selected: true' or the first option.
      */
     setSelected() {
-      const { choices, type, name } = this.mutableOption;
+      const choices = this.mutableChoices;
+      const { type, name } = this.mutableOption;
       const isSet = this.$configBus.values.hasOwnProperty(name);
       const setValue = this.$configBus.values[name];
-      const hasChoices = !!choices && choices.length > 0;
+      const hasChoices = choices.length > 0;
 
       let selected;
 
