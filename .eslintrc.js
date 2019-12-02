@@ -7,11 +7,13 @@ module.exports = {
     '@myparcel/eslint-config/preset-vue',
   ],
   rules: {
+    'no-console': "error",
     'jsdoc/no-undefined-types': [
       'warn', {
         definedTypes: [
           'MyParcel',
           'MyParcelDeliveryOptions',
+          'Wrapper',
         ],
       },
     ],

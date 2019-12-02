@@ -134,7 +134,7 @@ export default {
      *
      * @param {*} code - Code to convert.
      *
-     * @returns {string}
+     * @returns {String}
      */
     toCodeString(code) {
       return JSON.stringify(code, null, '  ')

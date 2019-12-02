@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function,no-console */
+/* eslint-disable max-lines-per-function,no-console,no-magic-numbers */
 import * as CONFIG from '@/config/data/settingsConfig';
 import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import { UPDATE_DELIVERY_OPTIONS } from '@/config/data/eventConfig';

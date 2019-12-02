@@ -1,5 +1,5 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
-import { DEFAULT_PLATFORM, MYPARCEL } from '@/config/data/platformConfig';
+import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { defaultConfig } from '@/config/data/defaultConfig';
 import { mockConfigBus } from '../mockConfigBus';
 
@@ -40,9 +40,9 @@ describe('configBus', () => {
   });
 
   it('prioritizes settings correctly', () => {
-    configBus = mockConfigBus(DEFAULT_PLATFORM, {
+    configBus = mockConfigBus({
       config: {
-        carriers: ['bpost', 'dpd'],
+        platform: SENDMYPARCEL,
         [SETTINGS.DROP_OFF_DAYS]: '1;2;3;4;5;6',
         carrierSettings: {
           dpd: {
@@ -58,9 +58,9 @@ describe('configBus', () => {
     configBus.$data.currentCarrier = 'bpost';
     expect(configBus.get(SETTINGS.DROP_OFF_DAYS)).toBe('1;2;3;4;5;6');
 
-    configBus = mockConfigBus(DEFAULT_PLATFORM, {
+    configBus = mockConfigBus({
       config: {
-        carriers: ['bpost', 'dpd'],
+        platform: SENDMYPARCEL,
         [SETTINGS.ALLOW_SIGNATURE]: false,
       },
     });
@@ -71,11 +71,7 @@ describe('configBus', () => {
     configBus.$data.currentCarrier = 'bpost';
     expect(configBus.get(SETTINGS.ALLOW_SIGNATURE)).toBe(false);
 
-    configBus = mockConfigBus(DEFAULT_PLATFORM, {
-      config: {
-        carriers: ['bpost', 'dpd'],
-      },
-    });
+    configBus = mockConfigBus(DEFAULT_PLATFORM);
 
     configBus.$data.currentCarrier = 'dpd';
     expect(configBus.get(SETTINGS.ALLOW_SIGNATURE))

@@ -1,5 +1,6 @@
 import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { defaultAddress, mockConfigBus } from '../mockConfigBus';
+import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { getDefaultRequestParameters } from '@/data/request/getDefaultRequestParameters';
 
 let configBus = mockConfigBus();
@@ -7,7 +8,8 @@ let configBus = mockConfigBus();
 describe('request parameters', () => {
 
   test('gets the correct default parameters', () => {
-    mockConfigBus({ address: {} });
+    const configBus = mockConfigBus({ address: {} });
+    configBus.currentCarrier = Object.keys(configBus.get(CARRIER_SETTINGS))[0];
 
     expect(getDefaultRequestParameters()).toEqual({
       carrier: 'postnl',

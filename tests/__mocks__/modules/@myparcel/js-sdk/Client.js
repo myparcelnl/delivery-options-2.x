@@ -14,8 +14,10 @@ const fakeRequest = (endpoint) => {
 };
 
 /**
- * @param method
- * @param endpoint
+ * @param {String} method - Method to use.
+ * @param {String} endpoint - Endpoint to use.
+ *
+ * @returns {Object}
  */
 const mock = (method, endpoint) => ({ [method]: () => fakeRequest(endpoint) });
 

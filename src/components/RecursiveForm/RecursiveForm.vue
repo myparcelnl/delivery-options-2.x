@@ -144,7 +144,6 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
 import PickupOption from '../Pickup/PickupOption';
-import debounce from 'debounce';
 import { formConfig } from '@/config/data/formConfig';
 import { getChoiceOrFirst } from '@/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';

@@ -1,5 +1,10 @@
 /**
- * @param wrapper
+ * Helper function for use with vue-test-utils wrappers.
+ *
+ * Taken from https://dev.to/dasdaniel/extending-vue-test-utils-5c8g and modified/extended further.
+ *
+ * @param {Wrapper} wrapper - Wrapper object to run functions on.
+ * @returns {Object}
  */
 export function withWrapper(wrapper) {
   return {
