@@ -8,6 +8,7 @@ module.exports = {
   transformIgnorePatterns: ['node_modules/(?!(babel-jest|jest-vue-preprocessor)/)'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^!?raw-loader!(.*)': '<rootDir>/tests/__mocks__/rawLoader.js',
   },
   snapshotSerializers: ['jest-serializer-vue'],
   testMatch: [

@@ -8,7 +8,7 @@ import _mergeWith from 'lodash.mergewith';
 /**
  * Base delivery options configuration.
  *
- * @type {MyParcelDeliveryOptions.DeliveryOptionsConfigurationuration}
+ * @type {MyParcelDeliveryOptions.Configuration}
  */
 const baseConfig = {
   /**

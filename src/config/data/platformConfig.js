@@ -44,7 +44,7 @@ const platformLocaleMap = {
 /**
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcelDeliveryOptions.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
 export const platformConfig = (platform) => {
   return configMap[platformLocaleMap[platform]];
