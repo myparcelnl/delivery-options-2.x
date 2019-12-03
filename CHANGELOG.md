@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.6](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.5...v3.1.0-alpha.6) (2019-12-03)
+
+
+### Bug Fixes
+
+* make strings for list or map pickup locations customizable ([962bae2](https://github.com/myparcelbe/checkout/commit/962bae29b91603a81187509f1233dfe852f3d878))
+* rename the pickup button strings and add it to typings ([e8d53d0](https://github.com/myparcelbe/checkout/commit/e8d53d03569c2602bb1a91586720613229336c6a))
+
 ## [3.1.0-alpha.5](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.4...v3.1.0-alpha.5) (2019-12-03)
 
 
