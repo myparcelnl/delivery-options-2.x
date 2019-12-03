@@ -1,12 +1,12 @@
 <template>
   <td>
     <div>
-      <button @click="() => select('list')">
-        Lijst
-      </button>
-      <button @click="() => select('map')">
-        Kaart
-      </button>
+      <button
+        @click="() => select('list')"
+        v-text="$configBus.strings.pickupLocationsShowList" />
+      <button
+        @click="() => select('map')"
+        v-text="$configBus.strings.pickupLocationsShowMap" />
     </div>
 
     <transition name="shove">

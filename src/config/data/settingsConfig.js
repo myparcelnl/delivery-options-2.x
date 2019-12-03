@@ -96,6 +96,9 @@ export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
 export const WRONG_NUMBER_POSTAL_CODE = 'wrongNumberPostalCode';
 export const WRONG_POSTAL_CODE_CITY = 'wrongPostalCodeCity';
 
+export const PICKUP_LOCATIONS_SHOW_LIST = 'pickupLocationsShowList';
+export const PICKUP_LOCATIONS_SHOW_MAP = 'pickupLocationsShowMap';
+
 /**
  * These settings can't be overridden by the carrierSettings object in the config.
  *

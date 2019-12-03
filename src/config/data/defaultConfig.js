@@ -83,6 +83,9 @@ const baseConfig = {
     // Opening hours
     [SETTINGS.OPENING_HOURS]: 'Openingstijden',
     [SETTINGS.OPTIONS]: 'Opties',
+
+    [SETTINGS.PICKUP_LOCATIONS_SHOW_LIST]: 'Lijst',
+    [SETTINGS.PICKUP_LOCATIONS_SHOW_MAP]: 'Kaart',
   },
 };
 
