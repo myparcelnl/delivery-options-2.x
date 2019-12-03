@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.5](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.4...v3.1.0-alpha.5) (2019-12-03)
+
+
+### Bug Fixes
+
+* config being overridden by developerinfo ([e392196](https://github.com/myparcelbe/checkout/commit/e39219675a17f4c6f82b72cffe45e743a47c9bd3))
+
 ## [3.1.0-alpha.4](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.3...v3.1.0-alpha.4) (2019-11-29)
 
 ## [3.1.0-alpha.3](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2019-11-29)
