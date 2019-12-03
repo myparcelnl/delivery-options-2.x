@@ -2,10 +2,10 @@
   <td>
     <div>
       <button
-        @click="() => select('list')"
+        @click="selected = views.list"
         v-text="$configBus.strings.pickupLocationsListButton" />
       <button
-        @click="() => select('map')"
+        @click="selected = views.map"
         v-text="$configBus.strings.pickupLocationsMapButton" />
     </div>
 
@@ -13,7 +13,7 @@
       <keep-alive>
         <div :class="$classBase + '__pickup-locations--list'">
           <recursive-form
-            v-if="selected === 'list'"
+            v-if="selected === views.list"
             :option="listOption" />
         </div>
       </keep-alive>
@@ -21,7 +21,7 @@
     <transition name="shove">
       <keep-alive>
         <leaflet
-          v-if="selected === 'map'"
+          v-if="selected === views.map"
           :data="data"
           @update="emitUpdate" />
       </keep-alive>
@@ -31,10 +31,13 @@
 
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
-import { FEATURE_MAX_PAGE_ITEMS, FEATURE_PICKUP_LOCATIONS_MAP } from '@/config/data/settingsConfig';
+import * as SETTINGS from '@/config/data/settingsConfig';
 import Leaflet from '@/components/Pickup/Map/Leaflet';
 import { PICKUP_LOCATION } from '@/config/data/formConfig';
 import PickupOption from '@/components/Pickup/PickupOption';
+
+const MAP_VIEW = 'map';
+const LIST_VIEW = 'list';
 
 export default {
   name: 'Pickup',
@@ -47,26 +50,41 @@ export default {
   },
   data() {
     return {
-      selected: this.$configBus.get(FEATURE_PICKUP_LOCATIONS_MAP) ? 'map' : 'list',
+      selected: this.getDefaultMapView(),
       listOption: {
         name: PICKUP_LOCATION,
         type: 'radio',
         component: PickupOption,
-        pagination: this.$configBus.get(FEATURE_MAX_PAGE_ITEMS),
+        pagination: this.$configBus.get(SETTINGS.FEATURE_MAX_PAGE_ITEMS),
         choices: this.data.choices,
+      },
+      views: {
+        map: MAP_VIEW,
+        list: LIST_VIEW,
       },
     };
   },
   methods: {
-    select(item) {
-      this.selected = item;
-    },
-
     /**
      * @param {Object} event - Event object.
      */
     emitUpdate(event) {
       this.$configBus.$emit(EVENTS.UPDATE, event);
+    },
+
+    /**
+     * Get the default map view setting or fall back to default.
+     *
+     * @returns {String}
+     */
+    getDefaultMapView() {
+      const setting = this.$configBus.get(SETTINGS.FEATURE_PICKUP_LOCATIONS_DEFAULT_VIEW);
+
+      if (setting && this.views.includes(setting)) {
+        return setting;
+      }
+
+      return this.views.map;
     },
   },
 };

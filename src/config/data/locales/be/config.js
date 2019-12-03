@@ -15,7 +15,7 @@ export const config = {
   /**
    * For the same reason as above, prefer the map view to the list view.
    */
-  [SETTINGS.FEATURE_PICKUP_LOCATIONS_MAP]: true,
+  [SETTINGS.FEATURE_PICKUP_LOCATIONS_DEFAULT_VIEW]: true,
 
   /**
    * Show more pickup items by default for BE because it doesn't show the distance.

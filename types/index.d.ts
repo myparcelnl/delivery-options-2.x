@@ -141,8 +141,8 @@ declare namespace MyParcelDeliveryOptions {
 
     // Feature toggles
     allowRetry: Boolean
+    pickupLocationsDefaultView: 'map' | 'list'
     pickupShowDistance: Boolean
-    pickupLocationsMap: Boolean
 
     pickupLocationsMapTileLayerData: MapTileLayerData
   }
