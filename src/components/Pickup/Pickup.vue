@@ -3,10 +3,10 @@
     <div>
       <button
         @click="() => select('list')"
-        v-text="$configBus.strings.pickupLocationsShowList" />
+        v-text="$configBus.strings.pickupLocationsListButton" />
       <button
         @click="() => select('map')"
-        v-text="$configBus.strings.pickupLocationsShowMap" />
+        v-text="$configBus.strings.pickupLocationsMapButton" />
     </div>
 
     <transition name="shove">

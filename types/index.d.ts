@@ -63,6 +63,8 @@ declare namespace MyParcelDeliveryOptions {
     pickupTitle: String
     signatureTitle: String
     openingHours: String
+    pickupLocationsListButton: String
+    pickupLocationsMapButton: String
 
     // BE only
     saturdayDeliveryTitle?: String
