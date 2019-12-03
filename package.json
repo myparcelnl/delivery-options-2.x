@@ -8,7 +8,7 @@
     "serve:prod": "vue-cli-service build --dest local && serve -s local",
     "build:prod": "vue-cli-service build",
     "build:dev": "vue-cli-service build --mode development",
-    "lint": "vue-cli-service lint .",
+    "lint": "vue-cli-service lint --quiet .",
     "prepublishOnly": "npm run build:prod",
     "release": "standard-version -t",
     "test": "jest",
