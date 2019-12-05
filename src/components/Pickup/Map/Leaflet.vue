@@ -135,18 +135,35 @@ export default {
    * On mounting the map component, load all the needed scripts externally. This is done to not bloat the bundle size
    *  and only load the map when the user selects it.
    */
-  mounted() {
-    Promise.all([
-      createScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css'),
-      createScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js'),
-    ]).then(() => {
+  async mounted() {
+    // Skip all script loading if RequireJS is detected. It does NOT like us loading scripts manually.
+    const loadScripts = typeof requirejs === 'undefined';
+
+    if (loadScripts) {
+      const scripts = [];
+      const leafletCss = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css';
+      const leafletJs = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js';
+      const vue2LeafletJs = 'https://cdnjs.cloudflare.com/ajax/libs/Vue2Leaflet/1.0.2/vue2-leaflet.min.js';
+
+      if (!document.querySelector(`link[href="${leafletCss}"]`)) {
+        scripts.push(leafletCss);
+      }
+
+      if (typeof L === 'undefined') {
+        scripts.push(leafletJs);
+      }
+
+      await Promise.all(scripts.map((script) => createScript(script)));
+
       /**
        * This scripts depends on leaflet.js so has to wait until it's loaded.
        */
-      createScript('https://cdnjs.cloudflare.com/ajax/libs/Vue2Leaflet/1.0.2/vue2-leaflet.min.js').then(() => {
-        this.onLoadedScripts();
-      });
-    });
+      if (typeof Vue2Leaflet === 'undefined') {
+        await createScript(vue2LeafletJs);
+      }
+    }
+
+    this.onLoadedScripts();
   },
 
   created() {

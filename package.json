@@ -25,7 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/vue-fontawesome": "^0.1.8",
     "@myparcel/js-sdk": "^2.0.0",
-    "core-js": "^3.4.5",
+    "core-js": "^3.4.7",
     "custom-event-polyfill": "^1.0.7",
     "debounce": "^1.2.0",
     "lodash.isequal": "^4.5.0",
