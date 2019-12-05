@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.7](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.6...v3.1.0-alpha.7) (2019-12-05)
+
+
+### Bug Fixes
+
+* calling functions too early ([4bbd4b8](https://github.com/myparcelbe/checkout/commit/4bbd4b8078dea93d636aa4cb1723d9087012ead0))
+
 ## [3.1.0-alpha.6](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.5...v3.1.0-alpha.6) (2019-12-03)
 
 
