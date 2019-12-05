@@ -213,6 +213,8 @@ export default {
         this.fitToMarkers();
         this.createCenterMarker();
         this.addMapEvents();
+
+        this.selectFirstMarker();
       });
     },
 
@@ -361,6 +363,15 @@ export default {
      */
     getChoiceByMarkerId(id) {
       return this.data.choices.find((choice) => choice.name === id);
+    },
+
+    /**
+     * Select the first marker in the choices list.
+     */
+    selectFirstMarker() {
+      const firstChoice = this.markers[0];
+
+      this.selectedMarker = this.selectMarker(firstChoice);
     },
   },
 };
