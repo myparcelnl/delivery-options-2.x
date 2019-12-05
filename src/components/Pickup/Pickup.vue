@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      selected: this.getDefaultMapView(),
+      selected: null,
       listOption: {
         name: PICKUP_LOCATION,
         type: 'radio',
@@ -63,6 +63,9 @@ export default {
         list: LIST_VIEW,
       },
     };
+  },
+  created() {
+    this.selected = this.getDefaultMapView();
   },
   methods: {
     /**
@@ -80,7 +83,7 @@ export default {
     getDefaultMapView() {
       const setting = this.$configBus.get(SETTINGS.FEATURE_PICKUP_LOCATIONS_DEFAULT_VIEW);
 
-      if (setting && this.views.includes(setting)) {
+      if (setting && this.views.hasOwnProperty(setting)) {
         return setting;
       }
 
