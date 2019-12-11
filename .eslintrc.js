@@ -7,7 +7,7 @@ module.exports = {
     '@myparcel/eslint-config/preset-vue',
   ],
   rules: {
-    'no-console': "error",
+    'no-console': process.env.NODE_ENV === 'development' ? 'warn' : 'error',
     'jsdoc/no-undefined-types': [
       'warn', {
         definedTypes: [

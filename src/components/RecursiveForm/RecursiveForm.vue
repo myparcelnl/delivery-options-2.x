@@ -324,21 +324,17 @@ export default {
   },
 
   watch: {
-    ['mutableChoices']: {
-      handler(choices) {
-        this.mutableChoices = choices;
-      },
-      deep: true,
-    },
+
     option: {
       /**
-       * @param {*} newOption - New value for current option.
+       * @param {Object} newOption - New value for current option.
        */
       handler(newOption) {
         this.mutableOption = newOption;
+        this.mutableChoices = newOption.choices;
 
         if (!this.hasDependency) {
-          this.setSelected();
+          this.$nextTick(this.setSelected);
         }
       },
 
@@ -390,6 +386,7 @@ export default {
       immediate: true,
     },
   },
+
   created() {
     if (this.hasPagination) {
       this.mutablePagination = this.mutableOption.pagination;
@@ -439,7 +436,7 @@ export default {
         return;
       }
 
-      const { dependency } = this.mutableOption;
+      const { dependency } = this.option;
       let dependencyName = dependency.name;
 
       // If dependency.name is an array, dependencyName is the last item.
@@ -454,43 +451,42 @@ export default {
 
       const deps = getDependencies(dependencies, dependency.name);
 
-      if (!!deps) {
-        const createChoices = (choices, option) => {
-          let choice = dependency.hasOwnProperty('parent')
-            ? formConfig[dependency.parent].options[option]
-            : formConfig[option];
-
-          // If choice does not exist in the config, ignore it.
-          if (!choice) {
-            return choices;
-          }
-
-          // Apply transform function to the new choice, if present.
-          if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
-            choice = dependency.transform(choice, deps[this.mutableOption.name][choice.name]);
-          }
-
-          // Only add the setting if it's enabled in the config
-          if (this.$configBus.isEnabled(choice)) {
-            choices.push(choice);
-          }
-
-          return choices;
-        };
-
-        this.mutableChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+      if (!deps) {
+        this.setSelected();
+        return;
       }
+      const createChoices = (choices, option) => {
+        let choice = dependency.hasOwnProperty('parent')
+          ? formConfig[dependency.parent].options[option]
+          : formConfig[option];
+        // If choice does not exist in the config, ignore it.
+        if (!choice) {
+          return choices;
+        }
+        // Apply transform function to the new choice, if present.
+        if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
+          choice = dependency.transform(choice, deps[this.mutableOption.name][choice.name]);
+        }
+        // Only add the setting if it's enabled in the config
+        if (this.$configBus.isEnabled(choice)) {
+          choices.push(choice);
+        }
+        return choices;
+      };
 
-      // Select one of the newly added choices.
-      this.setSelected();
+      const newChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+
+      this.$nextTick(() => {
+        this.option.choices = [...newChoices];
+        this.setSelected();
+      });
     },
-
     /**
      * Get the name of the selected choice for the component. The chosen value is either the previously set value for
      *  current option, the option that has 'selected: true' or the first option.
      */
     setSelected() {
-      const choices = this.mutableChoices;
+      const { choices } = this.mutableOption;
       const { type, name } = this.mutableOption;
       const isSet = this.$configBus.values.hasOwnProperty(name);
       const setValue = this.$configBus.values[name];
