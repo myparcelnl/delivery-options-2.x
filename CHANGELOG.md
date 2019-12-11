@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.10](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.9...v3.1.0-alpha.10) (2019-12-11)
+
+
+### Bug Fixes
+
+* reactivity bug in recursive form ([d7a5b2a](https://github.com/myparcelbe/checkout/commit/d7a5b2a902ddb6e25580b36b45365102417300da))
+
 ## [3.1.0-alpha.9](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.8...v3.1.0-alpha.9) (2019-12-05)
 
 
