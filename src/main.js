@@ -6,11 +6,8 @@ import { RENDER_DELIVERY_OPTIONS, UPDATE_DELIVERY_OPTIONS } from '@/config/data/
 import App from '@/App.vue';
 import AsyncComputed from 'vue-async-computed';
 import RecursiveForm from '@/components/RecursiveForm/RecursiveForm';
-import { SENDMYPARCEL } from '@/config/data/platformConfig';
 import Vue from 'vue';
 import { createConfigBus } from '@/config/configBus';
-import { defaultAddress } from '../tests/mockConfigBus';
-import { defaultConfig } from '@/config/data/defaultConfig';
 import { showDeveloperInfo } from '@/services/showDeveloperInfo';
 
 /**
