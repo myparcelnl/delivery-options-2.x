@@ -26,6 +26,7 @@ module.exports = {
       symlinks: false,
     },
     plugins: [
+      new webpack.BannerPlugin(`MyParcel Delivery Options ${process.env.VUE_APP_VERSION} `),
       new webpack.DefinePlugin({
         'process.env': {
           VUE_APP_VERSION: JSON.stringify(process.env.VUE_APP_VERSION),
