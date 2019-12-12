@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0-alpha.11](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.10...v3.1.0-alpha.11) (2019-12-12)
+
+
+### Bug Fixes
+
+* double selected marker ([060b329](https://github.com/myparcelbe/checkout/commit/060b329113c400523eac90d4bd5457b517db0131))
+* pickup location not updated on click marker ([78b96b4](https://github.com/myparcelbe/checkout/commit/78b96b416653fdc90fbdb83b2630a854d3d11680))
+* pickup variables not set correctly on opening map and fixing empty value not being sent on disable ([8daba39](https://github.com/myparcelbe/checkout/commit/8daba390a04e6bf0c6505975a067c331b813b9ca))
+* settings not "remembered" across components ([ef85686](https://github.com/myparcelbe/checkout/commit/ef85686aaeb35eed08ae8c907eb7cee9c5e1c480))
+
 ## [3.1.0-alpha.10](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.9...v3.1.0-alpha.10) (2019-12-11)
 
 
