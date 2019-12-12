@@ -221,7 +221,11 @@ export default {
          * @see https://vuejs.org/v2/api/#Vue-nextTick
          */
         updateDependency: (args) => {
-          this.$nextTick(() => this.getChoicesByDependency(args));
+          this.setSelected();
+
+          this.$nextTick(() => {
+            this.getChoicesByDependency(args);
+          });
         },
       },
     };
@@ -334,7 +338,9 @@ export default {
         this.mutableChoices = newOption.choices;
 
         if (!this.hasDependency) {
-          this.$nextTick(this.setSelected);
+          this.$nextTick(() => {
+            this.setSelected();
+          });
         }
       },
 
@@ -378,7 +384,7 @@ export default {
       handler(value) {
         this.$configBus.$emit(EVENTS.UPDATE,
           {
-            name: this.mutableOption.name,
+            name: this.option.name,
             value,
           });
       },
@@ -486,8 +492,7 @@ export default {
      *  current option, the option that has 'selected: true' or the first option.
      */
     setSelected() {
-      const { choices } = this.mutableOption;
-      const { type, name } = this.mutableOption;
+      const { choices, name, type } = this.mutableOption;
       const isSet = this.$configBus.values.hasOwnProperty(name);
       const setValue = this.$configBus.values[name];
       const hasChoices = choices.length > 0;
@@ -502,7 +507,6 @@ export default {
       if (type === 'checkbox') {
         // If there's a value set dedupe the array of values, otherwise set empty object.
         selected = choices.reduce(setCheckboxSelected, setValue || {});
-
       } else if (type === 'select') {
         if (isSet) {
           selected = getChoiceOrFirst(choices, (choice) => choice.name === setValue);

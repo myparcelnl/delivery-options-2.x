@@ -275,7 +275,7 @@ export default {
     },
 
     /**
-     * Fit the bounds of the map to the visible markers.
+     * Fit the bounds of the map to the visible markers to determine the center, then apply the set zoom level.
      */
     fitToMarkers() {
       const bounds = this.markers.map((marker) => marker.latLng);
@@ -334,6 +334,7 @@ export default {
 
       this.centerMarker.addTo(this.map);
     },
+
     isSelected(marker) {
       return marker.location.location_code === this.$configBus.get(CONFIG.PICKUP_LOCATION);
     },
