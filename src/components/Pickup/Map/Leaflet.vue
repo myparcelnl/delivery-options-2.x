@@ -8,7 +8,7 @@
       v-if="showModal"
       inline
       :component="modalComponent"
-      :modal-data="selectedMarker.data"
+      :modal-data="selectedPickupLocation"
       :has-close-button="true"
       @close="showModal = false" />
 
@@ -256,16 +256,13 @@ export default {
       }
 
       this.selectedMarker = marker;
-      this.selectedPickupLocation = this.getChoiceByMarkerId(this.selectedMarker.id);
+      this.selectedPickupLocation = {
+        ...this.selectedMarker.data,
+        ...this.getChoiceByMarkerId(this.selectedMarker.id),
+      };
 
       // Replace the icon with the active version.
       this.selectedMarker.icon = this.icons[`${this.selectedMarker.data.carrier.name}_active`];
-
-      // Add the currently selected pickup location's option to the selectedMarker.
-      this.selectedMarker.data = {
-        ...this.selectedMarker.data,
-        ...this.selectedPickupLocation,
-      };
     },
 
     /**
@@ -273,6 +270,8 @@ export default {
      */
     onClickMarker(marker) {
       this.selectMarker(marker);
+      this.$configBus.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_LOCATION, value: this.selectedPickupLocation.name });
+
       this.showModal = true;
     },
 

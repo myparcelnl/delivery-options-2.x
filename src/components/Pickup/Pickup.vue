@@ -10,13 +10,11 @@
     </div>
 
     <transition name="shove">
-      <keep-alive>
-        <div :class="$classBase + '__pickup-locations--list'">
-          <recursive-form
-            v-if="selected === views.list"
-            :option="listOption" />
-        </div>
-      </keep-alive>
+      <div :class="$classBase + '__pickup-locations--list'">
+        <recursive-form
+          v-if="selected === views.list"
+          :option="listOption" />
+      </div>
     </transition>
     <transition name="shove">
       <keep-alive>
