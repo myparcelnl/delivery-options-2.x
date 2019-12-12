@@ -382,6 +382,10 @@ export default {
        * @param {*} value - New value for current option.
        */
       handler(value) {
+        if (value === null) {
+          return;
+        }
+
         this.$configBus.$emit(EVENTS.UPDATE,
           {
             name: this.option.name,

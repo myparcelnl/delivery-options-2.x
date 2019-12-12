@@ -22,18 +22,16 @@
       <keep-alive>
         <leaflet
           v-if="selected === views.map"
-          :data="data"
-          @update="emitUpdate" />
+          :data="data" />
       </keep-alive>
     </transition>
   </td>
 </template>
 
 <script>
-import * as EVENTS from '@/config/data/eventConfig';
+import * as CONFIG from '@/config/data/formConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
 import Leaflet from '@/components/Pickup/Map/Leaflet';
-import { PICKUP_LOCATION } from '@/config/data/formConfig';
 import PickupOption from '@/components/Pickup/PickupOption';
 
 const MAP_VIEW = 'map';
@@ -52,7 +50,7 @@ export default {
     return {
       selected: null,
       listOption: {
-        name: PICKUP_LOCATION,
+        name: CONFIG.PICKUP_LOCATION,
         type: 'radio',
         component: PickupOption,
         pagination: this.$configBus.get(SETTINGS.FEATURE_MAX_PAGE_ITEMS),
@@ -68,13 +66,6 @@ export default {
     this.selected = this.getDefaultMapView();
   },
   methods: {
-    /**
-     * @param {Object} event - Event object.
-     */
-    emitUpdate(event) {
-      this.$configBus.$emit(EVENTS.UPDATE, event);
-    },
-
     /**
      * Get the default map view setting or fall back to default.
      *

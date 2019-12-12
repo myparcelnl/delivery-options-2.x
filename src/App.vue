@@ -98,6 +98,7 @@ export default {
          */
         removeData: () => {
           this.$configBus.exportValues = {};
+          this.updateExternal(false);
         },
         show: () => {
           if (this.showDeliveryOptions === true) {
@@ -328,10 +329,12 @@ export default {
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
-     * @param {Boolean} force - Ignore the safety check and force dispatching the event.
+     * @param {Object|Boolean} data - If data is false, sends empty update.
+     * @param {String} data.name - Name of the changed option (if called through update).
+     * @param {*} data.value - New value of the changed option (if called through update).
      */
-    updateExternal({ name, value }) {
-      const isEmptied = name === CONFIG.DELIVERY && value === null;
+    updateExternal(data) {
+      const isEmptied = data === false || (data.name === CONFIG.DELIVERY && data.value === null);
 
       /*
        * If delivery type is not set it means either delivery or pickup was clicked but the subsequent request is not
@@ -348,7 +351,7 @@ export default {
       document.dispatchEvent(new CustomEvent(
         EVENTS.UPDATED_DELIVERY_OPTIONS,
         {
-          detail: isEmptied ? {} : this.$configBus.exportValues,
+          detail: isEmptied ? null : this.$configBus.exportValues,
         },
       ));
     },

@@ -6,6 +6,7 @@ import Vue from 'vue';
 import { allowedCountryCodesForPlatform } from '@/config/data/countryConfig';
 import { getConfig } from '@/config/setup';
 import { getPickupDate } from '@/data/pickup/getPickupDate';
+import isEqual from 'lodash.isequal';
 
 /**
  * The config bus to be used throughout the application. It's filled with `createConfigBus()`, otherwise the entire
@@ -198,8 +199,8 @@ export const createConfigBus = () => {
        * 4. `defaultConfig.<option>`                       - Will be in `this.config` if there are no user defined
        *                                                     default settings.
        *
-       * @param {Object|String} option  - Option object or name.
-       * @param {String} key            - Key name to use. Defaults to "name".
+       * @param {Object|String} option - Option object or name.
+       * @param {String} key - Key name to use. Defaults to "name".
        * @param {String|Number} carrier - Carrier name or ID.
        *
        * @returns {*}
@@ -499,6 +500,7 @@ export const createConfigBus = () => {
        */
       updateExternalData({ name, value }) {
         this.values[name] = value;
+
         this.setExportValue(name, value);
         this.updateCurrentCarrier({ name, value });
 

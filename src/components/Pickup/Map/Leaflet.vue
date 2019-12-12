@@ -122,6 +122,8 @@ export default {
         moveEnd: debounce(this.onMoveEnd, DEBOUNCE_DELAY),
         zoomEnd: debounce(this.onZoomEnd, DEBOUNCE_DELAY),
       },
+
+      selectedPickupLocation: null,
     };
   },
 
@@ -168,7 +170,6 @@ export default {
 
   created() {
     this.choices = this.data.choices;
-    this.selectSelectedPickupLocation();
   },
 
   /**
@@ -178,7 +179,11 @@ export default {
    */
   activated() {
     this.showModal = false;
-    this.selectSelectedPickupLocation();
+
+    // Don't do this if the map hasn't been created yet because createMap also calls this function.
+    if (this.map) {
+      this.selectSelectedPickupLocation();
+    }
   },
 
   methods: {
@@ -187,7 +192,7 @@ export default {
       const selectedMarker = this.getMarkerByLocationCode(selectedPickupLocation);
 
       if (selectedPickupLocation && selectedMarker) {
-        this.selectMarker(selectedMarker);
+        this.manuallySelectMarker(selectedMarker);
       }
     },
 
@@ -219,6 +224,8 @@ export default {
         this.createCenterMarker();
         this.addMapEvents();
 
+        this.selectSelectedPickupLocation();
+
         if (!this.selectedMarker) {
           this.selectFirstMarker();
         }
@@ -239,6 +246,9 @@ export default {
       tileLayer.addTo(this.map);
     },
 
+    /**
+     * @param {Object} marker - Marker to select.
+     */
     selectMarker(marker) {
       if (this.selectedMarker) {
         // Replace the active icon with the regular icon if there already was a selected marker.
@@ -246,6 +256,7 @@ export default {
       }
 
       this.selectedMarker = marker;
+      this.selectedPickupLocation = this.getChoiceByMarkerId(this.selectedMarker.id);
 
       // Replace the icon with the active version.
       this.selectedMarker.icon = this.icons[`${this.selectedMarker.data.carrier.name}_active`];
@@ -253,14 +264,31 @@ export default {
       // Add the currently selected pickup location's option to the selectedMarker.
       this.selectedMarker.data = {
         ...this.selectedMarker.data,
-        ...this.getChoiceByMarkerId(this.selectedMarker.id),
+        ...this.selectedPickupLocation,
       };
     },
 
+    /**
+     * @param {Object} marker - Marker that was clicked.
+     */
     onClickMarker(marker) {
       this.selectMarker(marker);
       this.showModal = true;
-      this.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_LOCATION, value: marker.id });
+    },
+
+    /**
+     * Execute selectMarker but also emit some events manually. This is used for selecting without clicking a marker as
+     *  the recursiveForm inside the modal would emit these events.
+     *
+     * @param {Object} marker - Marker to select.
+     */
+    manuallySelectMarker(marker) {
+      this.selectMarker(marker);
+
+      const firstPickupMoment = this.selectedPickupLocation.pickupData.possibilities[0].delivery_type_name;
+
+      // Set the pickup moment to the first available possibility manually.
+      this.$configBus.$emit(EVENTS.UPDATE, { name: CONFIG.PICKUP_MOMENT, value: firstPickupMoment });
     },
 
     createMarkers() {
@@ -342,6 +370,11 @@ export default {
       this.centerMarker.addTo(this.map);
     },
 
+    /**
+     * @param {Object} marker - Marker object.
+     *
+     * @returns {Boolean}
+     */
     isSelected(marker) {
       return marker.location.location_code === this.$configBus.get(CONFIG.PICKUP_LOCATION);
     },
@@ -379,7 +412,7 @@ export default {
     selectFirstMarker() {
       const firstChoice = this.markers[0];
 
-      this.selectedMarker = this.selectMarker(firstChoice);
+      this.selectedMarker = this.manuallySelectMarker(firstChoice);
     },
   },
 };
