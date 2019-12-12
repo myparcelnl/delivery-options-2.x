@@ -168,6 +168,7 @@ export default {
 
   created() {
     this.choices = this.data.choices;
+    this.selectSelectedPickupLocation();
   },
 
   /**
@@ -177,15 +178,19 @@ export default {
    */
   activated() {
     this.showModal = false;
-    const selectedPickupLocation = this.$configBus.getValue(CONFIG.PICKUP_LOCATION);
-    const selectedMarker = this.getMarkerByLocationCode(selectedPickupLocation);
-
-    if (selectedPickupLocation && selectedMarker) {
-      this.selectMarker(selectedMarker);
-    }
+    this.selectSelectedPickupLocation();
   },
 
   methods: {
+    selectSelectedPickupLocation() {
+      const selectedPickupLocation = this.$configBus.getValue(CONFIG.PICKUP_LOCATION);
+      const selectedMarker = this.getMarkerByLocationCode(selectedPickupLocation);
+
+      if (selectedPickupLocation && selectedMarker) {
+        this.selectMarker(selectedMarker);
+      }
+    },
+
     /**
      * When all Leaflet scripts are loaded, initialize the Vue2Leaflet components and start creating the map.
      */
@@ -214,7 +219,9 @@ export default {
         this.createCenterMarker();
         this.addMapEvents();
 
-        this.selectFirstMarker();
+        if (!this.selectedMarker) {
+          this.selectFirstMarker();
+        }
       });
     },
 
