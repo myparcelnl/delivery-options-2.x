@@ -8,5 +8,3 @@ script:
   - 'cross-env NODE_ICU_DATA=node_modules/full-icu npm run test'
 after_script:
   - 'cat ./coverage/lcov.info | coveralls'
-git:
-  submodules: false

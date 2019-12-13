@@ -3,7 +3,7 @@
  *  choice if none match.
  *
  * @param {Array} choices - Choices array.
- * @param {function} predicate - Function to use in find().
+ * @param {Function} predicate - Function to use in find().
  *
  * @returns {String} - Choice name.
  */

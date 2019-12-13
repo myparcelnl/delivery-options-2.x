@@ -1,10 +1,5 @@
-/**
- * Copied from /carriers responses. Last updated: 06/09/2019 14:01.
- *
- * @type {{dpd: Object, bpost: Object, postnl: Object}}
- */
-const data = {
-  postnl: {
+export const fakeCarriersResponse = [
+  {
     id: 1,
     name: 'postnl',
     human: 'PostNL',
@@ -13,7 +8,7 @@ const data = {
       logo_png: '/skin/general-images/carrier-logos/postnl.png',
     },
   },
-  bpost: {
+  {
     id: 2,
     name: 'bpost',
     human: 'bpost',
@@ -22,7 +17,7 @@ const data = {
       logo_png: '/skin/general-images/carrier-logos/bpost.png',
     },
   },
-  dpd: {
+  {
     id: 4,
     name: 'dpd',
     human: 'DPD',
@@ -31,13 +26,4 @@ const data = {
       logo_png: '/skin/general-images/carrier-logos/dpd.png',
     },
   },
-};
-
-/**
- * Get fake carrier data by carrier name.
- *
- * @param {String} carrier - Carrier name.
- *
- * @returns {Object}
- */
-export const carrierData = (carrier) => data[carrier];
+];

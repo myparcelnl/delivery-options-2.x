@@ -1,45 +1,39 @@
 import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
-import { defaultAddress, getConfigBus } from './testConfig';
+import { defaultAddress, mockConfigBus } from '../mockConfigBus';
+import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { getDefaultRequestParameters } from '@/data/request/getDefaultRequestParameters';
 
-let configBus = getConfigBus(DEFAULT_PLATFORM);
+let configBus = mockConfigBus();
 
-describe('getting default request parameters', () => {
+describe('request parameters', () => {
 
   test('gets the correct default parameters', () => {
-    expect(getDefaultRequestParameters())
-      .toEqual({
-        carrier: 'postnl',
-        include: 'shipment_options',
-        platform: DEFAULT_PLATFORM,
-      });
+    const configBus = mockConfigBus({ address: {} });
+    configBus.currentCarrier = Object.keys(configBus.get(CARRIER_SETTINGS))[0];
+
+    expect(getDefaultRequestParameters()).toEqual({
+      carrier: 'postnl',
+      include: 'shipment_options',
+      platform: DEFAULT_PLATFORM,
+    });
   });
 
   test('removes undefined parameters', () => {
-    configBus = getConfigBus(MYPARCEL, {
-      config: {
-        carriers: ['postnl'],
-      },
-      address: {
-        ...defaultAddress[MYPARCEL],
-        postalCode: undefined,
-      },
-    });
-
+    const { postalCode, ...address } = defaultAddress[MYPARCEL];
+    configBus = mockConfigBus({ address });
     configBus.$data.currentCarrier = 'postnl';
 
     expect(getDefaultRequestParameters())
       .toEqual({
         carrier: 'postnl',
-        cc: 'nl',
         include: 'shipment_options',
-        number: 66,
-        platform: 'myparcel',
+        platform: MYPARCEL,
+        ...address,
       });
   });
 
   test('removes city from parameters when carrier is dpd', () => {
-    configBus = getConfigBus(SENDMYPARCEL, {
+    configBus = mockConfigBus(SENDMYPARCEL, {
       config: {
         carriers: ['bpost', 'dpd'],
       },

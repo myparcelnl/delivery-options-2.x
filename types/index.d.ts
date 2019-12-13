@@ -1,4 +1,5 @@
 import './jest';
+import {Vue} from 'vue/types/vue';
 
 declare namespace MyParcel {
   type CarrierName = 'postnl' | 'bpost' | 'dpd'
@@ -14,20 +15,23 @@ declare namespace MyParcel {
    * @see https://myparcelnl.github.io/api/#6_A_3
    */
   type ShipmentOptionName = 'cooled_delivery' | 'large_format' | 'only_recipient' | 'signature' | 'return'
+}
+
+declare namespace MyParcelDeliveryOptions {
 
   /**
    * Configuration object supplied by the platform.
    */
-  interface DeliveryOptionsConfiguration {
-    address: DeliveryOptionsAddress
-    strings: DeliveryOptionsStrings
-    config: DeliveryOptionsConfig
+  interface Configuration {
+    address: Address
+    strings: Strings
+    config: Config
   }
 
   /**
    * Address object from the external platform.
    */
-  interface DeliveryOptionsAddress {
+  interface Address {
     cc: String
     number: String | Number
     postalCode: String
@@ -37,7 +41,7 @@ declare namespace MyParcel {
   /**
    * Strings object from the external platform.
    */
-  interface DeliveryOptionsStrings {
+  interface Strings {
     city: String
     postalCode: String
     houseNumber: String
@@ -59,6 +63,8 @@ declare namespace MyParcel {
     pickupTitle: String
     signatureTitle: String
     openingHours: String
+    pickupLocationsListButton: String
+    pickupLocationsMapButton: String
 
     // BE only
     saturdayDeliveryTitle?: String
@@ -113,11 +119,11 @@ declare namespace MyParcel {
   /**
    * Configuration object from the external platform.
    */
-  interface DeliveryOptionsConfig {
+  interface Config {
     apiBaseUrl: String
     locale: String
     carriers: String | Array<String>
-    platform: Platform
+    platform: MyParcel.Platform
     currency: String
 
     allowDeliveryOptions: Boolean
@@ -135,11 +141,14 @@ declare namespace MyParcel {
 
     // Feature toggles
     allowRetry: Boolean
+    pickupLocationsDefaultView: 'map' | 'list'
     pickupShowDistance: Boolean
+
+    pickupLocationsMapTileLayerData: MapTileLayerData
   }
 
   type CarrierSettings = {
-    [key in CarrierName]?: {
+    [key in MyParcel.CarrierName]?: {
       allowEveningDelivery?: Boolean
       allowMorningDelivery?: Boolean
       allowOnlyRecipient?: Boolean
@@ -164,7 +173,7 @@ declare namespace MyParcel {
 
   interface CarrierData {
     id: Number
-    name: CarrierName
+    name: MyParcel.CarrierName
     human: String
     meta: {
       logo_png: String
@@ -189,7 +198,7 @@ declare namespace MyParcel {
   }
 
   interface ShipmentOption {
-    name: ShipmentOptionName
+    name: MyParcel.ShipmentOptionName
     schema: {
       type: String
       enum: Boolean[]
@@ -202,7 +211,7 @@ declare namespace MyParcel {
   }
 
   interface DeliveryPossibility {
-    type: DeliveryType
+    type: MyParcel.DeliveryType
     shipment_options: ShipmentOption[]
     collect_date: any
     delivery_time_frames: DeliveryTimeFrame[]
@@ -210,13 +219,35 @@ declare namespace MyParcel {
 
   interface PickupPossibility {
     delivery_type_id: Number
-    delivery_type_name: DeliveryType
+    delivery_type_name: MyParcel.DeliveryType
     moment: {
       start: Timestamp
     }
   }
+
+  interface FormEntry {
+    name: String
+    type: String
+    choices?: Array<Object>
+    component?: Vue
+    dependency?: Object
+    loop?: Boolean
+    pagination?: Number
+  }
+
+  interface MapTileLayerData {
+    url: string
+    attribution: string
+    token?: string
+    maxZoom?: Number
+  }
 }
+
 
 declare module 'MyParcel' {
   export = MyParcel
+}
+
+declare module 'MyParcelDeliveryOptions' {
+  export = MyParcelDeliveryOptions
 }

@@ -30,6 +30,8 @@ config.development = {
   assetsUrl: config.production.assetsUrl,
 };
 
+config.test = config.production;
+
 /**
  * Config by environment and platform.
  */

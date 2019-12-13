@@ -8,17 +8,15 @@ import _mergeWith from 'lodash.mergewith';
 /**
  * Base delivery options configuration.
  *
- * @type {MyParcel.DeliveryOptionsConfiguration}
+ * @type {MyParcelDeliveryOptions.Configuration}
  */
 const baseConfig = {
   /**
-   * @type {MyParcel.DeliveryOptionsConfig}
+   * @type {MyParcelDeliveryOptions.Configuration}
    */
   config: {
     [SETTINGS.PLATFORM]: DEFAULT_PLATFORM,
     [SETTINGS.CURRENCY]: 'EUR',
-
-    [SETTINGS.FEATURE_ALLOW_RETRY]: true,
 
     [SETTINGS.ALLOW_DELIVERY_OPTIONS]: true,
     [SETTINGS.ALLOW_EVENING_DELIVERY]: true,
@@ -36,13 +34,23 @@ const baseConfig = {
     [SETTINGS.PRICE_SIGNATURE]: 0,
     [SETTINGS.PRICE_STANDARD_DELIVERY]: 0,
 
-    [SETTINGS.CARRIER_SETTINGS]: {},
-
+    [SETTINGS.FEATURE_ALLOW_RETRY]: true,
+    [SETTINGS.FEATURE_PICKUP_LOCATIONS_DEFAULT_VIEW]: 'map',
     [SETTINGS.FEATURE_MAX_PAGE_ITEMS]: 5,
+
+    /**
+     * Default leaflet tile layer data.
+     */
+    [SETTINGS.PICKUP_LOCATIONS_MAP_TILE_LAYER_DATA]: {
+      url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+      // eslint-disable-next-line max-len
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
+      maxZoom: 19,
+    },
   },
 
   /**
-   * @type {MyParcel.DeliveryOptionsStrings}
+   * @type {MyParcel.Strings}
    */
   strings: {
     // Address strings
@@ -74,6 +82,10 @@ const baseConfig = {
 
     // Opening hours
     [SETTINGS.OPENING_HOURS]: 'Openingstijden',
+    [SETTINGS.OPTIONS]: 'Opties',
+
+    [SETTINGS.PICKUP_LOCATIONS_LIST_BUTTON]: 'Lijst',
+    [SETTINGS.PICKUP_LOCATIONS_MAP_BUTTON]: 'Kaart',
   },
 };
 
@@ -83,10 +95,10 @@ const baseConfig = {
  *
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
-export const defaultConfig = (platform) => {
+export const defaultConfig = (platform = DEFAULT_PLATFORM) => {
   baseConfig.config.platform = platform;
 
-  return _mergeWith({}, baseConfig, platformConfig(platform), () => {});
+  return _mergeWith({}, baseConfig, platformConfig(platform));
 };

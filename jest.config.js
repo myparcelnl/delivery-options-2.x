@@ -1,19 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-const sdkPath = path.dirname(__dirname);
-
-let sdkMock = {};
-
-try {
-  // Use the sdk if it is present (local)
-  if (fs.existsSync(sdkPath)) {
-    sdkMock = { '^@myparcel/sdk(?:/.+)+?$': '<rootDir>/myparcel-js-sdk' };
-  }
-} catch (err) {
-  // Mock until sdk is live on npm
-  sdkMock = { '^@myparcel/sdk(?:/.+)+?$': '<rootDir>/tests/__mocks__/myparcel-js-sdk.js' };
-}
-
 module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
   transform: {
@@ -23,8 +7,8 @@ module.exports = {
   },
   transformIgnorePatterns: ['node_modules/(?!(babel-jest|jest-vue-preprocessor)/)'],
   moduleNameMapper: {
-    ...sdkMock,
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^!?raw-loader!(.*)': '<rootDir>/tests/__mocks__/rawLoader.js',
   },
   snapshotSerializers: ['jest-serializer-vue'],
   testMatch: [

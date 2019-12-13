@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import { ERROR } from '@/config/data/eventConfig';
 import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
@@ -7,6 +6,7 @@ import Vue from 'vue';
 import { allowedCountryCodesForPlatform } from '@/config/data/countryConfig';
 import { getConfig } from '@/config/setup';
 import { getPickupDate } from '@/data/pickup/getPickupDate';
+import isEqual from 'lodash.isequal';
 
 /**
  * The config bus to be used throughout the application. It's filled with `createConfigBus()`, otherwise the entire
@@ -23,9 +23,25 @@ export const createConfigBus = () => {
   configBus = new Vue({
     data: {
       /**
-       * @type {MyParcel.CarrierData[]}
+       * All carrier data.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
        */
       carrierData: [],
+
+      /**
+       * All carrier data of carriers that have pickup locations enabled.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
+       */
+      carrierDataWithPickupLocations: [],
+
+      /**
+       * All carrier data of carriers that have delivery options enabled.
+       *
+       * @type {MyParcelDeliveryOptions.CarrierData[]}
+       */
+      carrierDataWithDeliveryOptions: [],
 
       /**
        * The current carrier.
@@ -47,9 +63,9 @@ export const createConfigBus = () => {
       /**
        * Object to store all pickup data in to be able to send it back to the application.
        *
-       * @type {object.<MyParcel.PickupLocation>}
+       * @type {Object.<MyParcel.PickupLocation>}
        */
-      pickupLocations: null,
+      pickupLocations: {},
 
       /**
        * Whether to show a modal or not.
@@ -89,21 +105,21 @@ export const createConfigBus = () => {
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsConfig}
+       * @type {MyParcelDeliveryOptions.Configuration}
        */
       config: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsStrings}
+       * @type {MyParcel.Strings}
        */
       strings: null,
 
       /**
        * Must be defined before it is filled in created().
        *
-       * @type {MyParcel.DeliveryOptionsAddress}
+       * @type {MyParcel.Address}
        */
       address: null,
     },
@@ -111,7 +127,7 @@ export const createConfigBus = () => {
       /**
        * Whether the cc of the current address is in the list of valid codes for the current platform.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isValidCountry() {
         return allowedCountryCodesForPlatform().includes(this.address.cc);
@@ -120,7 +136,7 @@ export const createConfigBus = () => {
       /**
        * Whether there are multiple carriers available or not.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isMultiCarrier() {
         return this.carrierData.length > 1;
@@ -183,9 +199,9 @@ export const createConfigBus = () => {
        * 4. `defaultConfig.<option>`                       - Will be in `this.config` if there are no user defined
        *                                                     default settings.
        *
-       * @param {Object|String} option  - Option object or name.
-       * @param {String} key            - Key name to use. Defaults to "name".
-       * @param {String|number} carrier - Carrier name or ID.
+       * @param {Object|String} option - Option object or name.
+       * @param {String} key - Key name to use. Defaults to "name".
+       * @param {String|Number} carrier - Carrier name or ID.
        *
        * @returns {*}
        */
@@ -196,7 +212,7 @@ export const createConfigBus = () => {
         }
 
         // Return carrier specific settings if carrier is defined.
-        if (!!carrier) {
+        if (!!carrier && key) {
           return this.getSettingsByCarrier(carrier)[option[key]];
         }
 
@@ -212,7 +228,7 @@ export const createConfigBus = () => {
       },
 
       /**
-       * @param {String|number} price - Price config item or value.
+       * @param {String|Number} price - Price config item or value.
        *
        * @returns {String}
        */
@@ -235,7 +251,7 @@ export const createConfigBus = () => {
       /**
        * Format distance for given amount of meters.
        *
-       * @param {number|String} distance - Distance in meters.
+       * @param {Number|String} distance - Distance in meters.
        *
        * @returns {String}
        */
@@ -261,9 +277,9 @@ export const createConfigBus = () => {
        * @param {Object} option - FormConfig options object.
        *
        * @param {String} key - String key to use with this.get().
-       * @param {String|number} carrier - Carrier name or id.
+       * @param {String|Number} carrier - Carrier name or id.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isEnabled(option, key = null, carrier = null) {
         if (typeof option === 'string') {
@@ -308,7 +324,7 @@ export const createConfigBus = () => {
        */
       addErrors(error) {
         this.errors = [...this.errors, error];
-        this.$emit(ERROR, error);
+        this.$emit(EVENTS.ERROR, error);
       },
 
       /**
@@ -316,23 +332,27 @@ export const createConfigBus = () => {
        *
        * @param {String} carrier - Carrier name.
        *
-       * @returns {Object|boolean}
+       * @returns {Object|null}
        */
       getSettingsByCarrier(carrier = this.currentCarrier) {
-        if (!this.config.carrierSettings.hasOwnProperty(carrier)) {
-          return false;
+        const carrierSettings = this.get(SETTINGS.CARRIER_SETTINGS);
+
+        if (!carrierSettings.hasOwnProperty(carrier)) {
+          return null;
         }
 
-        return this.config.carrierSettings[carrier];
+        return carrierSettings[carrier];
       },
 
       /**
        * @param {String} setting - Setting name.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       isEnabledInAnyCarrier(setting) {
-        return Object.keys(this.config.carrierSettings).some((carrier) => this.getSettingsByCarrier(carrier)[setting]);
+        const carrierSettings = this.get(SETTINGS.CARRIER_SETTINGS);
+
+        return Object.keys(carrierSettings).some((carrier) => carrierSettings[carrier][setting] === true);
       },
 
       /**
@@ -370,7 +390,7 @@ export const createConfigBus = () => {
        *
        * @param {String} name - Name of the item to check for.
        *
-       * @returns {boolean}
+       * @returns {Boolean}
        */
       hasExportValue(name) {
         return !!this.exportValues[name];
@@ -433,6 +453,17 @@ export const createConfigBus = () => {
 
         // Only do this after a pickup location and moment are selected.
         if (!!pickupLocation && !!this.getValue(CONFIG.PICKUP_MOMENT)) {
+
+          /**
+           * After changing address while pickup is selected, the current pickupLocation might not be updated yet. This
+           *  causes an error because the old pickup location likely doesn't exist anymore in the pickupLocations array.
+           *
+           * Return, because the next time pickupLocation will be set this condition will pass.
+           */
+          if (!this.$configBus.pickupLocations.hasOwnProperty(pickupLocation)) {
+            return;
+          }
+
           /**
            * Take out the possibilities array to use it to get the deliveryDate, but don't add it to the exportValues.
            * Also remove carrier from the currentPickupLocation object because it's already set in exportValues.carrier.
@@ -469,15 +500,16 @@ export const createConfigBus = () => {
        */
       updateExternalData({ name, value }) {
         this.values[name] = value;
+
         this.setExportValue(name, value);
         this.updateCurrentCarrier({ name, value });
 
         switch (this.getValue(CONFIG.DELIVERY)) {
           case CONFIG.DELIVER:
-            this.setDeliveryExportValues({ name, value });
+            this.setDeliveryExportValues();
             break;
           case CONFIG.PICKUP:
-            this.setPickupExportValues({ name, value });
+            this.setPickupExportValues();
             break;
         }
 
@@ -491,8 +523,9 @@ export const createConfigBus = () => {
       /**
        * Update the current carrier.
        *
-       * @param {String} name - Setting that changed.
-       * @param {MyParcel.CarrierName|number} value - New carrier or pickup location id.
+       * @param {Object} obj - Name/value object.
+       * @param {String} obj.name - Setting that changed.
+       * @param {MyParcel.CarrierName|Number} obj.value - New carrier or pickup location id.
        */
       updateCurrentCarrier({ name, value }) {
         switch (name) {

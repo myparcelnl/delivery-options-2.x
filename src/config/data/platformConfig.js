@@ -21,9 +21,14 @@ const configMap = {
   },
 };
 
+/**
+ * TODO: Temporary hard coded requirements. Depends on https://jira.dmp.zone/browse/MY-16173.
+ *
+ * @type {Object}
+ */
 export const addressRequirements = {
   nl: ['postalCode', 'number'],
-  be: ['postalCode'], // , 'city' // todo it's not mandatory right now?!
+  be: ['postalCode', 'city'],
 };
 
 /**
@@ -39,7 +44,7 @@ const platformLocaleMap = {
 /**
  * @param {MyParcel.Platform} platform - Platform name.
  *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
 export const platformConfig = (platform) => {
   return configMap[platformLocaleMap[platform]];

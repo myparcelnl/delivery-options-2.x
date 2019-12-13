@@ -1,4 +1,7 @@
-import Client from '@myparcel/sdk/src';
+import '@myparcel/js-sdk/dist/endpoint/public/carriers';
+import '@myparcel/js-sdk/dist/endpoint/public/delivery-options';
+import '@myparcel/js-sdk/dist/endpoint/public/pickup-locations';
+import Client from '@myparcel/js-sdk/dist/client';
 import { LOCALE } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 import { getApiUrl } from '@/data/request/getApiUrl';

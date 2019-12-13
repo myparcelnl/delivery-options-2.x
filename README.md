@@ -111,7 +111,7 @@ window.MyParcelConfig = {
   address: {
     cc: 'BE',
     city: 'Antwerpen',
-    postalCode: '1000',
+    postalCode: '2000',
   }
 };
 ```
@@ -156,7 +156,7 @@ window.MyParcelConfig = {
   address: {
     cc: 'BE',
     city: 'Antwerpen',
-    postalCode: '1000',
+    postalCode: '2000',
   },
 };
 

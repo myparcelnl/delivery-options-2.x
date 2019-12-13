@@ -8,6 +8,12 @@
  */
 import { configBus } from '@/config/configBus';
 
+/**
+ * @param {Object} dependencies - Dependency object.
+ * @param {String|String[]} dependencyNames - Name(s) of dependencies.
+ *
+ * @returns {null}
+ */
 export function getDependencies(dependencies, dependencyNames) {
   // Create a new array to avoid overwriting dependencyNames.
   const needles = typeof dependencyNames === 'string' ? [dependencyNames] : [...dependencyNames];

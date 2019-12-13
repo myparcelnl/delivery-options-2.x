@@ -3,19 +3,19 @@
   display: inline-block;
 
   &--lg {
-    width: $spacing-lg;
-    height: $spacing-lg;
+    width: $image-size-lg;
+    height: $image-size-lg;
   }
 
   &--md {
-    width: $spacing-md;
-    height: $spacing-md;
+    width: $image-size-md;
+    height: $image-size-md;
   }
 
   &--sm {
     vertical-align: middle;
     padding-right: 6px;
-    width: $spacing-sm;
-    height: $spacing-sm;
+    width: $image-size-sm;
+    height: $image-size-sm;
   }
 }

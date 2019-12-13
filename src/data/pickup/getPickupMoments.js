@@ -10,12 +10,13 @@ import { createLocaleString } from '@/data/dates/createLocaleString';
  * @param {Array} pickupLocation.possibilities - Possibilities array.
  * @param {Object} pickupLocation.possibilities.delivery_type_name - Possibilities array.
  *
- * @returns {Object}
+ * @returns {MyParcelDeliveryOptions.FormChoice[]}
  */
 export function getPickupMoments(pickupLocation) {
 
-  // Sort moments by pickup time, from early to late.
   /**
+   * Sort moments by pickup time, from early to late.
+   *
    * @param {Object} dateA
    * @param {MyParcel.StartEndDate} dateA.moment
    * @param {Object} dateB

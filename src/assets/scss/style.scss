@@ -9,15 +9,20 @@
   @import "modal";
   @import "table";
   @import "pickup";
+  @import "map";
 
   position: relative;
 
   .#{$classBase} {
+    &__h-auto {
+      height: auto;
+    }
+
     &__d-block {
       display: block;
     }
 
-    &__select {
+    &__w-100 {
       width: 100%;
     }
 
@@ -50,7 +55,7 @@
 
     &__spacing {
       &--md {
-        height: $spacing-md !important;
+        height: $image-size-md !important;
       }
     }
   }

@@ -71,7 +71,7 @@ export default {
       /**
        * Whether the delivery options are loading or not.
        *
-       * @type {boolean}
+       * @type {Boolean}
        */
       loading: true,
 
@@ -98,6 +98,7 @@ export default {
          */
         removeData: () => {
           this.$configBus.exportValues = {};
+          this.updateExternal(false);
         },
         show: () => {
           if (this.showDeliveryOptions === true) {
@@ -134,7 +135,7 @@ export default {
      *
      * Otherwise returns true.
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     hasValidAddress() {
       if (!this.$configBus.address || !this.$configBus.address.cc) {
@@ -176,7 +177,7 @@ export default {
     /**
      * Check if the cc in the given address allows delivery options and if any top level setting is enabled.
      *
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     hasSomethingToShow() {
       return this.$configBus.isValidCountry
@@ -263,7 +264,7 @@ export default {
     },
 
     /**
-     * Show the delivery options, getting all necessary data in the process..
+     * Show the delivery options, getting all necessary data in the process.
      *
      * @param {CustomEvent|Object} event - Address.
      *
@@ -328,10 +329,12 @@ export default {
     /**
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
-     * @param {boolean} force - Ignore the safety check and force dispatching the event.
+     * @param {Object|Boolean} data - If data is false, sends empty update.
+     * @param {String} data.name - Name of the changed option (if called through update).
+     * @param {*} data.value - New value of the changed option (if called through update).
      */
-    updateExternal({ name, value }) {
-      const isEmptied = name === CONFIG.DELIVERY && value === null;
+    updateExternal(data) {
+      const isEmptied = data === false || (data.name === CONFIG.DELIVERY && data.value === null);
 
       /*
        * If delivery type is not set it means either delivery or pickup was clicked but the subsequent request is not
@@ -348,7 +351,7 @@ export default {
       document.dispatchEvent(new CustomEvent(
         EVENTS.UPDATED_DELIVERY_OPTIONS,
         {
-          detail: isEmptied ? {} : this.$configBus.exportValues,
+          detail: isEmptied ? null : this.$configBus.exportValues,
         },
       ));
     },

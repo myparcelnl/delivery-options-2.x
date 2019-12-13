@@ -1,17 +1,16 @@
+import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
 import _mergeWith from 'lodash.mergewith';
 import { defaultConfig } from '@/config/data/defaultConfig';
 
-export const mock = false;
-
 /**
  * Get the window object supplied by the environment we're in. Parse it as JSON if needed.
  *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
 const getWindowObject = () => {
   // Allow mocking for user and tests.
-  if (!window.hasOwnProperty('MyParcelConfig') || mock === true) {
+  if (!window.hasOwnProperty('MyParcelConfig')) {
     if (['development', 'test'].includes(process.env.NODE_ENV)) {
       window.MyParcelConfig = {};
     } else {
@@ -27,7 +26,7 @@ const getWindowObject = () => {
 /**
  * Get the address from the window object and convert cc to lowercase.
  *
- * @returns {MyParcel.DeliveryOptionsAddress}
+ * @returns {MyParcelDeliveryOptions.Address}
  */
 export const getAddress = () => {
   const address = getWindowObject().address || {};
@@ -40,29 +39,9 @@ export const getAddress = () => {
 };
 
 /**
- * Modifies the config data.
- *
- * @param {MyParcel.DeliveryOptionsConfiguration} data - Configuration.
- *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
- */
-const prepareConfig = (data) => {
-  // Allow array of strings, single string and comma separated strings as input for carriers.
-  if (typeof data.config.carriers === 'string') {
-    if (data.config.carriers.includes(',')) {
-      data.config.carriers = data.config.carriers.split(',');
-    } else {
-      data.config.carriers = [data.config.carriers];
-    }
-  }
-
-  return data;
-};
-
-/**
  * Get data from the window config object and convert some variables.
  *
- * @returns {MyParcel.DeliveryOptionsConfiguration}
+ * @returns {MyParcelDeliveryOptions.Configuration}
  */
 export const getConfig = () => {
   const windowObject = getWindowObject();
@@ -73,18 +52,27 @@ export const getConfig = () => {
   /**
    * Customizer function for lodash mergeWith().
    *
-   * @param {*} defaultVal  - The default value.
+   * @param {*} defaultVal - The default value.
    * @param {*} newVal - The new value.
+   * @param {String} key - Key of the current property.
    *
-   * @returns {undefined}
+   * @returns {*}
    */
-  const customizer = (defaultVal, newVal) => {
+  const customizer = (defaultVal, newVal, key) => {
+    /**
+     * For carrier settings, override only the carrier keys.
+     */
+    if (key === CARRIER_SETTINGS) {
+      return { ...defaultVal, ...newVal };
+    }
+
     return newVal === null || newVal === '' ? defaultVal : undefined;
   };
 
-  // Merge the config data with the default config. Uses lodash mergeWith to be able to skip undefined entries.
-  // @see https://lodash.cobm/docs/4.17.15#mergeWith
-  const data = _mergeWith({}, defaultConfig(platform), windowObject, customizer);
-
-  return prepareConfig(data);
+  /**
+   * Merge the config data with the default config. Uses lodash mergeWith to be able to skip undefined entries.
+   *
+   * @see https://lodash.cobm/docs/4.17.15#mergeWith
+   */
+  return _mergeWith({}, defaultConfig(platform), windowObject, customizer);
 };

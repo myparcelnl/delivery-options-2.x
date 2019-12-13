@@ -6,17 +6,20 @@ import { getRequestParameters } from '@/data/request/getRequestParameters';
  * Fetch pickup options.
  *
  * @param {MyParcel.CarrierName} carrierName - Carrier name.
- *
+ * @param {Object} parameters - Request parameters which will be appended after getRequestParameters().
  * @returns {Promise}
  */
-export async function fetchPickupLocations(carrierName) {
+export async function fetchPickupLocations(carrierName, parameters = {}) {
   const data = await fetchFromEndpoint(
     'pickup_locations',
     {
       method: METHOD_SEARCH,
       params: {
         carrierName,
-        ...getRequestParameters(carrierName),
+        ...{
+          ...getRequestParameters(carrierName),
+          ...parameters,
+        },
       },
     },
   );

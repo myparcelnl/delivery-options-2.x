@@ -2,8 +2,21 @@
   <div :class="`${$classBase}__pickup-details`">
     <table :class="`${$classBase}__table`">
       <tr>
-        <td :colspan="$configBus.isMultiCarrier ? 1 : 2">
+        <td colspan="2">
           <h3 v-text="data.location.location_name" />
+        </td>
+      </tr>
+      <tr>
+        <td :colspan="$configBus.isMultiCarrier ? 1 : 2">
+          <p>
+            <span v-text="data.address.street + ' ' + data.address.number" /><br>
+            <span v-text="data.address.postal_code + ' ' + data.address.city" />
+
+            <template v-if="!!data.location.phone_number">
+              <br>
+              <span v-text="data.location.phone_number" /><br>
+            </template>
+          </p>
         </td>
 
         <td v-if="$configBus.isMultiCarrier">
@@ -11,21 +24,11 @@
             :class="[
               `${$classBase}__image`,
               `${$classBase}__image--lg`,
+              `${$classBase}__h-auto`,
               `${$classBase}__float--right`
             ]"
             :src="data.carrier.image"
             :alt="data.carrier.human">
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <span v-text="data.address.street + ' ' + data.address.number" /><br>
-          <span v-text="data.address.postal_code + ' ' + data.address.city" />
-
-          <template v-if="!!data.location.phone_number">
-            <br>
-            <span v-text="data.location.phone_number" /><br>
-          </template>
         </td>
       </tr>
     </table>
@@ -45,6 +48,21 @@
           <span
             :class="`${$classBase}__float--right`"
             v-text="openingHours[day]" />
+        </td>
+      </tr>
+    </table>
+    <table :class="`${$classBase}__table`">
+      <tr>
+        <td>
+          <h3 v-text="strings.options" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <recursive-form
+            v-for="(option, index) in data.options"
+            :key="'pickup_' + index"
+            :option="option" />
         </td>
       </tr>
     </table>

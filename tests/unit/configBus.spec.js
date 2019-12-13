@@ -1,9 +1,9 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
-import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
+import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
 import { defaultConfig } from '@/config/data/defaultConfig';
-import { getConfigBus } from './testConfig';
+import { mockConfigBus } from '../mockConfigBus';
 
-let configBus = getConfigBus(DEFAULT_PLATFORM);
+let configBus = mockConfigBus(DEFAULT_PLATFORM);
 
 const settingCases = [
   SETTINGS.ALLOW_DELIVERY_OPTIONS,
@@ -40,9 +40,9 @@ describe('configBus', () => {
   });
 
   it('prioritizes settings correctly', () => {
-    configBus = getConfigBus(DEFAULT_PLATFORM, {
+    configBus = mockConfigBus({
       config: {
-        carriers: ['bpost', 'dpd'],
+        platform: SENDMYPARCEL,
         [SETTINGS.DROP_OFF_DAYS]: '1;2;3;4;5;6',
         carrierSettings: {
           dpd: {
@@ -58,9 +58,9 @@ describe('configBus', () => {
     configBus.$data.currentCarrier = 'bpost';
     expect(configBus.get(SETTINGS.DROP_OFF_DAYS)).toBe('1;2;3;4;5;6');
 
-    configBus = getConfigBus(DEFAULT_PLATFORM, {
+    configBus = mockConfigBus({
       config: {
-        carriers: ['bpost', 'dpd'],
+        platform: SENDMYPARCEL,
         [SETTINGS.ALLOW_SIGNATURE]: false,
       },
     });
@@ -71,11 +71,7 @@ describe('configBus', () => {
     configBus.$data.currentCarrier = 'bpost';
     expect(configBus.get(SETTINGS.ALLOW_SIGNATURE)).toBe(false);
 
-    configBus = getConfigBus(DEFAULT_PLATFORM, {
-      config: {
-        carriers: ['bpost', 'dpd'],
-      },
-    });
+    configBus = mockConfigBus(DEFAULT_PLATFORM);
 
     configBus.$data.currentCarrier = 'dpd';
     expect(configBus.get(SETTINGS.ALLOW_SIGNATURE))
@@ -87,7 +83,7 @@ describe('configBus', () => {
   });
 
   it('creates arrays of weekdays correctly per locale', () => {
-    configBus = getConfigBus(DEFAULT_PLATFORM);
+    configBus = mockConfigBus(DEFAULT_PLATFORM);
     expect(configBus.get('locale')).toEqual('nl-NL');
     expect(configBus.getWeekdays()).toEqual([
       'Maandag',
@@ -109,5 +105,45 @@ describe('configBus', () => {
       'Saturday',
       'Sunday',
     ]);
+  });
+
+  test('getSettingsByCarrier', () => {
+    configBus = mockConfigBus();
+    const carrier = 'postnl';
+
+    expect(configBus.getSettingsByCarrier(carrier)).toEqual(configBus.config.carrierSettings[carrier]);
+  });
+
+  test('isEnabledInAnyCarrier', () => {
+    const mockData = {
+      config: {
+        platform: MYPARCEL,
+        carrierSettings: {
+          postnl: {
+            allowPickupLocations: true,
+          },
+        },
+      },
+    };
+
+    configBus = mockConfigBus(mockData);
+    expect(configBus.isEnabledInAnyCarrier(SETTINGS.ALLOW_PICKUP_LOCATIONS)).toEqual(true);
+
+    mockData.config.carrierSettings.postnl.allowPickupLocations = false;
+    configBus = mockConfigBus(mockData);
+    expect(configBus.isEnabledInAnyCarrier(SETTINGS.ALLOW_PICKUP_LOCATIONS)).toEqual(false);
+
+    mockData.config.platform = 'bpost';
+    mockData.config.carrierSettings = {
+      bpost: { allowPickupLocations: true },
+      dpd: { allowPickupLocations: false },
+    };
+    configBus = mockConfigBus(mockData);
+    expect(configBus.isEnabledInAnyCarrier(SETTINGS.ALLOW_PICKUP_LOCATIONS)).toEqual(true);
+
+    mockData.config.carrierSettings.bpost.allowPickupLocations = false;
+    mockData.config.carrierSettings.dpd.allowPickupLocations = false;
+    configBus = mockConfigBus(mockData);
+    expect(configBus.isEnabledInAnyCarrier(SETTINGS.ALLOW_PICKUP_LOCATIONS)).toEqual(false);
   });
 });

@@ -1,8 +1,8 @@
 <template>
   <td>
     <label
-      :for="`${$classBase}__${parent.name}--${data.name}`"
-      @click="selected ? showModal() : null">
+      :for="`${$classBase}__pickupLocation--${data.name}`"
+      @click="isSelected && allowModal ? showModal() : null">
       <span
         v-if="pickupData.carrier.image"
         :class="[
@@ -21,7 +21,7 @@
       <span :class="`${$classBase}__d-block`">
         <span v-text="data.label" />
         <font-awesome-icon
-          v-if="selected"
+          v-if="isSelected && allowModal"
           icon="ellipsis-h"
           :class="`${$classBase}__float--right`" />
       </span>
@@ -42,7 +42,7 @@
       </span>
     </label>
 
-    <template v-if="selected">
+    <template v-if="isSelected">
       <recursive-form
         v-for="subOption in data.options"
         :key="`${data.name}_${subOption.name}`"
@@ -59,13 +59,13 @@ import PickupDetails from './PickupDetails';
 export default {
   name: 'PickupOption',
   props: {
-    selected: {
+    isSelected: {
       type: Boolean,
       default: false,
     },
-    parent: {
-      type: Object,
-      default: null,
+    allowModal: {
+      type: Boolean,
+      default: true,
     },
     data: {
       type: Object,
@@ -89,6 +89,7 @@ export default {
         ...this.pickupData,
         component: PickupDetails,
         hasCloseButton: true,
+        options: this.data.options,
       };
     },
   },

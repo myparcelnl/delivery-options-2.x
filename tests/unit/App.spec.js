@@ -1,22 +1,17 @@
 import * as SETTINGS from '@/config/data/settingsConfig';
 import { MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
-import { defaultAddress, getConfigBus } from './testConfig';
-import App from '@/App';
-import Vue from 'vue';
-import { shallowMount } from '@vue/test-utils';
+import { mockApp } from '../mockApp';
 
-describe('The delivery options module', () => {
+describe('App.vue', () => {
   let app;
 
   it('checks address requirements', () => {
-    Vue.prototype.$configBus = getConfigBus(SENDMYPARCEL);
-    app = shallowMount(App);
-    app.vm.getDeliveryOptions = jest.fn();
+    app = mockApp(SENDMYPARCEL);
 
-    expect(app.vm.hasValidAddress).toBe(false);
-
-    app.vm.$configBus.$data.address = defaultAddress[SENDMYPARCEL];
     expect(app.vm.hasValidAddress).toBe(true);
+
+    app.vm.$configBus.$data.address = {};
+    expect(app.vm.hasValidAddress).toBe(false);
 
     app.vm.$configBus.$data.address = {
       cc: 'nl',
@@ -26,29 +21,21 @@ describe('The delivery options module', () => {
   });
 
   it('only shows itself when necessary', () => {
-    Vue.prototype.$configBus = getConfigBus();
-    app = shallowMount(App);
+    app = mockApp();
+    expect(app.vm.hasSomethingToShow).toBe(true);
 
-    expect(app.vm.hasSomethingToShow).toBe(false);
-
-    Vue.prototype.$configBus = getConfigBus(MYPARCEL, {
+    app = mockApp({
       config: {
-        carriers: ['postnl'],
-        carrierSettings: {
+        [SETTINGS.PLATFORM]: MYPARCEL,
+        [SETTINGS.CARRIER_SETTINGS]: {
           postnl: {
-            [SETTINGS.ALLOW_DELIVERY_OPTIONS]: true,
+            [SETTINGS.ALLOW_DELIVERY_OPTIONS]: false,
             [SETTINGS.ALLOW_PICKUP_LOCATIONS]: false,
           },
         },
       },
     });
-    app = shallowMount(App);
 
-    // hasValidAddress is false as cc is missing.
     expect(app.vm.hasSomethingToShow).toBe(false);
-
-    // hasValidAddress is true as cc is allowed for current platform.
-    app.vm.$configBus.$data.address = defaultAddress[MYPARCEL];
-    expect(app.vm.hasSomethingToShow).toBe(true);
   });
 });

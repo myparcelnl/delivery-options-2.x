@@ -1,6 +1,4 @@
-const path = require('path');
 const webpack = require('webpack');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 process.env.VUE_APP_VERSION = require('./package.json').version;
 const { VUE_APP_CLASS_BASE } = process.env;
@@ -18,21 +16,19 @@ module.exports = {
     },
   },
   devServer: {
-    host: 'localhost',
+    host: '0.0.0.0',
     writeToDisk: true,
     disableHostCheck: true,
   },
   productionSourceMap: false,
   configureWebpack: {
     resolve: {
-      alias: {
-        '@myparcel/sdk': path.resolve(__dirname, './myparcel-js-sdk'),
-      },
+      symlinks: false,
     },
     plugins: [
-      new CopyWebpackPlugin([
-        { from: './update-package.js' },
-      ]),
+      new webpack.BannerPlugin(
+        `MyParcel Delivery Options ${process.env.VUE_APP_VERSION} [Built: ${new Date().toISOString()}]`,
+      ),
       new webpack.DefinePlugin({
         'process.env': {
           VUE_APP_VERSION: JSON.stringify(process.env.VUE_APP_VERSION),

@@ -19,18 +19,11 @@ export function getDeliveryOptions() {
       ? [{
         name: CARRIER,
         type: 'radio',
-        choices: configBus.carrierData.reduce((carriers, carrier) => {
-          // Only add the carrier if it has delivery enabled.
-          if (carrier.deliveryEnabled) {
-            carriers.push({
-              ...carrier,
-              class: `${Vue.prototype.$classBase}__spacing--md`,
-              options: () => createDeliveryOptions(carrier.name),
-            });
-          }
-
-          return carriers;
-        }, []),
+        choices: configBus.carrierDataWithDeliveryOptions.map((carrier) => ({
+          ...carrier,
+          class: `${Vue.prototype.$classBase}__spacing--md`,
+          options: () => createDeliveryOptions(carrier.name),
+        })),
       }]
       : createDeliveryOptions,
   };

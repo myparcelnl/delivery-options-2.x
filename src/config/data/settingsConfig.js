@@ -1,6 +1,5 @@
 // CONFIG
 export const API_BASE_URL = 'apiBaseUrl';
-export const CARRIERS = 'carriers';
 export const LOCALE = 'locale';
 export const PLATFORM = 'platform';
 export const CURRENCY = 'currency';
@@ -42,9 +41,19 @@ export const CARRIER_SETTINGS = 'carrierSettings';
 export const FEATURE_ALLOW_RETRY = 'allowRetry';
 
 /*
+ * The default view of pickup locations.
+ */
+export const FEATURE_PICKUP_LOCATIONS_DEFAULT_VIEW = 'pickupLocationsDefaultView';
+
+/*
  * Show distance under each pickup location if true. Otherwise shows street name and number.
  */
 export const FEATURE_PICKUP_SHOW_DISTANCE = 'pickupShowDistance';
+
+/*
+ * Tile layer data for use with the pickup locations map.
+ */
+export const PICKUP_LOCATIONS_MAP_TILE_LAYER_DATA = 'pickupLocationsMapTileLayerData';
 
 /*
  * Max amount of pickup locations shown.
@@ -65,6 +74,7 @@ export const LOAD_MORE = 'loadMore';
 export const RETRY = 'retry';
 export const PICK_UP_FROM = 'pickUpFrom';
 export const OPENING_HOURS = 'openingHours';
+export const OPTIONS = 'options';
 
 export const HEADER_DELIVERY_OPTIONS = 'headerDeliveryOptions';
 
@@ -82,6 +92,9 @@ export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
 export const WRONG_NUMBER_POSTAL_CODE = 'wrongNumberPostalCode';
 export const WRONG_POSTAL_CODE_CITY = 'wrongPostalCodeCity';
 
+export const PICKUP_LOCATIONS_LIST_BUTTON = 'pickupLocationsListButton';
+export const PICKUP_LOCATIONS_MAP_BUTTON = 'pickupLocationsMapButton';
+
 /**
  * These settings can't be overridden by the carrierSettings object in the config.
  *
@@ -91,7 +104,6 @@ export const settingsWithoutCarrierOverride = [
   PLATFORM,
   CURRENCY,
   API_BASE_URL,
-  CARRIERS,
   LOCALE,
 
   FEATURE_ALLOW_RETRY,

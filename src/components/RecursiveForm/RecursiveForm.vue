@@ -1,6 +1,17 @@
 <template>
   <table
-    v-if="validChoices"
+    v-if="mutableOption.hasOwnProperty('component') && mutableOption.loop === false"
+    :class="`${$classBase}__table`">
+    <tr
+      :class="`${$classBase}__choice`">
+      <component
+        :is="mutableOption.component"
+        :data="mutableOption" />
+    </tr>
+  </table>
+
+  <table
+    v-else-if="validChoices"
     :class="`${$classBase}__table`">
     <tr
       v-for="choice in validChoices"
@@ -16,6 +27,7 @@
             v-if="mutableOption.type === 'checkbox'"
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected[choice.name]"
+            v-test="`${mutableOption.name}--${choice.name}`"
             :class="choice.class"
             type="checkbox"
             :name="mutableOption.name"
@@ -26,6 +38,7 @@
             v-else
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected"
+            v-test="`${mutableOption.name}--${choice.name}`"
             :class="choice.class"
             :type="mutableOption.type"
             :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
@@ -36,10 +49,10 @@
       <component
         :is="mutableOption.component"
         v-if="mutableOption.hasOwnProperty('component')"
+        v-test="`${mutableOption.name}--${choice.name}__${mutableOption.component.name}`"
         :colspan="validChoices.length <= 1 ? null : !!choice.price ? 1 : 2"
-        :parent="option"
         :data="choice"
-        :selected="isSelected(choice)" />
+        :is-selected="isSelected(choice)" />
 
       <td
         v-else
@@ -87,7 +100,7 @@
         </transition-group>
       </td>
     </tr>
-    <tr v-if="hasPagination && mutablePagination < mutableOption.choices.length">
+    <tr v-if="hasPagination && mutablePagination < mutableChoices.length">
       <td colspan="2">
         <div :class="[`${$classBase}__button`]">
           <hr>
@@ -105,19 +118,18 @@
     <tr>
       <td>
         <select
-          v-if="mutableOption.choices.length > 1"
+          v-if="mutableChoices.length > 1"
           :id="`${$classBase}__${mutableOption.name}`"
           v-model="selected"
           :class="{
-            [`${$classBase}__select`]: true,
+            [`${$classBase}__w-100`]: true,
             ...mutableOption.class,
           }"
           :name="mutableOption.name">
           <option
-            v-for="(selectChoice, index) of mutableOption.choices"
+            v-for="(selectChoice, index) of mutableChoices"
             :key="index + '_' + selectChoice.name"
             :value="selectChoice.name"
-            :selected="index === 0 ? 'selected' : null"
             v-text="selectChoice.label" />
         </select>
         <strong
@@ -131,7 +143,7 @@
 <script>
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
-import PickupOption from '../PickupOption';
+import PickupOption from '../Pickup/PickupOption';
 import { formConfig } from '@/config/data/formConfig';
 import { getChoiceOrFirst } from '@/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';
@@ -160,6 +172,11 @@ export default {
        * @type {Object}
        */
       mutableOption: this.option,
+
+      /**
+       * @type {Array}
+       */
+      mutableChoices: this.option.choices || [],
 
       /**
        * Loading state.
@@ -204,7 +221,11 @@ export default {
          * @see https://vuejs.org/v2/api/#Vue-nextTick
          */
         updateDependency: (args) => {
-          this.$nextTick(() => this.getChoicesByDependency(args));
+          this.setSelected();
+
+          this.$nextTick(() => {
+            this.getChoicesByDependency(args);
+          });
         },
       },
     };
@@ -217,7 +238,7 @@ export default {
      * @returns {Object}
      */
     firstChoice() {
-      return this.mutableOption.choices[0];
+      return this.mutableChoices[0];
     },
 
     /**
@@ -226,9 +247,7 @@ export default {
      * @returns {Boolean}
      */
     hasChoices() {
-      return this.mutableOption.hasOwnProperty('choices')
-        && !!this.mutableOption.choices
-        && !!this.mutableOption.choices.length;
+      return !!this.mutableChoices.length;
     },
 
     /**
@@ -256,10 +275,10 @@ export default {
      */
     validChoices() {
       if (this.hasPagination) {
-        return this.mutableOption.choices.filter((item, index) => index < this.mutablePagination);
+        return this.mutableChoices.filter((item, index) => index < this.mutablePagination);
       }
 
-      return this.mutableOption.type === 'select' ? false : this.mutableOption.choices;
+      return this.mutableOption.type === 'select' ? false : this.mutableChoices;
     },
 
     /**
@@ -268,7 +287,7 @@ export default {
      * @returns {Object}
      */
     selectedChoice() {
-      return this.mutableOption.choices.find((choice) => this.isSelected(choice));
+      return this.mutableChoices.find((choice) => this.isSelected(choice));
     },
   },
 
@@ -298,6 +317,7 @@ export default {
           this.loading = false;
 
           choice.options = options;
+
           return choice.options;
         }
         return choice.options;
@@ -308,15 +328,19 @@ export default {
   },
 
   watch: {
+
     option: {
       /**
-       * @param {*} newOption - New value for current option.
+       * @param {Object} newOption - New value for current option.
        */
       handler(newOption) {
         this.mutableOption = newOption;
+        this.mutableChoices = newOption.choices;
 
         if (!this.hasDependency) {
-          this.setSelected();
+          this.$nextTick(() => {
+            this.setSelected();
+          });
         }
       },
 
@@ -354,14 +378,17 @@ export default {
      * Watch the value of selected to emit a change event.
      */
     selected: {
-
       /**
        * @param {*} value - New value for current option.
        */
       handler(value) {
+        if (value === null) {
+          return;
+        }
+
         this.$configBus.$emit(EVENTS.UPDATE,
           {
-            name: this.mutableOption.name,
+            name: this.option.name,
             value,
           });
       },
@@ -369,6 +396,7 @@ export default {
       immediate: true,
     },
   },
+
   created() {
     if (this.hasPagination) {
       this.mutablePagination = this.mutableOption.pagination;
@@ -418,7 +446,7 @@ export default {
         return;
       }
 
-      const { dependency } = this.mutableOption;
+      const { dependency } = this.option;
       let dependencyName = dependency.name;
 
       // If dependency.name is an array, dependencyName is the last item.
@@ -433,46 +461,45 @@ export default {
 
       const deps = getDependencies(dependencies, dependency.name);
 
-      if (!!deps) {
-        const createChoices = (choices, option) => {
-          let choice = dependency.hasOwnProperty('parent')
-            ? formConfig[dependency.parent].options[option]
-            : formConfig[option];
-
-          // If choice does not exist in the config, ignore it.
-          if (!choice) {
-            return choices;
-          }
-
-          // Apply transform function to the new choice, if present.
-          if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
-            choice = dependency.transform(choice, deps[this.mutableOption.name][choice.name]);
-          }
-
-          // Only add the setting if it's enabled in the config
-          if (this.$configBus.isEnabled(choice)) {
-            choices.push(choice);
-          }
-
-          return choices;
-        };
-
-        this.mutableOption.choices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+      if (!deps) {
+        this.setSelected();
+        return;
       }
+      const createChoices = (choices, option) => {
+        let choice = dependency.hasOwnProperty('parent')
+          ? formConfig[dependency.parent].options[option]
+          : formConfig[option];
+        // If choice does not exist in the config, ignore it.
+        if (!choice) {
+          return choices;
+        }
+        // Apply transform function to the new choice, if present.
+        if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
+          choice = dependency.transform(choice, deps[this.mutableOption.name][choice.name]);
+        }
+        // Only add the setting if it's enabled in the config
+        if (this.$configBus.isEnabled(choice)) {
+          choices.push(choice);
+        }
+        return choices;
+      };
 
-      // Select one of the newly added choices.
-      this.setSelected();
+      const newChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+
+      this.$nextTick(() => {
+        this.option.choices = [...newChoices];
+        this.setSelected();
+      });
     },
-
     /**
      * Get the name of the selected choice for the component. The chosen value is either the previously set value for
      *  current option, the option that has 'selected: true' or the first option.
      */
     setSelected() {
-      const { choices, type, name } = this.mutableOption;
+      const { choices, name, type } = this.mutableOption;
       const isSet = this.$configBus.values.hasOwnProperty(name);
       const setValue = this.$configBus.values[name];
-      const hasChoices = !!choices && choices.length > 0;
+      const hasChoices = choices.length > 0;
 
       let selected;
 
@@ -482,9 +509,8 @@ export default {
       }
 
       if (type === 'checkbox') {
-        // If there's a value set dedupe the array of values, otherwise set empty array.
+        // If there's a value set dedupe the array of values, otherwise set empty object.
         selected = choices.reduce(setCheckboxSelected, setValue || {});
-
       } else if (type === 'select') {
         if (isSet) {
           selected = getChoiceOrFirst(choices, (choice) => choice.name === setValue);
