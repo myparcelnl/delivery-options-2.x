@@ -3,10 +3,8 @@ import * as CONFIG from '@/config/data/formConfig';
 import * as EVENTS from '@/config/data/eventConfig';
 import * as SETTINGS from '@/config/data/settingsConfig';
 import Vue from 'vue';
-import { allowedCountryCodesForPlatform } from '@/config/data/countryConfig';
 import { getConfig } from '@/config/setup';
 import { getPickupDate } from '@/data/pickup/getPickupDate';
-import isEqual from 'lodash.isequal';
 
 /**
  * The config bus to be used throughout the application. It's filled with `createConfigBus()`, otherwise the entire
@@ -124,15 +122,6 @@ export const createConfigBus = () => {
       address: null,
     },
     computed: {
-      /**
-       * Whether the cc of the current address is in the list of valid codes for the current platform.
-       *
-       * @returns {Boolean}
-       */
-      isValidCountry() {
-        return allowedCountryCodesForPlatform().includes(this.address.cc);
-      },
-
       /**
        * Whether there are multiple carriers available or not.
        *
@@ -540,6 +529,20 @@ export const createConfigBus = () => {
             }
             break;
         }
+      },
+
+      /**
+       * Set the advanced carrier data. This is not done when fetching carriers because this can change based on the
+       *  entered address.
+       */
+      setAdvancedCarrierData() {
+        this.carrierDataWithPickupLocations = this.carrierData.filter((carrier) => {
+          return carrier.pickupEnabled && carrier.pickupCountries.includes(this.address.cc);
+        });
+
+        this.carrierDataWithDeliveryOptions = this.carrierData.filter((carrier) => {
+          return carrier.deliveryEnabled && carrier.deliverCountries.includes(this.address.cc);
+        });
       },
     },
   });

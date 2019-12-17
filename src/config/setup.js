@@ -58,14 +58,7 @@ export const getConfig = () => {
    *
    * @returns {*}
    */
-  const customizer = (defaultVal, newVal, key) => {
-    /**
-     * For carrier settings, override only the carrier keys.
-     */
-    if (key === CARRIER_SETTINGS) {
-      return { ...defaultVal, ...newVal };
-    }
-
+  const customizer = (defaultVal, newVal) => {
     return newVal === null || newVal === '' ? defaultVal : undefined;
   };
 

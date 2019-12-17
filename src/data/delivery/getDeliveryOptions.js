@@ -10,6 +10,10 @@ import { createDeliveryOptions } from '@/data/delivery/createDeliveryOptions';
  * @returns {Object}
  */
 export function getDeliveryOptions() {
+  if (!configBus.carrierDataWithDeliveryOptions.length) {
+    return;
+  }
+
   return {
     name: DELIVER,
     label: DELIVERY_TITLE,
