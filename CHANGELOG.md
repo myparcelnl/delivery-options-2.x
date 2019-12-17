@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1-0](https://github.com/myparcelbe/checkout/compare/v3.1.0...v3.1.1-0) (2019-12-17)
+
+
+### Bug Fixes
+
+* allow dpd pickup locations in specific countries ([7016473](https://github.com/myparcelbe/checkout/commit/7016473f2a2f75104c04f2db7987850de1d526c5))
+
 ## [3.1.0](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.11...v3.1.0) (2019-12-13)
 
 ### Features

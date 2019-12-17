@@ -1,4 +1,3 @@
-import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
 import _mergeWith from 'lodash.mergewith';
 import { defaultConfig } from '@/config/data/defaultConfig';
@@ -54,18 +53,10 @@ export const getConfig = () => {
    *
    * @param {*} defaultVal - The default value.
    * @param {*} newVal - The new value.
-   * @param {String} key - Key of the current property.
    *
    * @returns {*}
    */
-  const customizer = (defaultVal, newVal, key) => {
-    /**
-     * For carrier settings, override only the carrier keys.
-     */
-    if (key === CARRIER_SETTINGS) {
-      return { ...defaultVal, ...newVal };
-    }
-
+  const customizer = (defaultVal, newVal) => {
     return newVal === null || newVal === '' ? defaultVal : undefined;
   };
 

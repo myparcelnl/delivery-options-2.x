@@ -1,21 +1,47 @@
 import { MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import { PLATFORM } from '@/config/data/settingsConfig';
 import { configBus } from '@/config/configBus';
 
 /**
- * The country codes for each platform which are allowed to have delivery options.
+ * The base allowed country codes for each platform.
  *
  * @type {Object.<Array>}
  */
-const allowedCountries = {
+export const allowedCountries = {
   [MYPARCEL]: ['nl', 'be'],
   [SENDMYPARCEL]: ['nl', 'be'],
 };
 
 /**
- * @param {MyParcel.Platform} platform - Platform name or id.
+ * Country codes per carrier which allow pickup locations.
  *
- * @returns {Array}
+ * @type {Object<MyParcel.CarrierName,String[]>}
  */
-export const allowedCountryCodesForPlatform = (platform = configBus.config.platform) => {
-  return allowedCountries[platform];
+export const allowedCountriesForCarrierPickup = {
+  dpd: [
+    'at',
+    'be',
+    'de',
+    'dk',
+    'fi',
+    'fr',
+    'gb',
+    'nl',
+    'pt',
+  ],
+};
+
+/**
+ * Country codes per carrier which allow delivery options.
+ *
+ * @type {Object<MyParcel.CarrierName,String[]>}
+ */
+export const allowedCountriesForCarrierDeliver = {};
+
+export const getAllowedCountriesForCarrierPickup = (carrier) => {
+  return allowedCountriesForCarrierPickup[carrier] || allowedCountries[configBus.get(PLATFORM)];
+};
+
+export const getAllowedCountriesForCarrierDeliver = (carrier) => {
+  return allowedCountriesForCarrierDeliver[carrier] || allowedCountries[configBus.get(PLATFORM)];
 };

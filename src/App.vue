@@ -180,9 +180,9 @@ export default {
      * @returns {Boolean}
      */
     hasSomethingToShow() {
-      return this.$configBus.isValidCountry
-        && (this.$configBus.isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS)
-          || this.$configBus.isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS));
+      const { isEnabledInAnyCarrier } = this.$configBus;
+
+      return isEnabledInAnyCarrier(ALLOW_PICKUP_LOCATIONS) || isEnabledInAnyCarrier(ALLOW_DELIVERY_OPTIONS);
     },
 
     /**
@@ -241,9 +241,16 @@ export default {
         [CONFIG.PICKUP]: ALLOW_PICKUP_LOCATIONS,
       };
 
-      // Filter the choices checking if any of the given carriers have any above setting enabled.
+      // Filter the choices checking if any of the given carriers have any above setting enabled. Also checks if the
+      //  carrier is allowed to have the above options in the current country.
       const choices = Object.keys(map).reduce((acc, setting) => {
-        return this.$configBus.isEnabledInAnyCarrier(settingsMap[setting]) ? [...acc, map[setting]()] : acc;
+        const formData = map[setting]();
+
+        if (!formData) {
+          return acc;
+        }
+
+        return this.$configBus.isEnabledInAnyCarrier(settingsMap[setting]) ? [...acc, formData] : acc;
       }, []);
 
       // Hide the checkout if there are no choices.
@@ -271,6 +278,7 @@ export default {
      * @returns {Promise}
      */
     async getDeliveryOptions(event) {
+      let addressChanged = false;
       let newAddress;
 
       /**
@@ -287,6 +295,10 @@ export default {
        */
       if (this.showDeliveryOptions && isEqual(this.$configBus.address, newAddress)) {
         return;
+      }
+
+      if (!this.$configBus.address.cc !== newAddress.cc) {
+        addressChanged = true;
       }
 
       // Update the address in the config bus
@@ -310,10 +322,12 @@ export default {
       this.$configBus.showModal = false;
       this.$configBus.modalData = {};
 
-      if (!this.$configBus.carrierData.length) {
+      if (!this.$configBus.carrierData.length || addressChanged) {
         this.loading = true;
         await fetchAllCarriers();
       }
+
+      this.$configBus.setAdvancedCarrierData();
 
       this.createForm();
       this.loading = false;

@@ -10,7 +10,7 @@ import { createLocaleString } from '@/data/dates/createLocaleString';
  * @param {Array} pickupLocation.possibilities - Possibilities array.
  * @param {Object} pickupLocation.possibilities.delivery_type_name - Possibilities array.
  *
- * @returns {MyParcelDeliveryOptions.FormChoice[]}
+ * @returns {MyParcelDeliveryOptions.FormEntry[]}
  */
 export function getPickupMoments(pickupLocation) {
 
