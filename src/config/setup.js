@@ -1,4 +1,3 @@
-import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { DEFAULT_PLATFORM } from '@/config/data/platformConfig';
 import _mergeWith from 'lodash.mergewith';
 import { defaultConfig } from '@/config/data/defaultConfig';
@@ -54,7 +53,6 @@ export const getConfig = () => {
    *
    * @param {*} defaultVal - The default value.
    * @param {*} newVal - The new value.
-   * @param {String} key - Key of the current property.
    *
    * @returns {*}
    */
