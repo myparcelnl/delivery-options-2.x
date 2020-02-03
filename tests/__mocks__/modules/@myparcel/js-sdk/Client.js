@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { METHOD_SEARCH } from '@/data/request/fetchFromEndpoint';
 import { fakeCarriersResponse } from './fakeCarriersResponse';
 import { fakeDeliveryOptionsResponse } from './fakeDeliveryOptionsResponse';

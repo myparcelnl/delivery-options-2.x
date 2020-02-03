@@ -13,7 +13,6 @@ import { createLocaleString } from '@/data/dates/createLocaleString';
  * @returns {MyParcelDeliveryOptions.FormEntry[]}
  */
 export function getPickupMoments(pickupLocation) {
-
   /**
    * Sort moments by pickup time, from early to late.
    *

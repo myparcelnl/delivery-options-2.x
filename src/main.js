@@ -37,7 +37,7 @@ function loadApp(event) {
    *
    * @see https://vuejs.org/v2/guide/components.html#Organizing-Components
    */
-  Vue.component('recursive-form', RecursiveForm);
+  Vue.component('RecursiveForm', RecursiveForm);
 
   /**
    * Create the config bus and set it as a global property in the entire application.
@@ -57,6 +57,7 @@ function loadApp(event) {
    * Create the Vue instance.
    */
   new Vue({
+    name: 'MyParcelDeliveryOptions',
     render: (createElement) => createElement(App),
   }).$mount(`#${Vue.prototype.$classBase}`);
 }

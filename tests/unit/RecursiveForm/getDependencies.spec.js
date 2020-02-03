@@ -194,7 +194,7 @@ describe('RecursiveForm – getDependencies', () => {
     });
   });
 
-  test.each(getDependenciesCases)('works as expected', ({ dependencies, dependencyName, deps }) => {
+  test.each(getDependenciesCases)('gets the correct dependencies', ({ dependencies, dependencyName, deps }) => {
     expect(getDependencies(dependencies, dependencyName)).toEqual(deps);
   });
 });

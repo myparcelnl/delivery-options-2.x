@@ -7,12 +7,12 @@
  * @returns {Object}
  */
 export function formatShipmentOptions(choice, options) {
-  choice.disabled = options.enum.length === 1;
+  const hasOnlyOneOption = options.enum.length === 1;
 
-  // If there is only one allowed value disable the option and set the selected property accordingly.
-  if (choice.disabled) {
-    choice.selected = options.enum[0];
-  }
-
-  return choice;
+  return {
+    ...choice,
+    disabled: hasOnlyOneOption,
+    // If there is only one allowed value disable the option and set the selected property accordingly.
+    selected: hasOnlyOneOption ? options.enum[0] : false,
+  };
 }

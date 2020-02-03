@@ -3,7 +3,7 @@
     :class="{
       [`${$classBase}__modal`]: true,
       [`${$classBase}__modal--full`]: !inline,
-      [`${$classBase}__modal--inline`]: inline
+      [`${$classBase}__modal--inline`]: inline,
     }">
     <div
       v-if="hasCloseButton"
@@ -16,7 +16,6 @@
       :data="modalData">
       <slot
         v-for="(_, name) in $slots"
-        :slot="name"
         :name="name" />
     </component>
   </div>
@@ -28,7 +27,6 @@ export default {
   props: {
     inline: {
       type: Boolean,
-      default: false,
     },
     component: {
       type: Object,
@@ -40,7 +38,6 @@ export default {
     },
     hasCloseButton: {
       type: Boolean,
-      default: false,
     },
   },
 };

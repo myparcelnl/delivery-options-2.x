@@ -11,8 +11,8 @@ import { createIsoString } from '@/data/dates/createIsoString';
  */
 export function getPickupDate(possibilities) {
   // Get the possibility that belongs to the currently selected pickup moment
-  const possibility = possibilities.find(({ delivery_type_name }) => {
-    return delivery_type_name === configBus.getValue(CONFIG.PICKUP_MOMENT);
+  const possibility = possibilities.find((item) => {
+    return item.delivery_type_name === configBus.getValue(CONFIG.PICKUP_MOMENT);
   });
 
   return createIsoString(possibility.moment.start.date);

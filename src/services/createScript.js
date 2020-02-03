@@ -30,4 +30,3 @@ export const createScript = (url) => new Promise((resolve) => {
 
   document.head.appendChild(loadable);
 });
-

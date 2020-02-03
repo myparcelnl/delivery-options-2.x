@@ -11,4 +11,4 @@ library.add(faEllipsisH, faTimes);
  *
  * @see https://github.com/FortAwesome/vue-fontawesome
  */
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component('FontAwesomeIcon', FontAwesomeIcon);

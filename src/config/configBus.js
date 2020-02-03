@@ -19,6 +19,8 @@ export let configBus;
  */
 export const createConfigBus = () => {
   configBus = new Vue({
+    name: 'ConfigBus',
+
     data: {
       /**
        * All carrier data.
@@ -442,7 +444,6 @@ export const createConfigBus = () => {
 
         // Only do this after a pickup location and moment are selected.
         if (!!pickupLocation && !!this.getValue(CONFIG.PICKUP_MOMENT)) {
-
           /**
            * After changing address while pickup is selected, the current pickupLocation might not be updated yet. This
            *  causes an error because the old pickup location likely doesn't exist anymore in the pickupLocations array.

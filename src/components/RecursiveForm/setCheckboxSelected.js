@@ -8,7 +8,6 @@ import { configBus } from '@/config/configBus';
  * @returns {*}
  */
 export function setCheckboxSelected(currentValue, choice) {
-
   /**
    * If the choice is disabled set it to its only allowed value.
    *

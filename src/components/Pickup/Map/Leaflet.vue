@@ -43,6 +43,7 @@ import { createIcons } from '@/components/Pickup/Map/createIcons';
 import { createPickupChoices } from '@/data/pickup/createPickupChoices';
 import { createScript } from '@/services/createScript';
 import debounce from 'debounce';
+import { fetchPickupLocations } from '@/data/pickup/fetchPickupLocations';
 
 /**
  * @var this.$refs.map
@@ -80,7 +81,7 @@ export default {
       /**
        * The Leaflet map will be stored in this variable.
        *
-       * @type {L}
+       * @type {Map}
        */
       map: null,
 
@@ -128,6 +129,18 @@ export default {
   },
 
   computed: {
+    /**
+     * TODO: Disallows dragging for BE.
+     *  When we can look up pickup points using coordinates for bpost and dpd this can be removed.
+     *  Research: https://jira.dmp.zone/browse/MY-16566.
+     *
+     *
+     *  @returns {Boolean}
+     */
+    canUseDragFeature() {
+      return this.$configBus.get(SETTINGS.PLATFORM) !== SENDMYPARCEL;
+    },
+
     mapClass() {
       return `${this.baseClass}__leaflet`;
     },
@@ -143,8 +156,8 @@ export default {
 
     if (loadScripts) {
       const scripts = [];
-      const leafletCss = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css';
-      const leafletJs = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js';
+      const leafletCss = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css';
+      const leafletJs = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js';
       const vue2LeafletJs = 'https://cdnjs.cloudflare.com/ajax/libs/Vue2Leaflet/1.0.2/vue2-leaflet.min.js';
 
       if (!document.querySelector(`link[href="${leafletCss}"]`)) {
@@ -200,10 +213,10 @@ export default {
      * When all Leaflet scripts are loaded, initialize the Vue2Leaflet components and start creating the map.
      */
     onLoadedScripts() {
-      Vue.component('l-map', Vue2Leaflet.LMap);
-      Vue.component('l-marker', Vue2Leaflet.LMarker);
-      Vue.component('l-popup', Vue2Leaflet.LPopup);
-      Vue.component('l-tile-layer', Vue2Leaflet.LTileLayer);
+      Vue.component('LMap', Vue2Leaflet.LMap);
+      Vue.component('LMarker', Vue2Leaflet.LMarker);
+      Vue.component('LPopup', Vue2Leaflet.LPopup);
+      Vue.component('LTileLayer', Vue2Leaflet.LTileLayer);
       this.createMap();
     },
 
@@ -222,13 +235,14 @@ export default {
         this.createMarkers();
         this.fitToMarkers();
         this.createCenterMarker();
-        this.addMapEvents();
 
         this.selectSelectedPickupLocation();
 
         if (!this.selectedMarker) {
           this.selectFirstMarker();
         }
+
+        this.addMapEvents();
       });
     },
 
@@ -252,7 +266,7 @@ export default {
     selectMarker(marker) {
       if (this.selectedMarker) {
         // Replace the active icon with the regular icon if there already was a selected marker.
-        this.selectedMarker.icon = this.icons[this.selectedMarker.data.carrier.name];
+        this.selectedMarker.icon = this.getCarrierIcon(this.selectedMarker.data.carrier);
       }
 
       this.selectedMarker = marker;
@@ -262,7 +276,7 @@ export default {
       };
 
       // Replace the icon with the active version.
-      this.selectedMarker.icon = this.icons[`${this.selectedMarker.data.carrier.name}_active`];
+      this.selectedMarker.icon = this.getCarrierIcon(this.selectedMarker.data.carrier, true);
     },
 
     /**
@@ -291,18 +305,21 @@ export default {
     },
 
     createMarkers() {
-      this.markers = this.choices.reduce((acc, val) => {
-        const { location } = val.pickupData;
-        const latLng = L.latLng(location.latitude, location.longitude);
+      this.markers = this.choices.reduce((acc, currentChoice) => {
+        const { carrier, pickupData } = currentChoice;
+        const latLng = L.latLng(pickupData.location.latitude, pickupData.location.longitude);
+
+        const id = pickupData.location.location_code;
+        const hasSelectedMarker = !!this.selectedMarker;
+        const isActiveIcon = hasSelectedMarker && id === this.selectedMarker.id;
 
         return [
           ...acc,
           {
             latLng,
-            id: val.pickupData.location.location_code,
-            icon: this.icons[val.carrier.name],
-            data: val.pickupData,
-            isActive: false,
+            id,
+            icon: this.getCarrierIcon(carrier, isActiveIcon),
+            data: pickupData,
           },
         ];
       }, []);
@@ -315,8 +332,8 @@ export default {
       const bounds = this.markers.map((marker) => marker.latLng);
 
       this.map.fitBounds(bounds);
-
       this.map.setZoom(this.zoom);
+
       const listener = () => {
         this.onZoomEnd();
         this.map.off('moveend', listener);
@@ -326,12 +343,7 @@ export default {
     },
 
     addMapEvents() {
-      /**
-       * TODO: Disables the listeners for BE temporarily.
-       *  When we can look up pickup points using coordinates for bpost and dpd this can be removed.
-       *  Research: https://jira.dmp.zone/browse/MY-16566.
-       */
-      if (this.$configBus.get(SETTINGS.PLATFORM) !== SENDMYPARCEL) {
+      if (this.canUseDragFeature) {
         this.map.on('moveend', this.listeners.moveEnd);
         this.map.on('zoomend', this.listeners.zoomEnd);
       }
@@ -353,7 +365,16 @@ export default {
       this.centerMarker._icon.classList.add(`${this.mapClass}__marker--center--loading`);
       this.centerMarker.setLatLng(center);
 
-      this.choices = await createPickupChoices();
+      // Map the new center latlng to the request parameters.
+      const useLatLng = (carrier) => fetchPickupLocations(
+        carrier.name,
+        {
+          latitude: center.lat,
+          longitude: center.lng,
+        },
+      );
+
+      this.choices = await createPickupChoices(useLatLng);
       this.createMarkers();
 
       this.centerMarker._icon.classList.remove(`${this.mapClass}__marker--center--loading`);
@@ -385,7 +406,7 @@ export default {
      * @see https://leafletjs.com/reference-1.6.0.html#map-zoomend
      */
     onZoomEnd() {
-      const allowDragDelay = 200;
+      const allowDragDelay = 300;
 
       setTimeout(() => {
         this.allowDrag = true;
@@ -402,7 +423,7 @@ export default {
      * @returns {Object}
      */
     getChoiceByMarkerId(id) {
-      return this.data.choices.find((choice) => choice.name === id);
+      return this.choices.find((choice) => choice.name === id);
     },
 
     /**
@@ -412,6 +433,24 @@ export default {
       const firstChoice = this.markers[0];
 
       this.selectedMarker = this.manuallySelectMarker(firstChoice);
+    },
+
+    /**
+     * Get the carrier icon for the given carrier in either the normal or active state.
+     *
+     * @param {Object} carrier - Carrier to get the icon of.
+     * @param {Boolean} active - Whether it should be the active icon or not.
+     *
+     * @returns {Object}
+     */
+    getCarrierIcon(carrier, active = false) {
+      const carrierName = carrier.name;
+      const suffix = active ? '_active' : '';
+
+      if (!this.icons.hasOwnProperty(carrierName + suffix)) {
+        throw `Icon "${carrierName}${suffix}" doesn't exist`;
+      }
+      return this.icons[carrierName + suffix];
     },
   },
 };

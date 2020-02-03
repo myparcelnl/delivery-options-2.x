@@ -18,7 +18,7 @@
     </transition>
     <transition name="shove">
       <keep-alive>
-        <leaflet
+        <Leaflet
           v-if="selected === views.map"
           :data="data" />
       </keep-alive>

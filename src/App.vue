@@ -10,7 +10,7 @@
       :has-close-button="$configBus.modalData.hasCloseButton"
       :component="$configBus.modalData.component" />
 
-    <template v-else>
+    <div v-show="!$configBus.showModal">
       <h3
         v-if="!loading && $configBus.strings.headerDeliveryOptions"
         v-text="$configBus.strings.headerDeliveryOptions" />
@@ -25,7 +25,7 @@
         :key="option.name"
         v-test="option.name"
         :option="option" />
-    </template>
+    </div>
   </form>
 </template>
 

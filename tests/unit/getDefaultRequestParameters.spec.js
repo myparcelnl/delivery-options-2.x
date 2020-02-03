@@ -1,4 +1,4 @@
-import { DEFAULT_PLATFORM, MYPARCEL, SENDMYPARCEL } from '@/config/data/platformConfig';
+import { DEFAULT_PLATFORM, MYPARCEL } from '@/config/data/platformConfig';
 import { defaultAddress, mockConfigBus } from '../mockConfigBus';
 import { CARRIER_SETTINGS } from '@/config/data/settingsConfig';
 import { getDefaultRequestParameters } from '@/data/request/getDefaultRequestParameters';
@@ -6,7 +6,6 @@ import { getDefaultRequestParameters } from '@/data/request/getDefaultRequestPar
 let configBus = mockConfigBus();
 
 describe('request parameters', () => {
-
   test('gets the correct default parameters', () => {
     const configBus = mockConfigBus({ address: {} });
     configBus.currentCarrier = Object.keys(configBus.get(CARRIER_SETTINGS))[0];
@@ -29,27 +28,6 @@ describe('request parameters', () => {
         include: 'shipment_options',
         platform: MYPARCEL,
         ...address,
-      });
-  });
-
-  test('removes city from parameters when carrier is dpd', () => {
-    configBus = mockConfigBus(SENDMYPARCEL, {
-      config: {
-        carriers: ['bpost', 'dpd'],
-      },
-      address: defaultAddress[SENDMYPARCEL],
-    });
-
-    configBus.$data.currentCarrier = 'dpd';
-
-    expect(getDefaultRequestParameters())
-      .toEqual({
-        carrier: 'dpd',
-        cc: 'be',
-        include: 'shipment_options',
-        number: 16,
-        platform: 'belgie',
-        postal_code: '2000',
       });
   });
 });

@@ -16,7 +16,6 @@ export function createLocaleString(date,
     hour: '2-digit',
     minute: '2-digit',
   }) {
-
   return createDate(date)
     .toLocaleString(
       configBus.get(LOCALE),

@@ -23,4 +23,3 @@ export function withWrapper(wrapper) {
     areAllHidden: (selector) => wrapper.findAll(selector).wrappers.every((wrapper) => !wrapper.isVisible()),
   };
 }
-

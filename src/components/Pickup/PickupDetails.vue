@@ -25,7 +25,7 @@
               `${$classBase}__image`,
               `${$classBase}__image--lg`,
               `${$classBase}__h-auto`,
-              `${$classBase}__float--right`
+              `${$classBase}__float--right`,
             ]"
             :src="data.carrier.image"
             :alt="data.carrier.human">

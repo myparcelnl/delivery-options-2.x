@@ -2,17 +2,17 @@
   <td>
     <label
       :for="`${$classBase}__pickupLocation--${data.name}`"
-      @click="isSelected && allowModal ? showModal() : null">
+      @click="isSelected ? showModal() : null">
       <span
         v-if="pickupData.carrier.image"
         :class="[
           `${$classBase}__d-block`,
-          `${$classBase}__float--left`
+          `${$classBase}__float--left`,
         ]">
         <img
           :class="[
             `${$classBase}__image`,
-            `${$classBase}__image--sm`
+            `${$classBase}__image--sm`,
           ]"
           :src="pickupData.carrier.image"
           :alt="pickupData.carrier.name">&nbsp;
@@ -21,7 +21,7 @@
       <span :class="`${$classBase}__d-block`">
         <span v-text="data.label" />
         <font-awesome-icon
-          v-if="isSelected && allowModal"
+          v-if="isSelected"
           icon="ellipsis-h"
           :class="`${$classBase}__float--right`" />
       </span>
@@ -36,7 +36,7 @@
         v-else
         :class="[
           `${$classBase}__d-block`,
-          `${$classBase}__text--small`
+          `${$classBase}__text--small`,
         ]">
         <span v-text="pickupData.address.street + ' ' + pickupData.address.number" />
       </span>
@@ -61,11 +61,6 @@ export default {
   props: {
     isSelected: {
       type: Boolean,
-      default: false,
-    },
-    allowModal: {
-      type: Boolean,
-      default: true,
     },
     data: {
       type: Object,

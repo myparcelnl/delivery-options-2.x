@@ -19,7 +19,7 @@
       :class="{
         [`${$classBase}__choice`]: true,
         [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
-        [`${$classBase}__choice--disabled`]: choice.disabled
+        [`${$classBase}__choice--disabled`]: choice.disabled,
       }">
       <td :class="`${$classBase}__input`">
         <div>
@@ -64,7 +64,7 @@
             :alt="choice.name"
             :class="[
               `${$classBase}__image`,
-              `${$classBase}__image--md`
+              `${$classBase}__image--md`,
             ]"
             :title="$configBus.strings[choice.label]">
           <span
@@ -144,10 +144,13 @@
 import * as EVENTS from '@/config/data/eventConfig';
 import Loader from '@/components/Loader';
 import PickupOption from '../Pickup/PickupOption';
+import debounce from 'debounce';
 import { formConfig } from '@/config/data/formConfig';
 import { getChoiceOrFirst } from '@/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';
 import { setCheckboxSelected } from './setCheckboxSelected';
+
+const CHOICES_DEBOUNCE_DELAY = 10;
 
 export default {
   name: 'RecursiveForm',
@@ -214,19 +217,17 @@ export default {
 
         /**
          * Update dependencies of the current option. Without this.$nextTick switching carriers for the first time will
-         *  not show all the options.
+         *  not show all the options. Has a tiny debounce delay to avoid update issues.
          *
          * @param {Object} args - Arguments from the event.
          *
          * @see https://vuejs.org/v2/api/#Vue-nextTick
          */
-        updateDependency: (args) => {
-          this.setSelected();
-
+        updateDependency: debounce((args) => {
           this.$nextTick(() => {
             this.getChoicesByDependency(args);
           });
-        },
+        }, CHOICES_DEBOUNCE_DELAY),
       },
     };
   },
@@ -386,11 +387,10 @@ export default {
           return;
         }
 
-        this.$configBus.$emit(EVENTS.UPDATE,
-          {
-            name: this.option.name,
-            value,
-          });
+        this.$configBus.$emit(EVENTS.UPDATE, {
+          name: this.option.name,
+          value,
+        });
       },
       deep: typeof selected !== 'string',
       immediate: true,
@@ -440,9 +440,9 @@ export default {
      * @param {{string}} name - Name of the field that has changed.
      */
     getChoicesByDependency({ name }) {
-      const dependencies = this.$configBus.dependencies[this.$configBus.currentCarrier];
+      const baseDependencies = this.$configBus.dependencies[this.$configBus.currentCarrier];
 
-      if (!dependencies) {
+      if (!baseDependencies) {
         return;
       }
 
@@ -459,37 +459,46 @@ export default {
         return;
       }
 
-      const deps = getDependencies(dependencies, dependency.name);
+      const dependencies = getDependencies(baseDependencies, dependency.name);
 
-      if (!deps) {
+      if (!dependencies) {
         this.setSelected();
         return;
       }
-      const createChoices = (choices, option) => {
-        let choice = dependency.hasOwnProperty('parent')
-          ? formConfig[dependency.parent].options[option]
-          : formConfig[option];
-        // If choice does not exist in the config, ignore it.
-        if (!choice) {
-          return choices;
-        }
-        // Apply transform function to the new choice, if present.
-        if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
-          choice = dependency.transform(choice, deps[this.mutableOption.name][choice.name]);
-        }
-        // Only add the setting if it's enabled in the config
-        if (this.$configBus.isEnabled(choice)) {
-          choices.push(choice);
-        }
+
+      const newChoices = Object.keys(dependencies[this.mutableOption.name]).reduce((choices, option) => {
+        return this.createChoices(choices, option, dependencies, dependency);
+      }, []);
+
+      this.option.choices = [...newChoices];
+
+      this.$nextTick(this.setSelected);
+    },
+
+    createChoices(choices, option, dependencies, dependency) {
+      let choice = dependency.hasOwnProperty('parent')
+        ? formConfig[dependency.parent].options[option]
+        : formConfig[option];
+
+      // If choice does not exist in the config, ignore it.
+      if (!choice) {
         return choices;
-      };
+      }
 
-      const newChoices = Object.keys(deps[this.mutableOption.name]).reduce(createChoices, []);
+      // Clone the object to avoid mutating the formConfig
+      choice = { ...choice };
 
-      this.$nextTick(() => {
-        this.option.choices = [...newChoices];
-        this.setSelected();
-      });
+      // Apply transform function to the new choice, if present.
+      if (dependency.hasOwnProperty('transform') && typeof dependency.transform === 'function') {
+        choice = dependency.transform(choice, dependencies[this.mutableOption.name][choice.name]);
+      }
+
+      // Only add the setting if it's enabled in the config
+      if (this.$configBus.isEnabled(choice)) {
+        choices.push(choice);
+      }
+
+      return choices;
     },
     /**
      * Get the name of the selected choice for the component. The chosen value is either the previously set value for

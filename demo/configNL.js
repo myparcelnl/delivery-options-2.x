@@ -29,4 +29,3 @@ window.MyParcelConfig = {
     dropOffDelay: 1,
   },
 };
-
