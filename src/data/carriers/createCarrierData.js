@@ -15,8 +15,8 @@ import { configBus } from '@/config/configBus';
 export function createCarrierData(data) {
   return data.map((carrier) => ({
     ...carrier,
-    pickupEnabled: configBus.get(SETTINGS.ALLOW_PICKUP_LOCATIONS, null, carrier.name) || false,
-    deliveryEnabled: configBus.get(SETTINGS.ALLOW_DELIVERY_OPTIONS, null, carrier.name) || false,
+    pickupEnabled: configBus.get(SETTINGS.ALLOW_PICKUP_LOCATIONS, 'name', carrier.name) || false,
+    deliveryEnabled: configBus.get(SETTINGS.ALLOW_DELIVERY_OPTIONS, 'name', carrier.name) || false,
     pickupCountries: getAllowedCountriesForCarrierPickup(carrier.name),
     deliverCountries: getAllowedCountriesForCarrierDeliver(carrier.name),
   }));
