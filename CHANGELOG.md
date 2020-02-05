@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/myparcelbe/checkout/compare/v3.1.2...v3.1.3) (2020-02-05)
+
+
+### Bug Fixes
+
+* deliveryEnabled and pickupEnabled are not set correctly ([#10](https://github.com/myparcelbe/checkout/issues/10)) ([f66f640](https://github.com/myparcelbe/checkout/commit/f66f6405a9339d7de9f0d8f97f181ddfe4297d53))
+
 ### [3.1.2](https://github.com/myparcelbe/checkout/compare/v3.1.1...v3.1.2) (2020-02-03)
 
 ### [3.1.1](https://github.com/myparcelbe/checkout/compare/v3.1.0...v3.1.1) (2019-12-17)
