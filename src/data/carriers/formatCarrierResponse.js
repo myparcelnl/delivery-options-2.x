@@ -12,6 +12,6 @@ export const formatCarrierResponse = (response) => {
     id: carrier.id,
     name: carrier.name,
     label: carrier.human,
-    image: `${appConfig.assetsUrl}/${carrier.meta.logo_svg}`,
+    image: appConfig.assetsUrl + carrier.meta.logo_svg,
   }));
 };
