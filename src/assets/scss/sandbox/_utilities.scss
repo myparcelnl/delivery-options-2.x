@@ -1,0 +1,13 @@
+/*
+ * Additional utility classes Bootstrap doesn't offer
+ */
+
+// https://getbootstrap.com/docs/4.4/utilities/overflow/
+.overflow-visible {
+  overflow: visible !important;
+}
+
+// https://getbootstrap.com/docs/4.4/utilities/text/#text-wrapping-and-overflow
+.text-pre {
+  white-space: pre !important;
+}

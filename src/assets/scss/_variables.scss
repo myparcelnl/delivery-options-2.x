@@ -1,16 +1,3 @@
-$classBase: 'development' !default; // Is overridden in prod by vue.config.js
-
-$primary: #eee;
-$positive: #227631;
-
-$modal-content-padding: 1em;
-
-$image-size-sm: 25px;
-$image-size-md: 50px;
-$image-size-lg: 75px;
-
-$spacing: .5em;
-
 $carriers: (
   postnl: #ed8c00,
   bpost: #ef2637,

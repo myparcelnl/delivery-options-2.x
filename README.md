@@ -10,11 +10,11 @@
 ## Introduction
 This is the MyParcel delivery options module for use in any e-commerce platform's checkout. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It only has the bare minimum css styling so it should integrate with the design of your webshop easily.
 
-![screenshot](/demo/screenshots/checkout1.png)
-![screenshot](/demo/screenshots/checkout2.png)
-![screenshot](/demo/screenshots/checkout3.png)
-![screenshot](/demo/screenshots/checkout4.png)
-![screenshot](/demo/screenshots/checkout5.png)
+![screenshot](/src/delivery-options/data/demo/screenshots/checkout1.png)
+![screenshot](/src/delivery-options/data/demo/screenshots/checkout2.png)
+![screenshot](/src/delivery-options/data/demo/screenshots/checkout3.png)
+![screenshot](/src/delivery-options/data/demo/screenshots/checkout4.png)
+![screenshot](/src/delivery-options/data/demo/screenshots/checkout5.png)
 
 ### Browser support
 This app is written in [Vue.js], it supports IE9 and up. 
@@ -121,7 +121,7 @@ When there is no title set for `deliveryMorningTitle`, `deliveryStandardTitle` o
 To get the object with the selected options from the delivery options do the following:
 ```js
 const data = document.querySelector('#mypa-input').value;
-const obj = JSON.parse(data);
+const obj = CODE_FORMAT_JSON.parse(data);
 
 // `obj` will be something like this:
 // {

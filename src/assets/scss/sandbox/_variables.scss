@@ -1,0 +1,45 @@
+$primary: #0f5c47;
+$secondary: #ff8c00;
+
+$font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$headings-font-family: 'Proxima Nova', $font-family-base;
+
+$headings-font-weight: 600;
+$headings-color: $primary;
+$headings-line-height: 2;
+
+$btn-font-family: $headings-font-family;
+$btn-padding-y: .65rem;
+$btn-padding-x: 1.2em;
+$btn-padding-y-md: .75rem;
+$btn-padding-x-md: $btn-padding-x;
+$btn-padding-y-lg: .95rem;
+$btn-padding-x-lg: $btn-padding-x;
+
+$border-radius: 10px;
+$border-radius-sm: $border-radius;
+$border-radius-lg: $border-radius;
+$border-color: rgba(0, 0, 0, .05);
+
+$alert-border-width: 0;
+$input-border-radius: $border-radius;
+$input-border-radius-sm: $border-radius;
+$input-border-radius-lg: 100em;
+
+$custom-checkbox-indicator-border-radius-lg: .2em;
+$custom-checkbox-indicator-border-radius: .2em;
+$custom-checkbox-indicator-border-radius-sm: .2em;
+
+$custom-select-border-radius: $input-border-radius;
+
+$card-border-color: transparent;
+$dropdown-border-color: $border-color;
+
+$dropdown-spacer: 0;
+$dropdown-item-padding-x: $btn-padding-x;
+$dropdown-item-padding-y: .3em;
+
+$spinner-border-width: 3px;
+$spinner-border-width-sm: 2px;
+$spinner-height: 5em;
+$spinner-width: 5em;

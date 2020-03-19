@@ -1,0 +1,39 @@
+@import "../index";
+@import "fonts";
+@import "variables";
+@import "utilities";
+
+@import "bootstrap";
+@import "~bootstrap-vue/src/index";
+@import "../transitions/index";
+
+@import "components/card";
+@import "components/code";
+@import "components/form";
+@import "components/hljs";
+@import "components/pre-loader";
+
+html, body {
+  height: 100%;
+}
+
+:focus {
+  outline-width: 0;
+}
+
+.#{$classBase} {
+  transition: all 0.3s ease;
+  opacity: 1;
+  filter: none;
+}
+
+.delivery-options {
+  &--loading {
+    .#{$classBase} {
+      opacity: 0.5;
+      filter: blur(3px);
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+}

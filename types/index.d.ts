@@ -2,6 +2,8 @@ import './jest';
 import {Vue} from 'vue/types/vue';
 
 declare namespace MyParcel {
+  type Environment = 'dev' | 'staging' | 'acceptance' | 'prod' | string
+
   type CarrierName = 'postnl' | 'bpost' | 'dpd'
   type CarrierNameOrId = CarrierName | Number
   type Platform = 'myparcel' | 'belgie' | 'flespakket'
@@ -42,38 +44,39 @@ declare namespace MyParcelDeliveryOptions {
    * Strings object from the external platform.
    */
   interface Strings {
-    city: String
-    postalCode: String
-    houseNumber: String
-    addressNotFound: String
-    again: String
-    closed: String
-    discount: String
-    free: String
-    from: String
-    loadMore: String
-    retry: String
-    headerDeliveryOptions: String
-    deliveryEveningTitle: String
-    deliveryMorningTitle: String
-    deliveryStandardTitle: String
-    deliveryTitle: String
-    onlyRecipientTitle: String
-    pickUpFrom: String
-    pickupTitle: String
-    signatureTitle: String
-    openingHours: String
-    pickupLocationsListButton: String
-    pickupLocationsMapButton: String
-
-    // BE only
-    saturdayDeliveryTitle?: String
-    wrongPostalCodeCity?: String
+    city?: String
+    postalCode?: String
+    houseNumber?: String
+    addressNotFound?: String
+    again?: String
+    closed?: String
+    discount?: String
+    free?: String
+    from?: String
+    loadMore?: String
+    retry?: String
+    headerDeliveryOptions?: String
+    deliveryEveningTitle?: String
+    deliveryMorningTitle?: String
+    deliveryStandardTitle?: String
+    deliveryTitle?: String
+    onlyRecipientTitle?: String
+    pickUpFrom?: String
+    pickupTitle?: String
+    signatureTitle?: String
+    openingHours?: String
+    pickupLocationsListButton?: String
+    pickupLocationsMapButton?: String
 
     // NL only
+    wrongHouseNumberPostcode?: String
+    mondayDeliveryTitle?: String
+
+    // BE only
     beDeliveryStandardTitle?: String
     beDeliveryTitle?: String
-    wrongHouseNumberPostcode?: String
+    saturdayDeliveryTitle?: String
+    wrongPostalCodeCity?: String
   }
 
   /**
@@ -120,31 +123,34 @@ declare namespace MyParcelDeliveryOptions {
    * Configuration object from the external platform.
    */
   interface Config {
-    apiBaseUrl: String
-    locale: String
-    carriers: String | Array<String>
-    platform: MyParcel.Platform
-    currency: String
+    apiBaseUrl?: String
+    locale?: String
+    platform?: MyParcel.Platform
+    currency?: String
 
-    allowDeliveryOptions: Boolean
-    allowPickupLocations: Boolean
+    allowDeliveryOptions?: Boolean
+    allowPickupLocations?: Boolean
 
-    cutoffTime: String
-    deliveryDaysWindow: String | Number
-    dropOffDays: String
-    dropOffDelay: String | Number
+    cutoffTime?: String
+    deliveryDaysWindow?: String | Number
+    dropOffDays?: String
+    dropOffDelay?: String | Number
+
+    // NL only
+    mondayCutoffTime?: String
 
     // BE only
     saturdayCutoffTime?: String
 
-    carrierSettings: CarrierSettings
+    carrierSettings?: CarrierSettings
 
     // Feature toggles
-    allowRetry: Boolean
-    pickupLocationsDefaultView: 'map' | 'list'
-    pickupShowDistance: Boolean
+    allowRetry?: Boolean
+    pickupLocationsDefaultView?: 'map' | 'list'
+    pickupShowDistance?: Boolean
 
-    pickupLocationsMapTileLayerData: MapTileLayerData
+    // Can be JSON string or object.
+    pickupLocationsMapTileLayerData?: string | MapTileLayerData
   }
 
   type CarrierSettings = {

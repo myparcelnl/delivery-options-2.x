@@ -60,7 +60,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* select the first marker on map view so there can't be orders made with empty pickup location ([2e46b66](https://github.com/myparcelbe/checkout/commit/2e46b6631b0908af45a254ba19206055c34c307c))
+* formSelect the first marker on map view so there can't be orders made with empty pickup location ([2e46b66](https://github.com/myparcelbe/checkout/commit/2e46b6631b0908af45a254ba19206055c34c307c))
 
 ## [3.1.0-alpha.8](https://github.com/myparcelbe/checkout/compare/v3.1.0-alpha.7...v3.1.0-alpha.8) (2019-12-05)
 
@@ -220,4 +220,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* the select of the delivery date ([5d25704](https://github.com/myparcelbe/checkout/commit/5d25704))
+* the formSelect of the delivery date ([5d25704](https://github.com/myparcelbe/checkout/commit/5d25704))

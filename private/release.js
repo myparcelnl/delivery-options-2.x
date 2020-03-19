@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+
 const [, , ...args] = process.argv;
 const standardVersionArgs = [];
 const githubReleaseArgs = [];

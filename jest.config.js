@@ -2,10 +2,17 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
   transform: {
     '^.+\\.vue$': 'vue-jest',
-    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-    '^.+\\.jsx?$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
+    '^.+\\.js$': 'babel-jest',
   },
-  transformIgnorePatterns: ['node_modules/(?!(babel-jest|jest-vue-preprocessor)/)'],
+  transformIgnorePatterns: [
+    'node_modules/(?!('
+    + 'babel-jest|'
+    + 'bootstrap-vue|'
+    + 'jest-vue-preprocessor|'
+    + 'lodash-es'
+    + ')/)',
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^!?raw-loader!(.*)': '<rootDir>/tests/__mocks__/rawLoader.js',

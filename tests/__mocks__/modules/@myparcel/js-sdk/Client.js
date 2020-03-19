@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { METHOD_SEARCH } from '@/data/request/fetchFromEndpoint';
+import { METHOD_SEARCH } from '@/delivery-options/data/request/fetchFromEndpoint';
 import { fakeCarriersResponse } from './fakeCarriersResponse';
 import { fakeDeliveryOptionsResponse } from './fakeDeliveryOptionsResponse';
 import { fakePickupLocationsResponse } from './fakePickupLocationsResponse';

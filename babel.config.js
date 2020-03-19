@@ -1,5 +1,8 @@
 module.exports = {
-  presets: ['@vue/cli-plugin-babel/preset'],
+  ignore: [/node_modules\/(?!lodash-es|bootstrap-vue)/],
+  presets: [
+    '@vue/app',
+  ],
   plugins: [
     [
       'intl', {
@@ -8,4 +11,19 @@ module.exports = {
       },
     ],
   ],
+  env: {
+    webpack: {
+      presets: [
+        [
+          '@babel/env',
+          {
+            targets: {
+              node: 'current',
+            },
+            modules: 'commonjs',
+          },
+        ],
+      ],
+    },
+  },
 };
