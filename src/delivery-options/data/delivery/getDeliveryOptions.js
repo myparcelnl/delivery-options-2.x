@@ -19,7 +19,7 @@ export function getDeliveryOptions() {
     label: STRINGS.DELIVERY_TITLE,
     type: 'radio',
     // If multi carrier, return another level of settings and their options based on carrier.
-    options: configBus.isMultiCarrier
+    options: configBus.hasMultipleDeliveryCarriers
       ? [{
         name: CARRIER,
         type: 'radio',

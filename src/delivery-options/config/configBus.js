@@ -146,12 +146,21 @@ export const createConfigBus = (eventCallee = null) => {
 
     computed: {
       /**
-       * Whether there are multiple carriers available or not.
+       * Whether there are multiple carriers with delivery available or not.
        *
        * @returns {Boolean}
        */
-      isMultiCarrier() {
-        return this.carrierData.length > 1;
+      hasMultipleDeliveryCarriers() {
+        return this.carrierDataWithDeliveryOptions.length > 1;
+      },
+
+      /**
+       * Whether there are multiple carriers with pickup locations or not.
+       *
+       * @returns {Boolean}
+       */
+      hasMultiplePickupCarriers() {
+        return this.carrierDataWithPickupLocations.length > 1;
       },
 
       /**
