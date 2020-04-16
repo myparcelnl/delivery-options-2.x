@@ -1,6 +1,5 @@
 import RecursiveForm from '@/delivery-options/components/RecursiveForm/RecursiveForm';
 import { SENDMYPARCEL } from '@/data/keys/platformKeys';
-import { createDeliveryOptions } from '@/delivery-options/data/delivery/createDeliveryOptions';
 import { defaultConfig } from '@/config/defaultConfig';
 import { mockVue } from '../mockVue';
 import { mount } from '@vue/test-utils';
@@ -15,7 +14,7 @@ describe('RecursiveForm.vue', () => {
         option: {
           name: 'carrier',
           type: 'radio',
-          choices: createDeliveryOptions,
+          choices: [],
         },
       },
     });
