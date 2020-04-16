@@ -1,8 +1,8 @@
 import * as SETTINGS from '@/data/keys/configKeys';
 import { MYPARCEL, SENDMYPARCEL } from '@/data/keys/platformKeys';
+import { DEFAULT_PLATFORM } from '@/data/keys/settingsConsts';
 import { defaultConfig } from '@/config/defaultConfig';
 import { mockConfigBus } from './mockConfigBus';
-import { DEFAULT_PLATFORM } from '@/data/keys/settingsConsts';
 
 let configBus = mockConfigBus(DEFAULT_PLATFORM);
 

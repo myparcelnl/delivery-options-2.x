@@ -14,7 +14,6 @@ export const mockVue = () => {
   localVue.prototype.$appConfig = appConfig;
   localVue.prototype.$classBase = process.env.VUE_APP_CLASS_BASE;
   localVue.prototype.$config = configObject;
-  localVue.prototype.$configBus = sandboxConfigBus;
   localVue.prototype.$getUrl = getUrl;
 
   localVue.component('font-awesome-icon', { template: '<i></i>' });

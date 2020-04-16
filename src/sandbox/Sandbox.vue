@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { sandboxConfigBus } from '@/sandbox/sandboxConfigBus';
+
 export default {
   name: 'Sandbox',
 
@@ -29,7 +31,7 @@ export default {
   },
 
   async created() {
-    await this.$configBus.fetchCarrierData();
+    await sandboxConfigBus.fetchCarrierData();
     this.loading = false;
   },
 };
