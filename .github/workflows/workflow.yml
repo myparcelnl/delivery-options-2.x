@@ -1,0 +1,62 @@
+name: Create release and publish to NPM
+
+on:
+  pull_request: ~
+  push:
+    branches:
+      # TODO: Change this to master once we finally merge!
+      - develop
+    paths:
+      - src/**/*
+      - public/**/*
+      - .browserslistrc
+      - babel.config.js
+      - package-lock.json
+      - package.json
+      - postcss.config.js
+      - vue.config.js
+
+jobs:
+  process:
+    name: 'Process changes'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Run tests
+        run: ./node_modules/.bin/cross-env npm test
+        env:
+          NODE_ICU_DATA: node_modules/full-icu
+
+      - name: Update coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run semantic release
+        # TODO: Change this to master once we finally merge!
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+        uses: brpaz/action-semantic-release@v1
+        with:
+          # TODO: Remove this once we finally merge!
+          branch: develop
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Deploy sandbox
+        # TODO: Change this to master once we finally merge!
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          BRANCH: gh-pages
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

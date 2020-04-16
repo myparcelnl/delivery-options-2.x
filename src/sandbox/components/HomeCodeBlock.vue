@@ -17,6 +17,11 @@
 
 <script>
 import * as EVENTS from '@/config/eventConfig';
+import {
+  CODE_FORMAT_JAVASCRIPT,
+  CODE_FORMAT_JAVASCRIPT_ES6,
+  CODE_FORMAT_JSON,
+} from '@/sandbox/config/forms/codeFormats';
 import CRadioGroup from '@/sandbox/components/form/CRadioGroup';
 import debounce from 'lodash-es/debounce';
 import { flattenObject } from '@/helpers/flattenObject';
@@ -25,11 +30,6 @@ import intersection from 'lodash-es/intersection';
 import last from 'lodash-es/last';
 import pick from 'lodash-es/pick';
 import { sandboxConfigBus } from '@/sandbox/sandboxConfigBus';
-import {
-  CODE_FORMAT_JAVASCRIPT,
-  CODE_FORMAT_JAVASCRIPT_ES6,
-  CODE_FORMAT_JSON,
-} from '@/sandbox/config/forms/codeFormats';
 
 export default {
   name: 'HomeCodeBlock',

@@ -147,6 +147,7 @@
 </template>
 
 <script>
+import * as CONFIG from '@/data/keys/configKeys';
 import * as EVENTS from '@/config/eventConfig';
 import Loader from '@/delivery-options/components/Loader';
 import PickupOption from '../Pickup/PickupOption';
@@ -155,7 +156,6 @@ import { formConfig } from '@/config/formConfig';
 import { getChoiceOrFirst } from '@/delivery-options/components/RecursiveForm/getChoiceOrFirst';
 import { getDependencies } from './getDependencies';
 import { setCheckboxSelected } from './setCheckboxSelected';
-import * as CONFIG from '@/data/keys/configKeys';
 
 export default {
   name: 'RecursiveForm',
