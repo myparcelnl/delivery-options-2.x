@@ -12,24 +12,25 @@ import objectHas from 'lodash-es/has';
 import objectSet from 'lodash-es/set';
 import { sortObject } from '@/helpers/sortObject';
 import { sortObjectSiblings } from '@/helpers/sortObjectSiblings';
-import { MYPARCEL } from '@/data/keys/platformKeys';
 
 export const sandboxConfigBus = new Vue({
   name: 'SandboxConfigBus',
 
   data() {
     return {
+      /**
+       * @type {MyParcel.Platform}
+       */
+      platform: platforms[0],
+
       carrierData: [],
       itemsInForm: new Set(),
-      platform: platforms[0],
       settings: null,
     };
   },
 
   created() {
     this.settings = platforms
-    // Todo: Remove this filter when switching carriers updates the form items' disabled state properly.
-      .filter((platform) => platform !== MYPARCEL)
       .reduce((acc, platform) => {
         const config = defaultConfig(platform);
 
@@ -140,7 +141,7 @@ export const sandboxConfigBus = new Vue({
      * Change the platform. Emits an event for other components to listen to. Does nothing if the platform didn't
      *  actually change.
      *
-     * @param {String} platform - New platform.
+     * @param {MyParcel.Platform} platform - New platform.
      */
     setPlatform(platform) {
       if (isEqual(platform, this.platform)) {
@@ -151,6 +152,10 @@ export const sandboxConfigBus = new Vue({
       this.$emit('updated:platform', platform);
     },
 
+    /**
+     * @param {MyParcel.Platform} platform
+     * @returns {Object}
+     */
     getPlatformSettings(platform = this.platform) {
       return this.settings[platform];
     },

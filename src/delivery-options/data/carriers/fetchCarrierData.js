@@ -4,15 +4,15 @@ import { formatCarrierResponse } from '@/delivery-options/data/carriers/formatCa
 /**
  * Fetch carrier data.
  *
- * @param {MyParcel.CarrierNameOrId} carrierNameOrId
+ * @param {MyParcel.CarrierNameOrId} carrier
  *
  * @returns {Promise<Object>}
  */
-export async function fetchCarrierData(carrierNameOrId = null) {
+export async function fetchCarrierData(carrier = null) {
   const params = {};
 
-  if (carrierNameOrId) {
-    params.carrier = carrierNameOrId;
+  if (carrier) {
+    params.carrier = carrier;
   }
 
   const data = await fetchFromEndpoint(

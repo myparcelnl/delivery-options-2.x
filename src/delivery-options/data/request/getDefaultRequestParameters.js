@@ -1,4 +1,4 @@
-import * as SETTINGS from '@/data/keys/configKeys';
+import * as CONFIG from '@/data/keys/configKeys';
 import { configBus as realConfigBus } from '@/delivery-options/config/configBus';
 
 /**
@@ -17,7 +17,7 @@ export const getDefaultRequestParameters = (configBus = realConfigBus) => {
      */
     include: 'shipment_options',
 
-    platform: configBus.get(SETTINGS.PLATFORM),
+    platform: configBus.get(CONFIG.PLATFORM),
     carrier: configBus.currentCarrier,
   };
 

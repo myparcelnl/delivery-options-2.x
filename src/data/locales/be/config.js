@@ -2,7 +2,6 @@ import * as SETTINGS from '@/data/keys/configKeys';
 import { DEFAULT_MAX_PAGE_ITEMS, DEFAULT_PRICE } from '@/data/keys/settingsConsts';
 
 export const config = {
-  [SETTINGS.API_BASE_URL]: 'https://api.sendmyparcel.be',
   [SETTINGS.LOCALE]: 'nl-BE',
 
   [SETTINGS.ALLOW_SATURDAY_DELIVERY]: true,

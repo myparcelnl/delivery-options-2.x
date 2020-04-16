@@ -73,8 +73,7 @@ export default {
   },
 
   beforeDestroy() {
-    sandboxConfigBus.$off('updated:platform');
-    sandboxConfigBus.$off('updated_settings');
+    sandboxConfigBus.$off('updated_settings', this.setCode);
   },
 
   methods: {
