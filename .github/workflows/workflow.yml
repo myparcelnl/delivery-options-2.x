@@ -18,6 +18,7 @@ on:
 
 jobs:
   process:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     name: 'Process changes'
     runs-on: ubuntu-latest
     steps:
