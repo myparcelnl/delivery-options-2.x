@@ -1,4 +1,3 @@
-import { MYPARCEL } from '@/data/keys/platformKeys';
 import SettingsForm from '@/sandbox/components/SettingsForm';
 import { createSettings } from '@/sandbox/settings/form';
 import { platforms } from '@/config/platformConfig';

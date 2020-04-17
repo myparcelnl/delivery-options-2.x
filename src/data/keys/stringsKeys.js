@@ -36,3 +36,6 @@ export const SATURDAY_DELIVERY_TITLE = 'saturdayDeliveryTitle';
 
 export const PICKUP_LOCATIONS_LIST_BUTTON = 'pickupLocationsListButton';
 export const PICKUP_LOCATIONS_MAP_BUTTON = 'pickupLocationsMapButton';
+
+export const PACKAGE_TYPE_DIGITAL_STAMP = 'packageTypeDigitalStamp';
+export const PACKAGE_TYPE_MAILBOX = 'packageTypeMailbox';

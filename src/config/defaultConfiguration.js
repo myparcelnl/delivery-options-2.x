@@ -2,7 +2,7 @@
 import * as ADDRESS from '@/data/keys/addressKeys';
 import * as CONFIG from '@/data/keys/configKeys';
 import * as STRINGS from '@/data/keys/stringsKeys';
-import { DEFAULT_PLATFORM, DEFAULT_PRICE } from '@/data/keys/settingsConsts';
+import { DEFAULT_PACKAGE_TYPE, DEFAULT_PLATFORM, DEFAULT_PRICE } from '@/data/keys/settingsConsts';
 import { getDefaultStrings } from '@/config/defaultStrings';
 import merge from 'lodash-es/merge';
 import { platformConfig } from '@/config/platformConfig';
@@ -31,6 +31,8 @@ export const defaultConfiguration = (platform = DEFAULT_PLATFORM) => {
       [CONFIG.PLATFORM]: DEFAULT_PLATFORM,
       [CONFIG.CURRENCY]: 'EUR',
 
+      [CONFIG.PACKAGE_TYPE]: DEFAULT_PACKAGE_TYPE,
+
       [CONFIG.ALLOW_DELIVERY_OPTIONS]: true,
       [CONFIG.ALLOW_EVENING_DELIVERY]: true,
       [CONFIG.ALLOW_MORNING_DELIVERY]: true,
@@ -43,6 +45,9 @@ export const defaultConfiguration = (platform = DEFAULT_PLATFORM) => {
       [CONFIG.DELIVERY_DAYS_WINDOW]: 1,
       [CONFIG.DROP_OFF_DAYS]: [1, 2, 3, 4, 5],
       [CONFIG.DROP_OFF_DELAY]: 0,
+
+      [CONFIG.PRICE_PACKAGE_TYPE_DIGITAL_STAMP]: DEFAULT_PRICE,
+      [CONFIG.PRICE_PACKAGE_TYPE_MAILBOX]: DEFAULT_PRICE,
 
       [CONFIG.PRICE_EVENING_DELIVERY]: DEFAULT_PRICE,
       [CONFIG.PRICE_MORNING_DELIVERY]: DEFAULT_PRICE,

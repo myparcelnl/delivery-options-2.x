@@ -2,6 +2,11 @@ import { PICKUP, PICKUP_EXPRESS, PICKUP_MOMENT, PICKUP_STANDARD, formConfig } fr
 import { configBus } from '@/delivery-options/config/configBus';
 import { createLocaleString } from '@/delivery-options/data/dates/createLocaleString';
 
+const deliveryTypeMap = {
+  pickup: PICKUP_STANDARD,
+  pickup_express: PICKUP_EXPRESS,
+};
+
 /**
  * Get pickup moments.
  *
@@ -37,13 +42,11 @@ export function getPickupMoments(pickupLocation) {
           return null;
         }
 
-        const deliveryTypeMap = {
-          pickup: PICKUP_STANDARD,
-          pickup_express: PICKUP_EXPRESS,
-        };
+        const deliveryType = deliveryTypeMap[possibility.delivery_type_name];
+        const pickup = formConfig.find(({ name }) => name === PICKUP);
 
         return {
-          ...formConfig[PICKUP].options[deliveryTypeMap[possibility.delivery_type_name]],
+          ...pickup.options.find(({ name }) => name === deliveryType),
           plainLabel: pickupText,
         };
       }),

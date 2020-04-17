@@ -16,18 +16,21 @@
     <tr
       v-for="choice in validChoices"
       :key="mutableOption.name + '_' + choice.name"
+      v-test
       :class="{
         [`${$classBase}__choice`]: true,
         [`${$classBase}__choice--has-image`]: choice.hasOwnProperty('image'),
         [`${$classBase}__choice--disabled`]: choice.disabled,
       }">
-      <td :class="`${$classBase}__input`">
+      <td
+        v-if="mutableOption.type !== 'heading'"
+        :class="`${$classBase}__input`">
         <div>
           <input
             v-if="mutableOption.type === 'checkbox'"
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected[choice.name]"
-            v-test="`${mutableOption.name}--${choice.name}`"
+            v-test
             :class="choice.class"
             type="checkbox"
             :name="mutableOption.name"
@@ -38,7 +41,7 @@
             v-else
             :id="`${$classBase}__${mutableOption.name}--${choice.name}`"
             v-model="selected"
-            v-test="`${mutableOption.name}--${choice.name}`"
+            v-test
             :class="choice.class"
             :type="mutableOption.type"
             :disabled="choice.disabled || validChoices.length === 1 ? 'disabled' : false"
@@ -96,6 +99,7 @@
 
         <transition-group
           v-else-if="isSelected(choice) && chosenOptions"
+          tag="div"
           name="fade"
           appear>
           <recursive-form
@@ -138,9 +142,9 @@
             :value="selectChoice.name"
             v-text="selectChoice.label" />
         </select>
-        <strong
-          v-else
-          v-text="firstChoice.label" />
+        <label v-else>
+          <strong v-text="firstChoice.label" />
+        </label>
       </td>
     </tr>
   </table>
@@ -341,7 +345,6 @@ export default {
   },
 
   watch: {
-
     option: {
 
       /**
@@ -490,10 +493,22 @@ export default {
       this.$nextTick(this.setSelected);
     },
 
+    /**
+     * @param {Array} choices
+     * @param {Object} option
+     * @param {Array} dependencies
+     * @param {Object} dependency
+     *
+     * @returns {Array}
+     */
     createChoices(choices, option, dependencies, dependency) {
-      let choice = dependency.hasOwnProperty('parent')
-        ? formConfig[dependency.parent].options[option]
-        : formConfig[option];
+      const options = dependency.hasOwnProperty('parent')
+        ? formConfig
+          .find(({ name }) => name === dependency.parent)
+          .options
+        : formConfig;
+
+      let choice = options.find(({ name }) => name === option);
 
       // If choice does not exist in the config, ignore it.
       if (!choice) {

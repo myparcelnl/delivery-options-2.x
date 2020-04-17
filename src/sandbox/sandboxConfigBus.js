@@ -23,8 +23,25 @@ export const sandboxConfigBus = new Vue({
        */
       platform: platforms[0],
 
+      /**
+       * Data for all carriers.
+       *
+       * @type {Array}
+       */
       carrierData: [],
+
+      /**
+       * Set containing all items that were actually rendered in the settings form.
+       *
+       * @type {Set}
+       */
       itemsInForm: new Set(),
+
+      /**
+       * The full settings form.
+       *
+       * @type {Object}
+       */
       settings: null,
     };
   },

@@ -5,6 +5,7 @@
     </b-input-group-prepend>
 
     <CNumber
+      ref="input"
       v-model="mutableValue"
       :min="-20"
       :max="20"

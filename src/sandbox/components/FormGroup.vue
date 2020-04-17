@@ -39,17 +39,17 @@
               <div v-html="$t(translation(formItem.name, 'description'))" />
             </Help>
             <img
-              v-if="formItem.category"
+              v-if="formItem.carrier"
               class="img-fluid ml-1"
               width="30"
-              :src="$getUrl.carrierLogo(formItem.category.name)"
-              :alt="formItem.category.text">
+              :src="$getUrl.carrierLogo(formItem.carrier.name)"
+              :alt="formItem.carrier.text">
           </span>
         </label>
       </b-col>
 
       <b-col cols="7">
-        <div :is="!!formItem.category ? 'b-input-group' : 'div'">
+        <div :is="!!formItem.carrier ? 'b-input-group' : 'div'">
           <component
             :is="formItem.component || 'CTextInput'"
             :id="formItemName"

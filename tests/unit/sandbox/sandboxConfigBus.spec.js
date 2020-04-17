@@ -19,8 +19,8 @@ describe('sandboxConfigBus', () => {
   });
 
   it('can switch platforms', () => {
-    expect(sandboxConfigBus.platform).toBe(SENDMYPARCEL);
-    sandboxConfigBus.setPlatform(MYPARCEL);
     expect(sandboxConfigBus.platform).toBe(MYPARCEL);
+    sandboxConfigBus.setPlatform(SENDMYPARCEL);
+    expect(sandboxConfigBus.platform).toBe(SENDMYPARCEL);
   });
 });

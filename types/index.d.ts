@@ -1,12 +1,17 @@
 import './jest';
-import {Vue} from 'vue/types/vue';
+import { Vue } from 'vue/types/vue';
 
 declare namespace MyParcel {
-  type Environment = 'dev' | 'staging' | 'acceptance' | 'prod' | string
+  type Environment = 'dev' | 'staging' | 'acceptance' | 'prod'
 
   type CarrierName = 'postnl' | 'bpost' | 'dpd'
-  type CarrierNameOrId = CarrierName | Number
+  type CarrierNameOrId = CarrierName | number
   type Platform = 'myparcel' | 'belgie' | 'flespakket'
+
+  /**
+   * @see https://myparcelnl.github.io/api/#6_A_1
+   */
+  type PackageType = 'package' | 'mailbox' | 'digital_stamp'
 
   /**
    * @see https://myparcelnl.github.io/api/#6_A_2
@@ -34,49 +39,51 @@ declare namespace MyParcelDeliveryOptions {
    * Address object from the external platform.
    */
   interface Address {
-    cc: String
-    number: String | Number
-    postalCode: String
-    city?: String
+    cc: string
+    number: string | number
+    postalCode: string
+    city?: string
   }
 
   /**
    * Strings object from the external platform.
    */
   interface Strings {
-    city?: String
-    postalCode?: String
-    houseNumber?: String
-    addressNotFound?: String
-    again?: String
-    closed?: String
-    discount?: String
-    free?: String
-    from?: String
-    loadMore?: String
-    retry?: String
-    headerDeliveryOptions?: String
-    deliveryEveningTitle?: String
-    deliveryMorningTitle?: String
-    deliveryStandardTitle?: String
-    deliveryTitle?: String
-    onlyRecipientTitle?: String
-    pickUpFrom?: String
-    pickupTitle?: String
-    signatureTitle?: String
-    openingHours?: String
-    pickupLocationsListButton?: String
-    pickupLocationsMapButton?: String
+    addressNotFound?: string
+    cc?: string
+    city?: string
+    closed?: string
+    deliveryEveningTitle?: string
+    deliveryMorningTitle?: string
+    deliveryStandardTitle?: string
+    deliveryTitle?: string
+    free?: string
+    from?: string
+    headerDeliveryOptions?: string
+    loadMore?: string
+    number?: string
+    onlyRecipientTitle?: string
+    openingHours?: string
+    options?: string
+    packageTypeDigitalStamp?: string
+    packageTypeMailbox?: string
+    pickUpFrom?: string
+    pickupLocationsListButton?: string
+    pickupLocationsMapButton?: string
+    pickupTitle?: string
+    postalCode?: string
+    retry?: string
+    signatureTitle?: string
 
     // NL only
-    wrongHouseNumberPostcode?: String
-    mondayDeliveryTitle?: String
+    mondayDeliveryTitle?: string
+    wrongnumberPostalCode?: string
 
     // BE only
-    beDeliveryStandardTitle?: String
-    beDeliveryTitle?: String
-    saturdayDeliveryTitle?: String
-    wrongPostalCodeCity?: String
+    beDeliveryStandardTitle?: string
+    beDeliveryTitle?: string
+    saturdayDeliveryTitle?: string
+    wrongPostalCodeCity?: string
   }
 
   /**
@@ -92,20 +99,20 @@ declare namespace MyParcelDeliveryOptions {
    */
   interface PickupLocation {
     address: {
-      cc: String
-      city: String
-      number: String
-      postal_code: String
-      street: String
+      cc: string
+      city: string
+      number: string
+      postal_code: string
+      street: string
     }
     location: {
-      distance: String
-      latitude: String
-      location_code: String
-      location_name: String
-      longitude: String
-      phone_number: String
-      retail_network_id: String
+      distance: string
+      latitude: string
+      location_code: string
+      location_name: string
+      longitude: string
+      phone_number: string
+      retail_network_id: string
       opening_hours: {
         monday: StartEndDate[]
         tuesday: StartEndDate[]
@@ -123,31 +130,33 @@ declare namespace MyParcelDeliveryOptions {
    * Configuration object from the external platform.
    */
   interface Config {
-    apiBaseUrl?: String
-    locale?: String
+    apiBaseUrl?: string
+    locale?: string
     platform?: MyParcel.Platform
-    currency?: String
+    currency?: string
 
-    allowDeliveryOptions?: Boolean
-    allowPickupLocations?: Boolean
+    allowDeliveryOptions?: boolean
+    allowPickupLocations?: boolean
 
-    cutoffTime?: String
-    deliveryDaysWindow?: String | Number
-    dropOffDays?: String
-    dropOffDelay?: String | Number
+    packageType?: MyParcel.PackageType
+
+    cutoffTime?: string
+    deliveryDaysWindow?: string | number
+    dropOffDays?: string
+    dropOffDelay?: string | number
 
     // NL only
-    mondayCutoffTime?: String
+    mondayCutoffTime?: string
 
     // BE only
-    saturdayCutoffTime?: String
+    saturdayCutoffTime?: string
 
     carrierSettings?: CarrierSettings
 
     // Feature toggles
-    allowRetry?: Boolean
+    allowRetry?: boolean
     pickupLocationsDefaultView?: 'map' | 'list'
-    pickupShowDistance?: Boolean
+    pickupShowDistance?: boolean
 
     // Can be JSON string or object.
     pickupLocationsMapTileLayerData?: string | MapTileLayerData
@@ -155,44 +164,44 @@ declare namespace MyParcelDeliveryOptions {
 
   type CarrierSettings = {
     [key in MyParcel.CarrierName]?: {
-      allowEveningDelivery?: Boolean
-      allowMorningDelivery?: Boolean
-      allowOnlyRecipient?: Boolean
-      allowPickupExpress?: Boolean
-      allowSignature?: Boolean
+      allowEveningDelivery?: boolean
+      allowMorningDelivery?: boolean
+      allowOnlyRecipient?: boolean
+      allowPickupExpress?: boolean
+      allowSignature?: boolean
 
       // NL only
-      allowSaturdayDelivery?: Boolean
+      allowSaturdayDelivery?: boolean
 
       // BE only
-      allowMondayDelivery?: Boolean
+      allowMondayDelivery?: boolean
 
-      priceEveningDelivery?: Number
-      priceMorningDelivery?: Number
-      priceOnlyRecipient?: Number
-      pricePickup?: Number
-      pricePickupExpress?: Number
-      priceSignature?: Number
-      priceStandardDelivery?: Number
+      priceEveningDelivery?: number
+      priceMorningDelivery?: number
+      priceOnlyRecipient?: number
+      pricePickup?: number
+      pricePickupExpress?: number
+      priceSignature?: number
+      priceStandardDelivery?: number
     }
   }
 
   interface CarrierData {
-    id: Number
+    id: number
     name: MyParcel.CarrierName
-    human: String
+    human: string
     meta: {
-      logo_png: String
-      logo_svg: String
+      logo_png: string
+      logo_svg: string
     },
     deliveryEnabled?: boolean,
     pickupEnabled?: boolean
   }
 
   interface Timestamp {
-    date: String
-    timezone: String
-    timezone_type: Number
+    date: string
+    timezone: string
+    timezone_type: number
   }
 
   /**
@@ -206,13 +215,13 @@ declare namespace MyParcelDeliveryOptions {
   interface ShipmentOption {
     name: MyParcel.ShipmentOptionName
     schema: {
-      type: String
-      enum: Boolean[]
+      type: string
+      enum: boolean[]
     }
   }
 
   interface DeliveryTimeFrame {
-    type: String
+    type: string
     date_time: Timestamp
   }
 
@@ -224,7 +233,7 @@ declare namespace MyParcelDeliveryOptions {
   }
 
   interface PickupPossibility {
-    delivery_type_id: Number
+    delivery_type_id: number
     delivery_type_name: MyParcel.DeliveryType
     moment: {
       start: Timestamp
@@ -232,23 +241,37 @@ declare namespace MyParcelDeliveryOptions {
   }
 
   interface FormEntry {
-    name: String
-    type: String
-    choices?: Array<Object>
+    name: string
+    type?: 'radio' | 'select' | 'checkbox' | 'text' | string
+    choices?: FormEntryChoice[]
     component?: Vue
-    dependency?: Object
-    loop?: Boolean
-    pagination?: Number
+    dependency?: FormEntryDependency
+    loop?: boolean
+    pagination?: number
+  }
+
+  interface FormEntryChoice {
+    name: string
+    label?: string
+    plainLabel?: string
+    price?: number
+    disabled?: boolean
+    selected?: boolean
+  }
+
+  interface FormEntryDependency {
+    name: string,
+    parent: string,
+    transform?: Function,
   }
 
   interface MapTileLayerData {
     url: string
     attribution: string
     token?: string
-    maxZoom?: Number
+    maxZoom?: number
   }
 }
-
 
 declare module 'MyParcel' {
   export = MyParcel

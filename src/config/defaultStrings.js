@@ -38,4 +38,7 @@ export const getDefaultStrings = () => ({
 
   [STRINGS.PICKUP_LOCATIONS_LIST_BUTTON]: 'Lijst',
   [STRINGS.PICKUP_LOCATIONS_MAP_BUTTON]: 'Kaart',
+
+  [STRINGS.PACKAGE_TYPE_DIGITAL_STAMP]: 'Digitale postzegel',
+  [STRINGS.PACKAGE_TYPE_MAILBOX]: 'Brievenbuspakje',
 });

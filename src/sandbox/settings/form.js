@@ -1,7 +1,10 @@
 import * as CONFIG from '@/data/keys/configKeys';
+import * as CONSTS from '@/data/keys/settingsConsts';
 import * as FORM from '@/config/formConfig';
 import * as STRINGS from '@/data/keys/stringsKeys';
+import { ALLOW_PACKAGE_TYPE_DIGITAL_STAMP, ALLOW_PACKAGE_TYPE_MAILBOX } from '@/data/keys/packageTypeConfig';
 import CCurrency from '@/sandbox/components/form/CCurrency';
+import CSelect from '@/sandbox/components/form/CSelect';
 import CTimepicker from '@/sandbox/components/form/CTimepicker';
 import CToggle from '@/sandbox/components/form/CToggle';
 import { GENERAL } from '@/sandbox/settings';
@@ -28,7 +31,7 @@ const currencyProps = {
 // eslint-disable-next-line max-lines-per-function
 export const createSettings = memoize((platform) => {
   const perCarrier = (data) => carrierSetting(data, platform);
-  const ifAnyCarrierHas = (setting, data) => allowedInAnyCarrier(setting, data, platform);
+  const ifAnyCarrierAllows = (setting, data) => allowedInAnyCarrier(setting, data, platform);
 
   return [
     {
@@ -64,7 +67,7 @@ export const createSettings = memoize((platform) => {
             },
           ],
         },
-        ...ifAnyCarrierHas(CONFIG.ALLOW_MORNING_DELIVERY, {
+        ...ifAnyCarrierAllows(CONFIG.ALLOW_MORNING_DELIVERY, {
           title: FORM.DELIVERY_MORNING,
           settings: [
             ...perCarrier({
@@ -94,7 +97,7 @@ export const createSettings = memoize((platform) => {
             },
           ],
         }),
-        ...ifAnyCarrierHas(CONFIG.ALLOW_EVENING_DELIVERY, {
+        ...ifAnyCarrierAllows(CONFIG.ALLOW_EVENING_DELIVERY, {
           title: FORM.DELIVERY_EVENING,
           settings: [
             ...perCarrier({
@@ -124,7 +127,7 @@ export const createSettings = memoize((platform) => {
             },
           ],
         }),
-        ...ifAnyCarrierHas(CONFIG.ALLOW_MONDAY_DELIVERY, {
+        ...ifAnyCarrierAllows(CONFIG.ALLOW_MONDAY_DELIVERY, {
           title: FORM.MONDAY_DELIVERY,
           settings: [
             ...perCarrier({
@@ -146,7 +149,7 @@ export const createSettings = memoize((platform) => {
           ],
         }),
 
-        ...ifAnyCarrierHas(CONFIG.ALLOW_SATURDAY_DELIVERY, {
+        ...ifAnyCarrierAllows(CONFIG.ALLOW_SATURDAY_DELIVERY, {
           title: FORM.SATURDAY_DELIVERY,
           settings: [
             ...perCarrier({
@@ -170,7 +173,7 @@ export const createSettings = memoize((platform) => {
         {
           title: FORM.SHIPMENT_OPTIONS,
           settings: [
-            ...ifAnyCarrierHas(CONFIG.ALLOW_ONLY_RECIPIENT, {
+            ...ifAnyCarrierAllows(CONFIG.ALLOW_ONLY_RECIPIENT, {
               title: FORM.ONLY_RECIPIENT,
               settings: [
                 ...perCarrier({
@@ -198,7 +201,7 @@ export const createSettings = memoize((platform) => {
                 },
               ],
             }),
-            ...ifAnyCarrierHas(CONFIG.ALLOW_SIGNATURE, {
+            ...ifAnyCarrierAllows(CONFIG.ALLOW_SIGNATURE, {
               title: FORM.SIGNATURE,
               settings: [
                 ...perCarrier({
@@ -228,6 +231,34 @@ export const createSettings = memoize((platform) => {
             }),
           ],
         },
+        ...ifAnyCarrierAllows([
+          ALLOW_PACKAGE_TYPE_DIGITAL_STAMP,
+          ALLOW_PACKAGE_TYPE_MAILBOX,
+        ], {
+          title: FORM.PACKAGE_TYPE,
+          settings: [
+            {
+              key: CONFIG.KEY,
+              name: CONFIG.PACKAGE_TYPE,
+              component: CSelect,
+              props: {
+                options: CONSTS.PACKAGE_TYPE_OPTIONS,
+              },
+            },
+            ...ifAnyCarrierAllows(ALLOW_PACKAGE_TYPE_DIGITAL_STAMP, {
+              key: CONFIG.KEY,
+              name: CONFIG.PRICE_PACKAGE_TYPE_DIGITAL_STAMP,
+              component: CCurrency,
+              props: currencyProps,
+            }),
+            ...ifAnyCarrierAllows(ALLOW_PACKAGE_TYPE_MAILBOX, {
+              key: CONFIG.KEY,
+              name: CONFIG.PRICE_PACKAGE_TYPE_MAILBOX,
+              component: CCurrency,
+              props: currencyProps,
+            }),
+          ],
+        }),
       ],
     },
     {
@@ -253,7 +284,7 @@ export const createSettings = memoize((platform) => {
             inAnyCarrier(CONFIG.ALLOW_PICKUP_LOCATIONS),
           ],
         },
-        ...ifAnyCarrierHas(CONFIG.ALLOW_PICKUP_EXPRESS, {
+        ...ifAnyCarrierAllows(CONFIG.ALLOW_PICKUP_EXPRESS, {
           title: FORM.PICKUP_EXPRESS,
           settings: [
             ...perCarrier({

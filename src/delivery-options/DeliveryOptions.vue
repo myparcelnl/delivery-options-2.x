@@ -285,23 +285,21 @@ export default {
      * @returns {Promise}
      */
     async getDeliveryOptions(event) {
-      const eventAddress = event && event.detail ? event.detail.address : null;
-
       /**
        * Get the address from the CustomEvent if that is how this function was called and there is an address present.
        * Use the window object otherwise.
        */
-      const newAddress = getAddress(eventAddress);
+      const newAddress = getAddress(event && event.detail ? event.detail.address : null);
+
       const isRenderEvent = configBus.eventCallee && configBus.eventCallee.startsWith(EVENTS.RENDER_DELIVERY_OPTIONS);
+      const addressChanged = isEqual(this.$configBus.address, newAddress);
 
       /**
        * Return if address didn't change, but only if the delivery options are already showing.
        */
-      if (isRenderEvent && this.showDeliveryOptions && isEqual(this.$configBus.address, newAddress)) {
+      if (isRenderEvent && this.showDeliveryOptions && addressChanged) {
         return;
       }
-
-      const addressChanged = this.$configBus.address.cc !== newAddress.cc;
 
       // Update the address in the config bus
       this.$configBus.address = newAddress;

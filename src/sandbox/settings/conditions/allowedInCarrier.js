@@ -1,13 +1,17 @@
 import { carrierPermissions } from '@/sandbox/settings/carrierPermissions';
 
 /**
- * Checks if a carrier allows a feature.
+ * Checks if a carrier allows one or more features.
  *
  * @param {MyParcel.CarrierName} carrier
- * @param {String} feature
+ * @param {String|String[]} features
  *
  * @returns {Boolean}
  */
-export function allowedInCarrier(carrier, feature) {
-  return carrierPermissions[carrier].includes(feature);
+export function allowedInCarrier(carrier, features) {
+  if (Array.isArray(features)) {
+    return features.some((feature) => carrierPermissions[carrier].includes(feature));
+  }
+
+  return carrierPermissions[carrier].includes(features);
 }

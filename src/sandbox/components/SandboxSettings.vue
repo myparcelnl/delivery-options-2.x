@@ -20,6 +20,8 @@
         <SandboxTabs
           v-if="formRendered"
           v-sticky
+          sticky-offset="{top: 10}"
+          class="h-100 overflow-auto"
           :tabs="$config.get('tabs.previews')" />
       </div>
     </div>
@@ -64,6 +66,9 @@ export default {
   },
 
   methods: {
+    /**
+     * @param {MyParcel.Platform} platform
+     */
     switchPlatform(platform) {
       sandboxConfigBus.setPlatform(platform);
     },

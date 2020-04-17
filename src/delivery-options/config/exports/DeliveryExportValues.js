@@ -14,6 +14,11 @@ export class DeliveryExportValues extends ExportValues {
   deliveryDate;
 
   /**
+   * @type {MyParcel.PackageType}
+   */
+  packageType = DEFAULT_PACKAGE_TYPE;
+
+  /**
    * @type {MyParcelDeliveryOptions.ShipmentOption[]}
    */
   shipmentOptions = [];
@@ -24,6 +29,35 @@ export class DeliveryExportValues extends ExportValues {
 
     this.setCarrier(values[FORM.CARRIER]);
     this.setDeliveryType(values[FORM.DELIVERY_MOMENT]);
+
+    this.setPackageType(values[FORM.PACKAGE_TYPE] || this.packageType);
+  }
+
+  /**
+   * @param {MyParcel.PackageType} packageType
+   */
+  setPackageType(packageType) {
+    if (packageType === DEFAULT_PACKAGE_TYPE) {
+      return;
+    }
+
+    this.deliveryType = null;
+    this.date = null;
+    this.shipmentOptions = [];
+    this.packageType = packageType;
+  }
+
+  /**
+   * There's no delivery type with other package types (yet) so super.isComplete() will return false forever.
+   *
+   * @returns {Boolean|Boolean}
+   */
+  isComplete() {
+    if (this.packageType === DEFAULT_PACKAGE_TYPE) {
+      return super.isComplete();
+    }
+
+    return true;
   }
 
   toObject() {
@@ -31,6 +65,7 @@ export class DeliveryExportValues extends ExportValues {
       isPickup: this.isPickup,
       date: this.deliveryDate,
       carrier: this.carrier,
+      packageType: this.packageType,
       deliveryType: this.deliveryType,
       shipmentOptions: this.shipmentOptions,
     };

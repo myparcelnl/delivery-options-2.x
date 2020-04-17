@@ -10,6 +10,8 @@ export const DELIVER = 'deliver';
 // (Also used for pickup carrier)
 export const CARRIER = 'carrier';
 
+export const PACKAGE_TYPE = 'packageType';
+
 // Delivery > Deliver (> Carrier) > Delivery date
 export const DELIVERY_DATE = 'deliveryDate';
 
@@ -49,36 +51,35 @@ export const SATURDAY_DELIVERY = 'saturday';
  *
  * @type {Object}
  */
-export const formConfig = {
-
+export const formConfig = [
   /**
    * Delivery options.
    *
    * @see https://myparcelnl.github.io/api/#8
    */
-  [DELIVERY]: {
+  {
     enabled: SETTINGS.ALLOW_DELIVERY_OPTIONS,
     name: DELIVERY,
-    options: {
-      [DELIVERY_MORNING]: {
+    options: [
+      {
+        name: DELIVERY_MORNING,
         enabled: SETTINGS.ALLOW_MORNING_DELIVERY,
         label: STRINGS.DELIVERY_MORNING_TITLE,
-        name: DELIVERY_MORNING,
         price: SETTINGS.PRICE_MORNING_DELIVERY,
       },
-      [DELIVERY_STANDARD]: {
-        label: STRINGS.DELIVERY_STANDARD_TITLE,
+      {
         name: DELIVERY_STANDARD,
+        label: STRINGS.DELIVERY_STANDARD_TITLE,
         price: SETTINGS.PRICE_STANDARD_DELIVERY,
         selected: true,
       },
-      [DELIVERY_EVENING]: {
+      {
+        name: DELIVERY_EVENING,
         enabled: SETTINGS.ALLOW_EVENING_DELIVERY,
         label: STRINGS.DELIVERY_EVENING_TITLE,
-        name: DELIVERY_EVENING,
         price: SETTINGS.PRICE_EVENING_DELIVERY,
       },
-    },
+    ],
   },
 
   /**
@@ -86,42 +87,42 @@ export const formConfig = {
    *
    * @see https://myparcelnl.github.io/api/#7_C
    */
-  [SHIPMENT_OPTIONS]: {
+  {
     name: SHIPMENT_OPTIONS,
-    options: {
-      [SIGNATURE]: {
+    options: [
+      {
+        name: SIGNATURE,
         enabled: SETTINGS.ALLOW_SIGNATURE,
         label: STRINGS.SIGNATURE_TITLE,
-        name: SIGNATURE,
         price: SETTINGS.PRICE_SIGNATURE,
       },
-      [ONLY_RECIPIENT]: {
+      {
+        name: ONLY_RECIPIENT,
         enabled: SETTINGS.ALLOW_ONLY_RECIPIENT,
         label: STRINGS.ONLY_RECIPIENT_TITLE,
-        name: ONLY_RECIPIENT,
         price: SETTINGS.PRICE_ONLY_RECIPIENT,
       },
-    },
+    ],
   },
 
   /**
    * Pickup locations.
    */
-  [PICKUP]: {
-    enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
+  {
     name: PICKUP,
-    options: {
-      [PICKUP_EXPRESS]: {
-        enabled: SETTINGS.ALLOW_PICKUP_EXPRESS,
+    enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
+    options: [
+      {
         name: PICKUP_EXPRESS,
+        enabled: SETTINGS.ALLOW_PICKUP_EXPRESS,
         price: SETTINGS.PRICE_PICKUP_EXPRESS,
       },
-      [PICKUP_STANDARD]: {
-        enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
+      {
         name: PICKUP_STANDARD,
+        enabled: SETTINGS.ALLOW_PICKUP_LOCATIONS,
         price: SETTINGS.PRICE_PICKUP,
         selected: true,
       },
-    },
+    ],
   },
-};
+];

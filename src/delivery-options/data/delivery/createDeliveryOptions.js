@@ -1,3 +1,5 @@
+import * as CONFIG from '@/data/keys/configKeys';
+import * as CONSTS from '@/data/keys/settingsConsts';
 import { DELIVERY, DELIVERY_DATE, DELIVERY_MOMENT, SHIPMENT_OPTIONS } from '@/config/formConfig';
 import { configBus } from '@/delivery-options/config/configBus';
 import { createDeliveryDependencies } from '@/delivery-options/data/delivery/createDeliveryDependencies';
@@ -5,6 +7,7 @@ import { fetchDeliveryOptions } from '@/delivery-options/data/delivery/fetchDeli
 import { formatDeliveryMoments } from '@/delivery-options/data/delivery/formatDeliveryMoments';
 import { formatShipmentOptions } from '@/delivery-options/data/delivery/formatShipmentOptions';
 import { getDeliveryDates } from '@/delivery-options/data/delivery/getDeliveryDates';
+import { getPackageTypeOptions } from '@/delivery-options/data/delivery/getPackageTypeOptions';
 
 /**
  * If multi carrier, return another level of settings.
@@ -22,12 +25,19 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
 
   configBus.dependencies[carrier] = createDeliveryDependencies(deliveryOptions);
 
+  const packageType = configBus.get(CONFIG.PACKAGE_TYPE);
+  const isDefaultPackageType = packageType === CONSTS.DEFAULT_PACKAGE_TYPE;
+
   return [
-    {
-      name: DELIVERY_DATE,
-      type: 'select',
-      choices: getDeliveryDates(deliveryOptions),
-    },
+    ...[
+      isDefaultPackageType
+        ? {
+          name: DELIVERY_DATE,
+          type: 'select',
+          choices: getDeliveryDates(deliveryOptions),
+        }
+        : getPackageTypeOptions(packageType),
+    ],
     {
       name: DELIVERY_MOMENT,
       type: 'radio',

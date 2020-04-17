@@ -25,7 +25,7 @@ export function carrierSetting(setting, platform) {
         {
           ...setting,
           key: `${CONFIG.KEY}.${CONFIG.CARRIER_SETTINGS}.${carrier.name}`,
-          category: {
+          carrier: {
             name: carrier.name,
             text: carrier.label,
             image: carrier.image,
