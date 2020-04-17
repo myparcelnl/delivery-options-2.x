@@ -2,10 +2,11 @@
 import * as CONFIG from '@/data/keys/configKeys';
 import * as EVENTS from '@/config/eventConfig';
 import * as FORM from '@/config/formConfig';
+import { DeliveryExportValues } from '@/delivery-options/config/exports/DeliveryExportValues';
+import { PickupExportValues } from '@/delivery-options/config/exports/PickupExportValues';
 import Vue from 'vue';
 import debounce from 'lodash-es/debounce';
 import { getConfig } from '@/delivery-options/config/getConfig';
-import { getPickupDate } from '@/delivery-options/data/pickup/getPickupDate';
 import { getWeekdays } from '@/helpers/getWeekdays';
 
 /**
@@ -118,9 +119,19 @@ export const createConfigBus = (eventCallee = null) => {
        *  but this object is tweaked to comply with our API and conventions and to maximize readability for the
        *  developers using it.
        *
-       * @type {Object}
+       * @type {DeliveryExportValues|PickupExportValues}
        */
-      exportValues: {},
+      exportValues: null,
+
+      /**
+       * @type {DeliveryExportValues}
+       */
+      deliveryExportValues: null,
+
+      /**
+       * @type {PickupExportValues}
+       */
+      pickupExportValues: null,
 
       /**
        * Must be defined before it is filled in created().
@@ -177,12 +188,12 @@ export const createConfigBus = (eventCallee = null) => {
 
     watch: {
       /**
-       * When the current carrier changes update the export values.
+       * When the current carrier changes update the values.
        *
-       * @param {MyParcel.CarrierName} value - New currentCarrier.
+       * @param {MyParcel.CarrierName} value - New carrier.
        */
       currentCarrier(value) {
-        this.setExportValue(FORM.CARRIER, value);
+        this.values[FORM.CARRIER] = value;
       },
 
       /**
@@ -342,16 +353,6 @@ export const createConfigBus = (eventCallee = null) => {
       },
 
       /**
-       * Set a property to the given value in the values object.
-       *
-       * @param {String} name - Name of the property to add/update.
-       * @param {*} value - New value.
-       */
-      setExportValue(name, value) {
-        this.exportValues[name] = value;
-      },
-
-      /**
        * Unset a property from the values object.
        *
        * @param {String} name - Name of the property to remove.
@@ -372,91 +373,6 @@ export const createConfigBus = (eventCallee = null) => {
       },
 
       /**
-       * Sets the delivery settings, removing anything related to pickup.
-       */
-      setDeliveryExportValues() {
-        this.unsetExportValue(
-          FORM.DELIVERY,
-          FORM.DELIVERY_DATE,
-          FORM.DELIVERY_MOMENT,
-          FORM.PICKUP_LOCATION,
-          FORM.PICKUP_MOMENT,
-        );
-
-        /**
-         * Add a simple boolean for the external platform to be able to distinguish between pickup and delivery without
-         *  having to check for the values of deliveryType.
-         */
-        this.setExportValue(FORM.IS_PICKUP, false);
-
-        /**
-         * Set deliveryType to what we call deliveryMoment internally.
-         *
-         * @see MyParcel.DeliveryType
-         */
-        this.setExportValue(FORM.DELIVERY_TYPE, this.getValue(FORM.DELIVERY_MOMENT));
-
-        this.setExportValue(FORM.DATE, this.getValue(FORM.DELIVERY_DATE));
-      },
-
-      /**
-       * Sets the pickup settings, removing anything related to delivery.
-       */
-      setPickupExportValues() {
-        this.unsetExportValue(
-          FORM.DELIVERY,
-          FORM.DELIVERY_DATE,
-          FORM.DELIVERY_MOMENT,
-          FORM.PICKUP_MOMENT,
-          FORM.SHIPMENT_OPTIONS,
-        );
-
-        /**
-         * Add a simple boolean for the external platform to be able to distinguish between pickup and delivery without
-         *  having to check for the values of deliveryType.
-         */
-        this.setExportValue(FORM.IS_PICKUP, true);
-
-        /**
-         * Set deliveryType to what we call pickupMoment internally.
-         *
-         * @see MyParcel.DeliveryType
-         */
-        this.setExportValue(FORM.DELIVERY_TYPE, this.getValue(FORM.PICKUP_MOMENT));
-
-        const pickupLocation = this.getValue(FORM.PICKUP_LOCATION);
-
-        // Only do this after a pickup location and moment are selected.
-        if (!!pickupLocation && !!this.getValue(FORM.PICKUP_MOMENT)) {
-          /**
-           * After changing address while pickup is selected, the current pickupLocation might not be updated yet. This
-           *  causes an error because the old pickup location likely doesn't exist anymore in the pickupLocations array.
-           *
-           * Return, because the next time pickupLocation will be set this condition will pass.
-           */
-          if (!this.$configBus.pickupLocations.hasOwnProperty(pickupLocation)) {
-            return;
-          }
-
-          /**
-           * Take out the possibilities array to use it to get the deliveryDate, but don't add it to the exportValues.
-           * Also remove carrier from the currentPickupLocation object because it's already set in exportValues.carrier.
-           */
-          const { carrier, possibilities, ...currentPickupLocation } = this.$configBus.pickupLocations[pickupLocation];
-
-          /**
-           * Add the complex pickup data to the exported values instead of just the name.
-           */
-          this.setExportValue(FORM.PICKUP_LOCATION, currentPickupLocation);
-
-          /**
-           * Get the date from the currently selected pickup possibility.
-           */
-          this.setExportValue(FORM.DATE, getPickupDate(possibilities));
-        }
-      },
-
-      /**
        * @param {MyParcel.CarrierName} carrierName - Carrier name.
        *
        * @returns {Object}
@@ -474,18 +390,27 @@ export const createConfigBus = (eventCallee = null) => {
        */
       updateExternalData({ name, value }) {
         this.values[name] = value;
-
-        this.setExportValue(name, value);
         this.updateCurrentCarrier({ name, value });
 
+        let values;
         switch (this.getValue(FORM.DELIVERY)) {
           case FORM.DELIVER:
-            this.setDeliveryExportValues();
+            this.pickupExportValues = null;
+            this.deliveryExportValues = this.deliveryExportValues || new DeliveryExportValues();
+
+            this.deliveryExportValues.update(this.values);
+            values = this.deliveryExportValues;
             break;
           case FORM.PICKUP:
-            this.setPickupExportValues();
+            this.deliveryExportValues = null;
+            this.pickupExportValues = this.pickupExportValues || new PickupExportValues();
+
+            this.pickupExportValues.update(this.values);
+            values = this.pickupExportValues;
             break;
         }
+
+        this.exportValues = values;
 
         // Using $nextTick to emit event after this function is done.
         // @see https://forum.vuejs.org/t/do-something-after-emit-has-finished-successful/10663/10
@@ -512,6 +437,8 @@ export const createConfigBus = (eventCallee = null) => {
             }
             break;
         }
+
+        this.values[FORM.CARRIER] = this.currentCarrier;
       },
 
       /**

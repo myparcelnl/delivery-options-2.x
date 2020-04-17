@@ -346,18 +346,13 @@ export default {
      * Trigger an update on the checkout. Throttled to avoid overloading the external platform with updates.
      *
      * @param {Object|Boolean} data - If data is false, sends empty update.
-     * @param {String} data.name - Name of the changed option (if called through update).
-     * @param {*} data.value - New value of the changed option (if called through update).
+     * @property {String} data.name - Name of the changed option (if called through update).
+     * @property {*} data.value - New value of the changed option (if called through update).
      */
     updateExternal(data) {
       const isEmptied = data === false || (data.name === FORM.DELIVERY && data.value === null);
 
-      /*
-       * If delivery type is not set it means either delivery or pickup was clicked but the subsequent request is not
-       * finished yet. Once that finishes loading any delivery type will immediately be selected, triggering another
-       * update event which will allow these conditions to pass.
-       */
-      if (!isEmptied && !this.$configBus.hasExportValue(FORM.DELIVERY_TYPE)) {
+      if (!isEmptied && !this.$configBus.exportValues.isComplete()) {
         return;
       }
 
@@ -367,7 +362,7 @@ export default {
       document.dispatchEvent(new CustomEvent(
         EVENTS.UPDATED_DELIVERY_OPTIONS,
         {
-          detail: isEmptied ? null : this.$configBus.exportValues,
+          detail: isEmptied ? null : this.$configBus.exportValues.toObject(),
         },
       ));
     },
