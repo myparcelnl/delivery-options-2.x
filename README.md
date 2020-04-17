@@ -102,7 +102,6 @@ window.MyParcelConfig = {
 
     // Other strings
     closed: 'Gesloten',
-    discount: 'korting',
     free: 'Gratis',
     from: 'Vanaf',
     loadMore: 'Laad meer',

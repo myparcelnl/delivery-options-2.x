@@ -3,6 +3,7 @@ import * as ADDRESS from '@/data/keys/addressKeys';
 import * as CONFIG from '@/data/keys/configKeys';
 import * as STRINGS from '@/data/keys/stringsKeys';
 import { DEFAULT_PLATFORM, DEFAULT_PRICE } from '@/data/keys/settingsConsts';
+import { getDefaultStrings } from '@/config/defaultStrings';
 import merge from 'lodash-es/merge';
 import { platformConfig } from '@/config/platformConfig';
 
@@ -14,7 +15,7 @@ import { platformConfig } from '@/config/platformConfig';
  *
  * @returns {MyParcelDeliveryOptions.Configuration}
  */
-export const defaultConfig = (platform = DEFAULT_PLATFORM) => {
+export const defaultConfiguration = (platform = DEFAULT_PLATFORM) => {
   /**
    * Base delivery options configuration.
    *
@@ -71,41 +72,7 @@ export const defaultConfig = (platform = DEFAULT_PLATFORM) => {
     /**
      * @type {MyParcelDeliveryOptions.Strings}
      */
-    [STRINGS.KEY]: {
-    // Address strings
-      [STRINGS.CITY]: 'Plaats',
-      [STRINGS.POSTAL_CODE]: 'Postcode',
-      [STRINGS.NUMBER]: 'Huisnummer',
-      [STRINGS.ADDRESS_NOT_FOUND]: 'Adresgegevens niet ingevuld',
-
-      // Other strings
-      [STRINGS.CLOSED]: 'Gesloten',
-      [STRINGS.DISCOUNT]: 'korting',
-      [STRINGS.FREE]: 'Gratis',
-      [STRINGS.FROM]: 'Vanaf',
-      [STRINGS.LOAD_MORE]: 'Laad meer',
-      [STRINGS.RETRY]: 'Opnieuw',
-
-      // Main header
-      [STRINGS.HEADER_DELIVERY_OPTIONS]: '',
-
-      // Title of options
-      [STRINGS.DELIVERY_EVENING_TITLE]: '',
-      [STRINGS.DELIVERY_MORNING_TITLE]: '',
-      [STRINGS.DELIVERY_STANDARD_TITLE]: '',
-      [STRINGS.DELIVERY_TITLE]: 'Thuis of op het werk bezorgen',
-      [STRINGS.ONLY_RECIPIENT_TITLE]: 'Alleen ontvanger',
-      [STRINGS.PICK_UP_FROM]: 'Afhalen vanaf',
-      [STRINGS.PICKUP_TITLE]: 'Afhalen op locatie',
-      [STRINGS.SIGNATURE_TITLE]: 'Handtekening voor ontvangst',
-
-      // Opening hours
-      [STRINGS.OPENING_HOURS]: 'Openingstijden',
-      [STRINGS.OPTIONS]: 'Opties',
-
-      [STRINGS.PICKUP_LOCATIONS_LIST_BUTTON]: 'Lijst',
-      [STRINGS.PICKUP_LOCATIONS_MAP_BUTTON]: 'Kaart',
-    },
+    [STRINGS.KEY]: getDefaultStrings(),
   };
 
   baseConfig[CONFIG.KEY][CONFIG.PLATFORM] = platform;

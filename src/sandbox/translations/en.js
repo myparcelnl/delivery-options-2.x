@@ -100,7 +100,6 @@ export const englishTranslations = {
   [`field.${STRINGS.DELIVERY_STANDARD_TITLE}.description`]: 'When there is no title, the delivery time will automatically be visible.',
   [`field.${STRINGS.DELIVERY_STANDARD_TITLE}`]: 'Standard delivery title',
   [`field.${STRINGS.DELIVERY_TITLE}`]: 'Delivery choice text',
-  [`field.${STRINGS.DISCOUNT}`]: 'Discount',
   [`field.${STRINGS.FREE}`]: 'Free',
   [`field.${STRINGS.FROM}`]: 'From',
   [`field.${STRINGS.HEADER_DELIVERY_OPTIONS}.description`]: 'Optional header displayed above the delivery options. Leave empty to not show header at all.',

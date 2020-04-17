@@ -6,7 +6,7 @@ import { createDate } from '@/delivery-options/data/dates/createDate';
  *
  * @param {String} date - Date string.
  *
- * @returns {*}
+ * @returns {String}
  */
 export function createIsoString(date) {
   return createDate(date).toISOString();

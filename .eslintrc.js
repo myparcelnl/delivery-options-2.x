@@ -15,7 +15,7 @@ module.exports = {
           'MyParcelDeliveryOptions',
           'Wrapper',
           'VNode',
-          'webpack'
+          'webpack',
         ],
       },
     ],

@@ -51,10 +51,6 @@ export const stringsForm = [
     settings: [
       {
         key: STRINGS.KEY,
-        name: STRINGS.DISCOUNT,
-      },
-      {
-        key: STRINGS.KEY,
         name: STRINGS.FROM,
       },
       {

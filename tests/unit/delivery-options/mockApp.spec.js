@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Wrapper } from '@vue/test-utils';
 import { configBus } from '@/delivery-options/config/configBus';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import { mockApp } from './mockApp';
 
 describe('app mocking', () => {
@@ -15,6 +15,6 @@ describe('app mocking', () => {
 
     const { config, strings } = configBus;
 
-    expect({ config, strings, address: {} }).toEqual(defaultConfig());
+    expect({ config, strings, address: {} }).toEqual(defaultConfiguration());
   });
 });

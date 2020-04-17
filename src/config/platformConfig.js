@@ -5,7 +5,10 @@ import * as PLATFORMS from '@/data/keys/platformKeys';
 /**
  * @type {MyParcel.Platform[]}
  */
-export const platforms = [PLATFORMS.SENDMYPARCEL, PLATFORMS.MYPARCEL];
+export const platforms = [
+  PLATFORMS.MYPARCEL,
+  PLATFORMS.SENDMYPARCEL,
+];
 
 /**
  * @type {Object<MyParcel.Platform, MyParcel.CarrierName[]>}
@@ -21,16 +24,16 @@ export const platformCarrierMap = {
  * @type {Object<MyParcel.Platform, String>}
  */
 const platformLocaleMap = {
-  [PLATFORMS.SENDMYPARCEL]: LOCALE.BE,
   [PLATFORMS.MYPARCEL]: LOCALE.NL,
+  [PLATFORMS.SENDMYPARCEL]: LOCALE.BE,
 };
 
 /**
  * Map platform names to their respective URLs.
  */
 export const platformUrlMap = {
-  [PLATFORMS.SENDMYPARCEL]: 'sendmyparcel.be',
   [PLATFORMS.MYPARCEL]: 'myparcel.nl',
+  [PLATFORMS.SENDMYPARCEL]: 'sendmyparcel.be',
 };
 
 /**

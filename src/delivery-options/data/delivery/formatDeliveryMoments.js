@@ -1,15 +1,15 @@
 import { configBus } from '@/delivery-options/config/configBus';
 
 /**
- * Format delivery option.
+ * Format the delivery moments for display. If the current label isn't in the config or is an empty string it shows the
+ *  delivery time as the title.
  *
- * @param {Object} option - Option to transform.
+ * @param {MyParcelDeliveryOptions.FormEntryChoice} option - Option to transform.
  * @param {Object} deps - Dependencies related to current option.
  *
- * @returns {Object}
+ * @returns {MyParcelDeliveryOptions.FormEntryChoice}
  */
 export function formatDeliveryMoments(option, deps) {
-  // If the current label isn't in the config or is an empty string show the delivery time as the title
   if (!option.hasOwnProperty('label')
     || !configBus.strings.hasOwnProperty(option.label)
     || !configBus.strings[option.label]) {
@@ -17,5 +17,6 @@ export function formatDeliveryMoments(option, deps) {
     delete option.label;
     option.plainLabel = `${deps.moments.start} – ${deps.moments.end}`;
   }
+
   return option;
 }

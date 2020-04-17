@@ -1,6 +1,6 @@
 import { CARRIER_SETTINGS } from '@/data/keys/configKeys';
 import { DEFAULT_PLATFORM } from '@/data/keys/settingsConsts';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import { getWindowObject } from '@/delivery-options/config/getWindowObject';
 import mergeWith from 'lodash-es/mergeWith';
 
@@ -38,5 +38,5 @@ export const getConfig = () => {
    *
    * @see https://lodash.cobm/docs/4.17.15#mergeWith
    */
-  return mergeWith({}, defaultConfig(platform), windowObject, customizer);
+  return mergeWith({}, defaultConfiguration(platform), windowObject, customizer);
 };

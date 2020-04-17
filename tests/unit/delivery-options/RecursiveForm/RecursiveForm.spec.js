@@ -1,6 +1,6 @@
 import RecursiveForm from '@/delivery-options/components/RecursiveForm/RecursiveForm';
 import { SENDMYPARCEL } from '@/data/keys/platformKeys';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import { mockVue } from '../mockVue';
 import { mount } from '@vue/test-utils';
 
@@ -9,7 +9,7 @@ describe('RecursiveForm.vue', () => {
 
   beforeAll(() => {
     component = mount(RecursiveForm, {
-      localVue: mockVue(defaultConfig(SENDMYPARCEL)),
+      localVue: mockVue(defaultConfiguration(SENDMYPARCEL)),
       propsData: {
         option: {
           name: 'carrier',

@@ -4,7 +4,7 @@ import * as STRINGS from '@/data/keys/stringsKeys';
 import { DEFAULT_PLATFORM } from '@/data/keys/settingsConsts';
 import { createConfigBus } from '@/delivery-options/config/configBus';
 import { defaultAddress } from '@/data/defaultAddress';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import mergeWith from 'lodash-es/mergeWith';
 
 /**
@@ -30,7 +30,7 @@ export const mockConfigBus = (data = DEFAULT_PLATFORM) => {
   // Merge data into the default config.
   window.MyParcelConfig = mergeWith(
     {
-      ...defaultConfig(platform),
+      ...defaultConfiguration(platform),
       [ADDRESS.KEY]: defaultAddress[platform],
     },
     data,

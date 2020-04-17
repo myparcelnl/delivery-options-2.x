@@ -3,7 +3,7 @@ import { platformCarrierMap, platforms } from '@/config/platformConfig';
 import Vue from 'vue';
 import { carrierPermissions } from '@/sandbox/settings/carrierPermissions';
 import { defaultAddress } from '@/data/defaultAddress';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import { fetchCarrierData } from '@/delivery-options/data/carriers/fetchCarrierData';
 import isEqual from 'lodash-es/isEqual';
 import isPlainObject from 'lodash-es/isPlainObject';
@@ -32,7 +32,7 @@ export const sandboxConfigBus = new Vue({
   created() {
     this.settings = platforms
       .reduce((acc, platform) => {
-        const config = defaultConfig(platform);
+        const config = defaultConfiguration(platform);
 
         // Get all settings allowing carrier overrides.
         Object

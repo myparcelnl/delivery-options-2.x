@@ -1,7 +1,7 @@
 import * as SETTINGS from '@/data/keys/configKeys';
 import { MYPARCEL, SENDMYPARCEL } from '@/data/keys/platformKeys';
 import { DEFAULT_PLATFORM } from '@/data/keys/settingsConsts';
-import { defaultConfig } from '@/config/defaultConfig';
+import { defaultConfiguration } from '@/config/defaultConfiguration';
 import { mockConfigBus } from './mockConfigBus';
 
 let configBus = mockConfigBus(DEFAULT_PLATFORM);
@@ -62,11 +62,11 @@ describe('configBus', () => {
 
     configBus.$data.currentCarrier = 'dpd';
     expect(configBus.get(SETTINGS.ALLOW_SIGNATURE))
-      .toBe(defaultConfig(DEFAULT_PLATFORM).config[SETTINGS.ALLOW_SIGNATURE]);
+      .toBe(defaultConfiguration(DEFAULT_PLATFORM).config[SETTINGS.ALLOW_SIGNATURE]);
 
     configBus.$data.currentCarrier = 'bpost';
     expect(configBus.get(SETTINGS.PRICE_ONLY_RECIPIENT))
-      .toBe(defaultConfig(DEFAULT_PLATFORM).config[SETTINGS.PRICE_ONLY_RECIPIENT]);
+      .toBe(defaultConfiguration(DEFAULT_PLATFORM).config[SETTINGS.PRICE_ONLY_RECIPIENT]);
   });
 
   test('getSettingsByCarrier', () => {

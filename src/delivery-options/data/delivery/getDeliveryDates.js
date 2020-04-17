@@ -5,7 +5,7 @@ import { createIsoString } from '@/delivery-options/data/dates/createIsoString';
 /**
  * @param {MyParcel.DeliveryOption[]} deliveryOptions - Delivery options object.
  *
- * @returns {Array|null}
+ * @returns {MyParcelDeliveryOptions.FormEntryChoice[]}
  */
 export function getDeliveryDates(deliveryOptions) {
   if (!deliveryOptions) {
