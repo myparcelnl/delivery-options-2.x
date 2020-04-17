@@ -19,13 +19,40 @@ export const formTextInput = {
     },
 
     placeholder: {
-      type: [Number, String],
-      default: null,
+      type: String,
+      default: () => 'default_placeholder',
     },
 
     autocomplete: {
       type: String,
       default: null,
+    },
+  },
+
+  computed: {
+    /**
+     * Translate the placeholder if possible.
+     *
+     * @returns {String}
+     */
+    placeholderValue() {
+      return this.$te(this.placeholder)
+        ? this.$t(this.placeholder)
+        : this.placeholder;
+    },
+
+    /**
+     * Replace placeholder by the translated placeholder.
+     *
+     * @returns {Object}
+     */
+    filteredProps() {
+      const { placeholder, ...props } = this.$props;
+
+      return {
+        placeholder: this.placeholderValue,
+        ...props,
+      };
     },
   },
 };

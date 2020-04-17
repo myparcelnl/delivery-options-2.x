@@ -28,6 +28,7 @@ export const englishTranslations = {
   'title.general': 'General',
   'title.main': 'Delivery options sandbox',
   'title.strings_other': 'Other strings',
+  default_placeholder: '<Default>',
 
   [`field.${ADDRESS.CC}`]: 'Country',
   [`field.${ADDRESS.CITY}`]: 'City',
@@ -73,6 +74,8 @@ export const englishTranslations = {
   [`field.${CONFIG.PRICE_MORNING_DELIVERY}`]: 'Morning delivery pri e',
   [`field.${CONFIG.PRICE_ONLY_RECIPIENT}.description`]: `@:field.${CONFIG.PRICE_STANDARD_DELIVERY}.description`,
   [`field.${CONFIG.PRICE_ONLY_RECIPIENT}`]: 'Only recipient price',
+  [`field.${CONFIG.PRICE_PACKAGE_TYPE_DIGITAL_STAMP}`]: 'Digital stamp price',
+  [`field.${CONFIG.PRICE_PACKAGE_TYPE_MAILBOX}`]: 'Mailbox package price',
   [`field.${CONFIG.PRICE_PICKUP_EXPRESS}.description`]: `@:field.${CONFIG.PRICE_STANDARD_DELIVERY}.description`,
   [`field.${CONFIG.PRICE_PICKUP_EXPRESS}`]: 'Pickup express price',
   [`field.${CONFIG.PRICE_PICKUP}.description`]: `@:field.${CONFIG.PRICE_STANDARD_DELIVERY}.description`,
