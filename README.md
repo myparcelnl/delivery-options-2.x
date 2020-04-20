@@ -2,19 +2,19 @@
 [![Build Status](https://travis-ci.com/myparcelbe/checkout.svg?branch=master)](https://travis-ci.com/myparcelbe/checkout)
 [![Coverage Status](https://coveralls.io/repos/github/myparcelbe/checkout/badge.svg?branch=master)](https://coveralls.io/github/myparcelbe/checkout?branch=master)
 
-- [Installation](#installation)
-- [Requirements](#requirements)
-- [Example](#example)
-- [Usage](#usage)
 
 ## Introduction
 This is the MyParcel delivery options module for use in any e-commerce platform's checkout. It's used to show your customers the possible delivery and/or pickup options for their location, based on your settings. It only has the bare minimum css styling so it should integrate with the design of your webshop easily.
 
-![screenshot](/src/delivery-options/data/demo/screenshots/checkout1.png)
-![screenshot](/src/delivery-options/data/demo/screenshots/checkout2.png)
-![screenshot](/src/delivery-options/data/demo/screenshots/checkout3.png)
-![screenshot](/src/delivery-options/data/demo/screenshots/checkout4.png)
-![screenshot](/src/delivery-options/data/demo/screenshots/checkout5.png)
+- [Installation](#installation)
+- [Example](#example)
+- [Usage](#usage)
+
+![screenshot](/screenshots/checkout1.png)
+![screenshot](/screenshots/checkout2.png)
+![screenshot](/screenshots/checkout3.png)
+![screenshot](/screenshots/checkout4.png)
+![screenshot](/screenshots/checkout5.png)
 
 ### Browser support
 This app is written in [Vue.js], it supports IE9 and up. 
@@ -205,9 +205,45 @@ document.dispatchEvent(new Event('myparcel_update_delivery_options'));
 1. Now, when an user changes the value in any of the fields set in `addressFields` the `window.MyParcelConfig` will be updated and the delivery options module will receive the event that tells it to update. The delivery options will reload and fetch the available options for the new address.
 
 ### Usage in forms
-You'll often want to use the delivery options module in a checkout form in your webshop software. We have implemented it in WooCommerce and Magento2 using the following method to get its data in the `$_POST` variable on submitting the form.
-1. Follow the steps in [Installation] and 
+You'll often want to use the delivery options module in a checkout form in your webshop software. Below are some things to keep in mind, but if you're interested in doing this you should checkout our Magento2 and WooCommerce plugins locally and read through these implementations. You can find the best files to get started with in [Integration examples]. We also recommend you join our [Slack] support channel to get (fast!) answers to any questions you might have. 
 
+1. Follow the steps in [Installation] and copy `node_modules/@myparcel/delivery-options/dist/myparcel.js` to your js folder.
+2. The things you'll need to do :
+    - Have either a `window.MyParcelConfig` or dispatch a `CustomEvent` with the settings you want in the page where you're loading the delivery options.
+    - Send events to the delivery options telling it when to update or rerender.
+    - Listen to the delivery options' events to update your application according to the changes.
+    - Attach the output data to the order that is being created.
+
+#### Integration examples
+
+##### Attach data to an order using a hidden input
+In WooCommerce and Magento 2 we injected a hidden text input inside the checkout `<form>` elements to hold this data and automatically pass it to the `$_POST` variable.
+
+```js
+// Listen to the CustomEvent the delivery option sends back out once its data has been updated
+document.addEventListener('myparcel_updated_delivery_options', (event) => {
+  myHiddenInput.value = JSON.stringify(event.detail);
+
+  // And now trigger updating the checkout of whatever platform you're using.
+  // WooCommerce example:
+  document.dispatchEvent(new Event('update_checkout'));
+
+  // In Magento 2 we would update quote.shippingMethod here to trigger the changes.
+});
+```
+
+##### WooCommerce
+Files that can help you get started:
+
+- Backend: [/includes/frontend/class-wcmp-checkout.php](https://github.com/myparcelbe/woocommerce/blob/master/includes/frontend/class-wcmp-checkout.php)
+- Frontend: [/assets/js/wcmp-frontend.js](https://github.com/myparcelbe/woocommerce/blob/master/assets/js/wcmp-frontend.js)
+
+##### Magento 2
+Files that can help you get started:
+
+Note: It's more complex in Magento 2 because of the way shipping methods work.
+- Backend: [/Model/Checkout/DeliveryOptionsToShippingMethods.php](https://github.com/myparcelbe/magento/blob/develop/Model/Checkout/DeliveryOptionsToShippingMethods.php)
+- Frontend: [/view/frontend/web/js/view/delivery-options.js](https://github.com/myparcelbe/magento/blob/develop/view/frontend/web/js/view/delivery-options.js)
 
 ## Contribute
 1. Clone this repository
@@ -220,7 +256,7 @@ You'll often want to use the delivery options module in a checkout form in your 
 If you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via [support@sendmyparcel.be] or join our support community on [Slack].
 
 [Vue.js]: https://vuejs.org/
-[sandbox]: https://myparcelnl.github.io/api/v2/checkout/sandbox
+[sandbox]: https://myparcelbe.github.io/checkout/
 [support@sendmyparcel.be]: mailto:support@sendmyparcel.be
 [releases]: https://github.com/myparcelbe/checkout/releases
 [Slack]: https://join.slack.com/t/myparcel-dev/shared_invite/enQtNDkyNTg3NzA1MjM4LTM0Y2IzNmZlY2NkOWFlNTIyODY5YjFmNGQyYzZjYmQzMzliNDBjYzBkOGMwYzA0ZDYzNmM1NzAzNDY1ZjEzOTM
@@ -230,8 +266,8 @@ If you're experiencing trouble with the implementation we're ready to help you o
 [Browser support]: #browser-support
 [Installation]: #installation
 [Usage]: #usage
-[Minimum required data]: #minimum-required-data
 [All options]: #all-options
+[Integration examples]: #integration-examples
 [Examples]: #examples
 [Getting the address from your environment]: #getting-the-address-from-your-environment
 [Usage in forms]: #usage-in-forms
