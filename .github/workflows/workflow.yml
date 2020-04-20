@@ -1,10 +1,10 @@
-name: Create release and publish to NPM
+# TODO: When we finally merge to master, replace develop with master everywhere.
+name: Process
 
 on:
   pull_request: ~
   push:
     branches:
-      # TODO: Change this to master once we finally merge!
       - develop
     paths:
       - src/**/*
@@ -17,22 +17,29 @@ on:
       - vue.config.js
 
 jobs:
-  process:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
-    name: 'Process changes'
+  build:
+    name: Create build
+    if: contains(github.event.head_commit.message, '[skip ci]') == false && github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: bahmutov/npm-install@v1
+      - run: npm run build
+      - name: Upload build
+        uses: actions/upload-artifact@v1
         with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
+          name: dist
+          path: dist/
 
-      - name: Build package
-        run: npm run build
+  test:
+    name: Run tests
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
 
-      - name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: Run jest
         run: ./node_modules/.bin/cross-env npm test
         env:
           NODE_ICU_DATA: node_modules/full-icu
@@ -42,20 +49,46 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run semantic release
-        # TODO: Change this to master once we finally merge!
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
-        uses: brpaz/action-semantic-release@v1
+  release:
+    name: Publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - test
+    steps:
+      - name: Get build
+        uses: actions/download-artifact@v1
         with:
-          # TODO: Remove this once we finally merge!
-          branch: develop
+          name: dist
+
+      - name: Run semantic release
+        uses: cycjimmy/semantic-release-action@v2
+        # TODO: This 'with' block can be removed entirely once we're merged to master.
+        with:
+          semantic_version: 17
+          branches: |
+            [
+              'develop'
+            ]
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Deploy sandbox
-        # TODO: Change this to master once we finally merge!
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+  deploy:
+    name: Deploy sandbox
+    needs:
+      - build
+      - test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Publish to Github Pages
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           BRANCH: gh-pages
