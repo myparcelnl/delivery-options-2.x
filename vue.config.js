@@ -1,16 +1,29 @@
 const { deliveryOptionsConfig } = require('./private/delivery-options.config');
 const { sandboxConfig } = require('./private/sandbox.config');
 const webpack = require('webpack');
+const { version, repository } = require('./package.json');
 
-process.env.VUE_APP_VERSION = require('./package.json').version;
-const { NODE_ENV, VUE_APP_CLASS_BASE, VUE_APP_VERSION } = process.env;
+process.env.VUE_APP_VERSION = version;
+process.env.VUE_APP_REPOSITORY_URL = repository.url.replace('.git', '');
+process.env.VUE_APP_COMMIT_HASH = require('child_process')
+  .execSync('git rev-parse HEAD')
+  .toString()
+  .trim();
+
+const {
+  NODE_ENV,
+  VUE_APP_CLASS_BASE,
+  VUE_APP_VERSION,
+  VUE_APP_COMMIT_HASH,
+  VUE_APP_REPOSITORY_URL,
+} = process.env;
 
 /**
  * @type {import("@vue/cli-service").ProjectOptions}
  */
 module.exports = {
   publicPath: NODE_ENV === 'production'
-    ? '/checkout/'
+    ? '/delivery-options/'
     : '/',
   productionSourceMap: false,
   devServer: {
@@ -47,11 +60,11 @@ module.exports = {
       symlinks: false,
     },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          VUE_APP_VERSION: JSON.stringify(VUE_APP_VERSION),
-          VUE_APP_CLASS_BASE: JSON.stringify(VUE_APP_CLASS_BASE),
-        },
+      new webpack.EnvironmentPlugin({
+        VUE_APP_CLASS_BASE: JSON.stringify(VUE_APP_CLASS_BASE),
+        VUE_APP_COMMIT_HASH: JSON.stringify(VUE_APP_COMMIT_HASH),
+        VUE_APP_REPOSITORY_URL: JSON.stringify(VUE_APP_REPOSITORY_URL),
+        VUE_APP_VERSION: JSON.stringify(VUE_APP_VERSION),
       }),
     ],
   },

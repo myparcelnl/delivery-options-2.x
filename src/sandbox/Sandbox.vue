@@ -7,6 +7,7 @@
       <SandboxHeader :key="'header'" />
       <SandboxIntroduction :key="'intro'" />
       <SandboxSettings :key="'settings'" />
+      <SandboxFooter :key="'footer'" />
     </template>
   </transition-group>
 </template>
@@ -22,6 +23,7 @@ export default {
     SandboxHeader: () => import(/* webpackChunkName: "SandboxHeader" */'@/sandbox/components/SandboxHeader'),
     SandboxIntroduction: () => import(/* webpackChunkName: "SandboxIntroduction" */'@/sandbox/components/SandboxIntroduction'),
     SandboxSettings: () => import(/* webpackChunkName: "SandboxSettings" */'@/sandbox/components/SandboxSettings'),
+    SandboxFooter: () => import(/* webpackChunkName: "SandboxFooter" */'@/sandbox/components/SandboxFooter'),
   },
 
   data() {

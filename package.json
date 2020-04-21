@@ -80,16 +80,16 @@
     "webpack-bundle-analyzer": "^3.7.0"
   },
   "bugs": {
-    "url": "https://github.com/myparcelbe/checkout/issues"
+    "url": "https://github.com/myparcelbe/delivery-options/issues"
   },
   "directories": {
     "test": "tests"
   },
-  "homepage": "https://github.com/myparcelbe/checkout#readme",
+  "homepage": "https://myparcelbe.github.io/delivery-options",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/myparcelbe/checkout.git"
+    "url": "https://github.com/myparcelbe/delivery-options.git"
   },
   "types": "types/index.d.ts"
 }

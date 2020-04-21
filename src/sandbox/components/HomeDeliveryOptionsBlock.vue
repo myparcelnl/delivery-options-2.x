@@ -152,7 +152,7 @@ export default {
       if (process.env.NODE_ENV === 'development') {
         await import('@/delivery-options/main');
       } else {
-        await createScript('/checkout/myparcel.js');
+        await createScript('/delivery-options/myparcel.js');
       }
 
       this.loadedDeliveryOptions = true;
