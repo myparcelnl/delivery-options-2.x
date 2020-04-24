@@ -29,6 +29,6 @@ export class ExportValues {
    * @param {MyParcel.DeliveryType} deliveryType
    */
   setDeliveryType(deliveryType) {
-    this.deliveryType = deliveryType || this.deliveryType;
+    this.deliveryType = deliveryType;
   }
 }

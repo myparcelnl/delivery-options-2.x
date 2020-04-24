@@ -2,7 +2,12 @@
 import * as ADDRESS from '@/data/keys/addressKeys';
 import * as CONFIG from '@/data/keys/configKeys';
 import * as STRINGS from '@/data/keys/stringsKeys';
-import { DEFAULT_PACKAGE_TYPE, DEFAULT_PLATFORM, DEFAULT_PRICE } from '@/data/keys/settingsConsts';
+import {
+  DEFAULT_DELIVERY_DAYS_WINDOW,
+  DEFAULT_PACKAGE_TYPE,
+  DEFAULT_PLATFORM,
+  DEFAULT_PRICE,
+} from '@/data/keys/settingsConsts';
 import { getDefaultStrings } from '@/config/defaultStrings';
 import merge from 'lodash-es/merge';
 import { platformConfig } from '@/config/platformConfig';
@@ -42,7 +47,7 @@ export const defaultConfiguration = (platform = DEFAULT_PLATFORM) => {
       [CONFIG.ALLOW_SIGNATURE]: true,
 
       [CONFIG.CUTOFF_TIME]: '17:00',
-      [CONFIG.DELIVERY_DAYS_WINDOW]: 1,
+      [CONFIG.DELIVERY_DAYS_WINDOW]: DEFAULT_DELIVERY_DAYS_WINDOW,
       [CONFIG.DROP_OFF_DAYS]: [1, 2, 3, 4, 5],
       [CONFIG.DROP_OFF_DELAY]: 0,
 

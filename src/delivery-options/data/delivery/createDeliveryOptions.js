@@ -28,16 +28,18 @@ export async function createDeliveryOptions(carrier = configBus.currentCarrier) 
   const packageType = configBus.get(CONFIG.PACKAGE_TYPE);
   const isDefaultPackageType = packageType === CONSTS.DEFAULT_PACKAGE_TYPE;
 
+  const packageTypeOrDeliveryMomentOptions = [
+    isDefaultPackageType
+      ? {
+        name: DELIVERY_DATE,
+        type: 'select',
+        choices: getDeliveryDates(deliveryOptions),
+      }
+      : getPackageTypeOptions(packageType),
+  ];
+
   return [
-    ...[
-      isDefaultPackageType
-        ? {
-          name: DELIVERY_DATE,
-          type: 'select',
-          choices: getDeliveryDates(deliveryOptions),
-        }
-        : getPackageTypeOptions(packageType),
-    ],
+    ...packageTypeOrDeliveryMomentOptions,
     {
       name: DELIVERY_MOMENT,
       type: 'radio',

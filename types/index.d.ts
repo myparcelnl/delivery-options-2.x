@@ -11,7 +11,7 @@ declare namespace MyParcel {
   /**
    * @see https://myparcelnl.github.io/api/#6_A_1
    */
-  type PackageType = 'package' | 'mailbox' | 'digital_stamp'
+  type PackageType = 'package' | 'mailbox' | 'digital_stamp' | string
 
   /**
    * @see https://myparcelnl.github.io/api/#6_A_2

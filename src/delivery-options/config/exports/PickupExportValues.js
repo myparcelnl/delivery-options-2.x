@@ -17,7 +17,6 @@ export class PickupExportValues extends ExportValues {
   update(values) {
     this.setCarrier(values[FORM.CARRIER]);
     this.setDeliveryType(values[FORM.PICKUP_MOMENT]);
-
     this.setPickupLocation(values);
   }
 

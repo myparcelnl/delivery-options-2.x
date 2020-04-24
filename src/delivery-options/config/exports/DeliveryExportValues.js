@@ -29,22 +29,22 @@ export class DeliveryExportValues extends ExportValues {
 
     this.setCarrier(values[FORM.CARRIER]);
     this.setDeliveryType(values[FORM.DELIVERY_MOMENT]);
-
-    this.setPackageType(values[FORM.PACKAGE_TYPE] || this.packageType);
+    this.switchPackageType(values[FORM.PACKAGE_TYPE] || this.packageType);
   }
 
   /**
    * @param {MyParcel.PackageType} packageType
    */
-  setPackageType(packageType) {
+  switchPackageType(packageType) {
+    this.packageType = packageType;
+
     if (packageType === DEFAULT_PACKAGE_TYPE) {
       return;
     }
 
     this.deliveryType = null;
-    this.date = null;
+    this.deliveryDate = null;
     this.shipmentOptions = [];
-    this.packageType = packageType;
   }
 
   /**

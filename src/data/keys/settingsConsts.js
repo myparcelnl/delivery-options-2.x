@@ -11,6 +11,7 @@ export const PACKAGE_TYPE_MAILBOX = 'mailbox';
 
 export const DEFAULT_PACKAGE_TYPE = PACKAGE_TYPE_PACKAGE;
 
+export const DEFAULT_DELIVERY_DAYS_WINDOW = 7;
 export const DEFAULT_PRICE = 0;
 export const DROP_OFF_DELAY_MAX = 14;
 export const DROP_OFF_DELAY_MIN = 0;

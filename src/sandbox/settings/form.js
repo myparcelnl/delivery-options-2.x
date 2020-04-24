@@ -3,15 +3,19 @@ import * as CONSTS from '@/data/keys/settingsConsts';
 import * as FORM from '@/config/formConfig';
 import * as STRINGS from '@/data/keys/stringsKeys';
 import { ALLOW_PACKAGE_TYPE_DIGITAL_STAMP, ALLOW_PACKAGE_TYPE_MAILBOX } from '@/data/keys/packageTypeConfig';
+import CCheckboxGroup from '@/sandbox/components/form/CCheckboxGroup';
 import CCurrency from '@/sandbox/components/form/CCurrency';
+import CNumber from '@/sandbox/components/form/CNumber';
 import CSelect from '@/sandbox/components/form/CSelect';
 import CTimepicker from '@/sandbox/components/form/CTimepicker';
 import CToggle from '@/sandbox/components/form/CToggle';
 import { GENERAL } from '@/sandbox/settings';
+import { SENDMYPARCEL } from '@/data/keys/platformKeys';
 import { allowedInAnyCarrier } from '@/sandbox/settings/conditions/allowedInAnyCarrier';
 import { carrierSetting } from '@/sandbox/settings/carrierSetting';
 import { featuresForm } from '@/sandbox/settings/formParts/featuresForm';
-import { generalForm } from '@/sandbox/settings/formParts/generalForm';
+import { getWeekdays } from '@/helpers/getWeekdays';
+import { i18n } from '@/sandbox/services/vue-i18n';
 import { inAnyCarrier } from '@/sandbox/settings/conditions/inAnyCarrier';
 import memoize from 'lodash-es/memoize';
 import { sandboxConfigBus } from '@/sandbox/sandboxConfigBus';
@@ -20,6 +24,8 @@ import { stringsForm } from '@/sandbox/settings/formParts/stringForm';
 const currencyProps = {
   symbol: sandboxConfigBus.getSetting(CONFIG.KEY, CONFIG.CURRENCY) || '€',
 };
+
+const weekdays = getWeekdays(i18n.locale);
 
 /**
  * Settings and their default values.
@@ -33,11 +39,61 @@ export const createSettings = memoize((platform) => {
   const perCarrier = (data) => carrierSetting(data, platform);
   const ifAnyCarrierAllows = (setting, data) => allowedInAnyCarrier(setting, data, platform);
 
+  /**
+   * SendMyParcel doesn't allow delivery days window right now.
+   */
+  const deliveryDaysWindow = platform === SENDMYPARCEL
+    ? []
+    : [
+      {
+        key: CONFIG.KEY,
+        name: CONFIG.DELIVERY_DAYS_WINDOW,
+        component: CNumber,
+        props: {
+          min: 0,
+          max: 14,
+        },
+      },
+    ];
+
   return [
     {
       title: GENERAL,
       description: 'general',
-      settings: generalForm,
+      settings: [
+        {
+          key: CONFIG.KEY,
+          name: CONFIG.CURRENCY,
+        },
+        {
+          key: CONFIG.KEY,
+          name: CONFIG.DROP_OFF_DAYS,
+          component: CCheckboxGroup,
+          props: {
+            // Map the weekdays to options. If the day is sunday set index to 0.
+            options: weekdays.map((day, index) => ({
+              value: index === weekdays.length - 1 ? 0 : index + 1,
+              text: day,
+            })),
+          },
+        },
+        ...deliveryDaysWindow,
+        {
+          key: CONFIG.KEY,
+          name: CONFIG.DROP_OFF_DELAY,
+          component: CNumber,
+          props: {
+            min: CONSTS.DROP_OFF_DELAY_MIN,
+            max: CONSTS.DROP_OFF_DELAY_MAX,
+          },
+        },
+        {
+          key: CONFIG.KEY,
+          name: CONFIG.CUTOFF_TIME,
+          component: CTimepicker,
+        },
+
+      ],
     },
     {
       title: FORM.DELIVERY,
