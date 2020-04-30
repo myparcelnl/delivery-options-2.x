@@ -47,7 +47,7 @@ jobs:
       - name: Update coverage
         uses: coverallsapp/github-action@master
         with:
-          github-token: ${{ secrets.GH_ADMIN_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     name: Publish
