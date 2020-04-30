@@ -47,7 +47,7 @@ jobs:
       - name: Update coverage
         uses: coverallsapp/github-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_ADMIN_TOKEN }}
 
   release:
     name: Publish
@@ -58,6 +58,7 @@ jobs:
       - test
     steps:
       - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - name: Get build
         uses: actions/download-artifact@v1
         with:
@@ -73,18 +74,17 @@ jobs:
               'develop'
             ]
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GH_ADMIN_TOKEN}}
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   deploy:
     name: Deploy sandbox
     needs:
-      - build
-      - test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+      - release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - name: Get build
         uses: actions/download-artifact@v1
         with:
@@ -95,4 +95,4 @@ jobs:
         with:
           BRANCH: gh-pages
           FOLDER: dist
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
