@@ -127,23 +127,24 @@
     :class="`${$classBase}__table`">
     <tr>
       <td>
-        <select
-          v-if="mutableChoices.length > 1"
-          :id="`${$classBase}__${mutableOption.name}`"
-          v-model="selected"
-          :class="{
-            [`${$classBase}__w-100`]: true,
-            ...mutableOption.class,
-          }"
-          :name="mutableOption.name">
-          <option
-            v-for="(selectChoice, index) of mutableChoices"
-            :key="index + '_' + selectChoice.name"
-            :value="selectChoice.name"
-            v-text="selectChoice.label" />
-        </select>
-        <label v-else>
-          <strong v-text="firstChoice.label" />
+        <label>
+          <select
+            :class="{
+              [`${$classBase}__w-100`]: true,
+              ...mutableOption.class,
+            }"
+            :id="`${$classBase}__${mutableOption.name}`"
+            :name="mutableOption.name"
+            v-if="mutableChoices.length > 1"
+            v-model="selected">
+            <option
+              :key="index + '_' + selectChoice.name"
+              :value="selectChoice.name"
+              v-for="(selectChoice, index) of mutableChoices"
+              v-text="selectChoice.label" />
+          </select>
+          <strong
+            v-else v-text="firstChoice.label" />
         </label>
       </td>
     </tr>
