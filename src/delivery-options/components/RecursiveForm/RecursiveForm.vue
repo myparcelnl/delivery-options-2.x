@@ -129,13 +129,13 @@
       <td>
         <label>
           <select
-            :id="`${$classBase}__${mutableOption.name}`"
-            :name="mutableOption.name"
-            v-if="mutableChoices.length > 1"
             :class="{
               [`${$classBase}__w-100`]: true,
               ...mutableOption.class,
             }"
+            :id="`${$classBase}__${mutableOption.name}`"
+            v-if="mutableChoices.length > 1"
+            :name="mutableOption.name"
             v-model="selected">
             <option
               v-for="(selectChoice, index) of mutableChoices"
