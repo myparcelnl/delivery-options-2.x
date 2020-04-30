@@ -57,6 +57,7 @@ jobs:
       - build
       - test
     steps:
+      - uses: actions/checkout@v2
       - name: Get build
         uses: actions/download-artifact@v1
         with:
@@ -83,6 +84,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Get build
         uses: actions/download-artifact@v1
         with:
