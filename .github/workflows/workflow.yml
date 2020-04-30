@@ -58,6 +58,7 @@ jobs:
       - test
     steps:
       - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - name: Get build
         uses: actions/download-artifact@v1
         with:
@@ -79,12 +80,11 @@ jobs:
   deploy:
     name: Deploy sandbox
     needs:
-      - build
-      - test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+      - release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - name: Get build
         uses: actions/download-artifact@v1
         with:
