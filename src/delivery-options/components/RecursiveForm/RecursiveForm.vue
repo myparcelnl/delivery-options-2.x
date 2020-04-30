@@ -129,14 +129,14 @@
       <td>
         <label>
           <select
+            v-if="mutableChoices.length > 1"
+            :id="`${$classBase}__${mutableOption.name}`"
+            v-model="selected"
             :class="{
               [`${$classBase}__w-100`]: true,
               ...mutableOption.class,
             }"
-            :id="`${$classBase}__${mutableOption.name}`"
-            v-if="mutableChoices.length > 1"
-            :name="mutableOption.name"
-            v-model="selected">
+            :name="mutableOption.name">
             <option
               v-for="(selectChoice, index) of mutableChoices"
               :key="index + '_' + selectChoice.name"
@@ -144,7 +144,8 @@
               v-text="selectChoice.label" />
           </select>
           <strong
-            v-else v-text="firstChoice.label" />
+            v-else
+            v-text="firstChoice.label" />
         </label>
       </td>
     </tr>

@@ -5,7 +5,8 @@
         Currently deployed commit:
 
         <a
-          :href="url + '/commits/' + hash" v-text="hash" />
+          :href="url + '/commits/' + hash"
+          v-text="hash" />
       </div>
     </div>
   </div>
