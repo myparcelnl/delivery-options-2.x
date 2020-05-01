@@ -3,18 +3,6 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/github",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
-    "@semantic-release/changelog",
-    [
-      "@semantic-release/git",
-      {
-        "assets": [
-          "CHANGELOG.md",
-          "package.json",
-          "package-lock.json"
-        ],
-        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-      }
-    ]
+    "@semantic-release/npm"
   ]
 }
