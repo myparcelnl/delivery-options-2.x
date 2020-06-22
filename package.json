@@ -64,7 +64,7 @@
     "highlight.js": "^10.0.1",
     "husky": "^4.2.5",
     "mockdate": "^2.0.5",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.14.0",
     "push-dir": "^0.4.1",
     "sass-loader": "^8.0.2",
     "semantic-release": "^17.0.7",
