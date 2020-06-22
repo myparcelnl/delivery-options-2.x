@@ -13,6 +13,42 @@ export const allowedCountries = {
 };
 
 /**
+ * Country code for delivery.
+ *
+ * @type {String[]}
+ */
+const countries = [
+  'at',
+  'be',
+  'bg',
+  'cy',
+  'cz',
+  'de',
+  'dk',
+  'ee',
+  'es',
+  'fi',
+  'fr',
+  'gb',
+  'gr',
+  'hu',
+  'hr',
+  'ie',
+  'it',
+  'lt',
+  'lu',
+  'lv',
+  'mt',
+  'nl',
+  'pl',
+  'pt',
+  'ro',
+  'se',
+  'si',
+  'sk',
+];
+
+/**
  * Country codes per carrier which allow pickup locations.
  *
  * @type {Object<MyParcel.CarrierName,String[]>}
@@ -36,7 +72,11 @@ export const allowedCountriesForCarrierPickup = {
  *
  * @type {Object<MyParcel.CarrierName,String[]>}
  */
-export const allowedCountriesForCarrierDeliver = {};
+export const allowedCountriesForCarrierDeliver = {
+  dpd: countries,
+  postnl: countries,
+  bpost: countries,
+};
 
 export const getAllowedCountriesForCarrierPickup = (carrier) => {
   return allowedCountriesForCarrierPickup[carrier] || allowedCountries[configBus.get(PLATFORM)];
