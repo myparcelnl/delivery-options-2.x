@@ -10,14 +10,11 @@ This is the MyParcel delivery options module for use in any e-commerce platform'
 - [Example](#example)
 - [Usage](#usage)
 
-![screenshot](/screenshots/checkout1.png)
-![screenshot](/screenshots/checkout2.png)
-![screenshot](/screenshots/checkout3.png)
-![screenshot](/screenshots/checkout4.png)
-![screenshot](/screenshots/checkout5.png)
+![screenshot](screenshots/example1.png)
+![screenshot](screenshots/example2.png)
 
 ### Browser support
-This app is written in [Vue.js], it supports IE9 and up. 
+This app is written in [Vue.js], it supports IE9 and up.
 
 ## Example
 An example of the delivery options functionality can be found in our [sandbox]. Here you can try out every combination of settings and copy the code for use in your project.
@@ -26,12 +23,12 @@ An example of the delivery options functionality can be found in our [sandbox]. 
 1. Clone the repository or download the latest package from [releases].
 2. Run the following commands:
 ```shell script
-   $ npm i
+   $ npm ci
    $ npm run build
 ```
-3. Include `dist/myparcel.js` in your project. 
+3. Include `dist/myparcel.js` in your project.
 4. Place `<div id="myparcel-delivery-options"></div>` in your HTML.
-5. Follow the usage instructions. 
+5. Follow the usage instructions.
 6. The delivery options will be rendered inside the div created in step 4.
 
 ## Usage
@@ -43,10 +40,22 @@ An example of the delivery options functionality can be found in our [sandbox]. 
 window.MyParcelConfig = {
   config: {
     platform: 'belgie',
-    carriers: ['bpost', 'dpd'],
+
+    // Use this object to enable carriers and override settings per carrier.
+    carrierSettings: {
+      bpost: {
+        deliveryDaysWindow: 7,
+        allowDeliveryOptions: true,
+        allowPickupLocations: true,
+      },
+      dpd: {
+        allowDeliveryOptions: true,
+        allowPickupLocations: true,
+      },
+    },
 
     // All settings below can be overridden per carrier via the carrierSettings object
- 
+
     // The price for each option
     priceMorningDelivery: 7.95,
     priceStandardDelivery: 5.85,
@@ -54,42 +63,34 @@ window.MyParcelConfig = {
     priceSignature: 0.35,
     priceOnlyRecipient: 0.30,
     pricePickup: 5.85,
-    
+
     // Shipment options
     allowSaturdayDelivery: true,
     allowPickupLocations: true,
     allowSignature: true,
-    
+
     // Other settings
     dropOffDays: '1;2;3;4;5;6',
     cutoffTime: '15:00',
     deliveryDaysWindow: 4,
     dropOffDelay: 1,
-    
-    // Use this object to override settings per carrier.   
-    carrierSettings: {
-      bpost: {
-        deliveryDaysWindow: 7,
-      },
-      dpd: {},
-    },
   },
   strings: {
     wrongPostalCodeCity: 'Zaterdaglevering',
     saturdayDeliveryTitle: 'Combinatie postcode/plaats onbekend',
-    
+
     // Address strings
     city: 'Plaats',
     postcode: 'Postcode',
     houseNumber: 'Huisnummer',
     addressNotFound: 'Adresgegevens niet ingevuld',
 
-    // Delivery moment titles. 
+    // Delivery moment titles.
     // If any of these is not set, the delivery time will be visible instead.
     deliveryEveningTitle: 'Avondlevering',
     deliveryMorningTitle: 'Ochtendlevering',
     deliveryStandardTitle: 'Standaardlevering',
-    
+
     deliveryTitle: 'Bezorgen op',
     pickupTitle: 'Afhalen op locatie',
 
@@ -106,7 +107,7 @@ window.MyParcelConfig = {
     from: 'Vanaf',
     loadMore: 'Laad meer',
     retry: 'Opnieuw',
-  }, 
+  },
   address: {
     cc: 'BE',
     city: 'Antwerpen',
@@ -124,19 +125,19 @@ const obj = CODE_FORMAT_JSON.parse(data);
 
 // `obj` will be something like this:
 // {
-//   "delivery": "deliver", 
-//   "deliveryDate": "8-8-2019", 
-//   "deliveryMoment": "standard", 
+//   "delivery": "deliver",
+//   "deliveryDate": "8-8-2019",
+//   "deliveryMoment": "standard",
 //   "shipmentOptions": {signature: true, only_recipient: false}
 // }
 ```
 
 ## Examples
-These examples assume you've already loaded the delivery options in your page. See [Installation] if you haven't. 
+These examples assume you've already loaded the delivery options in your page. See [Installation] if you haven't.
 You have to provide a configuration file in the following format as `window.MyParcelConfig` and initialize the delivery options with an event.
 
 ### Setting up the configuration
-This is an example.  
+This is an example.
 ```js
 window.MyParcelConfig = {
   config: {
@@ -177,12 +178,12 @@ document.dispatchEvent(new Event('myparcel_update_delivery_options'));
        number: document.querySelector('#postcode').value,
        city: document.querySelector('#address_1').value,
      };
-   
-     /* 
-      * Send the event that tells the delivery options module to reload data. 
+
+     /*
+      * Send the event that tells the delivery options module to reload data.
       */
      document.dispatchEvent(new Event('myparcel_update_delivery_options'));
-   
+
      // IE9–11 compatible example
      var event = document.createEvent('HTMLEvents');
      event.initEvent('myparcel_update_delivery_options', true, false);
@@ -197,7 +198,7 @@ document.dispatchEvent(new Event('myparcel_update_delivery_options'));
       '<Postal code field selector>',
       '<Address line 1 field selector>',
     ];
-    
+
     addressFields.forEach((field) => {
       document.querySelector(field).addEventListener('change', updateAddress);
     });
@@ -205,7 +206,7 @@ document.dispatchEvent(new Event('myparcel_update_delivery_options'));
 1. Now, when an user changes the value in any of the fields set in `addressFields` the `window.MyParcelConfig` will be updated and the delivery options module will receive the event that tells it to update. The delivery options will reload and fetch the available options for the new address.
 
 ### Usage in forms
-You'll often want to use the delivery options module in a checkout form in your webshop software. Below are some things to keep in mind, but if you're interested in doing this you should checkout our Magento2 and WooCommerce plugins locally and read through these implementations. You can find the best files to get started with in [Integration examples]. We also recommend you join our [Slack] support channel to get (fast!) answers to any questions you might have. 
+You'll often want to use the delivery options module in a checkout form in your webshop software. Below are some things to keep in mind, but if you're interested in doing this you should checkout our Magento2 and WooCommerce plugins locally and read through these implementations. You can find the best files to get started with in [Integration examples]. We also recommend you join our [Slack] support channel to get (fast!) answers to any questions you might have.
 
 1. Follow the steps in [Installation] and copy `node_modules/@myparcel/delivery-options/dist/myparcel.js` to your js folder.
 2. The things you'll need to do :
@@ -252,10 +253,10 @@ Please read our [contribution guidelines](CONTRIBUTING.md)
 If you're experiencing trouble with the implementation we're ready to help you out! Please reach out to us via [support@sendmyparcel.be] or join our support community on [Slack].
 
 [Vue.js]: https://vuejs.org/
-[sandbox]: https://myparcelbe.github.io/checkout/
+[sandbox]: https://myparcelbe.github.io/delivery-options
 [support@sendmyparcel.be]: mailto:support@sendmyparcel.be
-[releases]: https://github.com/myparcelbe/checkout/releases
-[Slack]: https://join.slack.com/t/myparcel-dev/shared_invite/enQtNDkyNTg3NzA1MjM4LTM0Y2IzNmZlY2NkOWFlNTIyODY5YjFmNGQyYzZjYmQzMzliNDBjYzBkOGMwYzA0ZDYzNmM1NzAzNDY1ZjEzOTM
+[releases]: https://github.com/myparcelbe/delivery-options/releases
+[Slack]: https://join.slack.com/t/myparcel-dev/shared_invite/enQtNDkyNTg3NzA1MjM4LWQ5MWE5MTQ3MDg4YjU5NzdjYjk0OTY1ZDJiYjU5YzJjNzk3Yzk3NGY0OWFkZDU4MDYwZDEyZDlhZTgzOWM1MjI
 
 [MyParcel Delivery Options]: #myparcel-delivery-options
 [Introduction]: #introduction
