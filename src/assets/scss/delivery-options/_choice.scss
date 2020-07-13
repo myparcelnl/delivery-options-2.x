@@ -1,0 +1,23 @@
+.#{$classBase}__choice {
+  &--disabled label {
+    opacity: .5;
+  }
+
+  svg {
+    cursor: pointer;
+  }
+
+  &--has-image > td {
+    & > label {
+      height: 100%;
+    }
+
+    &:first-child input {
+      height: 18px;
+    }
+
+    .#{$classBase}__loader--inline div:nth-child(1) {
+      margin-top: 0;
+    }
+  }
+}

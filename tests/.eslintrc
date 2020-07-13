@@ -1,0 +1,10 @@
+{
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-magic-numbers": "off",
+    "max-lines-per-function": "off"
+  }
+}

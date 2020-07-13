@@ -1,0 +1,90 @@
+name: Process
+
+on:
+  pull_request: ~
+  push:
+    branches:
+      - master
+    paths:
+      - src/**/*
+      - public/**/*
+      - .browserslistrc
+      - babel.config.js
+      - package-lock.json
+      - package.json
+      - postcss.config.js
+      - vue.config.js
+
+jobs:
+  build:
+    name: Create build
+    if: contains(github.event.head_commit.message, '[skip ci]') == false && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - run: npm run build
+      - name: Upload build
+        uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: dist/
+
+  test:
+    name: Run tests
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: Run jest
+        run: ./node_modules/.bin/cross-env npm test
+        env:
+          NODE_ICU_DATA: node_modules/full-icu
+
+      - name: Update coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: Publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: Get build
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Run semantic release
+        uses: cycjimmy/semantic-release-action@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.GH_ADMIN_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  deploy:
+    name: Deploy sandbox
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: Get build
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+
+      - name: Publish to Github Pages
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          BRANCH: gh-pages
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}

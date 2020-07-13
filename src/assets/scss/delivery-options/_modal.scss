@@ -1,0 +1,26 @@
+.#{$classBase}__modal {
+  position: relative;
+
+  &--inline {
+    padding-top: $modal-content-padding;
+    padding-bottom: $modal-content-padding;
+  }
+
+  &--full {
+    padding: $modal-content-padding;
+  }
+
+  &__close {
+    cursor: pointer;
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: $modal-content-padding;
+
+    img {
+      width: 1em;
+      cursor: pointer;
+    }
+  }
+}

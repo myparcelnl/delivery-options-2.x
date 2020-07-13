@@ -1,0 +1,21 @@
+.#{$classBase}__image {
+  user-select: none;
+  display: inline-block;
+
+  &--lg {
+    width: $image-size-lg;
+    height: $image-size-lg;
+  }
+
+  &--md {
+    width: $image-size-md;
+    height: $image-size-md;
+  }
+
+  &--sm {
+    vertical-align: middle;
+    padding-right: 6px;
+    width: $image-size-sm;
+    height: $image-size-sm;
+  }
+}

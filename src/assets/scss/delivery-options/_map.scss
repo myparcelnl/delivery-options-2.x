@@ -1,0 +1,98 @@
+.#{$classBase}__pickup-locations {
+  &--map {
+    &--modal {
+      .#{$classBase}__pickup-locations__leaflet {
+        height: auto;
+      }
+    }
+
+    &__leaflet {
+      height: 400px;
+
+      .leaflet-bar > a {
+        text-decoration: none;
+      }
+
+      .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+
+        .leaflet-popup-content {
+          padding: $spacing;
+        }
+      }
+
+      /*
+       * Animates marker movement. Taken from https://gist.github.com/meule/777d9a8a42e2c99a3386
+       */
+      .leaflet-marker-pane > * {
+        transition: transform .3s linear;
+      }
+
+      &__marker {
+        transition: all .2s ease;
+        filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, .25));
+        position: relative;
+
+        // Force active marker to be in front in case it's too close to another marker.
+        &.leaflet-marker-active {
+          z-index: 2000 !important;
+        }
+
+        // Center marker
+        &--center {
+          $ripple-size: 50px;
+          border: 0;
+          box-shadow: inset -1px -1px 2px darken($positive, 5%);
+          border-radius: 100%;
+          position: relative;
+          overflow: visible;
+          background-color: lighten($positive, 15%);
+
+          &:after {
+            content: ' ';
+            mix-blend-mode: screen;
+            position: absolute;
+            width: $ripple-size;
+            height: $ripple-size;
+            margin: auto;
+            background-color: rgba(lighten($positive, 30%), .5);
+            opacity: 0;
+            border-radius: 100%;
+            top: -($ripple-size / 2 - 5px);
+            left: -($ripple-size / 2 - 5px);
+          }
+
+          &--loading {
+            &:after {
+              animation: ripple 1.2s ease-out infinite;
+            }
+          }
+        }
+
+        // Svg marker base used in carrier markers
+        .#{$classBase}__marker-icon {
+          ellipse,
+          path {
+            fill: white;
+          }
+        }
+
+        @each $carrier, $color in $carriers {
+          &--#{$carrier}.leaflet-marker-active .#{$classBase}__marker-icon path {
+            fill: $color,
+          }
+        }
+
+        &__logo {
+          margin: auto;
+          position: absolute;
+          left: 0;
+          right: 0;
+          width: 70%;
+          height: 20px;
+          top: 7px;
+        }
+      }
+    }
+  }
+}

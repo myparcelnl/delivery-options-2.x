@@ -1,0 +1,59 @@
+$code-line-height: 1.5em;
+
+.code {
+  font-size: $font-size-sm;
+  background-color: $gray-100;
+
+  /*
+   * For the hoverable spans.
+   */
+  span {
+    padding: 3px 2px;
+    border-radius: 3px;
+    transition: all 0.1s ease;
+  }
+
+  span.code--hover {
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: transparentize($secondary, .75);
+    cursor: pointer;
+  }
+
+  &__wrapper {
+    transition: all .3s ease;
+  }
+
+  &--loading > &__wrapper {
+    filter: blur(3px);
+  }
+
+  &--block {
+    display: flex;
+    white-space: pre-wrap;
+    border-radius: $border-radius;
+    line-height: $code-line-height;
+    margin: .5em 0;
+    padding: $border-radius 1em;
+    position: relative;
+  }
+
+  &--text {
+    background-color: $body-bg;
+
+    textarea {
+      @extend .code--block;
+      font-size: inherit;
+      margin: 0;
+      color: $body-color;
+    }
+  }
+
+  &--inline {
+    position: relative;
+    padding: .2em;
+    border-radius: 0.3em;
+    display: inline;
+    white-space: normal;
+  }
+}

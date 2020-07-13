@@ -1,0 +1,10 @@
+.#{$classBase} {
+
+  &__pickup-details {
+
+    &__opening-hours {
+      // Prevents hours wrapping hours in opening hours table when pickup location title is long.
+      white-space: nowrap;
+    }
+  }
+}

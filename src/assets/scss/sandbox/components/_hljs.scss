@@ -1,0 +1,28 @@
+$code-variable-color: #e90;
+$code-property-color: saturate(lighten($primary, 20), 20);
+$code-number-color: #7a22f5;
+$code-keyword-color: #f07;
+$code-literal-color: $code-keyword-color;
+$code-string-color: #e9a720;
+$code-built-in-color: #21afee;
+$code-comment-color: mix($gray-600, $primary, 80);
+$code-function-color: #78ec04;
+
+.hljs {
+  &-attr { color: $code-property-color}
+
+  &-number { color: $code-number-color}
+
+  &-function { color: $code-function-color}
+
+  &-literal { color: $code-literal-color}
+
+  &-keyword { color: $code-keyword-color}
+
+  &-string { color: $code-string-color}
+
+  &-comment { color: $code-comment-color}
+
+  &-built_in { color: $code-built-in-color}
+}
+
